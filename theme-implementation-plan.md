@@ -1,4 +1,4 @@
-# Plan d’implémentation — thème bloc `lepaysanurbain`
+\*\*# Plan d’implémentation — thème bloc `lepaysanurbain`
 
 ## Objectif
 
@@ -18,7 +18,7 @@ Le premier jalon est une démonstration utile, pas un thème « fini » :
 5. un éditeur local peut construire une page sans toucher aux fichiers du thème ;
 6. le mobile est pris en compte dès le début.
 
-Le but est d’obtenir vite une base saine, de réaliser la page d’accueil réseau (Home), puis d’étendre les pages et les contenus. Ne pas ajouter de CPT, de bloc personnalisé ou de plugin de production avant d’avoir prouvé qu’un bloc cœur ne suffit pas.
+Le but est d’obtenir vite une base saine, de réaliser la page d’accueil réseau (Home), puis d’étendre les pages et les contenus. Ne pas ajouter de bloc personnalisé ou de plugin de production avant d’avoir prouvé qu’un bloc cœur ne suffit pas.
 
 La page réseau (Home) à faire en premier est Home de `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/`
 ses sections sont décrites dans `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/sections-Home.txt` et dans `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/description-sections.txt`.
@@ -27,15 +27,15 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-13 15:10 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-13 17:51 (Europe/Paris)
 
-**Position exacte dans le plan :** transition entre l'Étape 4 et l'Étape 5. L'Étape 4 est terminée pour le provisioning technique ; l'Étape 5 n'a pas encore commencé et aucun fichier n'existe dans `themes/lepaysanurbain/patterns/`. Le premier fichier à créer sera `themes/lepaysanurbain/patterns/hero.php`. L'assemblage de la Home réseau décrit à l'Étape 6 n'a pas commencé.
+**Position exacte dans le plan :** Étape 1 — créer et monter le thème minimal. L'Étape 0 est validée. L'Étape 1 est la seule étape courante et doit être reprise, contrôlée puis validée avant de passer à l'Étape 2.
+
+_(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notamment sur le socle du thème, le cadre partagé et le provisioning de contenu. Nous le conservons comme état de travail, mais nous avançons désormais systématiquement, une seule étape à la fois, avec validation avant de passer à la suivante.)_
 
 ### Terminé
 
 - 2026-08-13 — Étape 0 : environnement `wp-env` multisite fonctionnel, avec le site réseau et les trois sites de ferme.
-- 2026-08-13 — Étape 1 : thème bloc `lepaysanurbain` monté, rendu disponible au réseau et activé automatiquement sur les quatre sites.
-- 2026-08-13 — Étape 4 : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script.
 - 2026-08-13 — Test sur base WordPress vierge puis second passage sans doublons ; le thème, les pages et les navigations sont recréés correctement après un reset.
 - 2026-08-13 — Port vérifié : `wp-env` injecte bien `:8888` dans `WP_SITEURL`, `WP_HOME`, `siteurl` et `home` malgré leur forme abrégée dans `.wp-env.json`.
 
@@ -43,6 +43,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 - 2026-08-13 — Étape 2 (socle initial) : `theme.json`, Ruden, Oswald et la feuille de style du thème sont en place. La validation visuelle du système de design, les motifs/assets graphiques et les faces DM Sans Regular et Bold restent à traiter ou sont différés.
 - 2026-08-13 — Étape 3 (socle technique) : templates, header, footer et un bloc Navigation par site sont en place ; les menus propres à chaque site et la liaison multisite sont fonctionnels. Le logo final, le header transparent, le footer complet et les validations visuelles/accessibilité restent à faire.
+- 2026-08-13 — Étape 4 (provisioning technique) : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script. Cette étape sera recontrôlée dans l'ordre du plan avant d'être considérée comme validée.
 
 ### À faire maintenant
 
@@ -74,26 +75,18 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
  
 
-## Repères rapides sur les block themes
+## Rappels utiles sur les block themes
 
-Le développeur connaît déjà Gutenberg ; ce rappel sert à remettre les bons séparateurs au bon endroit.
-
-- `theme.json` est le contrat visuel du thème. Il fournit les tokens utilisables par le front-end et l’éditeur : palette, tailles, familles de police, espacements, largeurs et styles globaux.
-- Un **template** (`templates/*.html`) est le squelette d’un type de page. Il contient du markup de blocs, pas du PHP.
-- Un **template part** (`parts/*.html`) est un morceau de template réutilisable, typiquement le header et le footer.
-- Une **Page** contient le contenu éditorial propre à un site. Le bloc `post-content` dans le template affiche ce contenu. C’est ce qui permet aux quatre accueils de diverger avec un seul thème.
-- Un **pattern** (`patterns/*.php`) est une composition de blocs insérable dans une Page. Ce sont les bandeaux de Fanny, pas des templates verrouillés.
 - `alignwide` utilise la largeur large définie dans `theme.json` ; `alignfull` va d’un bord à l’autre de la fenêtre. Les bandeaux colorés ou photographiques sont donc généralement `alignfull`.
-
-Deux sources peuvent exister pour un template ou un template part : le fichier du thème et une personnalisation enregistrée dans la base par le Site Editor. Le fichier doit rester la source de vérité. Utiliser le Site Editor pour explorer ou tester, mais reporter les changements validés dans les fichiers et supprimer les personnalisations de test avant de conclure que le rendu est correct.
+- Deux sources peuvent exister pour un template ou un template part : le fichier du thème et une personnalisation enregistrée dans la base par le Site Editor. Le fichier doit rester la source de vérité.
 
 ## Règles de mise en œuvre
 
 - Utiliser les blocs cœur en premier : Group, Cover, Columns, Image, Heading, Paragraph, Buttons, Navigation, Site Logo, Social Icons, Query Loop et Search.
 - Le code, les noms de fichiers et les classes CSS sont en anglais ; les titres visibles dans Gutenberg et le contenu du site sont en français.
 - Les couleurs, tailles et familles doivent venir de `theme.json`, jamais de valeurs arbitraires ajoutées dans les patterns.
-- Le CSS sert aux traitements que `theme.json` ne sait pas décrire proprement : motifs, hover d’images, disposition spécifique du header, focus et responsive fin.
-- Le JavaScript est une exception. Le bloc Navigation couvre déjà une grande partie du menu responsive, du clavier et des attributs ARIA ; ne lui ajouter du JS que lorsqu’un essai démontre un manque précis.
+- Le CSS sert aux traitements que `theme.json` ne sait pas décrire proprement.
+- Le JavaScript est une exception. Le bloc Navigation devrait couvrir une grande partie du menu responsive, du clavier et des attributs ARIA ; ne lui ajouter du JS que lorsqu’un essai démontre un manque précis.
 - Pour le premier jalon, conserver `assets/js/header.js` comme JavaScript vanilla directement chargeable. Ne pas introduire de build npm uniquement pour une cinquantaine de lignes sans imports. Si un build devient nécessaire plus tard, l’ajouter au `package.json` existant de `wordpress-lpu/`, pas dans un second projet npm imbriqué.
 - Un environnement wordpress de développement existe via wp-env (à utiliser via `npm run env:status`, `npm run env:start`,..). Cet environnement peut être supprimé et recréé à tout moment. Les fichiers de l'installation wordpress de cet environnement ainsi que la base de données peuvent disparaitre. Il ne faut donc pas ajouter des données directement dans le répertoire de l'environnement wordpress ou la base de donnée.
 - Il existe une installaton wordpress multisite séparée de test disponible en ligne. Lien : PAS DIVULGÉ POUR LE MOMENT. Il faudra pouvoir installer le site créé sur cette autre installation wordpress (pour pouvoir partager le nouveau site avec le client avant la mise en production).
@@ -111,7 +104,7 @@ Cette étape évite de découvrir une police absente ou une configuration multis
 - `wordpress-lpu/scripts/setup-theme.sh`
 - `wordpress-lpu/scripts/content/`
 - `wordpress-lpu/README.md`
-- le kit graphique et la livraison de Fanny dans `../../design/`
+- l'identité graphique de l'association et le design du site de Fanny dans `../../design/`
 
 **Actions**
 
@@ -127,11 +120,11 @@ npm run env:cli -- site list --fields=blog_id,domain,path,url
 Vérifier les polices avant de les référencer dans `theme.json` :
 
 - Ruden Regular, DM Sans Regular et Bold, Oswald Medium, Compagnon ;
-- fichiers valides et licence de diffusion web confirmée ;
-- WOFF2 disponible ou conversion possible depuis un OTF/TTF licencié ;
+- fichiers valides ;
+- WOFF2 disponible ou conversion possible depuis un OTF/TTF ;
 - aucune police ne doit venir d’un CDN en production.
 
-Ruden Regular est maintenant disponible dans `design/design site Fanny/fonts/myfonts_order_7268462657706/Ruden-Regular.otf` et sa licence est confirmée. La livraison actuelle contient encore seulement une variante italique de DM Sans ; les faces Regular et Bold seront intégrées plus tard, avant la validation finale.
+Ruden Regular est maintenant disponible dans `design/design site Fanny/fonts/myfonts_order_7268462657706/Ruden-Regular.otf`. La livraison actuelle contient encore seulement une variante italique de DM Sans ; les faces Regular et Bold seront intégrées plus tard, avant la validation finale.
 
 **Résultat attendu**
 
@@ -279,9 +272,7 @@ Le template est le cadre ; le contenu reste dans les Pages. Garder les templates
 
 - `wordpress-lpu/themes/lepaysanurbain/templates/front-page.html`
 - `wordpress-lpu/themes/lepaysanurbain/templates/page.html`
-- `wordpress-lpu/themes/lepaysanurbain/templates/single.html`
 - `wordpress-lpu/themes/lepaysanurbain/templates/index.html`
-- `wordpress-lpu/themes/lepaysanurbain/templates/404.html`
 - `wordpress-lpu/themes/lepaysanurbain/parts/header.html`
 - `wordpress-lpu/themes/lepaysanurbain/parts/footer.html`
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
@@ -289,7 +280,7 @@ Le template est le cadre ; le contenu reste dans les Pages. Garder les templates
 
 ### 3.1 Templates de base
 
-Pour `front-page.html`, `page.html` et `single.html`, utiliser la même forme :
+Pour `front-page.html` et `page.html`, utiliser la même forme :
 
 1. template part `header` avec `tagName: "header"` ;
 2. un Group avec `tagName: "main"` ;
@@ -300,7 +291,9 @@ Le `main` est important : il rend le document plus clair pour les lecteurs d’�
 
 Ne pas mettre les bandeaux de l’accueil dans `front-page.html`. Ce fichier doit contenir seulement le cadre et `post-content`.
 
-`index.html` est le fallback pour les listes de contenus : il doit utiliser un Query Loop minimal, pas un `post-content` isolé. `404.html` doit contenir un message, un lien de retour et/ou un bloc Search. Ce ne sont pas encore les écrans définitifs, mais ils doivent rester fonctionnels.
+`index.html` est le fallback pour les listes de contenus : il doit utiliser un Query Loop minimal, pas un `post-content` isolé. Ce n'est pas encore l'écran définitif des listes de contenus, mais il doit rester fonctionnel.
+
+La gestion des articles individuels et de la page 404 est différée après la réalisation de la Home réseau. Les templates `single.html` et `404.html` pourront être ajoutés lors d'une étape ultérieure si les besoins éditoriaux le justifient.
 
 ### 3.2 Header : valider le point risqué du multisite tôt
 
@@ -369,7 +362,7 @@ Chaque site doit retourner `page`, puis un ID de Page existant.
 
 ## Étape 5 — Construire la bibliothèque de patterns par type de bandeau
 
-Les patterns constituent le vrai livrable éditorial. Ils doivent être utiles dans une Page vide sans obliger les équipes à reconstruire des colonnes, backgrounds et espacements à la main.
+Les patterns constituent le vrai livrable éditorial. Ils doivent être utiles dans une Page vide sans obliger les équipes à reconstruire des colonnes, backgrounds et espacements à la main. Ils permettent facilement d'ajouter les sections du design de Fanny dans une page.
 
 Un fichier PHP placé dans `patterns/` et muni d’un en-tête (`Title`, `Slug`, `Categories`, `Description`, `Post Types`) est découvert automatiquement par WordPress. Les fichiers sont écrits en code anglais ; les titres affichés dans Gutenberg sont français.
 
@@ -487,7 +480,7 @@ Documenter : démarrage de l’environnement, activation du thème, provisioning
 - Pipeline complet d’optimisation d’images ; l’optimisation manuelle raisonnable des médias de démonstration reste requise.
 - CPT, blocs personnalisés, plugins de fonctionnalités et build JavaScript élaboré.
 - Décision finale sur les rôles locaux. L’hypothèse de travail reste : équipes locales en rôle Éditeur, sans accès quotidien au Site Editor ; les besoins réels de template-level access seront validés après le premier essai.
-- Typographies à compléter plus tard : obtenir et intégrer les faces DM Sans Regular et Bold, absentes de la livraison actuelle (seule une variante italique est disponible). Ruden Regular est disponible et licenciée dans `design/design site Fanny/fonts/myfonts_order_7268462657706/Ruden-Regular.otf`. Ne pas bloquer le prototype sur ce remplacement, mais le faire avant la validation finale.
+- Typographies à compléter plus tard : obtenir et intégrer les faces DM Sans Regular et Bold, absentes de la livraison actuelle (seule une variante italique est disponible). Ruden Regular est disponible dans `design/design site Fanny/fonts/myfonts_order_7268462657706/Ruden-Regular.otf`. Ne pas bloquer le prototype sur ce remplacement, mais le faire avant la validation finale.
 
 ## Points à traiter pendant l’exécution
 
