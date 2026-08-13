@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-13 18:51 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-13 23:18 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 2 — poser le système de design et les assets. Les Étapes 0 et 1 sont validées. L'Étape 2 est la seule étape courante ; aucun travail de l'Étape 3 ne commencera avant sa validation.
 
@@ -42,16 +42,17 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### Partiellement réalisé
 
-- 2026-08-13 — Étape 2 (socle initial) : `theme.json`, Ruden, Oswald et la feuille de style du thème sont en place. La validation visuelle du système de design, les motifs/assets graphiques et les faces DM Sans Regular et Bold restent à traiter ou sont différés.
+- 2026-08-13 — Étape 2 (contrôles en cours) : WordPress `7.0.4` confirme `theme.json` version 3 ; la palette, les familles et tailles typographiques, les espacements, le layout et les template parts sont exposés par le core. Ruden et Oswald sont servies en WOFF2 avec `font-display: swap`, les 14 motifs SVG sont copiés sous des noms ASCII stables et `theme.css` est enqueued sur le front et dans l’éditeur. La validation visuelle reste à faire ; les faces DM Sans Regular et Bold restent différées.
 - 2026-08-13 — Étape 3 (socle technique) : templates, header, footer et un bloc Navigation par site sont en place ; les menus propres à chaque site et la liaison multisite sont fonctionnels. Le logo final, le header transparent, le footer complet et les validations visuelles/accessibilité restent à faire.
 - 2026-08-13 — Étape 4 (provisioning technique) : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script. Cette étape sera recontrôlée dans l'ordre du plan avant d'être considérée comme validée.
 
 ### À faire maintenant
 
-- Contrôler et, si nécessaire, compléter les tokens de `theme.json` avec la version de WordPress réellement exécutée.
-- Vérifier les assets et les déclarations de polices locales disponibles, en conservant les faces DM Sans Regular et Bold comme différées.
-- Vérifier les motifs SVG et le chargement de `assets/css/theme.css` dans l’éditeur et sur le front-end.
-- Valider la palette, les typographies, les boutons, les espacements et les largeurs `alignwide`/`alignfull` avant de passer à l’Étape 3.
+- Diagnostiquer et corriger le layout de `alignwide` et `alignfull` sur le front-end : le contenu normal, le contenu large et le contenu pleine largeur doivent être visiblement distincts, et `alignfull` doit atteindre les bords de la fenêtre ; revalider le résultat dans Gutenberg et sur le front-end.
+- Affiner les boutons : conserver les survols validés, réduire la durée de transition pour une animation plus discrète et plus rapide, puis augmenter légèrement l’épaisseur du contour (à tester autour de `2px`) et revalider les deux variantes.
+- Vérifier une solution native Gutenberg permettant d’ajouter un bouton sans imposer à l’utilisateur de manipuler explicitement un bloc parent `Buttons` ; ne pas introduire de bloc personnalisé ou de plugin sans décision séparée si le core ne le permet pas directement.
+- Corriger ou compléter le comportement clavier : `Tab` doit déplacer le focus vers les liens de bouton avec un indicateur visible, puis `Entrée` ou `Espace` doit permettre leur activation ; tester les boutons standard et sur fond coloré.
+- Conserver explicitement les faces DM Sans Regular et Bold comme différées, puis valider l’Étape 2 avant de passer à l’Étape 3.
 
 ### Points ouverts
 

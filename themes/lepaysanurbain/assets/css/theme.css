@@ -10,6 +10,69 @@ body {
 	background: var(--wp--preset--color--ecru);
 }
 
+/* Decorative motifs are applied as backgrounds, not editorial images. */
+.lpu-motif {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.lpu-motif-1-bandeau {
+	background-image: url("../images/motif-1-bandeau.svg");
+}
+
+.lpu-motif-1-carre {
+	background-image: url("../images/motif-1-carre.svg");
+}
+
+.lpu-motif-2-bandeau {
+	background-image: url("../images/motif-2-bandeau.svg");
+}
+
+.lpu-motif-2-carre {
+	background-image: url("../images/motif-2-carre.svg");
+}
+
+.lpu-motif-3-bandeau {
+	background-image: url("../images/motif-3-bandeau.svg");
+}
+
+.lpu-motif-3-carre {
+	background-image: url("../images/motif-3-carre.svg");
+}
+
+.lpu-motif-4-bandeau {
+	background-image: url("../images/motif-4-bandeau.svg");
+}
+
+.lpu-motif-4-carre {
+	background-image: url("../images/motif-4-carre.svg");
+}
+
+.lpu-motif-5-bandeau {
+	background-image: url("../images/motif-5-bandeau.svg");
+}
+
+.lpu-motif-5-carre {
+	background-image: url("../images/motif-5-carre.svg");
+}
+
+.lpu-motif-7-bandeau {
+	background-image: url("../images/motif-7-bandeau.svg");
+}
+
+.lpu-motif-7-carre {
+	background-image: url("../images/motif-7-carre.svg");
+}
+
+.lpu-motif-8-bandeau {
+	background-image: url("../images/motif-8-bandeau.svg");
+}
+
+.lpu-motif-8-carre {
+	background-image: url("../images/motif-8-carre.svg");
+}
+
 .lpu-header {
 	position: relative;
 	z-index: 20;
@@ -82,6 +145,22 @@ main.wp-block-group {
 .wp-block-button__link:focus-visible {
 	background: var(--wp--preset--color--vert-fonce);
 	color: var(--wp--preset--color--ecru);
+}
+
+.wp-block-button__link:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 3px;
+}
+
+.lpu-button-on-color .wp-block-button__link {
+	border-color: var(--wp--preset--color--ecru);
+	color: var(--wp--preset--color--ecru);
+}
+
+.lpu-button-on-color .wp-block-button__link:hover,
+.lpu-button-on-color .wp-block-button__link:focus-visible {
+	background: var(--wp--preset--color--ecru);
+	color: var(--wp--preset--color--vert-fonce);
 }
 
 @media (max-width: 900px) {

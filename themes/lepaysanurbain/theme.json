@@ -105,9 +105,10 @@
           "fontFace": [
             {
               "fontFamily": "Ruden",
+              "fontDisplay": "swap",
               "fontStyle": "normal",
               "fontWeight": "400",
-              "src": ["file:./assets/fonts/Ruden-Regular.otf"]
+              "src": ["file:./assets/fonts/Ruden-Regular.woff2"]
             }
           ],
           "name": "Ruden",
@@ -123,9 +124,10 @@
           "fontFace": [
             {
               "fontFamily": "Oswald",
+              "fontDisplay": "swap",
               "fontStyle": "normal",
               "fontWeight": "500",
-              "src": ["file:./assets/fonts/Oswald-Medium.ttf"]
+              "src": ["file:./assets/fonts/Oswald-Medium.woff2"]
             }
           ],
           "name": "Oswald",
