@@ -25,6 +25,55 @@ ses sections sont décrites dans `design/design site Fanny/livraison-des-fichier
 
 Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordpress-lpu/`, sauf mention contraire. Ne jamais essayer d'écrire dans une installation wordpress directement (`wordpress/`) : l'installation de wordpress est un répertoire généré par `wp-env` et il peut être effacé ou recréé n'importe quand.
 
+## État d'avancement
+
+**Dernière mise à jour :** 2026-08-13 15:10 (Europe/Paris)
+
+**Position exacte dans le plan :** transition entre l'Étape 4 et l'Étape 5. L'Étape 4 est terminée pour le provisioning technique ; l'Étape 5 n'a pas encore commencé et aucun fichier n'existe dans `themes/lepaysanurbain/patterns/`. Le premier fichier à créer sera `themes/lepaysanurbain/patterns/hero.php`. L'assemblage de la Home réseau décrit à l'Étape 6 n'a pas commencé.
+
+### Terminé
+
+- 2026-08-13 — Étape 0 : environnement `wp-env` multisite fonctionnel, avec le site réseau et les trois sites de ferme.
+- 2026-08-13 — Étape 1 : thème bloc `lepaysanurbain` monté, rendu disponible au réseau et activé automatiquement sur les quatre sites.
+- 2026-08-13 — Étape 4 : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script.
+- 2026-08-13 — Test sur base WordPress vierge puis second passage sans doublons ; le thème, les pages et les navigations sont recréés correctement après un reset.
+- 2026-08-13 — Port vérifié : `wp-env` injecte bien `:8888` dans `WP_SITEURL`, `WP_HOME`, `siteurl` et `home` malgré leur forme abrégée dans `.wp-env.json`.
+
+### Partiellement réalisé
+
+- 2026-08-13 — Étape 2 (socle initial) : `theme.json`, Ruden, Oswald et la feuille de style du thème sont en place. La validation visuelle du système de design, les motifs/assets graphiques et les faces DM Sans Regular et Bold restent à traiter ou sont différés.
+- 2026-08-13 — Étape 3 (socle technique) : templates, header, footer et un bloc Navigation par site sont en place ; les menus propres à chaque site et la liaison multisite sont fonctionnels. Le logo final, le header transparent, le footer complet et les validations visuelles/accessibilité restent à faire.
+
+### À faire maintenant
+
+- Créer et tester le pattern `hero.php`, puis les six autres patterns listés à l'Étape 5.
+- Terminer les contrôles de design et de header des Étapes 2 et 3 nécessaires avant la validation de la première démo.
+- Insérer les patterns dans la page `Accueil` réseau dans l'ordre de `sections-Home.txt`.
+- Faire la validation visuelle du header, du hero et des bandeaux sur desktop et mobile.
+
+### Points ouverts
+
+- Décider le cache-busting du CSS en développement (`Version` du thème ou `filemtime`).
+- Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
+- Arrêter le détail du header transparent et les destinations de « Le Projet » et « Contact » pendant la construction.
+
+ 
+
+ 
+
+ 
+
+ 
+[espace laissé blanc intentionnellement]
+
+ 
+
+ 
+
+ 
+
+ 
+
 ## Repères rapides sur les block themes
 
 Le développeur connaît déjà Gutenberg ; ce rappel sert à remettre les bons séparateurs au bon endroit.
@@ -59,6 +108,7 @@ Cette étape évite de découvrir une police absente ou une configuration multis
 
 - `wordpress-lpu/.wp-env.json`
 - `wordpress-lpu/scripts/setup-multisite-network.sh`
+- `wordpress-lpu/scripts/setup-theme.sh`
 - `wordpress-lpu/scripts/content/`
 - `wordpress-lpu/README.md`
 - le kit graphique et la livraison de Fanny dans `../../design/`
@@ -120,6 +170,7 @@ wordpress-lpu/themes/lepaysanurbain/
 - `wordpress-lpu/themes/lepaysanurbain/functions.php`
 - `wordpress-lpu/themes/lepaysanurbain/theme.json`
 - `wordpress-lpu/themes/lepaysanurbain/templates/index.html`
+- `wordpress-lpu/scripts/setup-theme.sh`
 
 **Actions**
 
@@ -127,18 +178,14 @@ wordpress-lpu/themes/lepaysanurbain/
 2. Écrire dans `style.css` le seul en-tête nécessaire à WordPress (`Theme Name`, `Text Domain`, `Requires at least`, `Requires PHP`, etc.). Ne pas y mettre le CSS applicatif : il vivra dans `assets/css/theme.css`.
 3. Créer un `functions.php` minimal qui protège l’accès direct et charge le CSS du thème sur le front-end et dans l’éditeur. Les traitements spécifiques viendront plus tard.
 4. Créer un `index.html` temporaire avec header, un `main` et footer ; il sera complété à l’étape 3.
-5. Redémarrer l’environnement pour que le montage de thème soit pris en compte, rendre le thème disponible au réseau, puis l’activer site par site :
+5. Redémarrer l’environnement pour que le montage de thème soit pris en compte, rendre le thème disponible au réseau, puis l’activer site par site avec le script idempotent d’environnement :
 
 ```sh
 npm run env:start
-npm run env:cli -- theme enable lepaysanurbain --network
-
-for site_url in lepaysanurbain.test:8888 paris.lepaysanurbain.test:8888 lyon.lepaysanurbain.test:8888 marseille.lepaysanurbain.test:8888; do
-  npm run env:cli -- theme activate lepaysanurbain --url="$site_url"
-done
+npm run env:theme:setup
 ```
 
-`theme enable --network` rend le thème disponible ; il ne l’active pas sur les sites. C’est pourquoi l’activation reste explicite dans la boucle.
+`wp-env` monte le thème mais ne choisit pas le thème actif. `scripts/setup-theme.sh` rend le thème disponible au réseau et l’active sur tous les sites détectés par WP-CLI. Il est aussi appelé par `setup-multisite-network.sh` et peut être rejoué seul.
 
 **Contrôle**
 
