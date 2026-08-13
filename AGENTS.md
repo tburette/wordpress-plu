@@ -77,6 +77,11 @@ local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
   that is ever used by wp-env.
 - Check `.wp-env.json` before assuming how a directory is mounted or activated.
 
+## Codex and wp-env access
+
+- Direct `wp-env` commands may require Codex authorization for Docker access
+  and may fail. Prefer the project scripts `npm run env:*` when available.
+
 ## Xdebug
 
 - Start with `wp-env start --xdebug` or `npm run env:start:xdebug`.
