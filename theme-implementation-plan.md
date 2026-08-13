@@ -27,15 +27,16 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-13 17:51 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-13 18:51 (Europe/Paris)
 
-**Position exacte dans le plan :** Étape 1 — créer et monter le thème minimal. L'Étape 0 est validée. L'Étape 1 est la seule étape courante et doit être reprise, contrôlée puis validée avant de passer à l'Étape 2.
+**Position exacte dans le plan :** Étape 2 — poser le système de design et les assets. Les Étapes 0 et 1 sont validées. L'Étape 2 est la seule étape courante ; aucun travail de l'Étape 3 ne commencera avant sa validation.
 
 _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notamment sur le socle du thème, le cadre partagé et le provisioning de contenu. Nous le conservons comme état de travail, mais nous avançons désormais systématiquement, une seule étape à la fois, avec validation avant de passer à la suivante.)_
 
 ### Terminé
 
 - 2026-08-13 — Étape 0 : environnement `wp-env` multisite fonctionnel, avec le site réseau et les trois sites de ferme.
+- 2026-08-13 — Étape 1 : thème bloc minimal monté par `wp-env`, reconnu par WordPress avec la version de thème `0.1.0` et actif sur les quatre sites ; `style.css`, `functions.php`, `templates/index.html` et `scripts/setup-theme.sh` contrôlés, sans source dans un éventuel `wordpress/wp-content/` local.
 - 2026-08-13 — Test sur base WordPress vierge puis second passage sans doublons ; le thème, les pages et les navigations sont recréés correctement après un reset.
 - 2026-08-13 — Port vérifié : `wp-env` injecte bien `:8888` dans `WP_SITEURL`, `WP_HOME`, `siteurl` et `home` malgré leur forme abrégée dans `.wp-env.json`.
 
@@ -47,10 +48,10 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### À faire maintenant
 
-- Créer et tester le pattern `hero.php`, puis les six autres patterns listés à l'Étape 5.
-- Terminer les contrôles de design et de header des Étapes 2 et 3 nécessaires avant la validation de la première démo.
-- Insérer les patterns dans la page `Accueil` réseau dans l'ordre de `sections-Home.txt`.
-- Faire la validation visuelle du header, du hero et des bandeaux sur desktop et mobile.
+- Contrôler et, si nécessaire, compléter les tokens de `theme.json` avec la version de WordPress réellement exécutée.
+- Vérifier les assets et les déclarations de polices locales disponibles, en conservant les faces DM Sans Regular et Bold comme différées.
+- Vérifier les motifs SVG et le chargement de `assets/css/theme.css` dans l’éditeur et sur le front-end.
+- Valider la palette, les typographies, les boutons, les espacements et les largeurs `alignwide`/`alignfull` avant de passer à l’Étape 3.
 
 ### Points ouverts
 
