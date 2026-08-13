@@ -313,6 +313,8 @@ Une valeur `ref` d’un Navigation block désigne un contenu `wp_navigation` par
 
 Faire le test suivant avant de styliser le menu : créer/associer une navigation sur chacun des quatre sites, puis modifier une règle structurelle du header dans le fichier du thème. Vérifier que les quatre sites conservent leur menu local et reçoivent bien la modification partagée. Si une personnalisation de template part en base empêche cette propagation, résoudre ce choix d’architecture maintenant, pas après l’assemblage des pages.
 
+Ne pas créer ces menus uniquement à la main : pour survivre au reset de la base, ils sont recréés ou sélectionnés par le provisioning de l'Étape 4 (`scripts/content/navigation-menus/setup.sh`), qui ne réécrit jamais une navigation déjà éditée.
+
 ### 3.3 Footer
 
 Le footer partage sa structure, mais les liens et l’appel à l’action peuvent différer entre le réseau et une ferme. Utiliser des blocs Navigation, Site Logo et Social Icons lorsque cela évite de figer des URLs locales dans le thème.
@@ -346,6 +348,8 @@ Pour chacun des quatre sites :
 5. ne jamais modifier le contenu, le titre ou le statut d’une Page existante.
 
 Appeler `scripts/content/setup.sh` depuis `setup-multisite-network.sh` après la création des sites, car le script de bootstrap est déjà exécuté au démarrage de `wp-env`. Chaque script de contenu conserve ses données Gutenberg dans son propre répertoire, hors du code shell. Un redémarrage ne doit jamais réinitialiser une page ou un menu déjà édité dans Gutenberg.
+
+`scripts/content/setup.sh` enchaîne aussi `navigation-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `menu-principal`) et enregistre son ID dans l'option `lpu_navigation_id`, ce qui rend reproductibles les menus de l'Étape 3.
 
 **Contrôle**
 
