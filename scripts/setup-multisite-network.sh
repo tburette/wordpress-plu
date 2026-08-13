@@ -42,5 +42,6 @@ for definition in "${sites[@]}"; do
     --porcelain >/dev/null
 done
 
+bash "${script_dir}/setup-theme.sh"
 bash "${script_dir}/content/setup.sh"
 bash "${script_dir}/verify-multisite-network.sh"

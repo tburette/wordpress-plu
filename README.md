@@ -178,6 +178,8 @@ wordpress-lpu/
 
 `wp-env` mounts themes but does not activate them automatically. Activate the
 theme on the required network sites with WP-CLI after it has been mounted.
+The multisite bootstrap does this through `scripts/setup-theme.sh`; run it
+manually with `npm run env:theme:setup` when needed.
 
 Plugins can be mounted and activated when listed in `.wp-env.json`:
 

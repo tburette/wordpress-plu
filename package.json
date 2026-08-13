@@ -13,6 +13,7 @@
     "env:cli": "wp-env run cli wp",
     "env:hosts:check": "bash scripts/check-local-hosts.sh",
     "env:multisite:setup": "bash scripts/setup-multisite-network.sh",
+    "env:theme:setup": "bash scripts/setup-theme.sh",
     "env:content:setup": "bash scripts/content/setup.sh",
     "env:front-pages:setup": "bash scripts/content/front-pages/setup.sh",
     "env:navigation:setup": "bash scripts/content/navigation-menus/setup.sh",
