@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "bmewburn.vscode-intelephense-client",
+    "xdebug.php-debug"
+  ]
+}

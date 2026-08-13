@@ -1,0 +1,110 @@
+/*
+ * Shared visual rules that are not expressed cleanly by theme.json.
+ */
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background: var(--wp--preset--color--ecru);
+}
+
+.lpu-header {
+	position: relative;
+	z-index: 20;
+	box-sizing: border-box;
+	min-height: 5.5rem;
+	padding: 1rem clamp(1rem, 3vw, 3rem);
+	background: var(--wp--preset--color--ecru);
+}
+
+.lpu-header > .wp-block-site-logo {
+	flex: 0 1 auto;
+	margin: 0;
+}
+
+.lpu-header .wp-block-site-logo img {
+	display: block;
+	max-height: 4rem;
+	width: auto;
+}
+
+.lpu-header .wp-block-navigation {
+	flex: 1 1 auto;
+	justify-content: center;
+	min-width: 0;
+}
+
+.lpu-header .wp-block-navigation-item__content {
+	padding: 0.5rem 0.75rem;
+	font-family: var(--wp--preset--font-family--ruden);
+	font-size: 0.95rem;
+	line-height: 1.1;
+	text-transform: uppercase;
+}
+
+.lpu-header .wp-block-navigation-item__content:focus-visible,
+.lpu-header .wp-block-navigation__submenu-icon:focus-visible,
+.lpu-header .wp-block-navigation__responsive-container-open:focus-visible,
+.lpu-header .wp-block-navigation__responsive-container-close:focus-visible {
+	outline: 2px solid var(--wp--preset--color--vert-fonce);
+	outline-offset: 3px;
+}
+
+.lpu-header .wp-block-navigation-item__content:hover {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.lpu-header .wp-block-navigation__responsive-container.is-menu-open {
+	box-sizing: border-box;
+	padding: 1.5rem;
+	background: var(--wp--preset--color--ecru);
+	color: var(--wp--preset--color--vert-fonce);
+}
+
+.lpu-header .wp-block-navigation__responsive-container.is-menu-open
+	.wp-block-navigation-item__content {
+	font-size: 1.15rem;
+}
+
+main.wp-block-group {
+	min-height: 30vh;
+}
+
+.wp-block-button__link {
+	transition: background-color 160ms ease, color 160ms ease;
+}
+
+.wp-block-button__link:hover,
+.wp-block-button__link:focus-visible {
+	background: var(--wp--preset--color--vert-fonce);
+	color: var(--wp--preset--color--ecru);
+}
+
+@media (max-width: 900px) {
+	.lpu-header {
+		min-height: 4.5rem;
+		padding: 0.75rem 1rem;
+	}
+
+	.lpu-header .wp-block-site-logo img {
+		max-height: 3.25rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}

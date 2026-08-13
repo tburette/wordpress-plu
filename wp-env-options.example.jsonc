@@ -1,0 +1,52 @@
+// Optional .wp-env.json settings.
+//
+// this file is not used by wp-env. Copy the properties in the .wp-env.json,
+// do not include the comments
+{
+  // Use the latest production WordPress release (the scaffold default).
+  "core": null,
+
+  // Or use a local WordPress checkout, relative to the project directory.
+  "core": "../../wordpress-core-7.0",
+
+  // Or use a WordPress.org/GitHub reference understood by wp-env.
+  "core": "WordPress/WordPress#7.0",
+
+  // Pin the PHP image used by the environment.
+  "phpVersion": "8.3",
+
+  // Add plugin directories to mount and activate.
+  // An entry should point to a plugin directory, not an arbitrary project root.
+  "plugins": [],
+  // Example: "plugins": ["./my-plugin"],
+
+  // Add theme directories to mount. Themes are not activated automatically.
+  "themes": [],
+  // Example using a theme outside this project:
+  // "themes": ["../../themes/atheme"],
+
+  // Run commands after the environment has started.
+  "lifecycleScripts": {
+    "afterStart": "wp-env run cli wp theme activate atheme",
+  },
+
+  // Mount local directories at exact paths inside WordPress.
+  "mappings": {
+    "wp-content/mu-plugins": "./path/to/local/mu-plugins",
+    "wp-content/themes/my-theme": "./path/to/local/theme",
+  },
+
+  // Ask wp-env to choose an available port when the configured port is busy.
+  "autoPort": true,
+
+  // Use a fixed port when another tool needs a predictable URL. Set autoPort
+  // to false as well if the URL must never move to another port.
+  "port": 8888,
+  "autoPort": false,
+
+  // Start phpMyAdmin with the WordPress environment.
+  "phpmyadmin": true,
+
+  // Run WordPress as multisite.
+  "multisite": true,
+}

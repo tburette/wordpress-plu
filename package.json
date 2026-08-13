@@ -1,0 +1,21 @@
+{
+  "name": "wordpress-lpu",
+  "private": true,
+  "scripts": {
+    "env:start": "wp-env start",
+    "env:start:xdebug": "wp-env start --xdebug",
+    "env:stop": "wp-env stop",
+    "env:status": "wp-env status",
+    "env:logs": "wp-env logs",
+    "env:xdebug:patch": "bash scripts/update-xdebug-path-mapping.sh",
+    "env:reset": "bash scripts/reset-wp-env.sh",
+    "env:cleanup": "bash scripts/cleanup-wp-env.sh",
+    "env:cli": "wp-env run cli wp",
+    "env:hosts:check": "bash scripts/check-local-hosts.sh",
+    "env:multisite:setup": "bash scripts/setup-multisite-network.sh",
+    "env:content:setup": "bash scripts/content/setup.sh",
+    "env:front-pages:setup": "bash scripts/content/front-pages/setup.sh",
+    "env:navigation:setup": "bash scripts/content/navigation-menus/setup.sh",
+    "env:multisite:verify": "bash scripts/verify-multisite-network.sh"
+  }
+}

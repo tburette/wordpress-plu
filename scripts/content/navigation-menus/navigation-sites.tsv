@@ -1,0 +1,6 @@
+# site_url|navigation_title|content_file
+lepaysanurbain.test:8888|Menu principal réseau|network.html
+paris.lepaysanurbain.test:8888|Menu principal ferme|local.html
+lyon.lepaysanurbain.test:8888|Menu principal ferme|local.html
+marseille.lepaysanurbain.test:8888|Menu principal ferme|local.html
+

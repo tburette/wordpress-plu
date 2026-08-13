@@ -1,0 +1,233 @@
+{
+  "$schema": "https://schemas.wp.org/wp/7.0/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "border": {
+      "radius": true,
+      "width": true
+    },
+    "color": {
+      "defaultGradients": false,
+      "defaultPalette": false,
+      "custom": false,
+      "customGradient": false,
+      "palette": [
+        {
+          "color": "#153d30",
+          "name": "Vert foncé",
+          "slug": "vert-fonce"
+        },
+        {
+          "color": "#e2e6e4",
+          "name": "Vert grisé",
+          "slug": "vert-grise"
+        },
+        {
+          "color": "#f8f8f0",
+          "name": "Écru",
+          "slug": "ecru"
+        },
+        {
+          "color": "#fdf69a",
+          "name": "Jaune",
+          "slug": "jaune"
+        },
+        {
+          "color": "#3a9b64",
+          "name": "Vert moyen",
+          "slug": "vert-moyen"
+        },
+        {
+          "color": "#a861a3",
+          "name": "Framboise",
+          "slug": "framboise"
+        },
+        {
+          "color": "#2e65ad",
+          "name": "Bleu",
+          "slug": "bleu"
+        },
+        {
+          "color": "#995d3b",
+          "name": "Brun",
+          "slug": "brun"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "700px",
+      "wideSize": "1200px"
+    },
+    "spacing": {
+      "blockGap": true,
+      "customSpacingSize": false,
+      "spacingSizes": [
+        {
+          "name": "Très petite",
+          "size": "0.5rem",
+          "slug": "xs"
+        },
+        {
+          "name": "Petite",
+          "size": "1rem",
+          "slug": "sm"
+        },
+        {
+          "name": "Moyenne",
+          "size": "1.5rem",
+          "slug": "md"
+        },
+        {
+          "name": "Grande",
+          "size": "2.5rem",
+          "slug": "lg"
+        },
+        {
+          "name": "Très grande",
+          "size": "4rem",
+          "slug": "xl"
+        },
+        {
+          "name": "Section",
+          "size": "6rem",
+          "slug": "section"
+        }
+      ],
+      "units": ["px", "rem", "%", "vw", "vh"]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "fontFamilies": [
+        {
+          "fontFamily": "Ruden, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Ruden",
+              "fontStyle": "normal",
+              "fontWeight": "400",
+              "src": ["file:./assets/fonts/Ruden-Regular.otf"]
+            }
+          ],
+          "name": "Ruden",
+          "slug": "ruden"
+        },
+        {
+          "fontFamily": "DM Sans, Arial, sans-serif",
+          "name": "DM Sans",
+          "slug": "dm-sans"
+        },
+        {
+          "fontFamily": "Oswald, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Oswald",
+              "fontStyle": "normal",
+              "fontWeight": "500",
+              "src": ["file:./assets/fonts/Oswald-Medium.ttf"]
+            }
+          ],
+          "name": "Oswald",
+          "slug": "oswald"
+        }
+      ],
+      "fontSizes": [
+        {
+          "name": "Texte",
+          "size": "1rem",
+          "slug": "text"
+        },
+        {
+          "name": "Sous-titre",
+          "size": "clamp(1.75rem, 3vw, 2.125rem)",
+          "slug": "subtitle"
+        },
+        {
+          "name": "Titre",
+          "size": "clamp(2rem, 4vw, 2.5rem)",
+          "slug": "title"
+        },
+        {
+          "name": "Grand titre",
+          "size": "clamp(3rem, 8vw, 5.4375rem)",
+          "slug": "display"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|ecru",
+      "text": "var:preset|color|vert-fonce"
+    },
+    "spacing": {
+      "blockGap": "var:preset|spacing|md"
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|dm-sans",
+      "fontSize": "var:preset|font-size|text",
+      "lineHeight": "1.55"
+    },
+    "elements": {
+      "button": {
+        "border": {
+          "radius": "999px",
+          "style": "solid",
+          "width": "1px"
+        },
+        "color": {
+          "background": "transparent",
+          "text": "var:preset|color|vert-fonce"
+        },
+        "spacing": {
+          "padding": {
+            "bottom": "0.7rem",
+            "left": "1.25rem",
+            "right": "1.25rem",
+            "top": "0.7rem"
+          }
+        },
+        "typography": {
+          "fontFamily": "var:preset|font-family|dm-sans",
+          "fontSize": "1rem",
+          "fontWeight": "500"
+        }
+      },
+      "heading": {
+        "color": {
+          "text": "var:preset|color|vert-fonce"
+        },
+        "typography": {
+          "fontFamily": "var:preset|font-family|ruden",
+          "fontWeight": "400",
+          "lineHeight": "1.05"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var:preset|color|vert-fonce"
+        }
+      }
+    },
+    "blocks": {
+      "core/paragraph": {
+        "typography": {
+          "lineHeight": "1.55"
+        }
+      }
+    }
+  },
+  "templateParts": [
+    {
+      "area": "header",
+      "name": "header",
+      "title": "En-tête"
+    },
+    {
+      "area": "footer",
+      "name": "footer",
+      "title": "Pied de page"
+    }
+  ]
+}
