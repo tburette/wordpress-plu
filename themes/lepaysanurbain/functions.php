@@ -31,6 +31,21 @@ add_action( 'wp_enqueue_scripts', 'lpu_enqueue_theme_styles' );
 add_action( 'enqueue_block_assets', 'lpu_enqueue_theme_styles' );
 
 /**
+ * Register the reusable section patterns category.
+ *
+ * @return void
+ */
+function lpu_register_pattern_categories() {
+	register_block_pattern_category(
+		'lpu-sections',
+		array(
+			'label' => 'Sections Le Paysan Urbain',
+		)
+	);
+}
+add_action( 'init', 'lpu_register_pattern_categories' );
+
+/**
  * Enqueue the small front-end behavior that completes the shared menu
  * contract.
  *
