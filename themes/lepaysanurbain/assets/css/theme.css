@@ -409,6 +409,271 @@ main.wp-block-group {
 	min-height: 30vh;
 }
 
+/* Shared footer frame. The footer Navigation receives site-local content at
+ * render time, while this layout and its visual treatment remain shared. */
+.lpu-footer {
+	position: relative;
+	overflow: hidden;
+	margin-block-start: 0;
+	/* Exact dark green sampled from sections/pied-de-page.jpg. */
+	background-color: #003d2e !important;
+	color: var(--wp--preset--color--ecru);
+}
+
+.lpu-footer::after {
+	position: absolute;
+	right: clamp(1.25rem, 4vw, 3.5rem);
+	bottom: clamp(1rem, 3vw, 2rem);
+	width: clamp(2.25rem, 4vw, 3.5rem);
+	height: clamp(2.25rem, 4vw, 3.5rem);
+	background: url("../images/footer/footer-star-ecru.svg") center / contain no-repeat;
+	content: "";
+	pointer-events: none;
+}
+
+.lpu-footer__main {
+	align-items: flex-start;
+	gap: clamp(2rem, 4vw, 4.5rem);
+	margin-block: 0;
+}
+
+.lpu-footer__identity .wp-block-image {
+	width: 160px;
+	max-width: 100%;
+	margin: 0;
+}
+
+.lpu-footer__identity .wp-block-image > a {
+	display: block;
+	width: 100%;
+}
+
+.lpu-footer__identity .wp-block-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.lpu-footer__intro {
+	max-width: 13rem;
+	margin: 0;
+	font-family: var(--wp--preset--font-family--dm-sans);
+	font-size: 0.85rem;
+	line-height: 1.4;
+	color: var(--wp--preset--color--ecru);
+}
+
+.lpu-footer__links .wp-block-navigation {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+}
+
+.lpu-footer .wp-block-navigation__container {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	align-items: start;
+	gap: var(--wp--preset--spacing--lg) clamp(1rem, 2vw, 2rem);
+	width: 100%;
+	max-width: none;
+}
+
+.lpu-footer .wp-block-navigation__container > .wp-block-navigation-submenu {
+	display: block;
+	min-width: 0;
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu
+	> .wp-block-navigation-item__content {
+	display: block;
+	padding: 0;
+	margin-block-end: 0.65rem;
+	font-family: var(--wp--preset--font-family--ruden);
+	font-size: 0.8rem;
+	line-height: 1.2;
+	color: var(--wp--preset--color--ecru) !important;
+	text-transform: uppercase;
+}
+
+.lpu-footer .wp-block-navigation__submenu-icon {
+	display: none;
+}
+
+.lpu-footer .wp-block-navigation__submenu-container {
+	position: static;
+	display: block;
+	visibility: visible;
+	opacity: 1;
+	width: auto;
+	min-width: 0;
+	height: auto;
+	padding: 0;
+	background: transparent;
+	border: 0;
+}
+
+/* Core's submenu rule is more specific than the generic footer rule above.
+ * Repeat the direct-child relationship and force the footer columns open;
+ * unlike the header, these submenus are always expanded. */
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu
+	> .wp-block-navigation__submenu-container {
+	position: static !important;
+	display: block !important;
+	visibility: visible !important;
+	opacity: 1 !important;
+	width: auto !important;
+	min-width: 0 !important;
+	height: auto !important;
+	max-height: none !important;
+	overflow: visible !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: 0 !important;
+}
+
+.lpu-footer .wp-block-navigation__submenu-container
+	> .wp-block-navigation-item {
+	display: block;
+	min-width: 0;
+}
+
+.lpu-footer .wp-block-navigation__submenu-container
+	.wp-block-navigation-item__content {
+	display: inline-block;
+	padding: 0.18rem 0;
+	font-family: var(--wp--preset--font-family--dm-sans);
+	font-size: 0.78rem;
+	line-height: 1.35;
+	color: var(--wp--preset--color--ecru) !important;
+}
+
+.lpu-footer .wp-block-navigation__submenu-container
+	> .wp-block-navigation-item
+	> .wp-block-navigation-item__content::before {
+	content: "> ";
+}
+
+.lpu-footer .wp-block-navigation-item__content:hover,
+.lpu-footer .wp-block-navigation-item__content:focus-visible {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu:last-child {
+	grid-column: 1 / -1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.5rem 1rem;
+	margin-block-start: 0.5rem;
+	padding-block-start: 0.75rem;
+	border-top: 1px solid rgba(248, 248, 240, 0.35);
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu:last-child
+	> .wp-block-navigation-item__content {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--ruden);
+	font-size: 0.68rem;
+	color: rgba(248, 248, 240, 0.8) !important;
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu:last-child
+	> .wp-block-navigation__submenu-container {
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 0.25rem 1rem;
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu:last-child
+	> .wp-block-navigation__submenu-container
+	> .wp-block-navigation-item__content {
+	padding: 0;
+	font-size: 0.68rem;
+	color: rgba(248, 248, 240, 0.8) !important;
+}
+
+.lpu-footer .wp-block-navigation__container
+	> .wp-block-navigation-submenu:last-child
+	> .wp-block-navigation__submenu-container
+	> .wp-block-navigation-item
+	> .wp-block-navigation-item__content::before {
+	content: "";
+}
+
+.lpu-footer__bottom {
+	align-items: center;
+	gap: var(--wp--preset--spacing--md);
+	margin-block-start: var(--wp--preset--spacing--lg);
+	color: var(--wp--preset--color--ecru);
+}
+
+.lpu-footer__social,
+.lpu-footer__copyright {
+	margin-block: 0;
+}
+
+.lpu-footer__social .wp-social-link {
+	background: transparent !important;
+	color: var(--wp--preset--color--ecru) !important;
+}
+
+.lpu-footer__copyright {
+	font-size: 0.75rem;
+	color: rgba(248, 248, 240, 0.8);
+}
+
+@media (max-width: 900px) {
+	.lpu-footer {
+		padding-inline: 1rem !important;
+	}
+
+	.lpu-footer__main {
+		flex-direction: column;
+		gap: var(--wp--preset--spacing--lg);
+	}
+
+	.lpu-footer__main > .wp-block-column {
+		flex-basis: 100% !important;
+		width: 100%;
+	}
+
+	.lpu-footer__intro {
+		max-width: 24rem;
+	}
+
+	.lpu-footer .wp-block-navigation__container {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.lpu-footer {
+		padding-top: 3rem !important;
+		padding-bottom: 4rem !important;
+	}
+
+	.lpu-footer__identity .wp-block-image {
+		width: 140px;
+	}
+
+	.lpu-footer .wp-block-navigation__container {
+		grid-template-columns: 1fr;
+	}
+
+	.lpu-footer__bottom {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
 .wp-block-button__link {
 	transition: background-color 100ms ease, color 100ms ease;
 }

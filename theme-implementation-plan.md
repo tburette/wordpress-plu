@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-14 13:20 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-14 14:50 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 3 — construire le cadre partagé : templates, header et footer. Les Étapes 0, 1 et 2 sont validées. L'Étape 3 est la seule étape courante ; aucun travail de l'Étape 4 ou de l'Étape 5 ne commencera avant sa validation.
 
@@ -43,13 +43,15 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### Partiellement réalisé
 
-- 2026-08-14 — Étape 3 (audit en cours) : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/` ; le footer reste un socle minimal avec un seul paragraphe. Le header transparent est maintenant implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer complet reste à traiter.
+- 2026-08-14 — Étape 3 (audit en cours) : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/`. Le header transparent est maintenant implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer partagé est désormais implémenté et reste à compléter avec les destinations finales.
 - 2026-08-14 — Prototype du menu corrigé puis validé : `submenuVisibility:"hover"` et `showSubmenuIcon:true` rendent le lien parent accessible et confient le déploiement au chevron séparé ; le rendu WordPress contient les directives natives de hover, focus et clic, sans `openSubmenusOnClick` legacy. Le header utilise une grille à logo centré, les panneaux desktop sont absolus, pleine largeur, écrus et positionnés sous la hauteur réelle du header ; le même overlay Navigation est exposé jusqu'à `1099px` pour les menus locaux longs. Le seuil a été revalidé avec les logos et libellés finaux.
 - 2026-08-14 — Inspection visuelle et fonctionnelle finale réalisée avec Playwright via `web-inspector` sur les quatre sites à `1440px`, à la frontière `1100/1099px`, puis sur l'overlay Paris à `390px`. Le panneau réseau et les panneaux locaux restent écrus, pleine largeur et répartis en colonnes ; le hamburger à trois barres n'apparaît qu'à partir de `1099px` ; les sous-rubriques mobiles ne dépendent pas du survol. L'ouverture au clavier par Entrée, la fermeture Échap, le clic extérieur mobile et le retour du focus sont validés. Les captures finales n'ont aucune erreur console, erreur de page ou requête échouée. Le survol desktop ajoute un maintien de `500ms` pendant la traversée entre parent et panneau, ainsi qu'un délai d'intention de `150ms` avant de remplacer un panneau actif : il supprime le clignotement dans le vide du header et évite qu'un simple passage sur une autre rubrique change le contenu. La variante transparente réseau et Paris a également été testée temporairement : le logo écru est chargé à l'état initial et le header repasse vert sur écru à l'ouverture du menu.
 - 2026-08-14 — Une inspection complémentaire a corrigé l'ancrage vertical du méga-menu : le sous-menu absolu était positionné sous la seule rangée de navigation et recouvrait la baseline du logo. Il commence maintenant sous la hauteur complète du header ; la traversée plus longue reste couverte par le maintien temporaire du survol. Le rendu corrigé a été vérifié à `2048px` dans Chromium et Firefox, sans erreur de page, console ou requête.
 - 2026-08-14 — Le bouton hamburger mobile héritait d'une marge supérieure Core de `24px` et se trouvait donc plus bas que le logo. La marge est supprimée dans la variante responsive ; les centres verticaux du logo et du bouton sont maintenant alignés à `547px` et `390px`, avec ouverture de l'overlay vérifiée dans Chromium et Firefox.
 - 2026-08-14 — Les quatre logotypes horizontaux verts avec baseline sont provisionnés par `scripts/content/site-logos/`, sélectionnés comme `custom_logo` sur les quatre sites et vérifiés visuellement à `1440px` ; le logo Paris est également vérifié sur Pixel 5. Les variantes écrues valides du réseau, de Paris et de Marseille sont présentes dans les assets du thème pour l'état transparent. Le fichier écru Lyon erroné n'est pas utilisé ; Lyon reste donc limité à l'état opaque tant qu'un fichier écru corrigé n'est pas livré. Les captures Lyon et Marseille chargent leurs déclinaisons territoriales sans erreur.
 - 2026-08-14 — Contrôle structurel du menu passé sur les quatre sites : réseau `1` rubrique à sous-menu et `1` chevron ; Paris, Lyon et Marseille `4` rubriques et `4` chevrons ; tous portent `Navigation principale` et aucun ne rend l'ancien mode `open-on-click`. L'interaction du réseau et de Paris est validée ; les captures fermées de Lyon et Marseille confirment le même rendu partagé aux tailles desktop et mobile.
+- 2026-08-14 — Footer partagé implémenté puis rapproché de la maquette `sections/pied-de-page.jpg` : fond vert foncé `#003d2e`, logotype vertical écru avec baseline, paragraphe de présentation, trois colonnes principales de rubriques et étoile décorative écrue en bas à droite. Les informations légales, réseaux sociaux et copyright restent présents en zone secondaire compacte ; aucun bouton jaune n'est affiché. `parts/footer.html` fournit cette structure et `render_block_data` associe la classe `lpu-footer-navigation` à l'option locale `lpu_footer_navigation_id`. `scripts/content/footer-menus/` provisionne séparément les contenus réseau et ferme sans remplacer une navigation existante. Le rendu et le chargement des logos ont été vérifiés sur le réseau, Paris, Lyon et Marseille à `1440px`, sur Paris à `390px` dans Chromium et Firefox, et sans erreur console, page ou requête ; Lyon et Marseille ont également passé une assertion de contenu corrigée après une première assertion trop sensible aux majuscules.
+- 2026-08-14 — Correction du template part dans Gutenberg : les classes `has-text-color has-background` manquantes ont été ajoutées au groupe, puis le logo de footer a été rendu par un bloc Image natif pointant vers l'asset SVG vertical écru. Cela évite l'écart entre le rendu serveur du front-end et l'aperçu de l'éditeur. Le template part est maintenant validé sans erreur Gutenberg ; son rendu public a été recontrôlé sur le réseau et Paris à `1440px` et `390px`, sans erreur console, page ou requête.
 - 2026-08-14 — Le provisioning de navigation a été durci sans réécriture de contenu : `navigation-sites.tsv` est maintenant réellement séparé par tabulations et `setup.sh` retrouve aussi un `wp_navigation` non publié via `--post_status=any`. La vérification d'idempotence après environnement propre reste soumise à la procédure de reset documentée dans `AGENTS.md`.
 - 2026-08-14 — Réévaluation du menu à partir des échanges validés, des règles de design, de `sections-Home.txt` et des extractions `menu Home_1440 (transparent).jpg` / `menu Ferme_1440 (fond écru).jpg`. Les maquettes fixent l'intention visuelle du header (logo centré et liens de part et d'autre, fond transparent ou écru) mais montrent encore un hamburger desktop et « Agir avec nous » ; ces deux éléments sont écartés par la décision ultérieure acceptée. « Sézane » reste une inspiration de fonctionnement du méga-menu, pas une source de contenu, de typographie ou de structure commerciale.
 - 2026-08-13 — Travaux préparatoires de l'Étape 4 présents dans le dépôt : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script. Ces travaux restent hors de l'étape courante et seront recontrôlés dans l'ordre du plan avant toute validation de l'Étape 4.
@@ -59,9 +61,9 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - Le menu et le header sont validés sur les quatre sites : le panneau desktop reste sous la rangée du logo, utilise le fond écru normal et ne recouvre plus sa baseline ; le seuil `1099px` est confirmé avec les libellés finaux.
 - Rejouer après intégration du contenu réel le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent : ouverture au clic du chevron, au focus et au survol, maintien vers le panneau, un seul panneau, fermeture par Échap et clic extérieur, retour du focus et accès au lien parent.
 - Conserver le méga-menu texte : panneau pleine largeur sous le header, fond écru continu et colonnes lisibles ; aucune carte ni image n'est prévue dans le panneau.
-- Vérifier le cadre des templates après ajout du contenu réel ; le réseau et Paris ont été inspectés aux tailles desktop/tablette/mobile, et Lyon/Marseille sur les états fermés desktop/mobile. Le footer reste à construire avant validation de l'Étape 3.
+- Vérifier le cadre des templates après ajout du contenu réel ; le réseau et Paris ont été inspectés aux tailles desktop/tablette/mobile, et Lyon/Marseille sur les états fermés desktop/mobile. Le footer partagé est maintenant intégré et vérifié sur les quatre sites ; les destinations finales restent à injecter.
 - Fournir une variante écrue Lyon corrigée avant d'activer le header transparent sur le site Lyon ; la variante verte Lyon actuelle est correcte pour le header opaque.
-- Décider puis construire le footer partagé : colonnes de liens, informations légales, réseaux sociaux et appel à l'action ; le wording réseau et ferme ainsi que les destinations doivent être confirmés avant l'édition du template.
+- Confirmer puis remplacer les URLs provisoires du footer (rubriques, liens légaux et réseaux sociaux) lorsque les pages et comptes dédiés seront disponibles ; aucun CTA visuel n'est retenu dans la composition actuelle de la maquette.
 - Conserver le header opaque écru par défaut ; la variante transparente est activable explicitement sur une page avec un hero suffisamment contrasté, utilise le logo écru officiel disponible et repasse à l'écru/vert dès l'ouverture du menu. Le complément démontré est limité à `assets/js/navigation.js` : synchronisation logo/header, maintien temporaire du méga-menu pendant la trajectoire du pointeur, délai d'intention avant changement de rubrique, fermeture Échap malgré `:hover` et clic extérieur de la marge de l'overlay.
 - Après ces validations, valider l'Étape 3 avant de passer au provisioning de l'Étape 4 ; ne pas commencer les patterns de l'Étape 5.
 
@@ -69,7 +71,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 - Décider le cache-busting des assets en développement (`Version` du thème ou `filemtime`).
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
-- Remplacer les URLs provisoires `/` de « Le Projet » et « Contact » lorsque les pages dédiées existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
+- Remplacer les URLs provisoires `/` de « Le Projet », « Contact » et des liens de rubriques, légaux et réseaux sociaux du footer lorsque les pages et comptes dédiés existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
 - Le seuil responsive `1099px` a été revalidé après les derniers ajustements avec les logos territoriaux, les libellés définitifs et les largeurs réellement disponibles ; le reprendre si ces éléments changent.
 - La composition visuelle des méga-menus est arrêtée : texte en colonnes uniquement ; aucune carte produit ni copie de la mise en page commerciale de Sézane ne doit être introduite.
 
@@ -92,7 +94,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ## Rappels utiles sur les block themes
 
-- `alignwide` utilise la largeur large définie dans `theme.json` ; `alignfull` va d’un bord à l’autre de la fenêtre. Les bandeaux colorés ou photographiques sont donc généralement `alignfull`.
+- `alignwide` utilise la largeur large définie dans `theme.json` ; `alignfull` va d’un bord à l’autre de la fenêtre. Les sections colorées ou photographiques sont donc généralement `alignfull`.
 - Deux sources peuvent exister pour un template ou un template part : le fichier du thème et une personnalisation enregistrée dans la base par le Site Editor. Le fichier doit rester la source de vérité.
 
 ## Règles de mise en œuvre
@@ -293,6 +295,7 @@ Le template est le cadre ; le contenu reste dans les Pages. Garder les templates
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
 - `wordpress-lpu/themes/lepaysanurbain/assets/js/navigation.js`
 - `wordpress-lpu/scripts/content/navigation-menus/README.md`
+- `wordpress-lpu/scripts/content/footer-menus/README.md`
 - `wordpress-lpu/README.md` pour la documentation de l'architecture
 
 ### 3.1 Templates de base
@@ -306,7 +309,7 @@ Pour `front-page.html` et `page.html`, utiliser la même forme :
 
 Le `main` est important : il rend le document plus clair pour les lecteurs d’écran et permet à WordPress d’exposer un lien d’évitement vers le contenu.
 
-Ne pas mettre les bandeaux de l’accueil dans `front-page.html`. Ce fichier doit contenir seulement le cadre et `post-content`.
+Ne pas mettre les sections de l’accueil dans `front-page.html`. Ce fichier doit contenir seulement le cadre et `post-content`.
 
 `index.html` est le fallback pour les listes de contenus : il doit utiliser un Query Loop minimal, pas un `post-content` isolé. Ce n'est pas encore l'écran définitif des listes de contenus, mais il doit rester fonctionnel.
 
@@ -374,9 +377,11 @@ Ne pas créer ces menus uniquement à la main : pour survivre au reset de la bas
 
 ### 3.3 Footer
 
-Le footer partage sa structure, mais les liens et l’appel à l’action peuvent différer entre le réseau et une ferme. Utiliser des blocs Navigation, Site Logo et Social Icons lorsque cela évite de figer des URLs locales dans le thème.
+Le footer partage sa structure, mais les liens peuvent différer entre le réseau et une ferme. Utiliser un bloc Image pour le logotype vertical commun, ainsi que les blocs Navigation et Social Icons ; le bloc Site Logo reste utilisé par le header, dont le logo est propre à chaque site.
 
-Prévoir les groupes visuels validés : colonnes de liens, informations légales, réseaux sociaux et copyright. Le wording local est « Soutenir la ferme » ; le site réseau doit employer un wording réseau adapté, plutôt que reprendre mécaniquement ce texte.
+Reproduire la composition de `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/pied-de-page.jpg` : fond vert foncé, logotype vertical écru avec baseline, paragraphe de présentation, trois colonnes simples de rubriques et étoile décorative en bas à droite. Les informations légales, réseaux sociaux et copyright restent accessibles dans une zone secondaire compacte ; aucun bouton jaune n'est prévu dans cette composition.
+
+L'implémentation actuelle utilise un seul template part partagé et deux navigations `wp_navigation` par site (une principale et une footer). La classe `lpu-footer-navigation` déclenche la liaison vers `lpu_footer_navigation_id`, tandis que `scripts/content/footer-menus/` conserve les contenus réseau et ferme dans des fichiers séparés. Les URLs des rubriques, des liens légaux et des réseaux sociaux sont encore des placeholders documentés ; elles ne doivent pas être considérées comme les destinations éditoriales finales.
 
 **Contrôle**
 
@@ -386,7 +391,7 @@ Chaque site affiche un logo propre, un menu propre, un header navigable au clavi
 
 ## Étape 4 — Créer les pages d’accueil statiques de façon idempotente
 
-Une Page statique par site est nécessaire pour que `post-content` puisse porter les bandeaux. Le script doit être rejouable sans créer de doublons et sans réécrire le travail éditorial.
+Une Page statique par site est nécessaire pour que `post-content` puisse porter les sections. Le script doit être rejouable sans créer de doublons et sans réécrire le travail éditorial.
 
 **Fichiers à créer ou modifier**
 
@@ -408,6 +413,8 @@ Appeler `scripts/content/setup.sh` depuis `setup-multisite-network.sh` après la
 
 `scripts/content/setup.sh` enchaîne aussi `navigation-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `menu-principal`) et enregistre son ID dans l'option `lpu_navigation_id`, ce qui rend reproductibles les menus de l'Étape 3.
 
+Il enchaîne également `footer-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `footer-principal`) et enregistre son ID dans `lpu_footer_navigation_id`, sans écraser une navigation déjà existante.
+
 **Contrôle**
 
 ```sh
@@ -421,7 +428,7 @@ Chaque site doit retourner `page`, puis un ID de Page existant.
 
 ---
 
-## Étape 5 — Construire la bibliothèque de patterns par type de bandeau
+## Étape 5 — Construire la bibliothèque de patterns par type de section
 
 Les patterns constituent le vrai livrable éditorial. Ils doivent être utiles dans une Page vide sans obliger les équipes à reconstruire des colonnes, backgrounds et espacements à la main. Ils permettent facilement d'ajouter les sections du design de Fanny dans une page.
 
@@ -430,7 +437,7 @@ Un fichier PHP placé dans `patterns/` et muni d’un en-tête (`Title`, `Slug`,
 **Fichiers à créer ou modifier**
 
 - `wordpress-lpu/themes/lepaysanurbain/patterns/*.php`
-- `wordpress-lpu/themes/lepaysanurbain/functions.php` — seulement pour créer la catégorie de patterns « Bandeaux Le Paysan Urbain » si nécessaire
+- `wordpress-lpu/themes/lepaysanurbain/functions.php` — seulement pour créer la catégorie de patterns « Sections Le Paysan Urbain » si nécessaire
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
 
 **Patterns à réaliser pour la Home réseau du premier jalon**
@@ -537,7 +544,7 @@ Documenter : démarrage de l’environnement, activation du thème, provisioning
 
 ## Éléments explicitement différés
 
-- Templates détaillés des pages intérieures et bibliothèque complète de tous les bandeaux.
+- Templates détaillés des pages intérieures et bibliothèque complète de tous les types de sections.
 - Assemblage de l’accueil Marseille : il sera réalisé après la démonstration de la Home réseau, avec les mêmes patterns adaptés aux contenus de la ferme.
 - Sélecteur de fermes dynamique / administrable automatiquement. Le pattern visuel réseau est fait, pas son automatisation.
 - SEO, redirections de l’ancien site, Analytics et consentement cookies.

@@ -1,0 +1,5 @@
+# site_url	footer_title	content_file
+lepaysanurbain.test:8888	Footer réseau	network.html
+paris.lepaysanurbain.test:8888	Footer ferme	local.html
+lyon.lepaysanurbain.test:8888	Footer ferme	local.html
+marseille.lepaysanurbain.test:8888	Footer ferme	local.html

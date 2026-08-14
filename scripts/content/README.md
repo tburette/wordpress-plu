@@ -37,3 +37,7 @@ a shared content directory or hard-code a navigation ID in the theme.
 
 See [`navigation-menus/README.md`](navigation-menus/README.md) before changing
 the menu structure or its provisioning.
+
+The `footer-menus/` directory contains the site-local Navigation data used by
+the shared footer columns. Run `npm run env:footer-navigation:setup` to create
+or select those records without overwriting existing footer content.

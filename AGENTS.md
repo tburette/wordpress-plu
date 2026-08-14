@@ -77,6 +77,30 @@ local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
   that is ever used by wp-env.
 - Check `.wp-env.json` before assuming how a directory is mounted or activated.
 
+## Références visuelles obligatoires
+
+Tout élément créé ou modifié dans le thème — template, template part, pattern,
+section, bloc, navigation ou composant visuel — doit chercher à reproduire la
+maquette validée de Fanny : composition, proportions, palette, typographie,
+espacements, traitements des images, motifs et éléments décoratifs. Une
+structure fonctionnelle seule ou un rendu générique WordPress ne constitue pas
+une implémentation suffisante.
+
+Les références principales sont les quatre maquettes suivantes, dans le projet
+parent :
+
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Ferme_1440.jpg`
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Home_1440.jpg`
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Home_1440  (transparent).jpg`
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Ferme_1440 (fond écru).jpg`
+
+Pour les sections qui ne sont pas visibles en détail dans ces compositions,
+consulter également tous les visuels de
+`design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/`.
+Avant de considérer un travail visuel terminé, le comparer au visuel de
+référence approprié avec une inspection rendue du site et signaler tout écart
+important.
+
 ## Codex and wp-env access
 
 - Direct `wp-env` commands may require Codex authorization for Docker access

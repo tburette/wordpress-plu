@@ -1,7 +1,45 @@
-<!-- wp:group {"align":"full","className":"lpu-footer","backgroundColor":"vert-fonce","textColor":"ecru","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull lpu-footer has-ecru-color has-vert-fonce-background-color">
-	<!-- wp:paragraph {"align":"center","fontSize":"text"} -->
-	<p class="has-text-align-center has-text-font-size">Le Paysan Urbain</p>
-	<!-- /wp:paragraph -->
+<!-- wp:group {"align":"full","className":"lpu-footer","backgroundColor":"vert-fonce","textColor":"ecru","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}}} -->
+<div class="wp-block-group alignfull lpu-footer has-ecru-color has-vert-fonce-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--xl);padding-right:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--lg);padding-left:var(--wp--preset--spacing--lg)">
+	<!-- wp:columns {"align":"wide","className":"lpu-footer__main","verticalAlignment":"top"} -->
+	<div class="wp-block-columns alignwide are-vertically-aligned-top lpu-footer__main">
+		<!-- wp:column {"verticalAlignment":"top","width":"24%","className":"lpu-footer__identity"} -->
+		<div class="wp-block-column is-vertically-aligned-top lpu-footer__identity" style="flex-basis:24%">
+			<!-- wp:image {"sizeSlug":"full","linkDestination":"custom","href":"/","className":"lpu-footer__logo"} -->
+			<figure class="wp-block-image size-full lpu-footer__logo"><a href="/"><img src="/wp-content/themes/lepaysanurbain/assets/images/footer/footer-emblem-ecru-baseline.svg" alt="Le Paysan Urbain" /></a></figure>
+			<!-- /wp:image -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column {"verticalAlignment":"top","width":"24%","className":"lpu-footer__intro-column"} -->
+		<div class="wp-block-column is-vertically-aligned-top lpu-footer__intro-column" style="flex-basis:24%">
+			<!-- wp:paragraph {"className":"lpu-footer__intro","fontSize":"text"} -->
+			<p class="lpu-footer__intro has-text-font-size">Le Paysan Urbain développe des fermes urbaines agroécologiques et solidaires pour cultiver le vivant en ville et favoriser l’insertion.</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:column -->
+
+		<!-- wp:column {"verticalAlignment":"top","width":"52%","className":"lpu-footer__links"} -->
+		<div class="wp-block-column is-vertically-aligned-top lpu-footer__links" style="flex-basis:52%">
+			<!-- wp:navigation {"overlayMenu":"never","showSubmenuIcon":false,"className":"lpu-footer-navigation","layout":{"type":"flex","justifyContent":"left"}} /-->
+		</div>
+		<!-- /wp:column -->
+	</div>
+	<!-- /wp:columns -->
+
+	<!-- wp:group {"className":"lpu-footer__bottom","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"}} -->
+	<div class="wp-block-group lpu-footer__bottom">
+		<!-- wp:social-links {"iconColor":"vert-fonce","iconColorValue":"#153d30","iconBackgroundColor":"ecru","iconBackgroundColorValue":"#f8f8f0","size":"has-small-icon-size","className":"lpu-footer__social"} -->
+		<ul class="wp-block-social-links has-small-icon-size has-icon-color has-icon-background-color lpu-footer__social">
+			<!-- wp:social-link {"url":"#instagram","service":"instagram"} /-->
+			<!-- wp:social-link {"url":"#facebook","service":"facebook"} /-->
+			<!-- wp:social-link {"url":"#linkedin","service":"linkedin"} /-->
+		</ul>
+		<!-- /wp:social-links -->
+
+		<!-- wp:paragraph {"className":"lpu-footer__copyright","fontSize":"text"} -->
+		<p class="lpu-footer__copyright has-text-font-size">© Le Paysan Urbain</p>
+		<!-- /wp:paragraph -->
+	</div>
+	<!-- /wp:group -->
 </div>
 <!-- /wp:group -->

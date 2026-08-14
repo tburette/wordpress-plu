@@ -10,7 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue the shared theme stylesheet on the front end and in the editor.
+ * Enqueue the shared theme stylesheet on the front end and in the editor
+ * canvas. `enqueue_block_assets` is the supported hook for the iframe used by
+ * the block editor.
  *
  * @return void
  */
@@ -26,7 +28,7 @@ function lpu_enqueue_theme_styles() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'lpu_enqueue_theme_styles' );
-add_action( 'enqueue_block_editor_assets', 'lpu_enqueue_theme_styles' );
+add_action( 'enqueue_block_assets', 'lpu_enqueue_theme_styles' );
 
 /**
  * Enqueue the small front-end behavior that completes the shared menu
@@ -286,9 +288,10 @@ function lpu_allow_cli_svg_filetype( $data, $file, $filename, $mimes, $real_mime
 add_filter( 'wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5 );
 
 /**
- * Bind the shared header Navigation block to the navigation selected for the
- * current site. Navigation posts are site-local in a multisite network, so a
- * numeric ref cannot be committed to the shared template part.
+ * Bind a shared Navigation block to the navigation selected for the current
+ * site. Navigation posts are site-local in a multisite network, so a numeric
+ * ref cannot be committed to a shared template part. The header and footer
+ * use separate site-local Navigation posts, identified by their class names.
  *
  * @param array         $parsed_block The block being prepared for rendering.
  * @param array         $source_block The original parsed block.
@@ -304,7 +307,14 @@ function lpu_bind_site_navigation( $parsed_block, $source_block, $parent_block )
 		return $parsed_block;
 	}
 
-	$navigation_id = absint( get_option( 'lpu_navigation_id', 0 ) );
+	$classes = preg_split(
+		'/\s+/',
+		trim( (string) ( $parsed_block['attrs']['className'] ?? '' ) )
+	);
+	$option_name = in_array( 'lpu-footer-navigation', $classes, true )
+		? 'lpu_footer_navigation_id'
+		: 'lpu_navigation_id';
+	$navigation_id = absint( get_option( $option_name, 0 ) );
 	if ( ! $navigation_id ) {
 		return $parsed_block;
 	}
