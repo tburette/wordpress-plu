@@ -27,9 +27,9 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-14 14:50 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-14 15:11 (Europe/Paris)
 
-**Position exacte dans le plan :** Étape 3 — construire le cadre partagé : templates, header et footer. Les Étapes 0, 1 et 2 sont validées. L'Étape 3 est la seule étape courante ; aucun travail de l'Étape 4 ou de l'Étape 5 ne commencera avant sa validation.
+**Position exacte dans le plan :** Étape 3 — construire le cadre partagé : templates, header et footer — est validée. Les Étapes 0, 1, 2 et 3 sont validées. L'Étape 4 est la prochaine, mais reste explicitement différée ; aucun travail de l'Étape 4 ou de l'Étape 5 ne commence dans cette validation.
 
 _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notamment sur le socle du thème, le cadre partagé et le provisioning de contenu. Nous le conservons comme état de travail, mais nous avançons désormais systématiquement, une seule étape à la fois, avec validation avant de passer à la suivante.)_
 
@@ -43,7 +43,9 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### Partiellement réalisé
 
-- 2026-08-14 — Étape 3 (audit en cours) : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/`. Le header transparent est maintenant implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer partagé est désormais implémenté et reste à compléter avec les destinations finales.
+- 2026-08-14 — Étape 3 validée après contrôle statique, vérification de la configuration multisite, inspection Gutenberg du template part `Pied de page` et inspection visuelle finale avec `web-inspector` sur le réseau, Paris, Lyon et Marseille à `1440px` et `390px`. Les quatre sites répondent en HTTP 200, le footer et son logo SVG sont visibles, les assertions de contenu passent et aucune erreur console, erreur de page ou requête échouée n'est relevée. Les contrôles clavier, pointeur, responsive et Firefox réalisés précédemment restent inclus dans cette validation. L'Étape 4 n'est pas commencée.
+
+- 2026-08-14 — Étape 3 : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/`. Le header transparent est implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer partagé est implémenté, avec ses destinations finales volontairement différées.
 - 2026-08-14 — Prototype du menu corrigé puis validé : `submenuVisibility:"hover"` et `showSubmenuIcon:true` rendent le lien parent accessible et confient le déploiement au chevron séparé ; le rendu WordPress contient les directives natives de hover, focus et clic, sans `openSubmenusOnClick` legacy. Le header utilise une grille à logo centré, les panneaux desktop sont absolus, pleine largeur, écrus et positionnés sous la hauteur réelle du header ; le même overlay Navigation est exposé jusqu'à `1099px` pour les menus locaux longs. Le seuil a été revalidé avec les logos et libellés finaux.
 - 2026-08-14 — Inspection visuelle et fonctionnelle finale réalisée avec Playwright via `web-inspector` sur les quatre sites à `1440px`, à la frontière `1100/1099px`, puis sur l'overlay Paris à `390px`. Le panneau réseau et les panneaux locaux restent écrus, pleine largeur et répartis en colonnes ; le hamburger à trois barres n'apparaît qu'à partir de `1099px` ; les sous-rubriques mobiles ne dépendent pas du survol. L'ouverture au clavier par Entrée, la fermeture Échap, le clic extérieur mobile et le retour du focus sont validés. Les captures finales n'ont aucune erreur console, erreur de page ou requête échouée. Le survol desktop ajoute un maintien de `500ms` pendant la traversée entre parent et panneau, ainsi qu'un délai d'intention de `150ms` avant de remplacer un panneau actif : il supprime le clignotement dans le vide du header et évite qu'un simple passage sur une autre rubrique change le contenu. La variante transparente réseau et Paris a également été testée temporairement : le logo écru est chargé à l'état initial et le header repasse vert sur écru à l'ouverture du menu.
 - 2026-08-14 — Une inspection complémentaire a corrigé l'ancrage vertical du méga-menu : le sous-menu absolu était positionné sous la seule rangée de navigation et recouvrait la baseline du logo. Il commence maintenant sous la hauteur complète du header ; la traversée plus longue reste couverte par le maintien temporaire du survol. Le rendu corrigé a été vérifié à `2048px` dans Chromium et Firefox, sans erreur de page, console ou requête.
@@ -58,23 +60,21 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### À faire maintenant
 
-- Le menu et le header sont validés sur les quatre sites : le panneau desktop reste sous la rangée du logo, utilise le fond écru normal et ne recouvre plus sa baseline ; le seuil `1099px` est confirmé avec les libellés finaux.
-- La composition desktop prend en charge explicitement les menus réseau à 3 entrées et ferme à 5 entrées. Toute autre quantité d’entrées de premier niveau bascule vers l’overlay responsive natif, afin qu’une modification éditoriale ne crée pas silencieusement une nouvelle ligne dans la grille.
-- Rejouer après intégration du contenu réel le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent : ouverture au clic du chevron, au focus et au survol, maintien vers le panneau, un seul panneau, fermeture par Échap et clic extérieur, retour du focus et accès au lien parent.
-- Conserver le méga-menu texte : panneau pleine largeur sous le header, fond écru continu et colonnes lisibles ; aucune carte ni image n'est prévue dans le panneau.
-- Vérifier le cadre des templates après ajout du contenu réel ; le réseau et Paris ont été inspectés aux tailles desktop/tablette/mobile, et Lyon/Marseille sur les états fermés desktop/mobile. Le footer partagé est maintenant intégré et vérifié sur les quatre sites ; les destinations finales restent à injecter.
-- Fournir une variante écrue Lyon corrigée avant d'activer le header transparent sur le site Lyon ; la variante verte Lyon actuelle est correcte pour le header opaque.
-- Confirmer puis remplacer les URLs provisoires du footer (rubriques, liens légaux et réseaux sociaux) lorsque les pages et comptes dédiés seront disponibles ; aucun CTA visuel n'est retenu dans la composition actuelle de la maquette.
-- Conserver le header opaque écru par défaut ; la variante transparente est activable explicitement sur une page avec un hero suffisamment contrasté, utilise le logo écru officiel disponible et repasse à l'écru/vert dès l'ouverture du menu. Le complément démontré est limité à `assets/js/navigation.js` : synchronisation logo/header, maintien temporaire du méga-menu pendant la trajectoire du pointeur, délai d'intention avant changement de rubrique, fermeture Échap malgré `:hover` et clic extérieur de la marge de l'overlay.
-- Après ces validations, valider l'Étape 3 avant de passer au provisioning de l'Étape 4 ; ne pas commencer les patterns de l'Étape 5.
+- L'Étape 4 reste volontairement non commencée, conformément à la demande actuelle.
+- Lorsqu'elle sera autorisée, elle consistera à provisionner les pages d'accueil réseau et locales, puis à les comparer aux maquettes Fanny ; elle devra rester idempotente et ne pas écraser les contenus édités.
+- Après intégration du contenu réel, rejouer le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent.
+- Conserver les décisions validées : méga-menu texte en colonnes uniquement, header opaque écru par défaut, variante transparente activable explicitement sur une page avec hero suffisamment contrasté, et seuil responsive `1099px` pour les libellés actuels.
 
 ### Points ouverts
 
+- Aucun élément bloquant du cadre partagé ne reste pour l'Étape 3 validée.
+- Gutenberg émet encore un avertissement générique sur le contraste automatique de la couleur écru dans ses composants ; il ne produit ni bloc invalide ni défaut de rendu et reste non bloquant.
 - Décider le cache-busting des assets en développement (`Version` du thème ou `filemtime`).
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
 - Remplacer les URLs provisoires `/` de « Le Projet », « Contact » et des liens de rubriques, légaux et réseaux sociaux du footer lorsque les pages et comptes dédiés existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
-- Le seuil responsive `1099px` a été revalidé après les derniers ajustements avec les logos territoriaux, les libellés définitifs et les largeurs réellement disponibles ; le reprendre si ces éléments changent.
-- Les réglages spécifiques au site dans le thème sont indexés par une clé dérivée du sous-domaine (`network`, `paris`, `lyon`, `marseille`), et non par le `blog_id` attribué par l’installation.
+- Le seuil responsive `1099px` est validé pour les logos, libellés et largeurs actuels ; le reprendre uniquement si ces éléments changent.
+- Fournir une variante écrue Lyon corrigée avant d'activer le header transparent sur le site Lyon ; la variante verte Lyon actuelle est correcte pour le header opaque.
+- Les réglages spécifiques au site dans le thème sont indexés par une clé dérivée du sous-domaine (`network`, `paris`, `lyon`, `marseille`), et non par le `blog_id` attribué par l'installation.
 - Le remplacement du logo écru transparent reste différé lorsque l’image opaque fournit un `srcset` : les logos SVG actuellement provisionnés n’en rendent pas, mais cette variante devra être reprise si des logos raster ou responsive sont introduits.
 - La composition visuelle des méga-menus est arrêtée : texte en colonnes uniquement ; aucune carte produit ni copie de la mise en page commerciale de Sézane ne doit être introduite.
 
