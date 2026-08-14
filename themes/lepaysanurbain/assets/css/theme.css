@@ -236,9 +236,10 @@ body.lpu-header-transparent .lpu-header
 		column-gap: clamp(0.25rem, 1vw, 1rem);
 	}
 
-	/* The open panel must use the header, rather than Core Navigation's
-	 * internal containers, as its containing block. Otherwise top:100%
-	 * starts below the navigation row and overlaps the logo baseline. */
+	/* Keep Core's internal grid as the containing block for the absolute
+	 * submenu, but place the panel below the complete header. The navigation
+	 * row is vertically centred in that grid, so plain top:100% starts roughly
+	 * 1.8rem above the header bottom and cuts through the logo baseline. */
 	.lpu-header .wp-block-navigation,
 	.lpu-header .wp-block-navigation__responsive-container,
 	.lpu-header .wp-block-navigation__responsive-close,
@@ -276,7 +277,7 @@ body.lpu-header-transparent .lpu-header
 
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container {
-		top: 100%;
+		top: calc(100% + 1.8rem);
 		right: auto;
 		bottom: auto;
 		left: 50%;
@@ -372,6 +373,7 @@ body.lpu-header-transparent .lpu-header
 		grid-column: 3;
 		justify-self: end;
 		width: auto;
+		margin: 0;
 	}
 
 	.lpu-header .wp-block-navigation__responsive-container-open {
