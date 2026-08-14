@@ -10,10 +10,12 @@ Run everything from `site/wordpress-lpu/` with:
 npm run env:content:setup
 ```
 
-The content provisioning scripts are safe to run repeatedly. They do not
-replace existing WordPress content. When a script needs Gutenberg markup or
-other input data, those files live beside that script in its own directory;
-there is no shared data directory.
+The content provisioning scripts are safe to run repeatedly. Editorial pages
+and navigations are not replaced. The managed developer fixtures are explicit
+exceptions: `patterns-test-page/` refreshes the exact review-page slug from
+the active theme patterns. When a script needs Gutenberg markup or other
+input data, those files live beside that script in its own directory; there is
+no shared data directory.
 
 The database remains the runtime copy. The files in this directory are the
 reproducible source used when the local WordPress environment is recreated.
@@ -28,10 +30,12 @@ npm run env:test-page:setup
 
 See [`test-page/README.md`](test-page/README.md) for the page details.
 
-The `patterns-test-page/` script is a separate developer fixture for reviewing
-the sections from Fanny's site design in one published page. It assembles the
+The `patterns-test-page/` script is a developer fixture for reviewing the
+sections from Fanny's site design in one published page. It assembles the
 current Step 5 pattern definitions from WordPress's active theme registry, so
-it does not duplicate their markup. Run it explicitly with:
+it does not duplicate their markup. It is included in `env:content:setup`, so
+the page is created or refreshed automatically when the test environment is
+recreated. It can also be run explicitly with:
 
 ```sh
 npm run env:patterns-test-page:setup

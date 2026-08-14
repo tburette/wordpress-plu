@@ -476,6 +476,13 @@ Créer un pattern, l’insérer dans une Page brouillon, tester desktop et mobil
 
 Dans l’inséreur de blocs, chaque pattern doit être visible dans sa catégorie, ne proposer que des tokens de charte et s’afficher correctement après insertion sur une Page vide.
 
+Pour conserver un support de contrôle après chaque recréation de
+l’environnement, `scripts/content/setup.sh` exécute également
+`scripts/content/patterns-test-page/setup.sh`. Cette fixture publie la page
+`lpu-sections-patterns-test` sur le site réseau avec les sections déclarées
+dans `sections-patterns-names.txt` ; elle ne constitue pas la Home et ne
+remplace pas son assemblage éditorial prévu à l’Étape 6.
+
 ---
 
 ## Étape 6 — Assembler la Home réseau dans Gutenberg

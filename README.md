@@ -64,8 +64,9 @@ The `afterStart` lifecycle script in `.wp-env.json` then:
 4. creates the Paris, Lyon, and Marseille sites when they are missing; and
 5. installs and activates the French (`fr_FR`) core language pack for all four
    sites and sets the default `admin` user's locale to French;
-6. provisions the static `Accueil` pages and site-local Navigation records from
-   the co-located files in `scripts/content/`; then
+6. provisions the static `Accueil` pages, site-local Navigation records, and
+   the developer sections-patterns review page from the co-located files in
+   `scripts/content/`; then
 7. verifies the network and site domain/path records.
 
 The bootstrap is safe to run repeatedly:
@@ -207,9 +208,11 @@ independently when needed with:
 npm run env:content:setup
 ```
 
-The setup is idempotent and does not overwrite an existing page or navigation.
-It also restores the theme test page at
-`/titre-de-test-ruden/` when that page is absent.
+The setup is idempotent and does not overwrite an existing editorial page or
+navigation. It also restores the theme test page at `/titre-de-test-ruden/`
+when that page is absent, and creates or refreshes the managed developer review page at
+`/lpu-sections-patterns-test/` from the active theme patterns. The latter is a
+fixture for visual inspection only; it is not the network Home.
 
 The front-page script is only technical provisioning: it selects or creates a
 Page with the `accueil` slug on each site, points the site's reading settings

@@ -27,7 +27,9 @@ La page est ensuite disponible à l’adresse :
 
 `http://lepaysanurbain.test:8888/lpu-sections-patterns-test/`
 
-Le script est volontairement séparé de `env:content:setup` : cette page est un
-outil de contrôle développeur et ne doit pas être créée automatiquement lors
-du provisioning courant. Pour la supprimer après inspection, vérifier son
-slug et son titre puis la déplacer à la corbeille depuis WordPress.
+Le script est inclus dans `env:content:setup` : la page est donc créée ou
+rafraîchie automatiquement lorsque l’environnement de test est recréé. Elle
+reste un outil de contrôle développeur et ne constitue pas la Home réseau.
+Pour la supprimer après inspection, vérifier son slug et son titre puis la
+déplacer à la corbeille depuis WordPress ; le prochain provisioning la
+restaurera.
