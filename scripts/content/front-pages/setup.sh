@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Create or select the page used as the static front page on every site listed
-# in sites.tsv. A newly created page receives the non-visible placeholder
-# content from accueil.html; an existing page is never overwritten. The
-# script only changes the two reading options required for WordPress to render
-# that page at the site root.
+# Create or select the technical page used as the static front page on every
+# site listed in sites.tsv. A newly created page receives the non-visible
+# placeholder content from accueil.html; an existing page is never overwritten.
+# The script only changes the two reading options required for WordPress to
+# render that page at the site root.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 sites_file="${script_dir}/sites.tsv"
@@ -38,6 +38,7 @@ while IFS='|' read -r site_url page_title page_slug; do
   page_id="$(run_wp post list \
     --url="${site_url}" \
     --post_type=page \
+    --post_status=any \
     --name="${page_slug}" \
     --posts_per_page=1 \
     --field=ID | tr -d '\r')"
@@ -51,6 +52,9 @@ while IFS='|' read -r site_url page_title page_slug; do
       --post_name="${page_slug}" \
       --post_content="${page_content}" \
       --porcelain | tr -d '\r')"
+    printf '%s: created front page %s\n' "${site_url}" "${page_id}"
+  else
+    printf '%s: selected existing front page %s\n' "${site_url}" "${page_id}"
   fi
 
   run_wp option update show_on_front page --url="${site_url}" >/dev/null
@@ -58,4 +62,3 @@ while IFS='|' read -r site_url page_title page_slug; do
 done < "${sites_file}"
 
 printf 'Front pages are configured from %s.\n' "${sites_file}"
-

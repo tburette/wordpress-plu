@@ -211,6 +211,14 @@ The setup is idempotent and does not overwrite an existing page or navigation.
 It also restores the theme test page at
 `/titre-de-test-ruden/` when that page is absent.
 
+The front-page script is only technical provisioning: it selects or creates a
+Page with the `accueil` slug on each site, points the site's reading settings
+to it, and gives a newly created Page an invisible placeholder comment. It
+does not add patterns, images, or sections from the design maquettes. Patterns
+are introduced in Step 5; the network Home is assembled in Gutenberg in Step
+6. See [`scripts/content/front-pages/README.md`](scripts/content/front-pages/README.md)
+for the exact contract.
+
 ### Shared header and navigation
 
 The four sites use one shared `parts/header.html` template part and one core
