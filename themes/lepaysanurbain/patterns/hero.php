@@ -9,8 +9,8 @@
  */
 ?>
 <!-- wp:cover {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","dimRatio":30,"isDark":true,"align":"full","backgroundColor":"vert-fonce","className":"lpu-band lpu-hero","layout":{"type":"constrained"}} -->
-<div class="wp-block-cover alignfull lpu-band lpu-hero has-vert-fonce-background-color">
-	<img class="wp-block-cover__image-background wp-image-0" alt="Visuel de démonstration à remplacer" src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" data-object-fit="cover" />
+<div class="wp-block-cover alignfull lpu-band lpu-hero has-vert-fonce-background-color has-background">
+	<img class="wp-block-cover__image-background" alt="" src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" data-object-fit="cover" />
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-30 has-background-dim"></span>
 	<div class="wp-block-cover__inner-container">
 		<!-- wp:group {"align":"wide","className":"lpu-hero__content","layout":{"type":"constrained"}} -->
