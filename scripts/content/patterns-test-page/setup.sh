@@ -20,8 +20,7 @@ done
 cd -- "${project_dir}"
 
 run_wp() {
-	# Keep WP-CLI from consuming the TSV currently driving the loop below.
-	wp-env run cli wp "$@" </dev/null
+	wp-env run cli wp "$@"
 }
 
 php_quote() {
@@ -49,7 +48,7 @@ if [[ "${pattern_count}" -eq 0 ]]; then
 	exit 1
 fi
 
-while IFS='|' read -r site_url page_title page_slug post_status post_author comment_status ping_status; do
+while IFS='|' read -r site_url page_title page_slug post_status post_author comment_status ping_status <&3; do
 	[[ -z "${site_url}" || "${site_url}" == \#* ]] && continue
 
 	if [[ -z "${page_title}" || -z "${page_slug}" || -z "${post_status}" || -z "${post_author}" || -z "${comment_status}" || -z "${ping_status}" ]]; then
@@ -149,6 +148,6 @@ echo get_home_url() . ': ' . \$action . ' sections patterns test page ' . \$page
 PHP
 
 	run_wp eval "${php_code}" --url="${site_url}"
-done < "${pages_file}"
+done 3< "${pages_file}"
 
 printf 'Sections patterns test page generated from %s patterns in %s.\n' "${pattern_count}" "${order_file}"
