@@ -95,7 +95,9 @@ function lpu_get_current_site_config() {
 		'paris'     => array(
 			'transparent_logo_file' => 'paris-horizontal-ecru-baseline.svg',
 		),
-		'lyon'      => array(),
+		'lyon'      => array(
+			'transparent_logo_file' => 'lyon-horizontal-ecru-baseline.svg',
+		),
 		'marseille' => array(
 			'transparent_logo_file' => 'marseille-horizontal-ecru-baseline.svg',
 		),
@@ -106,8 +108,6 @@ function lpu_get_current_site_config() {
 
 /**
  * Return the official horizontal écru logo available for the current site.
- * Lyon intentionally has no entry until the incorrect delivered source is
- * replaced by a correct territorial variant.
  *
  * @return string
  */
@@ -360,11 +360,15 @@ function lpu_get_navigation_item_count( $navigation_content ) {
 }
 
 /**
- * Bind a shared Navigation block to the navigation selected for the current
- * site. Navigation posts are site-local in a multisite network, so a numeric
- * ref cannot be committed to a shared template part. The header and footer
- * use separate site-local Navigation posts, identified by their class names.
- * Unclassified Navigation blocks are intentionally left untouched so inline
+ * Bind a Navigation block to the correct navigation element (the one set for
+ * the current site). Navigation "posts" (the things holding all data of a
+ * navigation elements) are site-local in a multisite network.
+ * We can't just create a template part, say, a header or footer, and assign it
+ * a fixed navigation "post". The reason is that the template part is shared.
+ * The header and footer use separate site-local Navigation posts, identified
+ * by their class names.
+ * There is a detection mechanism to only change navigations that are using this
+ * mechanism, other Navigation blocks are intentionally left untouched so inline
  * content navigations cannot be hijacked by the shared menus.
  *
  * @param array         $parsed_block The block being prepared for rendering.

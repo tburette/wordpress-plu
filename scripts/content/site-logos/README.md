@@ -10,13 +10,10 @@ Le header opaque écru utilise les logotypes horizontaux verts avec baseline :
 - le logotype général pour le site réseau ;
 - le logotype correspondant à Lyon, Marseille ou Paris pour chaque site local.
 
-Le fichier source `Logotype horizontal écru + baseline + Lyon.svg` est connu
-comme erroné : il contient le vert au lieu de l'écru et n'est donc pas copié ni
-provisionné. Les variantes écru valides du réseau, de Paris et de Marseille
-sont copiées dans les assets du thème et servent à la variante de header
-transparent activable explicitement sur une page. La variante transparente
-reste indisponible pour Lyon jusqu'à la livraison d'un fichier territorial
-écru corrigé.
+Le fichier source `Logotype horizontal écru + baseline + Lyon.svg` a été
+corrigé pour contenir l'écru officiel. Les variantes écrues du réseau, de
+Paris, de Lyon et de Marseille sont copiées dans les assets du thème et servent
+à la variante de header transparent activable explicitement sur une page.
 
 `setup.sh` importe les SVG officiels dans la médiathèque de chaque site et
 définit le thème mod `custom_logo`. Il est idempotent pour les logos déjà
