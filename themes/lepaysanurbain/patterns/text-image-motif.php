@@ -16,8 +16,8 @@
 		<div class="wp-block-column lpu-text-image-motif__media-column" style="flex-basis:50%">
 			<!-- wp:group {"className":"lpu-text-image-motif__media lpu-motif lpu-motif-4-bandeau","layout":{"type":"constrained"}} -->
 			<div class="wp-block-group lpu-text-image-motif__media lpu-motif lpu-motif-4-bandeau">
-				<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"Visuel de démonstration à remplacer","className":"lpu-media-placeholder","linkDestination":"none"} -->
-				<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="Visuel de démonstration à remplacer" /></figure>
+				<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"","className":"lpu-media-placeholder","linkDestination":"none"} -->
+				<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 				<!-- /wp:image -->
 			</div>
 			<!-- /wp:group -->

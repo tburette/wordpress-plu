@@ -18,8 +18,8 @@
 	<div class="wp-block-columns alignwide lpu-card-grid__columns">
 		<!-- wp:column {"className":"lpu-card"} -->
 		<div class="wp-block-column lpu-card">
-			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"Visuel de démonstration à remplacer","className":"lpu-media-placeholder","linkDestination":"none"} -->
-			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="Visuel de démonstration à remplacer" /></figure>
+			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"","className":"lpu-media-placeholder","linkDestination":"none"} -->
+			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->
@@ -46,8 +46,8 @@
 
 		<!-- wp:column {"className":"lpu-card"} -->
 		<div class="wp-block-column lpu-card">
-			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"Visuel de démonstration à remplacer","className":"lpu-media-placeholder","linkDestination":"none"} -->
-			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="Visuel de démonstration à remplacer" /></figure>
+			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"","className":"lpu-media-placeholder","linkDestination":"none"} -->
+			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->
@@ -74,8 +74,8 @@
 
 		<!-- wp:column {"className":"lpu-card"} -->
 		<div class="wp-block-column lpu-card">
-			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"Visuel de démonstration à remplacer","className":"lpu-media-placeholder","linkDestination":"none"} -->
-			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="Visuel de démonstration à remplacer" /></figure>
+			<!-- wp:image {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","alt":"","className":"lpu-media-placeholder","linkDestination":"none"} -->
+			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
 			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->

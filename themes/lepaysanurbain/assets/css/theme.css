@@ -208,6 +208,21 @@ body {
 	gap: var(--wp--preset--spacing--md);
 }
 
+/* Core stacks ordinary Columns at 782px; keep the card items explicitly
+ * full-width so the reusable pattern does not inherit a narrow flex basis. */
+@media (max-width: 781px) {
+	.lpu-card-grid__columns {
+		flex-direction: column;
+		gap: var(--wp--preset--spacing--lg);
+	}
+
+	.lpu-card-grid__columns > .wp-block-column {
+		flex-basis: 100% !important;
+		width: 100%;
+		margin-block-start: 0;
+	}
+}
+
 .lpu-card {
 	display: flex;
 	flex-direction: column;
