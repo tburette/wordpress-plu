@@ -12,3 +12,4 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 bash "${script_dir}/front-pages/setup.sh"
 bash "${script_dir}/navigation-menus/setup.sh"
+bash "${script_dir}/test-page/setup.sh"

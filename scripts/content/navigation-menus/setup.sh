@@ -41,6 +41,7 @@ create_or_select_menu() {
   menu_id="$(run_wp post list \
     --url="${site_url}" \
     --post_type=wp_navigation \
+    --post_status=any \
     --name=menu-principal \
     --posts_per_page=1 \
     --field=ID | tr -d '\r')"
@@ -60,14 +61,13 @@ create_or_select_menu() {
   printf '%s: navigation %s (data: %s)\n' "${site_url}" "${menu_id}" "${content_path}"
 }
 
-while IFS='|' read -r site_url navigation_title content_file; do
+while IFS=$'\t' read -r site_url navigation_title content_file; do
   [[ -z "${site_url}" || "${site_url}" == \#* ]] && continue
 
   if [[ -z "${navigation_title}" || -z "${content_file}" ]]; then
-    printf 'Invalid navigation data row for %s. Expected site_url|title|content_file.\n' "${site_url}" >&2
+    printf 'Invalid navigation data row for %s. Expected tab-separated site_url, title and content_file.\n' "${site_url}" >&2
     exit 1
   fi
 
   create_or_select_menu "${site_url}" "${navigation_title}" "${content_file}"
 done < "${navigation_sites_file}"
-

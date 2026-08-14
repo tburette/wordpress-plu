@@ -199,6 +199,39 @@ npm run env:content:setup
 ```
 
 The setup is idempotent and does not overwrite an existing page or navigation.
+It also restores the theme test page at
+`/titre-de-test-ruden/` when that page is absent.
+
+### Shared header and navigation
+
+The four sites use one shared `parts/header.html` template part and one core
+Navigation block per site. The navigation content is site-local and is
+provisioned from `scripts/content/navigation-menus/`; a numeric Navigation
+`ref` must never be copied from one site to another.
+
+The target desktop composition is a full-width header with the horizontal logo
+centered and the links on both sides. There is no hamburger on large screens.
+A submenu is the expanded version of the same Navigation block: a contextual
+mega-menu below the header, with an écru background and readable columns. It
+must be reachable by click and keyboard focus; hover may be an additional
+desktop shortcut. The hamburger is reserved for the responsive overlay on
+tablet and mobile.
+
+The current theme files are still the Step 3 scaffold: they do not yet prove
+the final centered geometry, mega-menu presentation, transparent-header toggle,
+or complete keyboard and pointer behavior. Those points must be tested and
+implemented before Step 3 is validated.
+
+The opaque écru header is the default. A transparent header over a sufficiently
+contrasted hero is an explicit per-page option, and an opened mega-menu always
+returns the header and panel to opaque écru. The screenshots in the design
+delivery show a desktop hamburger and `Agir avec nous`; those are historical
+maquette elements and are not part of the current menu contract.
+
+The complete menu contract, source priorities, current limitations and pending
+checks are documented in
+[`scripts/content/navigation-menus/README.md`](scripts/content/navigation-menus/README.md)
+and in [`theme-implementation-plan.md`](theme-implementation-plan.md).
 
 ## VS Code
 

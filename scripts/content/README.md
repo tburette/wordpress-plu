@@ -17,3 +17,23 @@ there is no shared data directory.
 
 The database remains the runtime copy. The files in this directory are the
 reproducible source used when the local WordPress environment is recreated.
+
+The `test-page/` provisioning script restores the development page used to
+exercise the theme. It is included in `env:content:setup`, or it can be run on
+its own with:
+
+```sh
+npm run env:test-page:setup
+```
+
+See [`test-page/README.md`](test-page/README.md) for the page details.
+
+The `navigation-menus/` directory contains the reproducible menu data for the
+network site and the three farm sites. Its README documents the relationship
+between those files, the shared header, the site-local `wp_navigation` posts,
+and the pending visual and accessibility work on the mega-menu. The data files
+are deliberately kept beside `navigation-menus/setup.sh`; do not move them to
+a shared content directory or hard-code a navigation ID in the theme.
+
+See [`navigation-menus/README.md`](navigation-menus/README.md) before changing
+the menu structure or its provisioning.

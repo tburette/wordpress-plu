@@ -1,11 +1,21 @@
 <!--
+  Shared menu contract:
+  - desktop: horizontal logo centered, links on both sides, no hamburger;
+  - a submenu is the contextual mega-menu of this same Navigation block;
+  - tablet/mobile: the same block uses its responsive overlay and hamburger.
+
   The Navigation block intentionally has no hard-coded ref. Navigation posts
-  are site-local in a multisite network and will be configured independently
-  on each site during the menu prototype.
+  are site-local in a multisite network and are configured independently on
+  each site by scripts/content/navigation-menus/.
+
+  The design screenshots show a desktop hamburger and "Agir avec nous"; both
+  are superseded prototype elements and must not be reintroduced here. The
+  exact mega-menu presentation and transparent-header toggle remain Step 3
+  work; use the implementation plan before adding CSS or JavaScript.
 -->
-<!-- wp:group {"align":"full","className":"lpu-header","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","verticalAlignment":"center"}} -->
+<!-- wp:group {"align":"full","className":"lpu-header","layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull lpu-header">
 	<!-- wp:site-logo {"width":190,"shouldSyncIcon":false,"className":"lpu-header__logo"} /-->
-	<!-- wp:navigation {"overlayMenu":"mobile","openSubmenusOnClick":true,"showSubmenuIcon":true,"className":"lpu-header__navigation","layout":{"type":"flex","justifyContent":"center"}} /-->
+	<!-- wp:navigation {"overlayMenu":"mobile","submenuVisibility":"hover","showSubmenuIcon":true,"ariaLabel":"Navigation principale","overlayBackgroundColor":"ecru","overlayTextColor":"vert-fonce","className":"lpu-header__navigation","layout":{"type":"flex","justifyContent":"center"}} /-->
 </div>
 <!-- /wp:group -->
