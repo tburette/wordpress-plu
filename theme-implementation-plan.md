@@ -27,9 +27,9 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-14 17:10 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-14 17:55 (Europe/Paris)
 
-**Position exacte dans le plan :** Étape 3 — construire le cadre partagé : templates, header et footer — est validée. Les Étapes 0, 1, 2 et 3 sont validées. L'Étape 4 est la prochaine, mais reste explicitement différée ; aucun travail de l'Étape 4 ou de l'Étape 5 ne commence dans cette validation.
+**Position exacte dans le plan :** Étape 4 — provisionner techniquement les pages d’accueil statiques — est validée. Les Étapes 0, 1, 2, 3 et 4 sont validées. L’Étape 5 est la prochaine ; aucun pattern de section ni contenu de maquette n’a été ajouté, et la Home réseau reste réservée à l’Étape 6.
 
 _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notamment sur le socle du thème, le cadre partagé et le provisioning de contenu. Nous le conservons comme état de travail, mais nous avançons désormais systématiquement, une seule étape à la fois, avec validation avant de passer à la suivante.)_
 
@@ -43,7 +43,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### Partiellement réalisé
 
-- 2026-08-14 — Étape 3 validée après contrôle statique, vérification de la configuration multisite, inspection Gutenberg du template part `Pied de page` et inspection visuelle finale avec `web-inspector` sur le réseau, Paris, Lyon et Marseille à `1440px` et `390px`. Les quatre sites répondent en HTTP 200, le footer et son logo SVG sont visibles, les assertions de contenu passent et aucune erreur console, erreur de page ou requête échouée n'est relevée. Les contrôles clavier, pointeur, responsive et Firefox réalisés précédemment restent inclus dans cette validation. L'Étape 4 n'est pas commencée.
+- 2026-08-14 — Étape 3 validée après contrôle statique, vérification de la configuration multisite, inspection Gutenberg du template part `Pied de page` et inspection visuelle finale avec `web-inspector` sur le réseau, Paris, Lyon et Marseille à `1440px` et `390px`. Les quatre sites répondent en HTTP 200, le footer et son logo SVG sont visibles, les assertions de contenu passent et aucune erreur console, erreur de page ou requête échouée n'est relevée. Les contrôles clavier, pointeur, responsive et Firefox réalisés précédemment restent inclus dans cette validation.
 
 - 2026-08-14 — Étape 3 : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/`. Le header transparent est implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer partagé est implémenté, avec ses destinations finales volontairement différées.
 - 2026-08-14 — Prototype du menu corrigé puis validé : `submenuVisibility:"hover"` et `showSubmenuIcon:true` rendent le lien parent accessible et confient le déploiement au chevron séparé ; le rendu WordPress contient les directives natives de hover, focus et clic, sans `openSubmenusOnClick` legacy. Le header utilise une grille à logo centré, les panneaux desktop sont absolus, pleine largeur, écrus et positionnés sous la hauteur réelle du header ; le même overlay Navigation est exposé jusqu'à `1099px` pour les menus locaux longs. Le seuil a été revalidé avec les logos et libellés finaux.
@@ -57,18 +57,19 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - 2026-08-14 — Correction du template part dans Gutenberg : les classes `has-text-color has-background` manquantes ont été ajoutées au groupe, puis le logo de footer a été rendu par un bloc Image natif pointant vers l'asset SVG vertical écru. Cela évite l'écart entre le rendu serveur du front-end et l'aperçu de l'éditeur. Le template part est maintenant validé sans erreur Gutenberg ; son rendu public a été recontrôlé sur le réseau et Paris à `1440px` et `390px`, sans erreur console, page ou requête.
 - 2026-08-14 — Le provisioning de navigation a été durci sans réécriture de contenu : `navigation-sites.tsv` est maintenant réellement séparé par tabulations et `setup.sh` retrouve aussi un `wp_navigation` non publié via `--post_status=any`. La vérification d'idempotence après environnement propre reste soumise à la procédure de reset documentée dans `AGENTS.md`.
 - 2026-08-14 — Réévaluation du menu à partir des échanges validés, des règles de design, de `sections-Home.txt` et des extractions `menu Home_1440 (transparent).jpg` / `menu Ferme_1440 (fond écru).jpg`. Les maquettes fixent l'intention visuelle du header (logo centré et liens de part et d'autre, fond transparent ou écru) mais montrent encore un hamburger desktop et « Agir avec nous » ; ces deux éléments sont écartés par la décision ultérieure acceptée. « Sézane » reste une inspiration de fonctionnement du méga-menu, pas une source de contenu, de typographie ou de structure commerciale.
-- 2026-08-13 — Travaux préparatoires de l'Étape 4 présents dans le dépôt : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script. Ces travaux restent hors de l'étape courante et seront recontrôlés dans l'ordre du plan avant toute validation de l'Étape 4.
+- 2026-08-14 — Étape 4 validée comme provisioning technique uniquement : les quatre sites sélectionnent leur Page `Accueil` de slug `accueil`, avec `show_on_front=page` et `page_on_front` réglé sur l’ID trouvé ou créé (ID `3` dans la base actuellement vérifiée). Le bootstrap appelle déjà `scripts/content/setup.sh` après la création des sites ; le script de pages est idempotent, reconnaît aussi une page existante non publiée avec `--post_status=any`, et ne réécrit ni titre, ni contenu, ni statut. Les deux passages réels ont sélectionné les mêmes pages sur les quatre sites. Leur contenu reste le commentaire invisible prévu ; aucun pattern, aucune image et aucune section de maquette n’a été ajouté. Le contrat est documenté dans `scripts/content/front-pages/README.md`.
 
 ### À faire maintenant
 
-- L'Étape 4 reste volontairement non commencée, conformément à la demande actuelle.
-- Lorsqu'elle sera autorisée, elle consistera à provisionner les pages d'accueil réseau et locales, puis à les comparer aux maquettes Fanny ; elle devra rester idempotente et ne pas écraser les contenus édités.
+- L’Étape 5 — construire la bibliothèque de patterns par type de section — est la prochaine étape et n’est pas commencée.
+- L’Étape 6 — assembler la Home réseau dans Gutenberg — reste différée jusqu’après l’Étape 5 ; aucun contenu de maquette n’est injecté par le bootstrap.
 - Après intégration du contenu réel, rejouer le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent.
 - Conserver les décisions validées : méga-menu texte en colonnes uniquement, header opaque écru par défaut, variante transparente activable explicitement sur une page avec hero suffisamment contrasté, et seuil responsive `1099px` pour les libellés actuels.
 
 ### Points ouverts
 
 - Aucun élément bloquant du cadre partagé ne reste pour l'Étape 3 validée.
+- Vérifier la généricité de toute l’implémentation multisite avant la livraison : aucun `blog_id`, ID de site, ID de page, ID de navigation, ID de logo ou autre identifiant propre à un site ne doit être codé en dur. Les scripts, templates et liaisons de contenu doivent résoudre le site courant à partir de son contexte ou de données déclaratives prévues à cet effet. Tester explicitement l’ajout d’un nouveau sous-site et la suppression d’un sous-site existant — avec la seule mise à jour nécessaire des données déclaratives — puis vérifier que les autres sites et le bootstrap continuent à fonctionner sans adaptation du code. (il faudra demander pour l'ajout dans le fichiers hosts au moment de testeer l'ajout d'un nouveau sous-site)
 - Gutenberg émet encore un avertissement générique sur le contraste automatique de la couleur écru dans ses composants ; il ne produit ni bloc invalide ni défaut de rendu et reste non bloquant.
 - Décider le cache-busting des assets en développement (`Version` du thème ou `filemtime`).
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
@@ -276,7 +277,7 @@ Choisir la version de `theme.json` compatible avec la version de WordPress réel
 - Construire le style de bouton contour vert / contour blanc à partir des variables `--wp--preset--…`, sans `!important`.
 - Ajouter `:focus-visible` et `prefers-reduced-motion` dès maintenant ; le zoom discret des images ne doit pas devenir une animation obligatoire.
 - Copier les motifs SVG sous des noms ASCII stables, par exemple `motif-1-bandeau.svg`. Les référencer comme arrière-plans CSS : ils sont décoratifs, peuvent être mis en cache et ne doivent pas encombrer le contenu éditorial.
-- Conserver les logos SVG officiels dans les assets et les importer dans la médiathèque par le provisioning CLI contrôlé du thème ; WordPress n’autorise pas les SVG par défaut dans les uploads ordinaires. Ne jamais utiliser la variante écrue Lyon signalée comme erronée.
+- Conserver les logos SVG officiels dans les assets et les importer dans la médiathèque par le provisioning CLI contrôlé du thème ; WordPress n’autorise pas les SVG par défaut dans les uploads ordinaires.
 
 **Contrôle**
 
@@ -376,7 +377,7 @@ Une valeur `ref` d’un Navigation block désigne un contenu `wp_navigation` par
 
 Faire le test suivant avant de styliser le menu : créer/associer une navigation sur chacun des quatre sites, puis modifier une règle structurelle du header dans le fichier du thème. Vérifier que les quatre sites conservent leur menu local et reçoivent bien la modification partagée. Si une personnalisation de template part en base empêche cette propagation, résoudre ce choix d’architecture maintenant, pas après l’assemblage des pages.
 
-Ne pas créer ces menus uniquement à la main : pour survivre au reset de la base, ils sont recréés ou sélectionnés par le provisioning de l'Étape 4 (`scripts/content/navigation-menus/setup.sh`), qui ne réécrit jamais une navigation déjà éditée.
+Ne pas créer ces menus uniquement à la main : pour survivre au reset de la base, ils sont recréés ou sélectionnés par le provisioning de contenu du bootstrap (`scripts/content/navigation-menus/setup.sh`), qui ne réécrit jamais une navigation déjà éditée.
 
 ### 3.3 Footer
 
@@ -394,7 +395,7 @@ Chaque site affiche un logo propre, un menu propre, un header navigable au clavi
 
 ## Étape 4 — Créer les pages d’accueil statiques de façon idempotente
 
-Une Page statique par site est nécessaire pour que `post-content` puisse porter les sections. Le script doit être rejouable sans créer de doublons et sans réécrire le travail éditorial.
+Une Page statique par site est nécessaire pour que `post-content` puisse porter les sections. Le script doit être rejouable sans créer de doublons et sans réécrire le travail éditorial. Cette étape ne fournit que ce support technique : elle n’ajoute aucun pattern, aucune image et aucune section issue des maquettes.
 
 **Fichiers à créer ou modifier**
 
@@ -402,7 +403,7 @@ Une Page statique par site est nécessaire pour que `post-content` puisse porter
 - `wordpress-lpu/scripts/setup-multisite-network.sh`
 - `wordpress-lpu/README.md`
 
-**Comportement du nouveau script**
+**Comportement du provisioning**
 
 Pour chacun des quatre sites :
 
