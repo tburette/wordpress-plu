@@ -86,6 +86,61 @@ body {
 	background: var(--wp--preset--color--ecru);
 }
 
+/* An explicit page setting activates the transparent initial state. The
+ * navigation script adds .lpu-menu-open as soon as Core opens a submenu or
+ * the responsive overlay, returning the header to the opaque state. */
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	background: transparent;
+}
+
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation-item__content,
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation__submenu-icon,
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation__responsive-container-open {
+	color: var(--wp--preset--color--ecru) !important;
+}
+
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation-item__content:focus-visible,
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation__submenu-icon:focus-visible,
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
+	.wp-block-navigation__responsive-container-open:focus-visible {
+	outline-color: var(--wp--preset--color--ecru);
+}
+
+body.lpu-header-transparent .lpu-header.lpu-menu-open {
+	background: var(--wp--preset--color--ecru);
+}
+
+body.lpu-header-transparent .lpu-header.lpu-menu-open
+	.wp-block-navigation-item__content,
+body.lpu-header-transparent .lpu-header.lpu-menu-open
+	.wp-block-navigation__submenu-icon {
+	color: var(--wp--preset--color--vert-fonce) !important;
+}
+
+body.lpu-header-transparent .lpu-header
+	.wp-block-navigation__responsive-container.is-menu-open {
+	background: var(--wp--preset--color--ecru);
+	color: var(--wp--preset--color--vert-fonce);
+}
+
+body.lpu-header-transparent .lpu-header
+	.wp-block-navigation__responsive-container.is-menu-open
+	.wp-block-navigation-item__content,
+body.lpu-header-transparent .lpu-header
+	.wp-block-navigation__responsive-container.is-menu-open
+	.wp-block-navigation__submenu-icon {
+	color: var(--wp--preset--color--vert-fonce) !important;
+}
+
 .lpu-header > .wp-block-site-logo {
 	grid-column: 4 / 6;
 	grid-row: 1;
@@ -93,12 +148,20 @@ body {
 	position: relative;
 	z-index: 2;
 	margin: 0;
+	width: 190px;
+	max-width: 100%;
 }
 
 .lpu-header .wp-block-site-logo img {
 	display: block;
-	max-height: 4rem;
-	width: auto;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+.lpu-header .wp-block-site-logo > a {
+	display: block;
+	width: 100%;
 }
 
 .lpu-header .wp-block-navigation {
@@ -173,6 +236,18 @@ body {
 		column-gap: clamp(0.25rem, 1vw, 1rem);
 	}
 
+	/* The open panel must use the header, rather than Core Navigation's
+	 * internal containers, as its containing block. Otherwise top:100%
+	 * starts below the navigation row and overlaps the logo baseline. */
+	.lpu-header .wp-block-navigation,
+	.lpu-header .wp-block-navigation__responsive-container,
+	.lpu-header .wp-block-navigation__responsive-close,
+	.lpu-header .wp-block-navigation__responsive-dialog,
+	.lpu-header .wp-block-navigation__responsive-container-content,
+	.lpu-header .wp-block-navigation__container {
+		position: static;
+	}
+
 	.lpu-header .wp-block-navigation__container > .wp-block-navigation-item {
 		min-width: 0;
 	}
@@ -209,14 +284,40 @@ body {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 		gap: 0.75rem 1.5rem;
-		width: 100vw;
-		min-width: 0;
+		/* Core Navigation's open-state rule has higher specificity for these
+		 * two properties; keep the contextual panel genuinely full-width. */
+		width: 100vw !important;
+		min-width: 0 !important;
 		height: auto;
 		transform: translateX(-50%);
 		padding: 1.5rem clamp(1rem, 5vw, 4rem) 2rem;
-		background: var(--wp--preset--color--ecru);
+		background: var(--wp--preset--color--ecru) !important;
 		border: 0;
 		color: var(--wp--preset--color--vert-fonce);
+	}
+
+	/* Keep the active panel hit-testable while the pointer crosses the empty
+	 * part of the header on its way from a parent item to the panel. The
+	 * navigation script removes this bridge when another parent is intentionally
+	 * entered or after the pointer has left the whole menu for a short grace
+	 * period. */
+	.lpu-header .wp-block-navigation__container >
+		.wp-block-navigation-submenu.lpu-hover-bridge-open >
+		.wp-block-navigation__submenu-container {
+		visibility: visible !important;
+		opacity: 1 !important;
+		pointer-events: auto !important;
+	}
+
+	/* Do not switch the panel for a parent that the pointer only crosses on
+	 * its way to the currently active panel. The navigation script removes
+	 * this pending state after the short hover-intent delay. */
+	.lpu-header .wp-block-navigation__container >
+		.wp-block-navigation-submenu.lpu-hover-pending >
+		.wp-block-navigation__submenu-container {
+		visibility: hidden !important;
+		opacity: 0 !important;
+		pointer-events: none !important;
 	}
 
 	.lpu-header .wp-block-navigation__container >
@@ -233,6 +334,20 @@ body {
 		font-size: 1rem;
 		line-height: 1.35;
 		text-transform: none;
+	}
+
+	/* Escape must win over the browser's :hover state until the pointer
+	 * leaves and re-enters the parent item. */
+	.lpu-header .wp-block-navigation__container >
+		.wp-block-navigation-submenu.lpu-submenu-escape-closed:hover >
+		.wp-block-navigation__submenu-container {
+		visibility: hidden !important;
+		overflow: hidden !important;
+		opacity: 0 !important;
+		width: 0 !important;
+		min-width: 0 !important;
+		height: 0 !important;
+		pointer-events: none;
 	}
 }
 
@@ -260,8 +375,22 @@ body {
 	}
 
 	.lpu-header .wp-block-navigation__responsive-container-open {
+		box-sizing: border-box;
+		width: 2rem;
+		min-width: 2rem;
+		height: 2rem;
+		padding: 0;
 		display: flex;
 		margin-inline-start: auto;
+		color: var(--wp--preset--color--vert-fonce);
+		background:
+			linear-gradient(currentColor, currentColor) 0 20% / 100% 2px no-repeat,
+			linear-gradient(currentColor, currentColor) 0 50% / 100% 2px no-repeat,
+			linear-gradient(currentColor, currentColor) 0 80% / 100% 2px no-repeat;
+	}
+
+	.lpu-header .wp-block-navigation__responsive-container-open svg {
+		display: none;
 	}
 
 	.lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open) {

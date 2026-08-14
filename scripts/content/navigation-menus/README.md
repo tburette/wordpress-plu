@@ -46,12 +46,12 @@ sous-menu `Nos Fermes`.
 
 ## Destinations présentes dans le prototype
 
-Les ancres utilisées dans `network.html` et `local.html` servent actuellement
-à tester la structure du menu. Elles ne constituent pas toutes les URLs finales
-du site.
+Les ancres encore utilisées dans `local.html` et pour la destination de la
+rubrique parente servent actuellement à tester la structure du menu. Elles ne
+constituent pas toutes les URLs finales du site.
 
-- les destinations de `Le Projet` et `Contact` doivent encore être choisies
-  entre pages dédiées et ancres de la Home réseau ;
+- `Le Projet` et `Contact` utilisent provisoirement `/`, c'est-à-dire la page
+  d'accueil du site courant, jusqu'à la création des pages dédiées ;
 - les liens des fermes utilisent les hostnames `*.lepaysanurbain.test:8888`
   propres à `wp-env` ;
 - les ancres des menus locaux correspondent aux identifiants de sections du
@@ -90,5 +90,5 @@ et son chevron ouvre le panneau. Il ne faut pas redéfinir cette présentation
 dans les fragments de contenu.
 
 Le bloc Navigation natif doit être testé avant d'ajouter du JavaScript. Le
-fichier `assets/js/header.js` ne doit être créé que si un manque précis du bloc
-Navigation est démontré.
+complément démontré du thème est limité à `assets/js/navigation.js` et ne
+remplace pas le fonctionnement natif du bloc.

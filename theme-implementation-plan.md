@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-14 08:35 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-14 12:25 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 3 — construire le cadre partagé : templates, header et footer. Les Étapes 0, 1 et 2 sont validées. L'Étape 3 est la seule étape courante ; aucun travail de l'Étape 4 ou de l'Étape 5 ne commencera avant sa validation.
 
@@ -43,31 +43,33 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 ### Partiellement réalisé
 
-- 2026-08-14 — Étape 3 (audit en cours) : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Aucun `custom_logo` n'est encore configuré ; le footer reste un socle minimal avec un seul paragraphe. Le logo propre à chaque site, le header transparent, le footer complet et les validations visuelles/accessibilité restent à traiter.
-- 2026-08-14 — Prototype du menu corrigé : `submenuVisibility:"hover"` et `showSubmenuIcon:true` rendent le lien parent accessible et confient le déploiement au chevron séparé ; le rendu WordPress contient les directives natives de hover, focus et clic, sans `openSubmenusOnClick` legacy ni JavaScript du thème. Le header utilise une grille à logo centré, les panneaux desktop sont absolus et pleine largeur, et le même overlay Navigation est exposé jusqu'à `1099px` pour les menus locaux longs. Le seuil reste à confirmer visuellement avec les logos finaux.
-- 2026-08-14 — Contrôle structurel du menu passé sur les quatre sites : réseau `1` rubrique à sous-menu et `1` chevron ; Paris, Lyon et Marseille `4` rubriques et `4` chevrons ; tous portent `Navigation principale` et aucun ne rend l'ancien mode `open-on-click`. Le contrôle d'interaction clavier/pointeur et le rendu aux tailles desktop/tablette/mobile restent à faire.
+- 2026-08-14 — Étape 3 (audit en cours) : `front-page.html` et `page.html` ont le cadre `header`/`main`/`post-content`/`footer`, `index.html` utilise un Query Loop dans un `main` sémantique, le header contient un seul bloc Navigation sans `ref` codé en dur, et la liaison vers le menu local fonctionne sur les quatre sites. Les quatre `custom_logo` sont provisionnés par `scripts/content/site-logos/` ; le footer reste un socle minimal avec un seul paragraphe. Le header transparent est maintenant implémenté comme réglage explicite de page pour les variantes écrues disponibles ; le footer complet reste à traiter.
+- 2026-08-14 — Prototype du menu corrigé puis validé : `submenuVisibility:"hover"` et `showSubmenuIcon:true` rendent le lien parent accessible et confient le déploiement au chevron séparé ; le rendu WordPress contient les directives natives de hover, focus et clic, sans `openSubmenusOnClick` legacy. Le header utilise une grille à logo centré, les panneaux desktop sont absolus, pleine largeur, écrus et positionnés sous la hauteur réelle du header ; le même overlay Navigation est exposé jusqu'à `1099px` pour les menus locaux longs. Le seuil a été revalidé avec les logos et libellés finaux.
+- 2026-08-14 — Inspection visuelle et fonctionnelle finale réalisée avec Playwright via `web-inspector` sur les quatre sites à `1440px`, à la frontière `1100/1099px`, puis sur l'overlay Paris à `390px`. Le panneau réseau et les panneaux locaux restent écrus, pleine largeur et répartis en colonnes ; le hamburger à trois barres n'apparaît qu'à partir de `1099px` ; les sous-rubriques mobiles ne dépendent pas du survol. L'ouverture au clavier par Entrée, la fermeture Échap, le clic extérieur mobile et le retour du focus sont validés. Les captures finales n'ont aucune erreur console, erreur de page ou requête échouée. Le survol desktop ajoute un maintien de `500ms` pendant la traversée entre parent et panneau, ainsi qu'un délai d'intention de `150ms` avant de remplacer un panneau actif : il supprime le clignotement dans le vide du header et évite qu'un simple passage sur une autre rubrique change le contenu. La variante transparente réseau et Paris a également été testée temporairement : le logo écru est chargé à l'état initial et le header repasse vert sur écru à l'ouverture du menu.
+- 2026-08-14 — Les quatre logotypes horizontaux verts avec baseline sont provisionnés par `scripts/content/site-logos/`, sélectionnés comme `custom_logo` sur les quatre sites et vérifiés visuellement à `1440px` ; le logo Paris est également vérifié sur Pixel 5. Les variantes écrues valides du réseau, de Paris et de Marseille sont présentes dans les assets du thème pour l'état transparent. Le fichier écru Lyon erroné n'est pas utilisé ; Lyon reste donc limité à l'état opaque tant qu'un fichier écru corrigé n'est pas livré. Les captures Lyon et Marseille chargent leurs déclinaisons territoriales sans erreur.
+- 2026-08-14 — Contrôle structurel du menu passé sur les quatre sites : réseau `1` rubrique à sous-menu et `1` chevron ; Paris, Lyon et Marseille `4` rubriques et `4` chevrons ; tous portent `Navigation principale` et aucun ne rend l'ancien mode `open-on-click`. L'interaction du réseau et de Paris est validée ; les captures fermées de Lyon et Marseille confirment le même rendu partagé aux tailles desktop et mobile.
 - 2026-08-14 — Le provisioning de navigation a été durci sans réécriture de contenu : `navigation-sites.tsv` est maintenant réellement séparé par tabulations et `setup.sh` retrouve aussi un `wp_navigation` non publié via `--post_status=any`. La vérification d'idempotence après environnement propre reste soumise à la procédure de reset documentée dans `AGENTS.md`.
 - 2026-08-14 — Réévaluation du menu à partir des échanges validés, des règles de design, de `sections-Home.txt` et des extractions `menu Home_1440 (transparent).jpg` / `menu Ferme_1440 (fond écru).jpg`. Les maquettes fixent l'intention visuelle du header (logo centré et liens de part et d'autre, fond transparent ou écru) mais montrent encore un hamburger desktop et « Agir avec nous » ; ces deux éléments sont écartés par la décision ultérieure acceptée. « Sézane » reste une inspiration de fonctionnement du méga-menu, pas une source de contenu, de typographie ou de structure commerciale.
 - 2026-08-13 — Travaux préparatoires de l'Étape 4 présents dans le dépôt : pages statiques `Accueil`, navigations et réglages associés provisionnés par des scripts idempotents dont les données sont co-localisées avec chaque script. Ces travaux restent hors de l'étape courante et seront recontrôlés dans l'ordre du plan avant toute validation de l'Étape 4.
 
 ### À faire maintenant
 
-- Valider visuellement le prototype du contrat du menu : desktop sans hamburger, logo centré, liens de part et d'autre, méga-menu comme version déployée de la rubrique active ; hamburger uniquement lorsque la navigation desktop ne tient plus, sur tablette et mobile.
-- Vérifier au clavier et au pointeur le comportement fourni par le bloc Navigation cœur : ouverture au clic du chevron, ouverture au focus, ouverture au survol comme accélérateur visuel, maintien du panneau entre déclencheur et panneau, un seul panneau ouvert, fermeture par Échap et clic extérieur, retour du focus et accès au lien parent. Ne pas ajouter de JavaScript avant d'avoir isolé une lacune précise.
-- Vérifier visuellement le méga-menu implémenté : panneau pleine largeur sous le header, fond écru continu, colonnes lisibles, hiérarchie claire, animation courte et non indispensable. La composition exacte des panneaux propres au Paysan Urbain (texte seul ou éléments visuels) reste à arrêter avant d'inventer des cartes.
-- Vérifier visuellement le cadre des templates et le rendu du header/footer sur les quatre sites ; le test technique des menus locaux est passé, mais le test clavier, mobile et tablette reste à faire.
-- Configurer ou faire configurer un logo propre à chaque site via le bloc Site Logo et la médiathèque, avec des PNG compatibles ; aucun logo n'est actuellement disponible dans la base locale et aucun choix de fichier ne sera inventé.
+- Le menu et le header sont validés sur les quatre sites : le panneau desktop reste sous la rangée du logo, utilise le fond écru normal et ne recouvre plus sa baseline ; le seuil `1099px` est confirmé avec les libellés finaux.
+- Rejouer après intégration du contenu réel le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent : ouverture au clic du chevron, au focus et au survol, maintien vers le panneau, un seul panneau, fermeture par Échap et clic extérieur, retour du focus et accès au lien parent.
+- Conserver le méga-menu texte : panneau pleine largeur sous le header, fond écru continu et colonnes lisibles ; aucune carte ni image n'est prévue dans le panneau.
+- Vérifier le cadre des templates après ajout du contenu réel ; le réseau et Paris ont été inspectés aux tailles desktop/tablette/mobile, et Lyon/Marseille sur les états fermés desktop/mobile. Le footer reste à construire avant validation de l'Étape 3.
+- Fournir une variante écrue Lyon corrigée avant d'activer le header transparent sur le site Lyon ; la variante verte Lyon actuelle est correcte pour le header opaque.
 - Décider puis construire le footer partagé : colonnes de liens, informations légales, réseaux sociaux et appel à l'action ; le wording réseau et ferme ainsi que les destinations doivent être confirmés avant l'édition du template.
-- Conserver le header opaque écru par défaut ; prévoir une variante transparente uniquement lorsqu'elle est explicitement activée sur une page avec un hero suffisamment contrasté, puis vérifier que le bloc Navigation cœur couvre l'ouverture mobile, les sous-menus, le clavier et le focus. Ne créer `assets/js/header.js` que si un manque précis est démontré.
+- Conserver le header opaque écru par défaut ; la variante transparente est activable explicitement sur une page avec un hero suffisamment contrasté, utilise le logo écru officiel disponible et repasse à l'écru/vert dès l'ouverture du menu. Le complément démontré est limité à `assets/js/navigation.js` : synchronisation logo/header, maintien temporaire du méga-menu pendant la trajectoire du pointeur, délai d'intention avant changement de rubrique, fermeture Échap malgré `:hover` et clic extérieur de la marge de l'overlay.
 - Après ces validations, valider l'Étape 3 avant de passer au provisioning de l'Étape 4 ; ne pas commencer les patterns de l'Étape 5.
 
 ### Points ouverts
 
-- Décider le cache-busting du CSS en développement (`Version` du thème ou `filemtime`).
+- Décider le cache-busting des assets en développement (`Version` du thème ou `filemtime`).
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
-- Définir l'activation éditoriale de la variante transparente sur hero et les destinations de « Le Projet » et « Contact » pendant la construction.
-- Revalider le seuil responsive `1099px` avec les logos territoriaux, les libellés définitifs et les largeurs réellement disponibles ; l'implémentation actuelle expose l'overlay du même bloc Navigation à titre de prototype.
-- Arrêter la composition visuelle des méga-menus du réseau et des fermes ; aucune carte produit ni copie de la mise en page commerciale de Sézane ne doit être introduite par défaut.
+- Remplacer les URLs provisoires `/` de « Le Projet » et « Contact » lorsque les pages dédiées existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
+- Le seuil responsive `1099px` a été revalidé après les derniers ajustements avec les logos territoriaux, les libellés définitifs et les largeurs réellement disponibles ; le reprendre si ces éléments changent.
+- La composition visuelle des méga-menus est arrêtée : texte en colonnes uniquement ; aucune carte produit ni copie de la mise en page commerciale de Sézane ne doit être introduite.
 
  
 
@@ -98,7 +100,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - Les couleurs, tailles et familles doivent venir de `theme.json`, jamais de valeurs arbitraires ajoutées dans les patterns.
 - Le CSS sert aux traitements que `theme.json` ne sait pas décrire proprement.
 - Le JavaScript est une exception. Le bloc Navigation devrait couvrir une grande partie du menu responsive, du clavier et des attributs ARIA ; ne lui ajouter du JS que lorsqu’un essai démontre un manque précis.
-- Si un JavaScript est démontré nécessaire pour le premier jalon, conserver `assets/js/header.js` comme JavaScript vanilla directement chargeable. Ne pas introduire de build npm uniquement pour une cinquantaine de lignes sans imports. Si un build devient nécessaire plus tard, l’ajouter au `package.json` existant de `wordpress-lpu/`, pas dans un second projet npm imbriqué.
+- Si un JavaScript est démontré nécessaire pour le premier jalon, conserver `assets/js/navigation.js` comme JavaScript vanilla directement chargeable. Ne pas introduire de build npm uniquement pour une cinquantaine de lignes sans imports. Si un build devient nécessaire plus tard, l’ajouter au `package.json` existant de `wordpress-lpu/`, pas dans un second projet npm imbriqué.
 - Un environnement wordpress de développement existe via wp-env (à utiliser via `npm run env:status`, `npm run env:start`,..). Cet environnement peut être supprimé et recréé à tout moment. Les fichiers de l'installation wordpress de cet environnement ainsi que la base de données peuvent disparaitre. Il ne faut donc pas ajouter des données directement dans le répertoire de l'environnement wordpress ou la base de donnée.
 - Il existe une installaton wordpress multisite séparée de test disponible en ligne. Lien : PAS DIVULGÉ POUR LE MOMENT. Il faudra pouvoir installer le site créé sur cette autre installation wordpress (pour pouvoir partager le nouveau site avec le client avant la mise en production).
 
@@ -158,7 +160,7 @@ wordpress-lpu/themes/lepaysanurbain/
 │   ├── css/theme.css
 │   ├── fonts/
 │   ├── images/
-│   └── js/header.js
+│   └── js/navigation.js
 ├── parts/
 │   ├── header.html
 │   └── footer.html
@@ -267,7 +269,7 @@ Choisir la version de `theme.json` compatible avec la version de WordPress réel
 - Construire le style de bouton contour vert / contour blanc à partir des variables `--wp--preset--…`, sans `!important`.
 - Ajouter `:focus-visible` et `prefers-reduced-motion` dès maintenant ; le zoom discret des images ne doit pas devenir une animation obligatoire.
 - Copier les motifs SVG sous des noms ASCII stables, par exemple `motif-1-bandeau.svg`. Les référencer comme arrière-plans CSS : ils sont décoratifs, peuvent être mis en cache et ne doivent pas encombrer le contenu éditorial.
-- Conserver les logos SVG dans les assets si nécessaire, mais utiliser des PNG compatibles dans la médiathèque pour le bloc Site Logo. WordPress n’autorise pas les SVG par défaut dans la médiathèque.
+- Conserver les logos SVG officiels dans les assets et les importer dans la médiathèque par le provisioning CLI contrôlé du thème ; WordPress n’autorise pas les SVG par défaut dans les uploads ordinaires. Ne jamais utiliser la variante écrue Lyon signalée comme erronée.
 
 **Contrôle**
 
@@ -287,7 +289,7 @@ Le template est le cadre ; le contenu reste dans les Pages. Garder les templates
 - `wordpress-lpu/themes/lepaysanurbain/parts/header.html`
 - `wordpress-lpu/themes/lepaysanurbain/parts/footer.html`
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
-- éventuellement `wordpress-lpu/themes/lepaysanurbain/assets/js/header.js`
+- `wordpress-lpu/themes/lepaysanurbain/assets/js/navigation.js`
 - `wordpress-lpu/scripts/content/navigation-menus/README.md`
 - `wordpress-lpu/README.md` pour la documentation de l'architecture
 
@@ -341,7 +343,7 @@ possible au clic et au focus, avec le survol comme raccourci desktop éventuel.
 
 #### Contrat de contenu
 
-Le menu réseau contient actuellement `Le Projet` (lien direct), `Nos Fermes` (sous-menu Lyon, Marseille, Paris) et `Contact` (lien direct). « Agir avec nous » est volontairement absent, même s'il figure sur la capture de maquette. Les destinations de « Le Projet » et « Contact » restent ouvertes : page dédiée ou ancre de la Home réseau ; le prototype ne doit pas mélanger ces logiques sans décision.
+Le menu réseau contient actuellement `Le Projet` (lien direct), `Nos Fermes` (sous-menu Lyon, Marseille, Paris) et `Contact` (lien direct). « Agir avec nous » est volontairement absent, même s'il figure sur la capture de maquette. Les destinations de « Le Projet » et « Contact » utilisent provisoirement `/`, la page d'accueil du site courant ; elles seront remplacées par les URLs des pages dédiées lorsqu'elles existeront.
 
 Les menus de ferme utilisent les rubriques `Qui sommes-nous`, `Nos Activités`, `Nos Cultures` et `Nos Projets & Initiatives` comme entrées à sous-rubriques. `Infos pratiques` reste un lien direct, malgré le détail de ses informations (accès, horaires, contact). Les menus sont propres à chaque site, avec une même structure de comportement et de style.
 
@@ -358,7 +360,7 @@ Lorsque la navigation desktop ne tient plus confortablement, le même bloc Navig
 3. Réaliser un essai de disposition centrée : logo au centre et navigation de part et d'autre, sans ajouter « Agir avec nous » ni un faux lien pour équilibrer la composition.
 4. Vérifier que le sous-menu du bloc Navigation peut être présenté comme un méga-menu contextuel sans créer un second arbre de navigation. Le prototype CSS utilise un panneau absolu pleine largeur et des colonnes textuelles ; vérifier les limites réelles du core pour la largeur, le maintien ouvert et la transition transparent/opaque.
 5. Conserver un seul bloc Navigation desktop et un seul overlay mobile. Ne créer deux blocs Navigation que si le prototype démontre une impossibilité réelle ; ce n’est pas l’architecture de départ.
-6. Ajouter `assets/js/header.js` seulement si le prototype montre que le Navigation block ne couvre pas une exigence précise. Le script devra rester progressif : Échap, clic extérieur, focus, état ARIA et navigation sans souris ; il ne devra pas remplacer le fonctionnement natif lorsqu'il suffit.
+6. Ajouter uniquement le complément démontré `assets/js/navigation.js` lorsque le Navigation block ne couvre pas une exigence précise. Le script reste progressif : il relaie la fermeture Échap malgré l'état CSS `:hover`, ferme la marge extérieure de l'overlay mobile et réutilise les contrôles/focus du bloc cœur ; il ne remplace pas son fonctionnement natif.
 
 **Attention aux menus multisite**
 
@@ -545,9 +547,9 @@ Documenter : démarrage de l’environnement, activation du thème, provisioning
 
 ## Points à traiter pendant l’exécution
 
-1. Les destinations de « Le Projet » et « Contact » seront décidées pendant l’assemblage : pages dédiées ou ancres de la Home réseau.
+1. Les destinations de « Le Projet » et « Contact » utilisent provisoirement `/` ; elles seront remplacées lorsque les pages dédiées existeront.
 2. Les tailles `contentSize` et `wideSize` seront ajustées après comparaison avec la maquette.
-3. Le détail de l’implémentation du header transparent (variante de logo, classe ou réglage éditorial, comportement à l’ouverture du menu) sera arrêté pendant le prototype du header.
-4. La composition interne des méga-menus (colonnes textuelles seules ou ajout d'éléments visuels propres au Paysan Urbain) sera arrêtée après un premier essai du bloc Navigation ; les cartes de produits de Sézane ne sont pas une solution par défaut.
+3. Le header transparent est implémenté par la métadonnée de page `lpu_header_transparent`, la classe `lpu-header-transparent`, les variantes écrues officielles disponibles et le retour automatique à l'état opaque lors de l'ouverture du menu ; Lyon attend son fichier écru corrigé.
+4. La composition interne des méga-menus est arrêtée : colonnes textuelles seules, sans ajout d'éléments visuels ; les cartes de produits de Sézane sont exclues.
 
 L’architecture de départ du menu est fixée pour le prototype : une seule barre de header et un seul bloc Navigation par site, avec des contenus de menu propres à chaque site.

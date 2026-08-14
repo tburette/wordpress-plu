@@ -10,6 +10,7 @@ set -euo pipefail
 # reset. Each provisioning script keeps its input files next to itself.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
+bash "${script_dir}/site-logos/setup.sh"
 bash "${script_dir}/front-pages/setup.sh"
 bash "${script_dir}/navigation-menus/setup.sh"
 bash "${script_dir}/test-page/setup.sh"
