@@ -28,6 +28,18 @@ npm run env:test-page:setup
 
 See [`test-page/README.md`](test-page/README.md) for the page details.
 
+The `patterns-test-page/` script is a separate developer fixture for reviewing
+the sections from Fanny's site design in one published page. It assembles the
+current Step 5 pattern definitions from WordPress's active theme registry, so
+it does not duplicate their markup. Run it explicitly with:
+
+```sh
+npm run env:patterns-test-page:setup
+```
+
+See [`patterns-test-page/README.md`](patterns-test-page/README.md) for its
+managed-page contract and URL.
+
 The `navigation-menus/` directory contains the reproducible menu data for the
 network site and the three farm sites. Its README documents the relationship
 between those files, the shared header, the site-local `wp_navigation` posts,

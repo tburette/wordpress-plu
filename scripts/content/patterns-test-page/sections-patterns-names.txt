@@ -1,0 +1,9 @@
+# Pattern names are read from the active theme's WordPress pattern registry.
+lepaysanurbain/hero
+lepaysanurbain/text-image
+lepaysanurbain/cards
+lepaysanurbain/network-farm-selector
+lepaysanurbain/cards
+lepaysanurbain/columns
+lepaysanurbain/text-image-motif
+lepaysanurbain/graphic-band
