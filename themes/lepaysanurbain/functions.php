@@ -50,6 +50,61 @@ function lpu_enqueue_navigation_script() {
 add_action( 'wp_enqueue_scripts', 'lpu_enqueue_navigation_script' );
 
 /**
+ * Return a stable key for the current site in this subdomain multisite.
+ *
+ * Blog IDs are installation-specific and can change when the network is
+ * recreated. The project topology keeps each farm under the network host, so
+ * the subdomain is a stable site identity across fresh installations.
+ *
+ * @return string
+ */
+function lpu_get_current_site_key() {
+	if ( is_main_site() ) {
+		return 'network';
+	}
+
+	$site_host    = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
+	$network_host = strtolower( (string) wp_parse_url( network_home_url(), PHP_URL_HOST ) );
+	$suffix       = '.' . $network_host;
+
+	if (
+		'' !== $network_host
+		&& strlen( $site_host ) > strlen( $suffix )
+		&& 0 === substr_compare( $site_host, $suffix, -strlen( $suffix ) )
+	) {
+		return substr( $site_host, 0, -strlen( $suffix ) );
+	}
+
+	return $site_host;
+}
+
+/**
+ * Return configuration keyed by the stable current-site identity.
+ *
+ * Keep site-specific theme settings here rather than scattering blog-ID
+ * checks through the theme. New settings can be added to a site's array as
+ * the multisite grows.
+ *
+ * @return array<string, array<string, string>>
+ */
+function lpu_get_current_site_config() {
+	$config = array(
+		'network'   => array(
+			'transparent_logo_file' => 'network-horizontal-ecru-baseline.svg',
+		),
+		'paris'     => array(
+			'transparent_logo_file' => 'paris-horizontal-ecru-baseline.svg',
+		),
+		'lyon'      => array(),
+		'marseille' => array(
+			'transparent_logo_file' => 'marseille-horizontal-ecru-baseline.svg',
+		),
+	);
+
+	return $config[ lpu_get_current_site_key() ] ?? array();
+}
+
+/**
  * Return the official horizontal écru logo available for the current site.
  * Lyon intentionally has no entry until the incorrect delivered source is
  * replaced by a correct territorial variant.
@@ -57,16 +112,9 @@ add_action( 'wp_enqueue_scripts', 'lpu_enqueue_navigation_script' );
  * @return string
  */
 function lpu_transparent_logo_file() {
-	if ( is_main_site() ) {
-		return 'network-horizontal-ecru-baseline.svg';
-	}
+	$config = lpu_get_current_site_config();
 
-	$files = array(
-		2 => 'paris-horizontal-ecru-baseline.svg',
-		4 => 'marseille-horizontal-ecru-baseline.svg',
-	);
-
-	return $files[ get_current_blog_id() ] ?? '';
+	return $config['transparent_logo_file'] ?? '';
 }
 
 /**
@@ -288,10 +336,36 @@ function lpu_allow_cli_svg_filetype( $data, $file, $filename, $mimes, $real_mime
 add_filter( 'wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5 );
 
 /**
+ * Count the direct navigation items in a serialized Navigation post.
+ *
+ * @param string $navigation_content Serialized Navigation block content.
+ * @return int
+ */
+function lpu_get_navigation_item_count( $navigation_content ) {
+	$count = 0;
+
+	foreach ( parse_blocks( $navigation_content ) as $block ) {
+		if (
+			in_array(
+				$block['blockName'] ?? '',
+				array( 'core/navigation-link', 'core/navigation-submenu' ),
+				true
+			)
+		) {
+			$count++;
+		}
+	}
+
+	return $count;
+}
+
+/**
  * Bind a shared Navigation block to the navigation selected for the current
  * site. Navigation posts are site-local in a multisite network, so a numeric
  * ref cannot be committed to a shared template part. The header and footer
  * use separate site-local Navigation posts, identified by their class names.
+ * Unclassified Navigation blocks are intentionally left untouched so inline
+ * content navigations cannot be hijacked by the shared menus.
  *
  * @param array         $parsed_block The block being prepared for rendering.
  * @param array         $source_block The original parsed block.
@@ -311,9 +385,14 @@ function lpu_bind_site_navigation( $parsed_block, $source_block, $parent_block )
 		'/\s+/',
 		trim( (string) ( $parsed_block['attrs']['className'] ?? '' ) )
 	);
-	$option_name = in_array( 'lpu-footer-navigation', $classes, true )
-		? 'lpu_footer_navigation_id'
-		: 'lpu_navigation_id';
+	$is_footer_navigation = in_array( 'lpu-footer-navigation', $classes, true );
+	$is_header_navigation = in_array( 'lpu-header__navigation', $classes, true );
+
+	if ( ! $is_footer_navigation && ! $is_header_navigation ) {
+		return $parsed_block;
+	}
+
+	$option_name   = $is_footer_navigation ? 'lpu_footer_navigation_id' : 'lpu_navigation_id';
 	$navigation_id = absint( get_option( $option_name, 0 ) );
 	if ( ! $navigation_id ) {
 		return $parsed_block;
@@ -325,6 +404,17 @@ function lpu_bind_site_navigation( $parsed_block, $source_block, $parent_block )
 	}
 
 	$parsed_block['attrs']['ref'] = $navigation_id;
+
+	if ( $is_header_navigation ) {
+		$top_level_item_count = lpu_get_navigation_item_count( $navigation->post_content );
+
+		if ( ! in_array( $top_level_item_count, array( 3, 5 ), true ) ) {
+			$parsed_block['attrs']['className'] = trim(
+				(string) ( $parsed_block['attrs']['className'] ?? '' )
+				. ' lpu-navigation--unsupported-count'
+			);
+		}
+	}
 
 	return $parsed_block;
 }

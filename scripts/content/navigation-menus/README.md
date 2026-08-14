@@ -40,6 +40,19 @@ Les menus de ferme contiennent :
 - `Nos Projets & Initiatives` avec quatre sous-rubriques ;
 - `Infos pratiques` comme lien direct.
 
+## Contrat de composition du header desktop
+
+La grille du header prend en charge les formes de menu actuellement validées :
+3 entrées de premier niveau pour le site réseau et 5 entrées de premier niveau
+pour chaque ferme. Le thème compte les blocs directs du `wp_navigation` au
+rendu. Si un menu édité contient un autre nombre, il ajoute la classe
+`lpu-navigation--unsupported-count` et expose le même overlay responsive que
+sur tablette/mobile, y compris sur desktop. Cela évite qu’un nouvel item soit
+placé automatiquement sur une ligne inattendue par CSS Grid.
+
+Si la structure éditoriale évolue durablement, il faudra valider une nouvelle
+composition du header avant de modifier cette liste de formes supportées.
+
 « Agir avec nous » n'est pas une entrée de menu. Le sélecteur visuel des
 fermes sur la Home réseau est une section de contenu indépendante du
 sous-menu `Nos Fermes`.

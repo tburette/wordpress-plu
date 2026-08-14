@@ -59,6 +59,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 ### À faire maintenant
 
 - Le menu et le header sont validés sur les quatre sites : le panneau desktop reste sous la rangée du logo, utilise le fond écru normal et ne recouvre plus sa baseline ; le seuil `1099px` est confirmé avec les libellés finaux.
+- La composition desktop prend en charge explicitement les menus réseau à 3 entrées et ferme à 5 entrées. Toute autre quantité d’entrées de premier niveau bascule vers l’overlay responsive natif, afin qu’une modification éditoriale ne crée pas silencieusement une nouvelle ligne dans la grille.
 - Rejouer après intégration du contenu réel le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent : ouverture au clic du chevron, au focus et au survol, maintien vers le panneau, un seul panneau, fermeture par Échap et clic extérieur, retour du focus et accès au lien parent.
 - Conserver le méga-menu texte : panneau pleine largeur sous le header, fond écru continu et colonnes lisibles ; aucune carte ni image n'est prévue dans le panneau.
 - Vérifier le cadre des templates après ajout du contenu réel ; le réseau et Paris ont été inspectés aux tailles desktop/tablette/mobile, et Lyon/Marseille sur les états fermés desktop/mobile. Le footer partagé est maintenant intégré et vérifié sur les quatre sites ; les destinations finales restent à injecter.
@@ -73,6 +74,8 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
 - Remplacer les URLs provisoires `/` de « Le Projet », « Contact » et des liens de rubriques, légaux et réseaux sociaux du footer lorsque les pages et comptes dédiés existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
 - Le seuil responsive `1099px` a été revalidé après les derniers ajustements avec les logos territoriaux, les libellés définitifs et les largeurs réellement disponibles ; le reprendre si ces éléments changent.
+- Les réglages spécifiques au site dans le thème sont indexés par une clé dérivée du sous-domaine (`network`, `paris`, `lyon`, `marseille`), et non par le `blog_id` attribué par l’installation.
+- Le remplacement du logo écru transparent reste différé lorsque l’image opaque fournit un `srcset` : les logos SVG actuellement provisionnés n’en rendent pas, mais cette variante devra être reprise si des logos raster ou responsive sont introduits.
 - La composition visuelle des méga-menus est arrêtée : texte en colonnes uniquement ; aucune carte produit ni copie de la mise en page commerciale de Sézane ne doit être introduite.
 
  

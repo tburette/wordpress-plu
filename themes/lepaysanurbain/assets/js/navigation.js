@@ -216,10 +216,6 @@
 
 		cancelHoverBridgeTimer();
 
-		if ( hoverBridgeSubmenu && hoverBridgeSubmenu !== submenu ) {
-			releaseHoverBridge( hoverBridgeSubmenu );
-		}
-
 		hoverBridgeSubmenu = submenu;
 		submenu.classList.add( hoverBridgeClass );
 		hoverBridgeTimer = window.setTimeout( function () {

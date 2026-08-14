@@ -270,6 +270,51 @@ body.lpu-header-transparent .lpu-header
 		grid-column: 8;
 	}
 
+	/* The centered desktop grid supports the three-item network menu and the
+	 * five-item farm menus. If an editor changes that top-level count, PHP adds
+	 * this class and the same Core responsive overlay becomes the safe desktop
+	 * fallback instead of letting grid auto-placement create another row. */
+	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count {
+		grid-column: 7 / 9;
+		justify-self: end;
+		width: auto;
+		margin: 0;
+	}
+
+	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
+		.wp-block-navigation__responsive-container-open {
+		box-sizing: border-box;
+		display: flex !important;
+		width: 2rem;
+		min-width: 2rem;
+		height: 2rem;
+		margin: 0;
+		padding: 0;
+		color: var(--wp--preset--color--vert-fonce);
+		background:
+			linear-gradient(currentColor, currentColor) 0 20% / 100% 2px no-repeat,
+			linear-gradient(currentColor, currentColor) 0 50% / 100% 2px no-repeat,
+			linear-gradient(currentColor, currentColor) 0 80% / 100% 2px no-repeat;
+	}
+
+	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
+		.wp-block-navigation__responsive-container-open svg {
+		display: none;
+	}
+
+	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
+		.wp-block-navigation__responsive-container:not(.is-menu-open) {
+		display: none;
+	}
+
+	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
+		.wp-block-navigation__responsive-container.is-menu-open {
+		position: fixed;
+		inset: 0;
+		z-index: 100000;
+		overflow-y: auto;
+	}
+
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu {
 		position: static;
