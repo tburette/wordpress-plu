@@ -62,9 +62,11 @@ The `afterStart` lifecycle script in `.wp-env.json` then:
 3. aligns the network `subdomain_install` metadata with the
    `SUBDOMAIN_INSTALL` constant;
 4. creates the Paris, Lyon, and Marseille sites when they are missing; and
-5. provisions the static `Accueil` pages and site-local Navigation records from
+5. installs and activates the French (`fr_FR`) core language pack for all four
+   sites and sets the default `admin` user's locale to French;
+6. provisions the static `Accueil` pages and site-local Navigation records from
    the co-located files in `scripts/content/`; then
-6. verifies the network and site domain/path records.
+7. verifies the network and site domain/path records.
 
 The bootstrap is safe to run repeatedly:
 
@@ -74,6 +76,13 @@ npm run env:multisite:verify
 ```
 
 The default credentials are `admin` / `password`.
+
+The bootstrap keeps the local WordPress administration in French. To apply the
+language setup independently to an existing environment, run:
+
+```sh
+npm run env:language:setup
+```
 
 ## Reset the local database
 

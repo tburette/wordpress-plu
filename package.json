@@ -12,6 +12,7 @@
     "env:cleanup": "bash scripts/cleanup-wp-env.sh",
     "env:cli": "wp-env run cli wp",
     "env:hosts:check": "bash scripts/check-local-hosts.sh",
+    "env:language:setup": "bash scripts/setup-language.sh",
     "env:multisite:setup": "bash scripts/setup-multisite-network.sh",
     "env:theme:setup": "bash scripts/setup-theme.sh",
     "env:content:setup": "bash scripts/content/setup.sh",
