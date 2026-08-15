@@ -491,6 +491,13 @@ remplace pas son assemblage éditorial prévu à l’Étape 6.
 
 À partir d’ici, le contenu est volontairement stocké en base, dans les Pages de chaque site. Ce n’est pas du code de thème et ne doit pas être injecté par le script de bootstrap.
 
+La fixture `scripts/content/patterns-test-page/setup.sh` couvre déjà la
+lecture du registre des patterns et leur concaténation dans l’ordre de la
+maquette, mais elle reste limitée à la page de contrôle
+`lpu-sections-patterns-test`. Elle peut servir de référence technique ; elle
+ne doit ni cibler `Accueil`, ni remplacer son contenu éditorial, ni être
+étendue avec les médias et les URLs de la Home.
+
 ### 6.1 Accueil réseau
 
 **Site :** `lepaysanurbain.test:8888`  
