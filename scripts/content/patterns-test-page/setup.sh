@@ -62,6 +62,21 @@ while IFS='|' read -r site_url page_title page_slug post_status post_author comm
 \$patterns_by_name = array();
 \$theme_namespace = trailingslashit( get_stylesheet() );
 
+function lpu_pattern_with_metadata( \$content, \$pattern ) {
+	\$blocks = parse_blocks( \$content );
+	if ( ! isset( \$blocks[0]['blockName'] ) || '' === \$blocks[0]['blockName'] ) {
+		WP_CLI::error( 'Pattern content does not start with a block: ' . ( \$pattern['name'] ?? 'unknown' ) );
+	}
+
+	\$blocks[0]['attrs']['metadata'] = array(
+		'categories'  => array_values( \$pattern['categories'] ?? array() ),
+		'patternName' => \$pattern['name'],
+		'name'        => \$pattern['title'],
+	);
+
+	return serialize_blocks( \$blocks );
+}
+
 foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$pattern ) {
 	if ( ! isset( \$pattern['name'], \$pattern['content'] ) ) {
 		continue;
@@ -73,7 +88,7 @@ foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$
 		continue;
 	}
 
-	\$patterns_by_name[ \$pattern['name'] ] = \$pattern['content'];
+	\$patterns_by_name[ \$pattern['name'] ] = \$pattern;
 }
 
 ksort( \$patterns_by_name, SORT_NATURAL | SORT_FLAG_CASE );
@@ -82,8 +97,8 @@ if ( ! \$patterns_by_name ) {
 }
 
 \$page_content = '';
-foreach ( \$patterns_by_name as \$pattern_content ) {
-	\$page_content .= \$pattern_content . "\\n";
+foreach ( \$patterns_by_name as \$pattern ) {
+	\$page_content .= lpu_pattern_with_metadata( \$pattern['content'], \$pattern ) . "\\n";
 }
 
 \$pages = get_posts(

@@ -266,11 +266,11 @@ body {
 }
 
 .lpu-farm-selector {
-	padding-block: var(--wp--preset--spacing--xl);
+	padding-block: var(--wp--preset--spacing--section);
 }
 
 .lpu-farm-selector > .wp-block-heading {
-	margin-block: 0 var(--wp--preset--spacing--xl);
+	margin-block: 0 var(--wp--preset--spacing--section);
 }
 
 .lpu-farm-selector__columns {

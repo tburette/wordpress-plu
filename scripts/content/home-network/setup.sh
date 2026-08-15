@@ -135,7 +135,7 @@ if ( ! \$force && trim( (string) \$page->post_content ) !== trim( \$technical_pl
 \$patterns_by_name = array();
 foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$pattern ) {
 	if ( isset( \$pattern['name'], \$pattern['content'] ) ) {
-	    \$patterns_by_name[ \$pattern['name'] ] = \$pattern['content'];
+	    \$patterns_by_name[ \$pattern['name'] ] = \$pattern;
 	}
 }
 
@@ -161,6 +161,35 @@ foreach ( \$farm_labels as \$label ) {
 	}
 }
 
+function lpu_replace_once( \$content, \$search, \$replacement, \$label ) {
+	\$count = 0;
+	\$result = str_replace( \$search, \$replacement, \$content, \$count );
+	if ( 1 !== \$count ) {
+		WP_CLI::error( 'Expected one Home content slot for ' . \$label . ', found ' . \$count );
+	}
+
+	return \$result;
+}
+
+function lpu_home_text( \$content, \$from, \$to, \$label ) {
+	return lpu_replace_once( \$content, '>' . \$from . '<', '>' . \$to . '<', \$label );
+}
+
+function lpu_pattern_with_metadata( \$content, \$pattern ) {
+	\$blocks = parse_blocks( \$content );
+	if ( ! isset( \$blocks[0]['blockName'] ) || '' === \$blocks[0]['blockName'] ) {
+		WP_CLI::error( 'Pattern content does not start with a block: ' . ( \$pattern['name'] ?? 'unknown' ) );
+	}
+
+	\$blocks[0]['attrs']['metadata'] = array(
+		'categories'  => array_values( \$pattern['categories'] ?? array() ),
+		'patternName' => \$pattern['name'],
+		'name'        => \$pattern['title'],
+	);
+
+	return serialize_blocks( \$blocks );
+}
+
 \$page_content = '';
 \$cards_occurrences = 0;
 foreach ( \$pattern_order as \$pattern_name ) {
@@ -168,10 +197,27 @@ foreach ( \$pattern_order as \$pattern_name ) {
 	    WP_CLI::error( 'Active theme pattern is missing: ' . \$pattern_name );
 	}
 
-	\$section = \$patterns_by_name[ \$pattern_name ];
+	\$pattern = \$patterns_by_name[ \$pattern_name ];
+	\$section = \$pattern['content'];
+
+	if ( 'lepaysanurbain/hero' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Titre principal de la page', 'Cultiver le vivant en ville.', 'Home hero title' );
+		\$section = lpu_home_text( \$section, 'Présentez ici le sujet principal de la page en quelques mots.', 'Présentez ici la promesse de cette page et le rôle du Paysan Urbain dans la ville.', 'Home hero text' );
+	}
+
+	if ( 'lepaysanurbain/text-image' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Sur-titre', 'Une histoire à raconter', 'Home text-image eyebrow' );
+		\$section = lpu_home_text( \$section, 'Titre de la section', 'Présentez votre action sur deux lignes', 'Home text-image title' );
+		\$section = lpu_home_text( \$section, 'Présentez ici le contenu principal de cette section.', 'Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.', 'Home text-image text' );
+	}
 	if ( 'lepaysanurbain/network-farm-selector' === \$pattern_name ) {
+		\$farm_placeholders = array(
+			'Paris'     => 'Ferme 1',
+			'Lyon'      => 'Ferme 2',
+			'Marseille' => 'Ferme 3',
+		);
 		foreach ( \$farm_labels as \$label ) {
-			\$needle = '<a>' . \$label . '</a>';
+			\$needle = '<a>' . \$farm_placeholders[ \$label ] . '</a>';
 			\$replacement = '<a href="' . esc_url( \$farm_urls[ \$label ] ) . '">' . \$label . '</a>';
 			\$section = str_replace( \$needle, \$replacement, \$section, \$link_count );
 			if ( 1 !== \$link_count ) {
@@ -182,6 +228,16 @@ foreach ( \$pattern_order as \$pattern_name ) {
 
 	if ( 'lepaysanurbain/cards' === \$pattern_name ) {
 		\$cards_occurrences++;
+		\$section = lpu_home_text( \$section, 'Titre de la grille', 1 === \$cards_occurrences ? 'Des façons d’agir' : 'Le réseau en action', 'Home cards title ' . \$cards_occurrences );
+
+		\$card_titles = 1 === \$cards_occurrences
+			? array( 'Particuliers', 'Professionnels', 'Partenaires et institutions' )
+			: array( 'Activités et événements', 'Production locale', 'Projets et insertion' );
+		\$generic_card_titles = array( 'Titre de carte 1', 'Titre de carte 2', 'Titre de carte 3' );
+		foreach ( \$generic_card_titles as \$index => \$generic_title ) {
+			\$section = lpu_home_text( \$section, \$generic_title, \$card_titles[ \$index ], 'Home card title ' . ( \$index + 1 ) );
+		}
+
 		if ( 2 === \$cards_occurrences ) {
 			\$section = str_replace(
 				'"backgroundColor":"ecru","className":"lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau"',
@@ -203,23 +259,6 @@ foreach ( \$pattern_order as \$pattern_name ) {
 				WP_CLI::error( 'Expected the second cards pattern wrapper classes.' );
 			}
 
-			\$section = str_replace( '>Des façons d’agir<', '>Le réseau en action<', \$section, \$title_count );
-			if ( 1 !== \$title_count ) {
-				WP_CLI::error( 'Expected the second cards pattern title.' );
-			}
-
-			\$heading_replacements = array(
-				'>Particuliers<'                  => '>Activités et événements<',
-				'>Professionnels<'                => '>Production locale<',
-				'>Partenaires et institutions<'   => '>Projets et insertion<',
-			);
-			foreach ( \$heading_replacements as \$from => \$to ) {
-				\$section = str_replace( \$from, \$to, \$section, \$heading_count );
-				if ( 1 !== \$heading_count ) {
-					WP_CLI::error( 'Expected one cards heading replacement for: ' . \$from );
-				}
-			}
-
 			\$section = preg_replace( '/\\s*<!-- wp:paragraph\\b.*?<!-- \\/wp:paragraph -->/s', '', \$section, -1, \$paragraph_count );
 			if ( null === \$section || 3 !== \$paragraph_count ) {
 				WP_CLI::error( 'Expected three optional card descriptions in the second cards pattern.' );
@@ -229,10 +268,42 @@ foreach ( \$pattern_order as \$pattern_name ) {
 			if ( null === \$section || 3 !== \$button_count ) {
 				WP_CLI::error( 'Expected three optional card buttons in the second cards pattern.' );
 			}
+		} else {
+			\$section = str_replace( '>En savoir plus<', '>Découvrir<', \$section, \$button_label_count );
+			if ( 3 !== \$button_label_count ) {
+				WP_CLI::error( 'Expected three generic card button labels in the first cards pattern.' );
+			}
+
+			\$card_descriptions = array(
+				'Décrivez brièvement le contenu de cette carte et son intérêt pour vos visiteurs.' => 'Visiter, participer, découvrir.',
+				'Ajoutez une information courte sur cette proposition.' => 'Commander des produits locaux.',
+				'Présentez un troisième contenu ou une action à découvrir.' => 'Soutenir, collaborer, développer des projets.',
+			);
+			foreach ( \$card_descriptions as \$generic_text => \$home_text ) {
+				\$section = lpu_home_text( \$section, \$generic_text, \$home_text, 'Home card description' );
+			}
 		}
 	}
 
-	\$page_content .= \$section . "\\n";
+	if ( 'lepaysanurbain/columns' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Titre commun', 'Un message commun à faire vivre', 'Home columns title' );
+		\$section = lpu_home_text( \$section, 'Premier message à présenter dans cette colonne.', 'Présentez ici un premier message court, une information ou une valeur importante du projet.', 'Home columns text 1' );
+		\$section = lpu_home_text( \$section, 'Deuxième message à présenter dans cette colonne.', 'Utilisez cette colonne pour compléter le propos avec un deuxième message lisible et autonome.', 'Home columns text 2' );
+		\$section = lpu_home_text( \$section, 'Troisième message à présenter dans cette colonne.', 'Ajoutez un dernier repère, un chiffre ou un lien vers une information complémentaire.', 'Home columns text 3' );
+	}
+
+	if ( 'lepaysanurbain/text-image-motif' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Sur-titre', 'Une ferme, des savoir-faire', 'Home motif eyebrow' );
+		\$section = lpu_home_text( \$section, 'Titre de la mise en avant', 'Cultiver et transmettre au quotidien', 'Home motif title' );
+		\$section = lpu_home_text( \$section, 'Présentez ici le contenu de cette mise en avant.', 'Décrivez ici l’action mise en avant, les personnes concernées et la manière dont cette initiative fait grandir le vivant en ville.', 'Home motif text' );
+	}
+
+	if ( 'lepaysanurbain/graphic-band' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Titre de l’appel à l’action', 'Prêt à cultiver le vivant avec nous&nbsp;?', 'Home graphic title' );
+		\$section = lpu_home_text( \$section, 'Ajoutez ici une phrase courte pour guider vos visiteurs.', 'Rassemblez ici les dernières informations utiles et invitez vos visiteurs à passer à l’action.', 'Home graphic text' );
+	}
+
+	\$page_content .= lpu_pattern_with_metadata( \$section, \$pattern ) . "\\n";
 }
 
 if ( 2 !== \$cards_occurrences ) {

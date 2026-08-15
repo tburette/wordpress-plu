@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Bandeau graphique — appel à l’action
+ * Title: Bandeau graphique
  * Slug: lepaysanurbain/graphic-band
  * Categories: lpu-sections
  * Description: Bandeau final coloré avec contenu centré et bouton.
@@ -11,11 +11,11 @@
 <!-- wp:group {"align":"full","backgroundColor":"jaune","className":"lpu-band lpu-graphic-band","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull lpu-band lpu-graphic-band has-jaune-background-color has-background">
 	<!-- wp:heading {"textAlign":"center","level":2,"fontSize":"subtitle"} -->
-	<h2 class="wp-block-heading has-text-align-center has-subtitle-font-size">Prêt à cultiver le vivant avec nous&nbsp;?</h2>
+	<h2 class="wp-block-heading has-text-align-center has-subtitle-font-size">Titre de l’appel à l’action</h2>
 	<!-- /wp:heading -->
 
 	<!-- wp:paragraph {"align":"center"} -->
-	<p class="has-text-align-center">Rassemblez ici les dernières informations utiles et invitez vos visiteurs à passer à l’action.</p>
+	<p class="has-text-align-center">Ajoutez ici une phrase courte pour guider vos visiteurs.</p>
 	<!-- /wp:paragraph -->
 
 	<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->

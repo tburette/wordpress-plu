@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Hero — Cultiver le vivant
+ * Title: Hero
  * Slug: lepaysanurbain/hero
  * Categories: lpu-sections
  * Description: Hero pleine largeur avec image à choisir, titre, texte et appel à l’action.
@@ -16,11 +16,11 @@
 		<!-- wp:group {"align":"wide","className":"lpu-hero__content","layout":{"type":"constrained"}} -->
 		<div class="wp-block-group alignwide lpu-hero__content">
 			<!-- wp:heading {"textColor":"ecru","fontSize":"display","level":1} -->
-			<h1 class="wp-block-heading has-ecru-color has-text-color has-display-font-size">Cultiver le vivant en ville.</h1>
+			<h1 class="wp-block-heading has-ecru-color has-text-color has-display-font-size">Titre principal de la page</h1>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"textColor":"ecru","fontSize":"text"} -->
-			<p class="has-ecru-color has-text-color has-text-font-size">Présentez ici la promesse de cette page et le rôle du Paysan Urbain dans la ville.</p>
+			<p class="has-ecru-color has-text-color has-text-font-size">Présentez ici le sujet principal de la page en quelques mots.</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons {"className":"lpu-hero__actions"} -->

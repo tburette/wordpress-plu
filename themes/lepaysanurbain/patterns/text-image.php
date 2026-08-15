@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: Texte et image — présentation
+ * Title: Texte et image
  * Slug: lepaysanurbain/text-image
  * Categories: lpu-sections
- * Description: Section écrue en deux colonnes avec titre, texte, bouton et image à choisir.
+ * Description: Section en deux colonnes avec titre, texte, bouton et image à choisir.
  * Keywords: texte, image, colonnes, présentation
  * Post Types: page
  */
@@ -15,15 +15,15 @@
 		<!-- wp:column {"verticalAlignment":"center","width":"50%","className":"lpu-text-image__content"} -->
 		<div class="wp-block-column is-vertically-aligned-center lpu-text-image__content" style="flex-basis:50%">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
-			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Une histoire à raconter</p>
+			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Sur-titre</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:heading {"level":2,"fontSize":"subtitle"} -->
-			<h2 class="wp-block-heading has-subtitle-font-size">Présentez votre action sur deux lignes</h2>
+			<h2 class="wp-block-heading has-subtitle-font-size">Titre de la section</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph -->
-			<p>Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.</p>
+			<p>Présentez ici le contenu principal de cette section.</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons -->

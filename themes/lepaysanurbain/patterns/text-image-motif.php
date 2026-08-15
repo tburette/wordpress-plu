@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: Image et texte avec motif — mise en avant
+ * Title: Image et texte avec motif
  * Slug: lepaysanurbain/text-image-motif
  * Categories: lpu-sections
- * Description: Variante de mise en avant avec image entourée d’un motif à gauche et contenu à droite.
+ * Description: Variante avec image entourée d’un motif à gauche et contenu à droite.
  * Keywords: image, texte, motif, mise en avant
  * Post Types: page
  */
@@ -27,15 +27,15 @@
 		<!-- wp:column {"width":"50%","className":"lpu-text-image-motif__content"} -->
 		<div class="wp-block-column lpu-text-image-motif__content" style="flex-basis:50%">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
-			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Une ferme, des savoir-faire</p>
+			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Sur-titre</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:heading {"level":2,"fontSize":"subtitle"} -->
-			<h2 class="wp-block-heading has-subtitle-font-size">Cultiver et transmettre au quotidien</h2>
+			<h2 class="wp-block-heading has-subtitle-font-size">Titre de la mise en avant</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph -->
-			<p>Décrivez ici l’action mise en avant, les personnes concernées et la manière dont cette initiative fait grandir le vivant en ville.</p>
+			<p>Présentez ici le contenu de cette mise en avant.</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons -->

@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: Sélecteur des fermes du réseau
+ * Title: Sélecteur de fermes
  * Slug: lepaysanurbain/network-farm-selector
  * Categories: lpu-sections
- * Description: Présentation des trois fermes du réseau; les liens sont à configurer après insertion.
+ * Description: Présentation de plusieurs fermes; les liens sont à configurer après insertion.
  * Keywords: fermes, réseau, Paris, Lyon, Marseille
  * Post Types: page
  */
@@ -19,7 +19,7 @@
 		<!-- wp:column {"className":"lpu-farm-selector__item"} -->
 		<div class="wp-block-column lpu-farm-selector__item">
 			<!-- wp:heading {"textAlign":"center","level":3,"fontSize":"title"} -->
-			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Paris</a></h3>
+			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Ferme 1</a></h3>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:column -->
@@ -27,7 +27,7 @@
 		<!-- wp:column {"className":"lpu-farm-selector__item"} -->
 		<div class="wp-block-column lpu-farm-selector__item">
 			<!-- wp:heading {"textAlign":"center","level":3,"fontSize":"title"} -->
-			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Lyon</a></h3>
+			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Ferme 2</a></h3>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:column -->
@@ -35,7 +35,7 @@
 		<!-- wp:column {"className":"lpu-farm-selector__item"} -->
 		<div class="wp-block-column lpu-farm-selector__item">
 			<!-- wp:heading {"textAlign":"center","level":3,"fontSize":"title"} -->
-			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Marseille</a></h3>
+			<h3 class="wp-block-heading has-text-align-center has-title-font-size"><a>Ferme 3</a></h3>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:column -->

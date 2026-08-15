@@ -232,6 +232,15 @@ operation stores its block markup in the network `Accueil` page, resolves the
 three farm URLs from the current multisite, and enables the transparent-header
 option.
 
+Pattern source files stay generic so that an editor can reuse them on any page.
+When a pattern is provisioned into a page, the content scripts add the same
+root block metadata that Gutenberg adds during manual insertion
+(`patternName`, pattern title and category). The network Home fixture then
+applies its own explicit demonstration copy and farm URLs to those generic
+slots. This keeps the Gutenberg inserter generic while preserving a
+reproducible Home composition; later editorial changes should be made in
+Gutenberg and are protected from replacement unless `--force` is supplied.
+
 ### Shared header and navigation
 
 The four sites use one shared `parts/header.html` template part and one core
