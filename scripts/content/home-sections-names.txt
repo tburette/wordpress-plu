@@ -1,4 +1,5 @@
-# Pattern names are read from the active theme's WordPress pattern registry.
+# Canonical section order shared by the network Home provisioning and its test fixture.
+# One registered block pattern name per line; blank lines and comments are ignored.
 lepaysanurbain/hero
 lepaysanurbain/text-image
 lepaysanurbain/cards

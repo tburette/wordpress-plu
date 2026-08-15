@@ -14,8 +14,10 @@ The content provisioning scripts are safe to run repeatedly. Editorial pages
 and navigations are not replaced. The managed developer fixtures are explicit
 exceptions: `patterns-test-page/` refreshes the exact review-page slug from
 the active theme patterns. When a script needs Gutenberg markup or other
-input data, those files live beside that script in its own directory; there is
-no shared data directory.
+input data, those files live beside that script in its own directory. The sole
+shared declaration is `home-sections-names.txt`, which records the canonical
+section order used by the network Home and its visual test fixture; it is not
+a generic shared content directory.
 
 The database remains the runtime copy. The files in this directory are the
 reproducible source used when the local WordPress environment is recreated.
@@ -43,6 +45,18 @@ npm run env:patterns-test-page:setup
 
 See [`patterns-test-page/README.md`](patterns-test-page/README.md) for its
 managed-page contract and URL.
+
+The `home-network/` script is the explicit Step 6 provisioning for the network
+`Accueil` page. It is deliberately not included in `env:content:setup`, because
+that bootstrap must not replace editorial Home content. Run it only after the
+front-page and pattern prerequisites have been checked:
+
+```sh
+npm run env:home-network:setup
+```
+
+See [`home-network/README.md`](home-network/README.md) for its replacement
+guard, section transformations and media boundary.
 
 The `navigation-menus/` directory contains the reproducible menu data for the
 network site and the three farm sites. Its README documents the relationship

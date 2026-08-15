@@ -27,9 +27,9 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-14 23:50 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-15 09:31 (Europe/Paris)
 
-**Position exacte dans le plan :** Étape 5 — construire la bibliothèque de patterns par type de section — est validée. Les Étapes 0, 1, 2, 3, 4 et 5 sont validées. L’Étape 6 est la prochaine ; la Home réseau n’a pas été assemblée et son contenu reste réservé à Gutenberg.
+**Position exacte dans le plan :** Étape 6 — assembler la Home réseau dans Gutenberg — a terminé son assemblage technique de démonstration ; sa validation éditoriale finale reste ouverte. Les Étapes 0, 1, 2, 3, 4 et 5 sont validées ; la Page `Accueil` réseau est provisionnée dans Gutenberg et contrôlée sur le front-end.
 
 _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notamment sur le socle du thème, le cadre partagé et le provisioning de contenu. Nous le conservons comme état de travail, mais nous avançons désormais systématiquement, une seule étape à la fois, avec validation avant de passer à la suivante.)_
 
@@ -57,12 +57,13 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - 2026-08-14 — Correction du template part dans Gutenberg : les classes `has-text-color has-background` manquantes ont été ajoutées au groupe, puis le logo de footer a été rendu par un bloc Image natif pointant vers l'asset SVG vertical écru. Cela évite l'écart entre le rendu serveur du front-end et l'aperçu de l'éditeur. Le template part est maintenant validé sans erreur Gutenberg ; son rendu public a été recontrôlé sur le réseau et Paris à `1440px` et `390px`, sans erreur console, page ou requête.
 - 2026-08-14 — Le provisioning de navigation a été durci sans réécriture de contenu : `navigation-sites.tsv` est maintenant réellement séparé par tabulations et `setup.sh` retrouve aussi un `wp_navigation` non publié via `--post_status=any`. La vérification d'idempotence après environnement propre reste soumise à la procédure de reset documentée dans `AGENTS.md`.
 - 2026-08-14 — Réévaluation du menu à partir des échanges validés, des règles de design, de `sections-Home.txt` et des extractions `menu Home_1440 (transparent).jpg` / `menu Ferme_1440 (fond écru).jpg`. Les maquettes fixent l'intention visuelle du header (logo centré et liens de part et d'autre, fond transparent ou écru) mais montrent encore un hamburger desktop et « Agir avec nous » ; ces deux éléments sont écartés par la décision ultérieure acceptée. « Sézane » reste une inspiration de fonctionnement du méga-menu, pas une source de contenu, de typographie ou de structure commerciale.
-- 2026-08-14 — Étape 4 validée comme provisioning technique uniquement : les quatre sites sélectionnent leur Page `Accueil` de slug `accueil`, avec `show_on_front=page` et `page_on_front` réglé sur l’ID trouvé ou créé (ID `3` dans la base actuellement vérifiée). Le bootstrap appelle déjà `scripts/content/setup.sh` après la création des sites ; le script de pages est idempotent, reconnaît aussi une page existante non publiée avec `--post_status=any`, et ne réécrit ni titre, ni contenu, ni statut. Les deux passages réels ont sélectionné les mêmes pages sur les quatre sites. Leur contenu reste le commentaire invisible prévu ; aucun pattern, aucune image et aucune section de maquette n’a été ajouté. Le contrat est documenté dans `scripts/content/front-pages/README.md`.
+- 2026-08-14 — Étape 4 validée comme provisioning technique uniquement : les quatre sites sélectionnent leur Page `Accueil` de slug `accueil`, avec `show_on_front=page` et `page_on_front` réglé sur l’ID trouvé ou créé (les IDs sont attribués par la base et ne constituent pas le contrat ; après le reset actuel, le réseau utilise l’ID `5`). Le bootstrap appelle déjà `scripts/content/setup.sh` après la création des sites ; le script de pages est idempotent, reconnaît aussi une page existante non publiée avec `--post_status=any`, et ne réécrit ni titre, ni contenu, ni statut. Les deux passages réels ont sélectionné les mêmes pages sur les quatre sites. Leur contenu reste le commentaire invisible prévu ; aucun pattern, aucune image et aucune section de maquette n’a été ajouté. Le contrat est documenté dans `scripts/content/front-pages/README.md`.
 - 2026-08-14 — Étape 5 validée après recréation de l’environnement : les sept patterns `hero`, `text-image`, `cards`, `network-farm-selector`, `columns`, `text-image-motif` et `graphic-band` sont disponibles automatiquement dans la catégorie `Sections Le Paysan Urbain`. Les structures utilisent les blocs cœur, les tokens de `theme.json`, les classes `lpu-band`/`lpu-card-grid`/`lpu-motif-*` et des règles responsives partagées ; `cards` est réutilisable pour les deux grilles de la Home. Le visuel SVG local `pattern-placeholder.svg` sert uniquement de média de démonstration remplaçable dans Gutenberg, avec `alt=""` tant qu’il est décoratif : aucune photo de maquette ni contenu de Home n’a été injecté dans `Accueil` ou dans le bootstrap. Le markup `core/cover` du Hero a été normalisé (`has-background`, sans `wp-image-0`) et la page permanente `lpu-sections-patterns-test` a été régénérée sans erreur de validation Gutenberg. Le registre WordPress, l’éditeur authentifié et le rendu serveur des sept patterns ne signalent aucun bloc invalide. La page de contrôle avec huit insertions dans l’ordre de `sections-Home.txt` a été inspectée avec `web-inspector` à `1440px` et en émulation Pixel 5 à `390px` : HTTP 200, aucune erreur console/page/requête et aucun débordement horizontal ; les cartes s’empilent explicitement à pleine largeur sur mobile. Le provisioning de cette page a été rejoué deux fois après reset sans créer de doublon.
+- 2026-08-15 — Étape 6 — assemblage technique de démonstration terminé : `scripts/content/home-network/setup.sh` assemble explicitement la Page réseau `Accueil` à partir de l’ordre canonique partagé, sans être appelé par `env:content:setup`. Il vérifie `show_on_front`/`page_on_front`, protège le contenu éditorial par une comparaison exacte du placeholder Step 4 et n’autorise le remplacement qu’avec `--force`. Il active le header transparent, supprime la marge de la pile de blocs devant un hero transparent, résout les URLs des trois fermes depuis le multisite et adapte la seconde grille `cards` en variante gris-vert à titres seuls. Les médias restent les placeholders SVG autorisés de démonstration, en attente des médias éditoriaux autorisés. La revue code confirme 8 blocs racine et 89 descendants valides, dont un `core/cover` valide ; la revue visuelle indépendante et les captures locales à `1440px`, `1280px`, `768px` et Pixel 5 à `390px` ne relèvent aucune erreur, aucun débordement et confirment le retour du header à l’écru à l’ouverture du méga-menu.
 
 ### À faire maintenant
 
-- L’Étape 6 — assembler la Home réseau dans Gutenberg — reste différée jusqu’après l’Étape 5 ; aucun contenu de maquette n’est injecté par le bootstrap.
+- Finaliser la validation éditoriale de l’Étape 6 lorsque les médias autorisés, les textes validés et les Pages de destination des CTA seront disponibles ; aucun contenu de maquette aplati n’est injecté par le bootstrap.
 - Après intégration du contenu réel, rejouer le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent.
 - Conserver les décisions validées : méga-menu texte en colonnes uniquement, header opaque écru par défaut, variante transparente activable explicitement sur une page avec hero suffisamment contrasté, et seuil responsive `1099px` pour les libellés actuels.
 
@@ -74,8 +75,8 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - Décider le cache-busting des assets en développement (`Version` du thème ou `filemtime`).
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
 - Remplacer les URLs provisoires `/` de « Le Projet », « Contact » et des liens de rubriques, légaux et réseaux sociaux du footer lorsque les pages et comptes dédiés existeront ; l'activation éditoriale de la variante transparente est maintenant portée par le réglage de page `Header de la page`.
-- Les CTA des patterns et les trois intitulés du sélecteur de fermes sont volontairement sans destination dans la fixture de contrôle : ils seront reliés aux Pages réelles dans Gutenberg à l’Étape 6, sans URL fictive ni URL de ferme codée en dur dans le thème.
-- La fixture `lpu-sections-patterns-test` reste publiée en permanence pour les contrôles ; son SVG abstrait, ses textes d’exemple et son header opaque ne sont pas la Home finale. Les images de maquette, le contenu éditorial et l’option de header transparent seront introduits et contrôlés lors de l’Étape 6.
+- Les CTA des patterns restent volontairement sans destination dans la fixture de contrôle et dans cette première assemblée de démonstration ; ils seront reliés aux Pages réelles dans Gutenberg, sans URL fictive ni URL de ferme codée en dur dans le thème. Les trois liens de fermes de la Home réseau sont déjà résolus par le provisioning explicite.
+- La fixture `lpu-sections-patterns-test` reste publiée en permanence pour les contrôles ; son SVG abstrait, ses textes d’exemple et son header opaque ne sont pas la Home finale. La Home réseau assemblée utilise encore le SVG abstrait comme média de démonstration jusqu’à validation et import des médias éditoriaux autorisés.
 - Le seuil responsive `1099px` est validé pour les logos, libellés et largeurs actuels ; le reprendre uniquement si ces éléments changent.
 - Les réglages spécifiques au site dans le thème sont indexés par une clé dérivée du sous-domaine (`network`, `paris`, `lyon`, `marseille`), et non par le `blog_id` attribué par l'installation.
 - Le remplacement du logo écru transparent reste différé lorsque l’image opaque fournit un `srcset` : les logos SVG actuellement provisionnés n’en rendent pas, mais cette variante devra être reprise si des logos raster ou responsive sont introduits.
@@ -482,7 +483,7 @@ Pour conserver un support de contrôle après chaque recréation de
 l’environnement, `scripts/content/setup.sh` exécute également
 `scripts/content/patterns-test-page/setup.sh`. Cette fixture publie la page
 `lpu-sections-patterns-test` sur le site réseau avec les sections déclarées
-dans `sections-patterns-names.txt` ; elle ne constitue pas la Home et ne
+dans `scripts/content/home-sections-names.txt` ; elle ne constitue pas la Home et ne
 remplace pas son assemblage éditorial prévu à l’Étape 6.
 
 ---
@@ -491,12 +492,14 @@ remplace pas son assemblage éditorial prévu à l’Étape 6.
 
 À partir d’ici, le contenu est volontairement stocké en base, dans les Pages de chaque site. Ce n’est pas du code de thème et ne doit pas être injecté par le script de bootstrap.
 
-La fixture `scripts/content/patterns-test-page/setup.sh` couvre déjà la
-lecture du registre des patterns et leur concaténation dans l’ordre de la
-maquette, mais elle reste limitée à la page de contrôle
-`lpu-sections-patterns-test`. Elle peut servir de référence technique ; elle
-ne doit ni cibler `Accueil`, ni remplacer son contenu éditorial, ni être
-étendue avec les médias et les URLs de la Home.
+La fixture `scripts/content/patterns-test-page/setup.sh` couvre la lecture du
+registre des patterns et leur concaténation dans l’ordre de la maquette, mais
+elle reste limitée à la page de contrôle `lpu-sections-patterns-test`. La
+commande explicite `npm run env:home-network:setup` réutilise seulement cette
+logique de registre et la déclaration d’ordre partagée ; elle porte son propre
+contrat pour le contenu de `Accueil`, les URLs des fermes et l’option de header.
+Elle ne fait pas partie du bootstrap et refuse une réécriture éditoriale sans
+`--force`.
 
 ### 6.1 Accueil réseau
 
@@ -515,11 +518,27 @@ Assembler dans l’éditeur, dans l’ordre de `sections-Home.txt` :
 8. variante texte-image avec image entourée du motif bleu/vert ;
 9. section finale de mise en valeur sur fond coloré.
 
-Utiliser `Home_1280.jpg`, `Home_1440.jpg` et les PDF comme références de composition, pas comme contenu final sans autorisation. Importer les images de démonstration dans la médiathèque du site réseau ; les médias ne sont pas partagés automatiquement entre les sous-sites.
+Utiliser `Home_1280.jpg`, `Home_1440.jpg` et les PDF comme références de composition, pas comme contenu final sans autorisation. L’assemblage technique actuel conserve `pattern-placeholder.svg` comme média de démonstration ; importer les images éditoriales autorisées dans la médiathèque du site réseau lorsqu’elles seront validées. Les médias ne sont pas partagés automatiquement entre les sous-sites.
 
 **Contrôle**
 
 La page réseau ne contient ni logo, ni menu, ni URL de ferme codés en dur dans le thème. Elle utilise la même palette, les mêmes patterns et le même cadre partagé que les futures pages locales.
+
+Le provisioning explicite utilisé pour cette assemblée est :
+
+```sh
+npm run env:home-network:setup
+```
+
+Après une première assemblée, `--force` est requis pour remplacer un contenu
+éditorial déjà présent. Le contrôle réalisé après assemblage vérifie la présence
+des huit sections, des deux grilles, des liens Paris/Lyon/Marseille, de la
+métadonnée `lpu_header_transparent` et l’absence de paragraphes ou de boutons
+dans la seconde grille. Le front-end a été rendu avec `web-inspector` à
+`1440px`, `1280px`, `768px` et sur Pixel 5 à `390px`, sans erreur console,
+erreur de page, requête échouée ni débordement horizontal. L’ouverture de
+« Nos Fermes » a également confirmé le méga-menu écru et le retour du header
+opaque sur le hero transparent.
 
 ---
 

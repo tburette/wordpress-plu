@@ -8,7 +8,7 @@ set -euo pipefail
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 pages_file="${script_dir}/page.tsv"
-order_file="${script_dir}/sections-patterns-names.txt"
+order_file="${project_dir}/scripts/content/home-sections-names.txt"
 
 for required_file in "${pages_file}" "${order_file}"; do
 	if [[ ! -f "${required_file}" ]]; then

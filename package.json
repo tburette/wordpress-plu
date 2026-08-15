@@ -21,6 +21,7 @@
     "env:footer-navigation:setup": "bash scripts/content/footer-menus/setup.sh",
     "env:test-page:setup": "bash scripts/content/test-page/setup.sh",
     "env:patterns-test-page:setup": "bash scripts/content/patterns-test-page/setup.sh",
+    "env:home-network:setup": "bash scripts/content/home-network/setup.sh",
     "env:multisite:verify": "bash scripts/verify-multisite-network.sh"
   }
 }

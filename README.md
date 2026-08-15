@@ -222,6 +222,14 @@ are introduced in Step 5; the network Home is assembled in Gutenberg in Step
 6. See [`scripts/content/front-pages/README.md`](scripts/content/front-pages/README.md)
 for the exact contract.
 
+After the Step 4 and Step 5 prerequisites have been validated, the first Home
+assembly can be provisioned explicitly with
+`npm run env:home-network:setup`. It targets only the network `Accueil` page,
+stores the block markup in that Page, resolves the three farm URLs from the
+current multisite, and enables the transparent-header option. It is not part
+of `env:content:setup`; see [`scripts/content/home-network/README.md`](scripts/content/home-network/README.md)
+before using `--force` to replace existing editorial content.
+
 ### Shared header and navigation
 
 The four sites use one shared `parts/header.html` template part and one core

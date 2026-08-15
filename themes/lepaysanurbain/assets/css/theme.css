@@ -448,6 +448,12 @@ body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) {
 	background: transparent;
 }
 
+/* The transparent header is removed from normal flow, so the block-theme
+ * site-stack gap must not leave an écru strip before the hero. */
+body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
+	margin-block-start: 0;
+}
+
 body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
 	.wp-block-navigation-item__content,
 body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
