@@ -25,8 +25,8 @@
 
 			<!-- wp:buttons {"className":"lpu-hero__actions"} -->
 			<div class="wp-block-buttons lpu-hero__actions">
-				<!-- wp:button {"className":"lpu-button-on-color"} -->
-				<div class="wp-block-button lpu-button-on-color"><a class="wp-block-button__link wp-element-button">En savoir plus</a></div>
+				<!-- wp:button {"className":"lpu-button-on-color lpu-button-arrow"} -->
+				<div class="wp-block-button lpu-button-on-color lpu-button-arrow"><a class="wp-block-button__link wp-element-button">En savoir plus</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->

@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-15 19:07 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-15 22:35 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 6 — assembler la Home réseau dans Gutenberg — a terminé son assemblage technique de démonstration ; sa validation éditoriale finale reste ouverte. Les Étapes 0, 1, 2, 3, 4 et 5 sont validées ; la Page `Accueil` réseau est provisionnée dans Gutenberg et contrôlée sur le front-end.
 
@@ -65,6 +65,7 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 
 - 2026-08-15 — Correction post-contrôle du header transparent de la Home : l’état `.lpu-menu-open` conserve maintenant le header en superposition (`position:absolute`) et ne réintroduit plus sa hauteur dans le flux quand le méga-menu s’ouvre. Le panneau écru recouvre le haut du hero sans déplacer les sections ; le rendu Home fermé/ouvert a été recontrôlé à `1440px`, et l’overlay mobile à `390px`, avec HTTP 200 et aucune erreur console, page ou requête.
 - 2026-08-15 — Correction du pont de survol du méga-menu : la zone transparente de `1.8rem` entre l’option et le panneau est maintenant une extension interactive du panneau. Le parent reste donc survolé, `.lpu-menu-open` et le chevron restent ouverts, et le menu ne se ferme qu’après sortie de cette zone et du panneau. La traversée a été reproduite avec le pointeur maintenu dans la zone à `1440px`, puis contrôlée avec le panneau atteint après le délai, sans erreur navigateur.
+- 2026-08-15 — Ajustements post-contrôle des patterns : le Hero conserve un bouton cœur avec libellé éditable et accessible, dont la variante front-end `lpu-button-arrow` rend la flèche cerclée de la maquette. Le pattern « Colonnes de texte » conserve le bloc cœur `Columns` sans verrou ; dans Gutenberg, après « Modifier la composition », son réglage natif a été contrôlé de `3` à `4` colonnes puis ramené à `3` sans sauvegarde. Sa bande desktop mesure désormais environ `722px` à `1440px`, contre `719px` dans la référence `titre-colonnes`, tandis que sa règle mobile revient au rythme compact partagé. Enfin, la marge injectée par la pile Gutenberg est neutralisée uniquement entre les bandes racines `.lpu-band`, sans retirer les espacements des contenus internes. Après reset autorisé, le provisioning complet, le rendu Home et la fixture permanente des patterns ont été recontrôlés à `1440px` et sur Pixel 5, sans erreur navigateur ni débordement horizontal.
 - Finaliser la validation éditoriale de l’Étape 6 lorsque les médias autorisés, les textes validés et les Pages de destination des CTA seront disponibles ; aucun contenu de maquette aplati n’est injecté par le bootstrap.
 - Après intégration du contenu réel, rejouer le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent.
 - Conserver les décisions validées : méga-menu texte en colonnes uniquement, header opaque écru par défaut, variante transparente activable explicitement sur une page avec hero suffisamment contrasté, et seuil responsive `1099px` pour les libellés actuels.

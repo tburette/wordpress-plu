@@ -5,7 +5,7 @@ setup and workflow documentation lives in `README.md`.
 
 ## Provisioning script tests
 
-- Before testing or retesting scripts that create or configure WordPress content, start from a clean local environment. Announce the operation and obtain confirmation, then use `npm run env:cleanup`, `npm run env:multisite:setup`, and `npm run env:status`. Resetting deletes all local database content; never run the reset command autonomously. Confirmation is required.
+- Before testing or retesting scripts that create or configure WordPress content, start from a clean local environment. Announce the operation then use `npm run env:cleanup`, `npm run env:multisite:setup`, and `npm run env:status`. Resetting deletes all local database content; never run the reset command autonomously. Confirmation is required.
 - If the Docker environment or its generated files are broken, use `npm run env:cleanup`; it recreates them on the next start while preserving Docker images.
 
 ## Implementation plan
@@ -94,9 +94,11 @@ parent :
 - `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Home_1440  (transparent).jpg`
 - `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Ferme_1440 (fond écru).jpg`
 
-Pour les sections qui ne sont pas visibles en détail dans ces compositions,
-consulter également tous les visuels de
-`design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/`.
+Il existe également le répertoire
+`design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/`
+qui contient les différentes sections de la maquette individuellement dans
+une image qui leur est propre.
+
 Avant de considérer un travail visuel terminé, le comparer au visuel de
 référence approprié avec une inspection rendue du site et signaler tout écart
 important.

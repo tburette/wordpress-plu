@@ -46,6 +46,28 @@ function lpu_register_pattern_categories() {
 add_action( 'init', 'lpu_register_pattern_categories' );
 
 /**
+ * Keep locally inserted patterns editable as ordinary page content.
+ *
+ * WordPress 7 enables content-only mode for unsynced patterns by default.
+ * That protects their structure, but makes a Columns block inaccessible until
+ * an editor explicitly enters the composition. LPU section patterns are
+ * reusable starting points, not global components: each page must therefore
+ * be able to adapt its own layout without changing another instance or the
+ * pattern source.
+ *
+ * Synced patterns and template parts retain their separate Core behaviour.
+ *
+ * @param array $settings Block editor settings.
+ * @return array
+ */
+function lpu_allow_local_pattern_structure_editing( $settings ) {
+	$settings['disableContentOnlyForUnsyncedPatterns'] = true;
+
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'lpu_allow_local_pattern_structure_editing' );
+
+/**
  * Enqueue the small front-end behavior that completes the shared menu
  * contract.
  *

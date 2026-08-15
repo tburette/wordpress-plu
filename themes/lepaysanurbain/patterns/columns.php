@@ -3,7 +3,7 @@
  * Title: Colonnes de texte
  * Slug: lepaysanurbain/columns
  * Categories: lpu-sections
- * Description: Bandeau vert avec titre commun et plusieurs colonnes de texte ou d’images.
+ * Description: Bandeau vert avec titre commun et nombre libre de colonnes de texte ou d’images.
  * Keywords: colonnes, texte, messages, informations
  * Post Types: page
  */
