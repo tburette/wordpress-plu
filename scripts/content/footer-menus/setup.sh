@@ -2,8 +2,13 @@
 set -euo pipefail
 
 # Create or select one site-local footer Navigation post for each row in
-# footer-sites.tsv. The block markup remains beside this script and existing
-# footer content is preserved.
+# footer-sites.tsv. The fragments provide the three visual footer columns and
+# their secondary legal-information group; the shared visual frame lives in
+# themes/lepaysanurbain/parts/footer.html. Existing footer content is preserved.
+#
+# The network and farm menus are site-local and are linked to the shared theme
+# through the lpu_footer_navigation_id option. Destinations for pages that do
+# not exist yet remain provisional until their editorial URLs are validated.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 footer_sites_file="${script_dir}/footer-sites.tsv"

@@ -21,7 +21,8 @@
 		var menuOpen = Boolean(
 			header.querySelector(
 				'.wp-block-navigation__responsive-container.is-menu-open,' +
-				' .wp-block-navigation__submenu-icon[aria-expanded="true"]'
+				' .wp-block-navigation__submenu-icon[aria-expanded="true"],' +
+				' .wp-block-navigation-submenu.lpu-hover-bridge-open'
 			)
 		);
 		var transparentPage = document.body.classList.contains(
@@ -221,8 +222,6 @@
 		hoverBridgeTimer = window.setTimeout( function () {
 			if ( ! submenu.matches( ':hover' ) ) {
 				releaseHoverBridge( submenu );
-			} else {
-				submenu.classList.remove( hoverBridgeClass );
 			}
 
 			hoverBridgeTimer = null;

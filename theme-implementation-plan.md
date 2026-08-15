@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-15 09:31 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-15 19:07 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 6 — assembler la Home réseau dans Gutenberg — a terminé son assemblage technique de démonstration ; sa validation éditoriale finale reste ouverte. Les Étapes 0, 1, 2, 3, 4 et 5 sont validées ; la Page `Accueil` réseau est provisionnée dans Gutenberg et contrôlée sur le front-end.
 
@@ -57,12 +57,14 @@ _(Du travail des étapes suivantes a déjà été entamé dans le dépôt, notam
 - 2026-08-14 — Correction du template part dans Gutenberg : les classes `has-text-color has-background` manquantes ont été ajoutées au groupe, puis le logo de footer a été rendu par un bloc Image natif pointant vers l'asset SVG vertical écru. Cela évite l'écart entre le rendu serveur du front-end et l'aperçu de l'éditeur. Le template part est maintenant validé sans erreur Gutenberg ; son rendu public a été recontrôlé sur le réseau et Paris à `1440px` et `390px`, sans erreur console, page ou requête.
 - 2026-08-14 — Le provisioning de navigation a été durci sans réécriture de contenu : `navigation-sites.tsv` est maintenant réellement séparé par tabulations et `setup.sh` retrouve aussi un `wp_navigation` non publié via `--post_status=any`. La vérification d'idempotence après environnement propre reste soumise à la procédure de reset documentée dans `AGENTS.md`.
 - 2026-08-14 — Réévaluation du menu à partir des échanges validés, des règles de design, de `sections-Home.txt` et des extractions `menu Home_1440 (transparent).jpg` / `menu Ferme_1440 (fond écru).jpg`. Les maquettes fixent l'intention visuelle du header (logo centré et liens de part et d'autre, fond transparent ou écru) mais montrent encore un hamburger desktop et « Agir avec nous » ; ces deux éléments sont écartés par la décision ultérieure acceptée. « Sézane » reste une inspiration de fonctionnement du méga-menu, pas une source de contenu, de typographie ou de structure commerciale.
-- 2026-08-14 — Étape 4 validée comme provisioning technique uniquement : les quatre sites sélectionnent leur Page `Accueil` de slug `accueil`, avec `show_on_front=page` et `page_on_front` réglé sur l’ID trouvé ou créé (les IDs sont attribués par la base et ne constituent pas le contrat ; après le reset actuel, le réseau utilise l’ID `5`). Le bootstrap appelle déjà `scripts/content/setup.sh` après la création des sites ; le script de pages est idempotent, reconnaît aussi une page existante non publiée avec `--post_status=any`, et ne réécrit ni titre, ni contenu, ni statut. Les deux passages réels ont sélectionné les mêmes pages sur les quatre sites. Leur contenu reste le commentaire invisible prévu ; aucun pattern, aucune image et aucune section de maquette n’a été ajouté. Le contrat est documenté dans `scripts/content/front-pages/README.md`.
-- 2026-08-14 — Étape 5 validée après recréation de l’environnement : les sept patterns `hero`, `text-image`, `cards`, `network-farm-selector`, `columns`, `text-image-motif` et `graphic-band` sont disponibles automatiquement dans la catégorie `Sections Le Paysan Urbain`. Les structures utilisent les blocs cœur, les tokens de `theme.json`, les classes `lpu-band`/`lpu-card-grid`/`lpu-motif-*` et des règles responsives partagées ; `cards` est réutilisable pour les deux grilles de la Home. Le visuel SVG local `pattern-placeholder.svg` sert uniquement de média de démonstration remplaçable dans Gutenberg, avec `alt=""` tant qu’il est décoratif : aucune photo de maquette ni contenu de Home n’a été injecté dans `Accueil` ou dans le bootstrap. Le markup `core/cover` du Hero a été normalisé (`has-background`, sans `wp-image-0`) et la page permanente `lpu-sections-patterns-test` a été régénérée sans erreur de validation Gutenberg. Le registre WordPress, l’éditeur authentifié et le rendu serveur des sept patterns ne signalent aucun bloc invalide. La page de contrôle avec huit insertions dans l’ordre de `sections-Home.txt` a été inspectée avec `web-inspector` à `1440px` et en émulation Pixel 5 à `390px` : HTTP 200, aucune erreur console/page/requête et aucun débordement horizontal ; les cartes s’empilent explicitement à pleine largeur sur mobile. Le provisioning de cette page a été rejoué deux fois après reset sans créer de doublon.
-- 2026-08-15 — Étape 6 — assemblage technique de démonstration terminé : `scripts/content/home-network/setup.sh` assemble explicitement la Page réseau `Accueil` à partir de l’ordre canonique partagé, sans être appelé par `env:content:setup`. Il vérifie `show_on_front`/`page_on_front`, protège le contenu éditorial par une comparaison exacte du placeholder Step 4 et n’autorise le remplacement qu’avec `--force`. Il active le header transparent, supprime la marge de la pile de blocs devant un hero transparent, résout les URLs des trois fermes depuis le multisite et adapte la seconde grille `cards` en variante gris-vert à titres seuls. Les médias restent les placeholders SVG autorisés de démonstration, en attente des médias éditoriaux autorisés. La revue code confirme 8 blocs racine et 89 descendants valides, dont un `core/cover` valide ; la revue visuelle indépendante et les captures locales à `1440px`, `1280px`, `768px` et Pixel 5 à `390px` ne relèvent aucune erreur, aucun débordement et confirment le retour du header à l’écru à l’ouverture du méga-menu.
+- 2026-08-14 — Étape 4 validée comme provisioning technique uniquement : les quatre sites sélectionnent leur Page `Accueil` de slug `accueil`, avec `show_on_front=page` et `page_on_front` réglé sur l’ID trouvé ou créé (les IDs sont attribués par la base et ne constituent pas le contrat ; après le reset actuel, le réseau utilise l’ID `5`). Le bootstrap appelle `scripts/content/setup.sh` après la création des sites ; le script de pages est idempotent, reconnaît aussi une page existante non publiée avec `--post_status=any`, et ne réécrit ni titre, ni contenu, ni statut. Les deux passages réels ont sélectionné les mêmes pages sur les quatre sites. Leur contenu reste le commentaire invisible prévu ; aucun pattern, aucune image et aucune section de maquette n’a été ajouté. Le contrat est maintenant porté par les commentaires de `scripts/content/front-pages/setup.sh` et par la commande `npm run env:content`.
+- 2026-08-14 — Étape 5 validée après recréation de l’environnement : les sept patterns `hero`, `text-image`, `cards`, `network-farm-selector`, `columns`, `text-image-motif` et `graphic-band` sont disponibles automatiquement dans la catégorie `Sections Le Paysan Urbain`. Les structures utilisent les blocs cœur, les tokens de `theme.json`, les classes `lpu-band`/`lpu-card-grid`/`lpu-motif-*` et des règles responsives partagées ; `cards` est réutilisable pour les deux grilles de la Home. Le visuel SVG local `pattern-placeholder.svg` sert uniquement de média de démonstration remplaçable dans Gutenberg, avec `alt=""` tant qu’il est décoratif : aucune photo de maquette ni contenu de Home n’a été injecté dans `Accueil` ou dans le bootstrap. Le markup `core/cover` du Hero a été normalisé (`has-background`, sans `wp-image-0`) et la page permanente `lpu-sections-patterns-test` a été régénérée sans erreur de validation Gutenberg. Le registre WordPress, l’éditeur authentifié et le rendu serveur des sept patterns ne signalent aucun bloc invalide. La page de contrôle concatène maintenant automatiquement tous les patterns fournis par le thème actif, triés par nom, et a été inspectée avec `web-inspector` à `1440px` et en émulation Pixel 5 à `390px` : HTTP 200, aucune erreur console/page/requête et aucun débordement horizontal. Le provisioning de cette page a été rejoué deux fois après reset sans créer de doublon.
+- 2026-08-15 — Étape 6 — assemblage technique de démonstration terminé : `scripts/content/home-network/setup.sh` assemble explicitement la Page réseau `Accueil` à partir de l’ordre déclaré dans `scripts/content/home-network/home-sections-names.txt`. Il est inclus dans `npm run env:content` et peut aussi être sélectionné avec `npm run env:content -- home-network`. Il vérifie `show_on_front`/`page_on_front`, protège le contenu éditorial par une comparaison exacte du placeholder technique et n’autorise le remplacement qu’avec `--force`. Il active le header transparent, supprime la marge de la pile de blocs devant un hero transparent, résout les URLs des trois fermes depuis le multisite et adapte la seconde grille `cards` en variante gris-vert à titres seuls. Les médias restent les placeholders SVG autorisés de démonstration, en attente des médias éditoriaux autorisés. La revue code confirme 8 blocs racine et 81 descendants (89 blocs au total) valides, dont un `core/cover` valide ; la revue visuelle indépendante et les captures locales à `1440px`, `1280px`, `768px` et Pixel 5 à `390px` ne relèvent aucune erreur, aucun débordement et confirment le retour du header à l’écru à l’ouverture du méga-menu.
 
 ### À faire maintenant
 
+- 2026-08-15 — Correction post-contrôle du header transparent de la Home : l’état `.lpu-menu-open` conserve maintenant le header en superposition (`position:absolute`) et ne réintroduit plus sa hauteur dans le flux quand le méga-menu s’ouvre. Le panneau écru recouvre le haut du hero sans déplacer les sections ; le rendu Home fermé/ouvert a été recontrôlé à `1440px`, et l’overlay mobile à `390px`, avec HTTP 200 et aucune erreur console, page ou requête.
+- 2026-08-15 — Correction du pont de survol du méga-menu : la zone transparente de `1.8rem` entre l’option et le panneau est maintenant une extension interactive du panneau. Le parent reste donc survolé, `.lpu-menu-open` et le chevron restent ouverts, et le menu ne se ferme qu’après sortie de cette zone et du panneau. La traversée a été reproduite avec le pointeur maintenu dans la zone à `1440px`, puis contrôlée avec le panneau atteint après le délai, sans erreur navigateur.
 - Finaliser la validation éditoriale de l’Étape 6 lorsque les médias autorisés, les textes validés et les Pages de destination des CTA seront disponibles ; aucun contenu de maquette aplati n’est injecté par le bootstrap.
 - Après intégration du contenu réel, rejouer le comportement déjà validé au clavier et au pointeur si les libellés ou la structure des navigations changent.
 - Conserver les décisions validées : méga-menu texte en colonnes uniquement, header opaque écru par défaut, variante transparente activable explicitement sur une page avec hero suffisamment contrasté, et seuil responsive `1099px` pour les libellés actuels.
@@ -301,8 +303,8 @@ Le template est le cadre ; le contenu reste dans les Pages. Garder les templates
 - `wordpress-lpu/themes/lepaysanurbain/parts/footer.html`
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
 - `wordpress-lpu/themes/lepaysanurbain/assets/js/navigation.js`
-- `wordpress-lpu/scripts/content/navigation-menus/README.md`
-- `wordpress-lpu/scripts/content/footer-menus/README.md`
+- `wordpress-lpu/scripts/content/navigation-menus/setup.sh` and its data files
+- `wordpress-lpu/scripts/content/footer-menus/setup.sh` and its data files
 - `wordpress-lpu/README.md` pour la documentation de l'architecture
 
 ### 3.1 Templates de base
@@ -418,7 +420,7 @@ Pour chacun des quatre sites :
 
 Appeler `scripts/content/setup.sh` depuis `setup-multisite-network.sh` après la création des sites, car le script de bootstrap est déjà exécuté au démarrage de `wp-env`. Chaque script de contenu conserve ses données Gutenberg dans son propre répertoire, hors du code shell. Un redémarrage ne doit jamais réinitialiser une page ou un menu déjà édité dans Gutenberg.
 
-`scripts/content/setup.sh` enchaîne aussi `navigation-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `menu-principal`) et enregistre son ID dans l'option `lpu_navigation_id`, ce qui rend reproductibles les menus de l'Étape 3.
+`scripts/content/setup.sh` enchaîne aussi `navigation-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `menu-principal`) et enregistre son ID dans l'option `lpu_navigation_id`, ce qui rend les menus reproductibles.
 
 Il enchaîne également `footer-menus/setup.sh`, qui recrée ou sélectionne le post `wp_navigation` de chaque site (slug `footer-principal`) et enregistre son ID dans `lpu_footer_navigation_id`, sans écraser une navigation déjà existante.
 
@@ -449,7 +451,7 @@ Un fichier PHP placé dans `patterns/` et muni d’un en-tête (`Title`, `Slug`,
 
 **Patterns à réaliser pour la Home réseau du premier jalon**
 
-Les noms de sections ci-dessous suivent `description-sections.txt`. Les deux occurrences de la grille de cartes dans `sections-Home.txt` utilisent le même pattern avec des contenus différents ; la description et le bouton sont facultatifs dans ce pattern.
+Les noms de sections ci-dessous suivent `description-sections.txt`. Les deux occurrences de la grille de cartes dans `sections-Home.txt` utilisent le même pattern avec des contenus différents ; la description et le bouton sont facultatifs dans ce pattern. La fixture de contrôle concatène automatiquement tous les patterns fournis par le thème actif ; l’ordre particulier de la Home reste déclaré dans `scripts/content/home-network/home-sections-names.txt`.
 
 | Fichier                     | Usage                                                                                                                      | Blocs cœur principaux                                    |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -482,24 +484,25 @@ Dans l’inséreur de blocs, chaque pattern doit être visible dans sa catégori
 Pour conserver un support de contrôle après chaque recréation de
 l’environnement, `scripts/content/setup.sh` exécute également
 `scripts/content/patterns-test-page/setup.sh`. Cette fixture publie la page
-`lpu-sections-patterns-test` sur le site réseau avec les sections déclarées
-dans `scripts/content/home-sections-names.txt` ; elle ne constitue pas la Home et ne
-remplace pas son assemblage éditorial prévu à l’Étape 6.
+`lpu-sections-patterns-test` sur le site réseau avec tous les patterns fournis
+par le thème actif, triés par nom. Elle ne constitue pas la Home et ne remplace
+pas son assemblage éditorial.
 
 ---
 
 ## Étape 6 — Assembler la Home réseau dans Gutenberg
 
-À partir d’ici, le contenu est volontairement stocké en base, dans les Pages de chaque site. Ce n’est pas du code de thème et ne doit pas être injecté par le script de bootstrap.
+Le contenu est stocké en base, dans les Pages de chaque site. Ce n’est pas du
+code de thème ; les scripts fournissent toutefois une source reproductible
+pour recréer l’environnement de développement.
 
-La fixture `scripts/content/patterns-test-page/setup.sh` couvre la lecture du
-registre des patterns et leur concaténation dans l’ordre de la maquette, mais
-elle reste limitée à la page de contrôle `lpu-sections-patterns-test`. La
-commande explicite `npm run env:home-network:setup` réutilise seulement cette
-logique de registre et la déclaration d’ordre partagée ; elle porte son propre
-contrat pour le contenu de `Accueil`, les URLs des fermes et l’option de header.
-Elle ne fait pas partie du bootstrap et refuse une réécriture éditoriale sans
-`--force`.
+La fixture `scripts/content/patterns-test-page/setup.sh` concatène tous les
+patterns du thème actif dans la page de contrôle
+`lpu-sections-patterns-test`. La Home réseau utilise, elle, sa propre
+déclaration d’ordre dans `scripts/content/home-network/`, ainsi que son
+contrat pour le contenu de `Accueil`, les URLs des fermes et l’option de
+header. Elle est incluse dans `npm run env:content` et refuse une réécriture
+éditoriale sans `--force`.
 
 ### 6.1 Accueil réseau
 
@@ -524,10 +527,11 @@ Utiliser `Home_1280.jpg`, `Home_1440.jpg` et les PDF comme références de compo
 
 La page réseau ne contient ni logo, ni menu, ni URL de ferme codés en dur dans le thème. Elle utilise la même palette, les mêmes patterns et le même cadre partagé que les futures pages locales.
 
-Le provisioning explicite utilisé pour cette assemblée est :
+Le provisioning complet ou ciblé utilisé pour cette assemblée est :
 
 ```sh
-npm run env:home-network:setup
+npm run env:content
+npm run env:content -- home-network
 ```
 
 Après une première assemblée, `--force` est requis pour remplacer un contenu

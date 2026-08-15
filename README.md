@@ -64,9 +64,10 @@ The `afterStart` lifecycle script in `.wp-env.json` then:
 4. creates the Paris, Lyon, and Marseille sites when they are missing; and
 5. installs and activates the French (`fr_FR`) core language pack for all four
    sites and sets the default `admin` user's locale to French;
-6. provisions the static `Accueil` pages, site-local Navigation records, and
-   the developer sections-patterns review page from the co-located files in
-   `scripts/content/`; then
+6. provisions all required and developer content from the co-located files in
+   `scripts/content/`, including the static `Accueil` pages, logos, site-local
+   header/footer Navigations, test pages, the all-patterns review page, and the
+   network Home fixture; then
 7. verifies the network and site domain/path records.
 
 The bootstrap is safe to run repeatedly:
@@ -199,36 +200,37 @@ Plugins can be mounted and activated when listed in `.wp-env.json`:
 
 ### Content provisioning
 
-Scripts that create the minimum WordPress content live separately in
-`scripts/content/`. Each script keeps its Gutenberg markup and other content
-data in the same directory, rather than inline in shell scripts. Run them
-independently when needed with:
+Scripts that create WordPress content live in `scripts/content/`. Each script
+keeps its Gutenberg markup and other data in the same directory, while
+`scripts/content/setup.sh` provides the single dispatcher for the whole set:
 
 ```sh
-npm run env:content:setup
+# Provision everything, in dependency order.
+npm run env:content
+
+# Provision one or more selected operations.
+npm run env:content -- patterns-test-page
+npm run env:content -- home-network navigation-menus
+
+# Intentionally replace an already assembled network Home.
+npm run env:content -- home-network --force
 ```
 
-The setup is idempotent and does not overwrite an existing editorial page or
-navigation. It also restores the theme test page at `/titre-de-test-ruden/`
-when that page is absent, and creates or refreshes the managed developer review page at
-`/lpu-sections-patterns-test/` from the active theme patterns. The latter is a
-fixture for visual inspection only; it is not the network Home.
+With no selector, the command provisions logos, front pages, header and footer
+Navigations, the typography test page, the all-patterns review page at
+`/lpu-sections-patterns-test/`, and the network Home fixture. The review page
+contains every pattern supplied by the active theme and is separate from the
+Home. Ordinary editorial pages and Navigations are preserved; the managed test
+pages are refreshed according to their script contracts, and the Home refuses
+to replace non-placeholder content unless `--force` is supplied.
 
-The front-page script is only technical provisioning: it selects or creates a
-Page with the `accueil` slug on each site, points the site's reading settings
-to it, and gives a newly created Page an invisible placeholder comment. It
-does not add patterns, images, or sections from the design maquettes. Patterns
-are introduced in Step 5; the network Home is assembled in Gutenberg in Step
-6. See [`scripts/content/front-pages/README.md`](scripts/content/front-pages/README.md)
-for the exact contract.
-
-After the Step 4 and Step 5 prerequisites have been validated, the first Home
-assembly can be provisioned explicitly with
-`npm run env:home-network:setup`. It targets only the network `Accueil` page,
-stores the block markup in that Page, resolves the three farm URLs from the
-current multisite, and enables the transparent-header option. It is not part
-of `env:content:setup`; see [`scripts/content/home-network/README.md`](scripts/content/home-network/README.md)
-before using `--force` to replace existing editorial content.
+The front-page operation remains technical provisioning: it selects or creates
+a Page with the `accueil` slug on each site, points the site's reading settings
+to it, and gives a newly created Page an invisible placeholder comment. It does
+not add patterns, images, or sections from the design maquettes. The Home
+operation stores its block markup in the network `Accueil` page, resolves the
+three farm URLs from the current multisite, and enables the transparent-header
+option.
 
 ### Shared header and navigation
 
@@ -257,9 +259,9 @@ delivery show a desktop hamburger and `Agir avec nous`; those are historical
 maquette elements and are not part of the current menu contract.
 
 The complete menu contract, source priorities, current limitations and pending
-checks are documented in
-[`scripts/content/navigation-menus/README.md`](scripts/content/navigation-menus/README.md)
-and in [`theme-implementation-plan.md`](theme-implementation-plan.md).
+checks are documented in the comments at the top of
+`scripts/content/navigation-menus/setup.sh` and in
+[`theme-implementation-plan.md`](theme-implementation-plan.md).
 
 ## VS Code
 

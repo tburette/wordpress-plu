@@ -5,7 +5,12 @@ set -euo pipefail
 # site listed in sites.tsv. A newly created page receives the non-visible
 # placeholder content from accueil.html; an existing page is never overwritten.
 # The script only changes the two reading options required for WordPress to
-# render that page at the site root.
+# render that page at the site root. It does not add patterns, images or design
+# sections; those are separate content operations.
+#
+# The slug is accueil and the title Accueil is used only when a page is first
+# created. Existing pages are found in every non-trash status, so an editorial
+# page in progress is selected rather than duplicated.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 sites_file="${script_dir}/sites.tsv"

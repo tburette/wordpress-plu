@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Assemble the network Home from the active theme patterns. This is an
-# explicit Step 6 content operation; it is intentionally not part of the
-# bootstrap content setup and refuses to replace an editorial Home by default.
+# Assemble the network Home from the active theme patterns. The section order
+# is kept beside this script because it describes this Home fixture only. The
+# operation refuses to replace an editorial Home by default.
+#
+# This is the network-only Home content operation. It resolves the current
+# Paris, Lyon and Marseille site URLs from the multisite, enables the explicit
+# lpu_header_transparent page setting, and transforms the second cards
+# occurrence into the green-grey, titles-only variant used by the Home.
+# The patterns still use the local SVG placeholder until authorized editorial
+# media are imported. Use --force only to intentionally replace an already
+# assembled or edited Home.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 pages_file="${script_dir}/page.tsv"
-order_file="${project_dir}/scripts/content/home-sections-names.txt"
+order_file="${script_dir}/home-sections-names.txt"
 
 usage() {
 	printf 'Usage: %s [--force]\n' "${0}"
-	printf '  --force  replace an existing Home whose content is not the Step 4 placeholder\n'
+	printf '  --force  replace an existing Home whose content is not the technical placeholder\n'
 }
 
 force=false
@@ -100,7 +108,7 @@ if ( count( \$pages ) > 1 ) {
 }
 
 if ( ! \$pages ) {
-	WP_CLI::error( 'The technical front page does not exist: ' . \$page_slug . '. Run env:front-pages:setup first.' );
+	WP_CLI::error( 'The technical front page does not exist: ' . \$page_slug . '. Run npm run env:content -- front-pages first.' );
 }
 
 \$page = \$pages[0];
@@ -113,14 +121,14 @@ if ( (string) \$page->post_title !== \$page_title ) {
 }
 
 if ( 'page' !== get_option( 'show_on_front' ) || (int) get_option( 'page_on_front' ) !== (int) \$page->ID ) {
-	WP_CLI::error( 'The expected Home page is not the current page_on_front. Run env:front-pages:setup first.' );
+	WP_CLI::error( 'The expected Home page is not the current page_on_front. Run npm run env:content -- front-pages first.' );
 }
 
-\$step4_placeholder = '<!--
+\$technical_placeholder = '<!--
   This page intentionally starts without visible content.
   Home sections will be assembled in Gutenberg from the theme patterns.
 -->';
-if ( ! \$force && trim( (string) \$page->post_content ) !== trim( \$step4_placeholder ) ) {
+if ( ! \$force && trim( (string) \$page->post_content ) !== trim( \$technical_placeholder ) ) {
 	WP_CLI::error( 'The Home already contains editorial content. Re-run with --force only when replacement is intentional.' );
 }
 

@@ -15,13 +15,7 @@
     "env:language:setup": "bash scripts/setup-language.sh",
     "env:multisite:setup": "bash scripts/setup-multisite-network.sh",
     "env:theme:setup": "bash scripts/setup-theme.sh",
-    "env:content:setup": "bash scripts/content/setup.sh",
-    "env:front-pages:setup": "bash scripts/content/front-pages/setup.sh",
-    "env:navigation:setup": "bash scripts/content/navigation-menus/setup.sh",
-    "env:footer-navigation:setup": "bash scripts/content/footer-menus/setup.sh",
-    "env:test-page:setup": "bash scripts/content/test-page/setup.sh",
-    "env:patterns-test-page:setup": "bash scripts/content/patterns-test-page/setup.sh",
-    "env:home-network:setup": "bash scripts/content/home-network/setup.sh",
+    "env:content": "bash scripts/content/setup.sh",
     "env:multisite:verify": "bash scripts/verify-multisite-network.sh"
   }
 }

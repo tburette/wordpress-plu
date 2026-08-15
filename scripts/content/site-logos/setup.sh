@@ -3,6 +3,10 @@ set -euo pipefail
 
 # Import the official theme-owned SVG and select it as the Site Logo on each
 # multisite blog. The theme allows this SVG type only while WP-CLI runs.
+# The opaque header uses the horizontal green logotype with baseline; the
+# corresponding écru variants are available in the theme for transparent-header
+# pages. The source SVGs come from the validated identity assets, and a managed
+# attachment is reused by title when the operation is run again.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 logos_file="${script_dir}/logos-sites.tsv"

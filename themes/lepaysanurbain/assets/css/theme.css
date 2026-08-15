@@ -437,10 +437,11 @@ body {
 	background: var(--wp--preset--color--ecru);
 }
 
-/* An explicit page setting activates the transparent initial state. The
- * navigation script adds .lpu-menu-open as soon as Core opens a submenu or
- * the responsive overlay, returning the header to the opaque state. */
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) {
+/* Keep the transparent Home header out of normal flow in both menu states. The
+ * navigation script adds .lpu-menu-open when Core opens a submenu or the
+ * responsive overlay; that class changes the background without pushing the
+ * first section down. */
+body.lpu-header-transparent .lpu-header {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -675,11 +676,12 @@ body.lpu-header-transparent .lpu-header
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu {
 		position: static;
+		--lpu-submenu-bridge-height: 1.8rem;
 	}
 
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container {
-		top: calc(100% + 1.8rem);
+		top: calc(100% + var(--lpu-submenu-bridge-height));
 		right: auto;
 		bottom: auto;
 		left: 50%;
@@ -697,6 +699,20 @@ body.lpu-header-transparent .lpu-header
 		background: var(--wp--preset--color--ecru) !important;
 		border: 0;
 		color: var(--wp--preset--color--vert-fonce);
+	}
+
+	/* The visual gap between the parent option and its panel is part of the
+	 * same hover target. Keep it transparent, but let it receive the pointer so
+	 * Core does not close the submenu while the pointer crosses this zone. */
+	.lpu-header .wp-block-navigation__container >
+		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container::before {
+		position: absolute;
+		top: calc(-1 * var(--lpu-submenu-bridge-height));
+		right: 0;
+		left: 0;
+		height: var(--lpu-submenu-bridge-height);
+		content: '';
+		pointer-events: auto;
 	}
 
 	/* Keep the active panel hit-testable while the pointer crosses the empty

@@ -7,6 +7,18 @@ set -euo pipefail
 # ID is stored in the lpu_navigation_id option so the shared theme header can
 # bind the correct navigation on each multisite blog. Existing navigation
 # content is preserved.
+#
+# The network menu has Le Projet, Nos Fermes (with the three farms) and
+# Contact. Farm menus have Qui sommes-nous, Nos Activités, Nos Cultures,
+# Nos Projets & Initiatives and Infos pratiques. The fragments contain only
+# child blocks; the shared theme supplies the outer Navigation block.
+#
+# The current local destinations are prototype destinations: missing pages use
+# the home URL or an anchor, and farm links use the local multisite hostnames.
+# Keep the site-specific rows and content files here rather than hard-coding a
+# numeric Navigation ID in the theme. The theme supports the validated desktop
+# counts of three network items and five farm items; other counts use the
+# responsive/unsupported-count presentation.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 navigation_sites_file="${script_dir}/navigation-sites.tsv"

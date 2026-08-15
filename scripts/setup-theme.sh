@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Enable the mounted project theme for the multisite network, then activate it
 # on every site currently registered in that network. wp-env mounts a theme but
-# deliberately does not choose the active theme, so this step belongs to the
+# deliberately does not choose the active theme, so activation belongs to the
 # environment bootstrap rather than to the theme PHP code or content scripts.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"

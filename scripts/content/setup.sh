@@ -1,20 +1,101 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Provision the minimum WordPress content needed by the local multisite
-# network. The network topology is created by the parent script in
-# scripts/setup-multisite-network.sh; this directory only handles content.
+# Provision WordPress content for the local multisite network.
 #
-# Content provisioning is intentionally idempotent: missing records and
-# settings may be created, while editorial content already edited in WordPress
-# is not reset. Managed developer fixtures are explicit exceptions and keep
-# their own refresh contract. Each provisioning script keeps its input files
-# next to itself.
+# With no arguments this runs every content operation in dependency order:
+# logos, front pages, local header/footer navigations, the typography test page,
+# the all-patterns review page, and the network Home fixture.
+#
+# Pass one or more directory names to run only selected operations, for example:
+#   npm run env:content -- patterns-test-page
+#   npm run env:content -- home-network navigation-menus
+#
+# The network and active theme must already exist. The parent multisite setup
+# invokes this dispatcher after creating the sites and activating the theme.
+# Each operation keeps its data beside its shell script. Ordinary editorial
+# pages and navigations are preserved; managed developer fixtures are refreshed
+# according to their own contracts.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
-bash "${script_dir}/site-logos/setup.sh"
-bash "${script_dir}/front-pages/setup.sh"
-bash "${script_dir}/navigation-menus/setup.sh"
-bash "${script_dir}/footer-menus/setup.sh"
-bash "${script_dir}/test-page/setup.sh"
-bash "${script_dir}/patterns-test-page/setup.sh"
+usage() {
+  cat <<'USAGE'
+Usage: npm run env:content [-- [operation ...]]
+
+Run every content operation when no operation is provided. Otherwise choose
+one or more of:
+
+  site-logos
+  front-pages
+  navigation-menus
+  footer-menus
+  test-page
+  patterns-test-page
+  home-network
+
+Use --force with home-network to intentionally replace an already assembled
+network Home:
+
+  npm run env:content -- home-network --force
+USAGE
+}
+
+operations=(
+  site-logos
+  front-pages
+  navigation-menus
+  footer-menus
+  test-page
+  patterns-test-page
+  home-network
+)
+
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ "${1:-}" == "--" ]]; then
+  shift
+fi
+
+force=false
+selected_operations=()
+for argument in "$@"; do
+  if [[ "${argument}" == "--force" ]]; then
+    force=true
+    continue
+  fi
+
+  if [[ "${argument}" == "all" ]]; then
+    selected_operations+=("${operations[@]}")
+    continue
+  fi
+
+  case " ${operations[*]} " in
+    *" ${argument} "*) selected_operations+=("${argument}") ;;
+    *)
+      printf 'Unknown content operation: %s\n\n' "${argument}" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ "${#selected_operations[@]}" -eq 0 ]]; then
+  selected_operations=("${operations[@]}")
+fi
+
+for operation in "${selected_operations[@]}"; do
+  printf '\n==> Provisioning %s\n' "${operation}"
+  if [[ "${operation}" == "home-network" && "${force}" == true ]]; then
+    bash "${script_dir}/${operation}/setup.sh" --force
+  elif [[ "${operation}" != "home-network" && "${force}" == true ]]; then
+    printf 'The --force option is only supported for home-network.\n' >&2
+    exit 1
+  else
+    bash "${script_dir}/${operation}/setup.sh"
+  fi
+done
+
+printf '\nContent provisioning complete.\n'

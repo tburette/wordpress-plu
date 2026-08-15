@@ -1,5 +1,4 @@
-# Canonical section order shared by the network Home provisioning and its test fixture.
-# One registered block pattern name per line; blank lines and comments are ignored.
+# Canonical section order used by the network Home fixture.
 lepaysanurbain/hero
 lepaysanurbain/text-image
 lepaysanurbain/cards

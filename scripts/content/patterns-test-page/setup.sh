@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Create or refresh the developer-only page used to inspect the declared
-# section patterns from Fanny's site design. The page content is assembled
-# from WordPress's active pattern registry so the test page does not duplicate
-# pattern markup in the repo.
+# Create or refresh the developer-only page used to inspect every pattern
+# provided by the active theme. The page content is assembled from WordPress's
+# pattern registry so the test page does not duplicate pattern markup in the
+# repository or require a second list of pattern names.
+#
+# The managed page is published at /lpu-sections-patterns-test/ on the network
+# site and is refreshed when it already exists. Patterns are filtered to the
+# active theme and sorted by name for deterministic output. This page is a
+# developer fixture only: it does not configure the network Home, farm links,
+# header transparency or editorial media.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 pages_file="${script_dir}/page.tsv"
-order_file="${project_dir}/scripts/content/home-sections-names.txt"
 
-for required_file in "${pages_file}" "${order_file}"; do
-	if [[ ! -f "${required_file}" ]]; then
-		printf 'Missing patterns-test-page data file: %s\n' "${required_file}" >&2
-		exit 1
-	fi
-done
+if [[ ! -f "${pages_file}" ]]; then
+	printf 'Missing patterns-test-page data file: %s\n' "${pages_file}" >&2
+	exit 1
+fi
 
 cd -- "${project_dir}"
 
@@ -29,24 +32,6 @@ php_quote() {
 	value="${value//\'/\\\'}"
 	printf "'%s'" "${value}"
 }
-
-pattern_order_php='array('
-pattern_count=0
-while IFS= read -r pattern_name || [[ -n "${pattern_name}" ]]; do
-	[[ -z "${pattern_name}" || "${pattern_name}" == \#* ]] && continue
-	if [[ "${pattern_name}" == *"'"* ]]; then
-		printf 'Pattern name contains an unsupported quote: %s\n' "${pattern_name}" >&2
-		exit 1
-	fi
-	pattern_order_php+="'${pattern_name}',"
-	pattern_count=$(( pattern_count + 1 ))
-done < "${order_file}"
-pattern_order_php+=')'
-
-if [[ "${pattern_count}" -eq 0 ]]; then
-	printf 'No patterns declared in %s.\n' "${order_file}" >&2
-	exit 1
-fi
 
 while IFS='|' read -r site_url page_title page_slug post_status post_author comment_status ping_status <&3; do
 	[[ -z "${site_url}" || "${site_url}" == \#* ]] && continue
@@ -68,7 +53,6 @@ while IFS='|' read -r site_url page_title page_slug post_status post_author comm
 	ping_status_php="$(php_quote "${ping_status}")"
 
 	read -r -d '' php_code <<PHP || true
-\$pattern_order = ${pattern_order_php};
 \$page_title = ${page_title_php};
 \$page_slug = ${page_slug_php};
 \$post_status = ${post_status_php};
@@ -76,20 +60,30 @@ while IFS='|' read -r site_url page_title page_slug post_status post_author comm
 \$comment_status = ${comment_status_php};
 \$ping_status = ${ping_status_php};
 \$patterns_by_name = array();
+\$theme_namespace = trailingslashit( get_stylesheet() );
 
 foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$pattern ) {
-	if ( isset( \$pattern['name'], \$pattern['content'] ) ) {
-		\$patterns_by_name[ \$pattern['name'] ] = \$pattern['content'];
+	if ( ! isset( \$pattern['name'], \$pattern['content'] ) ) {
+		continue;
 	}
+
+	\$source = isset( \$pattern['source'] ) ? (string) \$pattern['source'] : '';
+	\$is_theme_pattern = 'theme' === \$source || 0 === strpos( \$pattern['name'], \$theme_namespace );
+	if ( ! \$is_theme_pattern ) {
+		continue;
+	}
+
+	\$patterns_by_name[ \$pattern['name'] ] = \$pattern['content'];
+}
+
+ksort( \$patterns_by_name, SORT_NATURAL | SORT_FLAG_CASE );
+if ( ! \$patterns_by_name ) {
+	WP_CLI::error( 'No patterns provided by the active theme.' );
 }
 
 \$page_content = '';
-foreach ( \$pattern_order as \$pattern_name ) {
-	if ( ! isset( \$patterns_by_name[ \$pattern_name ] ) ) {
-		WP_CLI::error( 'Active theme pattern is missing: ' . \$pattern_name );
-	}
-
-	\$page_content .= \$patterns_by_name[ \$pattern_name ] . "\\n";
+foreach ( \$patterns_by_name as \$pattern_content ) {
+	\$page_content .= \$pattern_content . "\\n";
 }
 
 \$pages = get_posts(
@@ -150,4 +144,4 @@ PHP
 	run_wp eval "${php_code}" --url="${site_url}"
 done 3< "${pages_file}"
 
-printf 'Sections patterns test page generated from %s patterns in %s.\n' "${pattern_count}" "${order_file}"
+printf 'Sections patterns test page generated from every pattern provided by the active theme.\n'

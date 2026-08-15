@@ -4,6 +4,9 @@ set -euo pipefail
 # Restore the small page used to exercise the theme's typography, buttons,
 # groups, widths, colors, and decorative classes. The page data is kept in
 # page.tsv and the Gutenberg markup is kept in the adjacent HTML file.
+# It is published on the network site at /titre-de-test-ruden/. A page with
+# that slug is deliberately left unchanged; the page is restored only when it
+# is absent.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 pages_file="${script_dir}/page.tsv"
