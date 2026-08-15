@@ -87,7 +87,7 @@ body {
  * padding. Keep the block-gap generated for normal constrained content, but
  * do not insert an additional gap between consecutive full-width bands. */
 .wp-block-post-content.is-layout-constrained > .lpu-band {
-	margin-block-start: 0;
+	margin-block: 0;
 }
 
 .lpu-band > .wp-block-columns,
