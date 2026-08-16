@@ -27,7 +27,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-16 07:12 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-16 12:11 (Europe/Paris)
 
 **Position exacte dans le plan :** Étape 7 est en cours. L’étape 6 est terminée ; des éléments ont été laissés à traiter plus tard.
 
@@ -35,6 +35,7 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 ### Points ouverts
 
 - Vérifier la généricité multisite de ce qui reste actif après le lancement : aucun `blog_id`, ID de site, ID de page, ID de navigation, ID de logo ou autre identifiant propre à un site ne doit être codé en dur dans le thème, les templates ou les hooks de rendu. Les scripts de provisioning (`scripts/setup-multisite-network.sh` et `scripts/content/`) sont hors de ce périmètre : ils servent à initialiser l’environnement de démonstration et ne seront plus utilisés après le lancement. Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`.
+- Repenser la configurabilité des cadres du plugin `lpu-split-section` dans une implémentation distincte : les couleurs et les motifs ne doivent pas être figés dans le code du plugin ni par une liste numérique de motifs (`array( 1, 2, 3, 4, 5, 7, 8 )`). Définir d’abord un contrat de données et d’assets extensible, puis exposer la même source au sélecteur Gutenberg et au rendu front-end, avec une stratégie de compatibilité pour les contenus déjà enregistrés.
 - Gutenberg émet encore un avertissement générique sur le contraste automatique de la couleur écru dans ses composants ; il ne produit ni bloc invalide ni défaut de rendu et reste non bloquant.
 - Vérifier dans Gutenberg la présence éventuelle des presets d’espacement Core : `theme.json` définit ses `spacingSizes`, mais ne fixe pas encore explicitement `defaultSpacingSizes: false`. Décider si l’éditeur doit rester limité à l’échelle d’espacement LPU.
 - Réévaluer plus tard la robustesse de la liaison des navigations multisite via `render_block_data` et `lpu_navigation_id`.
