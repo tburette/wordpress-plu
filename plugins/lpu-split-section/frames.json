@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "none",
+    "label": "Aucun cadre",
+    "background": {
+      "type": "none"
+    }
+  },
+  {
+    "slug": "ecru",
+    "label": "Cadre écru",
+    "default": true,
+    "background": {
+      "type": "color",
+      "value": "var(--wp--preset--color--ecru)"
+    }
+  },
+  {
+    "slug": "green",
+    "label": "Cadre vert foncé",
+    "background": {
+      "type": "color",
+      "value": "var(--wp--preset--color--vert-fonce)"
+    }
+  },
+  {
+    "slug": "yellow",
+    "label": "Cadre jaune",
+    "background": {
+      "type": "color",
+      "value": "var(--wp--preset--color--jaune)"
+    }
+  },
+  {
+    "slug": "motif-1",
+    "label": "Motif carré 1",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-1-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-2",
+    "label": "Motif carré 2",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-2-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-3",
+    "label": "Motif carré 3",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-3-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-4",
+    "label": "Motif carré 4",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-4-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-5",
+    "label": "Motif carré 5",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-5-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-7",
+    "label": "Motif carré 7",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-7-carre.svg"
+    }
+  },
+  {
+    "slug": "motif-8",
+    "label": "Motif carré 8",
+    "background": {
+      "type": "image",
+      "asset": "assets/images/motif-8-carre.svg"
+    }
+  }
+]

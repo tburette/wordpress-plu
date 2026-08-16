@@ -24,31 +24,25 @@
 	var SelectControl = components.SelectControl;
 	var ToggleControl = components.ToggleControl;
 
-	var frameOptions = [
-		{ label: __( 'Aucun cadre', 'lpu-split-section' ), value: 'none' },
-		{ label: __( 'Cadre écru', 'lpu-split-section' ), value: 'ecru' },
-		{ label: __( 'Cadre vert foncé', 'lpu-split-section' ), value: 'green' },
-		{ label: __( 'Cadre jaune', 'lpu-split-section' ), value: 'yellow' },
-		{ label: __( 'Motif carré 1', 'lpu-split-section' ), value: 'motif-1' },
-		{ label: __( 'Motif carré 2', 'lpu-split-section' ), value: 'motif-2' },
-		{ label: __( 'Motif carré 3', 'lpu-split-section' ), value: 'motif-3' },
-		{ label: __( 'Motif carré 4', 'lpu-split-section' ), value: 'motif-4' },
-		{ label: __( 'Motif carré 5', 'lpu-split-section' ), value: 'motif-5' },
-		{ label: __( 'Motif carré 7', 'lpu-split-section' ), value: 'motif-7' },
-		{ label: __( 'Motif carré 8', 'lpu-split-section' ), value: 'motif-8' },
-	];
-
+	var config = window.lpuSplitSectionConfig || {};
+	var frameOptions = Array.isArray( config.frames ) ? config.frames : [];
+	var knownFrameValues = Array.isArray( config.frameValues ) ? config.frameValues : [];
 	var allowedFrames = frameOptions.map( function ( option ) {
 		return option.value;
 	} );
+	var defaultFrame = config.defaultFrame || allowedFrames[ 0 ] || 'none';
 
 	var parentTemplate = [
-		[ 'lpu/split-zone', { side: 'left', frame: 'ecru', mediaFill: false } ],
-		[ 'lpu/split-zone', { side: 'right', frame: 'none', mediaFill: true } ],
+		[ 'lpu/split-zone', { side: 'left', frame: defaultFrame, mediaFill: false } ],
+		[ 'lpu/split-zone', { side: 'right', frame: getSafeFrame( 'none' ), mediaFill: true } ],
 	];
 
 	function getSafeFrame( frame ) {
-		return allowedFrames.indexOf( frame ) !== -1 ? frame : 'ecru';
+		if ( knownFrameValues.indexOf( frame ) !== -1 ) {
+			return frame;
+		}
+
+		return defaultFrame;
 	}
 
 	function getSafeSide( side ) {

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LPU — Sections côte à côte
  * Description: Prototype indépendant de sections Gutenberg à deux zones pour Le Paysan Urbain.
- * Version: 0.1.0
+ * Version: 0.2.0
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Text Domain: lpu-split-section
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LPU_SPLIT_SECTION_VERSION', '0.1.0' );
+define( 'LPU_SPLIT_SECTION_VERSION', '0.2.0' );
 
 /**
  * Return a stable development version for a local asset.
@@ -27,6 +27,207 @@ function lpu_split_section_asset_version( $path ) {
 }
 
 /**
+ * Return the normalized frame catalogue shared by the editor and front end.
+ *
+ * The built-in catalogue lives in frames.json so adding or retiring a frame
+ * does not require editing JavaScript or CSS. A companion theme/plugin can
+ * extend or alter the catalogue through the filter. Keep a retired frame in
+ * the catalogue with `available: false` until saved content using it has been
+ * migrated; it will still receive its front-end CSS but will not be offered
+ * in the Inspector Control.
+ *
+ * Frame contract:
+ * - `label`: human-readable option label;
+ * - `available`: whether the frame is offered to new edits;
+ * - `background.type`: `none`, `color`, or `image`;
+ * - `background.value`: a CSS color/token for `color`;
+ * - `background.url`: an absolute image URL for `image`.
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function lpu_split_section_get_frames() {
+	$manifest_path = plugin_dir_path( __FILE__ ) . 'frames.json';
+	$manifest      = file_exists( $manifest_path ) ? json_decode( file_get_contents( $manifest_path ), true ) : array();
+	$frames        = array();
+
+	if ( is_array( $manifest ) ) {
+		foreach ( $manifest as $entry ) {
+			if ( ! is_array( $entry ) || empty( $entry['slug'] ) || empty( $entry['label'] ) ) {
+				continue;
+			}
+
+			$slug = sanitize_key( $entry['slug'] );
+			if ( '' === $slug ) {
+				continue;
+			}
+
+			$background = isset( $entry['background'] ) && is_array( $entry['background'] )
+				? $entry['background']
+				: array( 'type' => 'none' );
+
+			if ( isset( $background['asset'] ) && is_string( $background['asset'] ) ) {
+				$background = array(
+					'type' => 'image',
+					'url'  => get_theme_file_uri( ltrim( $background['asset'], '/' ) ),
+				);
+			}
+
+			$frames[ $slug ] = array(
+				'label'      => __( (string) $entry['label'], 'lpu-split-section' ),
+				'available'  => false !== ( $entry['available'] ?? true ),
+				'default'    => ! empty( $entry['default'] ),
+				'background' => $background,
+			);
+		}
+	}
+
+	$frames = apply_filters( 'lpu_split_section_frames', $frames );
+	if ( ! is_array( $frames ) ) {
+		$frames = array();
+	}
+
+	// `none` is the safe fallback for unknown or retired frame values. Keep it
+	// in the catalogue even when a filter omits it, so old content remains
+	// valid and new blocks always have a usable fallback.
+	if ( ! isset( $frames['none'] ) || ! is_array( $frames['none'] ) ) {
+		$frames = array(
+			'none' => array(
+				'label'      => __( 'Aucun cadre', 'lpu-split-section' ),
+				'available'  => true,
+				'background' => array( 'type' => 'none' ),
+			),
+		) + $frames;
+	}
+
+	return $frames;
+}
+
+/**
+ * Convert the frame catalogue to Inspector Control options.
+ *
+ * @param array<string, array<string, mixed>> $frames Frame catalogue.
+ * @return array<int, array<string, string>>
+ */
+function lpu_split_section_editor_frame_options( $frames ) {
+	$options = array();
+
+	foreach ( $frames as $name => $frame ) {
+		if ( ! is_array( $frame ) || empty( $frame['label'] ) || false === ( $frame['available'] ?? true ) ) {
+			continue;
+		}
+
+		$options[] = array(
+			'label' => (string) $frame['label'],
+			'value' => (string) sanitize_key( $name ),
+		);
+	}
+
+	return $options;
+}
+
+/**
+ * Return all frame keys, including retired keys retained for compatibility.
+ *
+ * @param array<string, array<string, mixed>> $frames Frame catalogue.
+ * @return array<int, string>
+ */
+function lpu_split_section_frame_values( $frames ) {
+	$values = array();
+
+	foreach ( $frames as $name => $frame ) {
+		if ( is_array( $frame ) ) {
+			$values[] = (string) sanitize_key( $name );
+		}
+	}
+
+	return array_values( array_unique( array_filter( $values ) ) );
+}
+
+/**
+ * Pick the default frame for newly inserted sections.
+ *
+ * @param array<string, array<string, mixed>> $frames Frame catalogue.
+ * @return string
+ */
+function lpu_split_section_default_frame( $frames ) {
+	foreach ( $frames as $name => $frame ) {
+		if ( is_array( $frame ) && ! empty( $frame['default'] ) && ! empty( $frame['available'] ) ) {
+			return (string) sanitize_key( $name );
+		}
+	}
+
+	foreach ( $frames as $name => $frame ) {
+		if ( is_array( $frame ) && ! empty( $frame['available'] ) ) {
+			return (string) sanitize_key( $name );
+		}
+	}
+
+	return 'none';
+}
+
+/**
+ * Build a CSS declaration from the structured frame background contract.
+ *
+ * @param array<string, mixed> $frame Frame definition.
+ * @return string
+ */
+function lpu_split_section_frame_declaration( $frame ) {
+	if ( ! is_array( $frame ) || empty( $frame['background'] ) || ! is_array( $frame['background'] ) ) {
+		return '';
+	}
+
+	$background = $frame['background'];
+	$type       = isset( $background['type'] ) ? (string) $background['type'] : 'none';
+
+	if ( 'none' === $type ) {
+		return 'background: transparent;';
+	}
+
+	if ( 'color' === $type && ! empty( $background['value'] ) ) {
+		$value = (string) $background['value'];
+		if ( preg_match( '/^[a-zA-Z0-9_\\-().%,# ]+$/', $value ) ) {
+			return 'background-color: ' . $value . ';';
+		}
+	}
+
+	if ( 'image' === $type && ! empty( $background['url'] ) ) {
+		$url = esc_url_raw( (string) $background['url'] );
+		if ( '' !== $url ) {
+			return 'background: url("' . $url . '") center / cover no-repeat;';
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Generate the frame classes used by saved block markup.
+ *
+ * @param array<string, array<string, mixed>> $frames Frame catalogue.
+ * @return string
+ */
+function lpu_split_section_frame_css( $frames ) {
+	$css = '';
+
+	foreach ( $frames as $name => $frame ) {
+		$class_name = sanitize_html_class( (string) $name );
+		$declaration = lpu_split_section_frame_declaration( $frame );
+
+		if ( '' === $class_name || '' === $declaration ) {
+			continue;
+		}
+
+		$css .= sprintf(
+			".lpu-split-v2__zone--frame-%1\$s {%2\$s}\n",
+			$class_name,
+			$declaration
+		);
+	}
+
+	return $css;
+}
+
+/**
  * Register the no-build editor assets used by both blocks.
  *
  * @return void
@@ -34,6 +235,7 @@ function lpu_split_section_asset_version( $path ) {
 function lpu_split_section_register_assets() {
 	$plugin_path = plugin_dir_path( __FILE__ );
 	$plugin_url  = plugin_dir_url( __FILE__ );
+	$frames      = lpu_split_section_get_frames();
 
 	wp_register_script(
 		'lpu-split-section-editor',
@@ -63,6 +265,20 @@ function lpu_split_section_register_assets() {
 		array( 'lpu-split-section' ),
 		lpu_split_section_asset_version( $plugin_path . 'assets/editor.css' )
 	);
+
+	wp_localize_script(
+		'lpu-split-section-editor',
+		'lpuSplitSectionConfig',
+		array(
+			'frames'       => lpu_split_section_editor_frame_options( $frames ),
+			'frameValues'  => lpu_split_section_frame_values( $frames ),
+			'defaultFrame' => lpu_split_section_default_frame( $frames ),
+		)
+	);
+
+	// The editor style depends on this handle, so the generated catalogue CSS
+	// is loaded in both the front end and the Gutenberg canvas from one source.
+	wp_add_inline_style( 'lpu-split-section', lpu_split_section_frame_css( $frames ) );
 }
 add_action( 'init', 'lpu_split_section_register_assets', 5 );
 
