@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LPU — Sections côte à côte
  * Description: Prototype indépendant de sections Gutenberg à deux zones pour Le Paysan Urbain.
- * Version: 0.1.0
+ * Version: 0.2.0
  * Requires at least: 6.4
  * Requires PHP: 7.4
  * Text Domain: lpu-split-section
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LPU_SPLIT_SECTION_VERSION', '0.1.0' );
+define( 'LPU_SPLIT_SECTION_VERSION', '0.2.0' );
 
 /**
  * Return a stable development version for a local asset.
@@ -27,6 +27,125 @@ function lpu_split_section_asset_version( $path ) {
 }
 
 /**
+ * Return the single source of truth for zone frames.
+ *
+ * Add a new colour or motif here: it becomes available in the editor and its
+ * CSS is emitted for the front end and the editor canvas. To retire a frame
+ * without altering existing pages, retain its entry and set `available` to
+ * false. Remove an entry only after the content using it has been migrated.
+ *
+ * A theme or a companion plugin may also alter the catalogue through
+ * `lpu_split_section_frames`.
+ *
+ * @return array<string, array<string, bool|string>>
+ */
+function lpu_split_section_get_frames() {
+	$frames = array(
+		'none'   => array(
+			'label'     => __( 'Aucun cadre', 'lpu-split-section' ),
+			'css'       => 'background: transparent;',
+			'available' => true,
+		),
+		'ecru'   => array(
+			'label'     => __( 'Cadre écru', 'lpu-split-section' ),
+			'css'       => 'background-color: var( --wp--preset--color--ecru );',
+			'available' => true,
+		),
+		'green'  => array(
+			'label'     => __( 'Cadre vert foncé', 'lpu-split-section' ),
+			'css'       => 'background-color: var( --wp--preset--color--vert-fonce );',
+			'available' => true,
+		),
+		'yellow' => array(
+			'label'     => __( 'Cadre jaune', 'lpu-split-section' ),
+			'css'       => 'background-color: var( --wp--preset--color--jaune );',
+			'available' => true,
+		),
+	);
+
+	foreach ( array( 1, 2, 3, 4, 5, 7, 8 ) as $number ) {
+		$frames[ 'motif-' . $number ] = array(
+			'label'     => sprintf( __( 'Motif carré %d', 'lpu-split-section' ), $number ),
+			'css'       => sprintf(
+				'background: url( "%s" ) center / cover no-repeat;',
+				esc_url_raw( get_theme_file_uri( 'assets/images/motif-' . $number . '-carre.svg' ) )
+			),
+			'available' => true,
+		);
+	}
+
+	$frames = apply_filters( 'lpu_split_section_frames', $frames );
+
+	if ( ! is_array( $frames ) ) {
+		$frames = array();
+	}
+
+	if ( ! isset( $frames['none'] ) ) {
+		$frames = array(
+			'none' => array(
+				'label'     => __( 'Aucun cadre', 'lpu-split-section' ),
+				'css'       => 'background: transparent;',
+				'available' => true,
+			),
+		) + $frames;
+	}
+
+	return $frames;
+}
+
+/**
+ * Convert the frame catalogue to Inspector Control options.
+ *
+ * @param array<string, array<string, bool|string>> $frames Frame catalogue.
+ * @return array<int, array<string, string>>
+ */
+function lpu_split_section_editor_frame_options( $frames ) {
+	$options = array();
+
+	foreach ( $frames as $name => $frame ) {
+		if ( ! is_array( $frame ) || empty( $frame['label'] ) || false === ( $frame['available'] ?? true ) ) {
+			continue;
+		}
+
+		$options[] = array(
+			'label' => (string) $frame['label'],
+			'value' => (string) $name,
+		);
+	}
+
+	return $options;
+}
+
+/**
+ * Generate the stable frame classes used by saved block markup.
+ *
+ * @param array<string, array<string, bool|string>> $frames Frame catalogue.
+ * @return string
+ */
+function lpu_split_section_frame_css( $frames ) {
+	$css = '';
+
+	foreach ( $frames as $name => $frame ) {
+		if ( ! is_array( $frame ) || empty( $frame['css'] ) ) {
+			continue;
+		}
+
+		$class_name = sanitize_html_class( (string) $name );
+		if ( '' === $class_name ) {
+			continue;
+		}
+
+		$css .= sprintf(
+			".lpu-split-v2__zone--frame-%1\$s {%2\$s}\n",
+			$class_name,
+			(string) $frame['css']
+		);
+	}
+
+	return $css;
+}
+
+/**
  * Register the no-build editor assets used by both blocks.
  *
  * @return void
@@ -34,6 +153,7 @@ function lpu_split_section_asset_version( $path ) {
 function lpu_split_section_register_assets() {
 	$plugin_path = plugin_dir_path( __FILE__ );
 	$plugin_url  = plugin_dir_url( __FILE__ );
+	$frames      = lpu_split_section_get_frames();
 
 	wp_register_script(
 		'lpu-split-section-editor',
@@ -63,6 +183,16 @@ function lpu_split_section_register_assets() {
 		array( 'lpu-split-section' ),
 		lpu_split_section_asset_version( $plugin_path . 'assets/editor.css' )
 	);
+
+	wp_localize_script(
+		'lpu-split-section-editor',
+		'lpuSplitSectionConfig',
+		array(
+			'frames' => lpu_split_section_editor_frame_options( $frames ),
+		)
+	);
+
+	wp_add_inline_style( 'lpu-split-section', lpu_split_section_frame_css( $frames ) );
 }
 add_action( 'init', 'lpu_split_section_register_assets', 5 );
 
@@ -114,6 +244,8 @@ function lpu_split_section_register_blocks() {
 					'type'    => 'string',
 					'default' => 'ecru',
 				),
+				// Serialized key retained for compatibility; the editor labels this
+				// broader layout choice as \"Contenu pleine zone\".
 				'mediaFill' => array(
 					'type'    => 'boolean',
 					'default' => false,
