@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit expert du thème Le Paysan Urbain — 16 août 2026</title>
+  <style>
+    :root { color-scheme: light; --ink:#153d30; --paper:#f8f8f0; --muted:#e2e6e4; --alert:#995d3b; --accent:#3a9b64; --line:#bdc8c2; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.58 Arial, sans-serif; }
+    header { padding:clamp(2rem,7vw,6rem) max(1.25rem,calc((100vw - 1120px)/2)); background:var(--ink); color:var(--paper); }
+    header p { max-width:48rem; margin:1rem 0 0; font-size:1.08rem; }
+    h1,h2,h3 { line-height:1.1; letter-spacing:-.02em; }
+    h1 { max-width:17ch; margin:0; font-size:clamp(2.35rem,7vw,5rem); }
+    h2 { margin:0 0 1rem; font-size:clamp(1.65rem,4vw,2.5rem); }
+    h3 { margin:0 0 .7rem; font-size:1.3rem; }
+    main { max-width:1120px; margin:0 auto; padding:clamp(2rem,5vw,4.5rem) 1.25rem 5rem; }
+    section { margin:0 0 3.5rem; }
+    .lede { max-width:53rem; font-size:1.16rem; }
+    .meta { display:flex; flex-wrap:wrap; gap:.5rem 1rem; margin-top:1.5rem; font-size:.94rem; opacity:.9; }
+    .summary, .checklist { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; }
+    .card { padding:1.25rem; border:1px solid var(--line); border-radius:1rem; background:#fffefa; }
+    .priority { display:inline-block; margin:0 0 .65rem; padding:.18rem .6rem; border-radius:999px; font-weight:700; font-size:.78rem; letter-spacing:.05em; }
+    .p1 { background:#f5ded2; color:#6b2d16; }
+    .p2 { background:#fdf69a; color:#554f00; }
+    .p3 { background:var(--muted); }
+    .finding { margin:1.3rem 0; padding:1.35rem 1.5rem; border-left:5px solid var(--accent); background:#fffefa; }
+    .finding.urgent { border-left-color:var(--alert); }
+    code { padding:.08em .3em; border-radius:.25rem; background:var(--muted); color:#0f3328; font: .88em ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap:anywhere; }
+    ul,ol { padding-left:1.35rem; }
+    li + li { margin-top:.35rem; }
+    .good { padding:1.5rem; border-radius:1rem; background:#e7f0e9; }
+    .roadmap { counter-reset:step; list-style:none; padding:0; }
+    .roadmap li { position:relative; min-height:2.5rem; padding:.2rem 0 .9rem 3.25rem; }
+    .roadmap li::before { position:absolute; left:0; top:0; width:2.25rem; height:2.25rem; border-radius:50%; display:grid; place-items:center; background:var(--ink); color:var(--paper); font-weight:bold; content:counter(step); counter-increment:step; }
+    footer { padding:2rem 1.25rem; background:var(--ink); color:var(--paper); text-align:center; }
+    a { color:inherit; }
+    @media print { body { font-size:11pt; } header,footer { background:#fff; color:#000; } main { max-width:none; } .finding,.card { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Audit expert du thème Le Paysan Urbain</h1>
+    <p>Revue du thème bloc, du plugin prototype, du multisite, du provisioning et du rendu local — 16 août 2026.</p>
+    <div class="meta">
+      <span>État revu : <code>main</code> à <code>5c0d240</code></span>
+      <span>Modifications locales du plugin préservées</span>
+      <span><a href="theme-audit-2026-08-16.md">Lire la version Markdown</a></span>
+    </div>
+  </header>
+
+  <main>
+    <section aria-labelledby="verdict">
+      <h2 id="verdict">Verdict</h2>
+      <p class="lede">La fondation est saine et prometteuse, mais la Home est aujourd'hui une démo technique plutôt qu'un rendu présentable au client. Il faut traiter les liens inactifs, les assets/médias, la portabilité des URLs et le bootstrap avant d'étendre le thème. La bonne prochaine étape est un parcours Home réseau complet, réel et reproductible, puis une ferme pilote.</p>
+      <div class="summary">
+        <article class="card"><span class="priority p1">P1</span><h3>Contenu publiable</h3><p>CTA et ancres morts, médias de substitution, destinations sociales/légales provisoires.</p></article>
+        <article class="card"><span class="priority p1">P1</span><h3>Déploiement</h3><p>URLs locales/codées en dur et bootstrap non rejouable après assemblage de Home.</p></article>
+        <article class="card"><span class="priority p2">P2</span><h3>Architecture</h3><p>Décision à prendre entre patterns Core et plugin custom de production.</p></article>
+        <article class="card"><span class="priority p2">P2</span><h3>Qualité</h3><p>Vérifications, CI, manifeste multisite et contrat de contenu à renforcer.</p></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="checks">
+      <h2 id="checks">Contrôles effectués</h2>
+      <div class="checklist">
+        <div class="card"><h3>Environnement</h3><p>Le statut wp-env, la vérification multisite et les quatre sites attendus sont cohérents. Le thème est actif sur le réseau et Marseille ; le plugin est network-active.</p></div>
+        <div class="card"><h3>Code</h3><p>Syntaxe PHP, JavaScript, JSON de <code>theme.json</code>, shell et <code>git diff --check</code> réussis.</p></div>
+        <div class="card"><h3>Rendu</h3><p>Home testée à 1440 px, 1024 px et Pixel 5 / 390 px : HTTP 200, aucun débordement horizontal ni erreur console/page/requête observé.</p></div>
+        <div class="card"><h3>Navigation</h3><p>Sous-menu desktop opaque après stabilisation ; overlay mobile, focus visible et Échap observés.</p></div>
+      </div>
+      <p><strong>Limites :</strong> pas de reset ni de reprovisionnement complet (confirmation requise), pas de recette lecteur d'écran/Firefox/forced-colors/Gutenberg, ni de validation avec les médias finaux.</p>
+    </section>
+
+    <section aria-labelledby="p1">
+      <h2 id="p1">Priorité 1 — avant démo éditoriale ou mise en ligne</h2>
+
+      <article class="finding urgent">
+        <span class="priority p1">P1 · liens</span>
+        <h3>Les CTA publiés ne sont pas des liens</h3>
+        <p>Sept CTA de la Home sont rendus comme des <code>&lt;a&gt;</code> sans <code>href</code> : ils ne sont ni actionnables ni atteignables au clavier. L'assembleur remplace les libellés, mais pas les destinations. Voir <code>patterns/hero.php:26-31</code>, <code>cards.php:35-40</code>, <code>graphic-band.php:21-26</code> et <code>home-network/setup.sh:206-307</code>.</p>
+        <p>Le fragment <code>#nos-fermes</code> du header/footer n'existe pas dans la Home rendue. Les liens sociaux et légaux du footer restent également des placeholders.</p>
+        <p><strong>Conseil :</strong> ne pas publier de bouton sans URL ; retirer un CTA non prêt, injecter les URLs réelles dans la fixture Home, ajouter l'ID uniquement à l'instance Home de la section et faire échouer un contrôle de prépublication sur lien vide, <code>#</code> ou fragment absent. Employer des libellés contextuels, pas une répétition de « En savoir plus ».</p>
+      </article>
+
+      <article class="finding urgent">
+        <span class="priority p1">P1 · direction artistique</span>
+        <h3>La Home est encore visuellement un prototype</h3>
+        <p>Neuf usages de <code>pattern-placeholder.svg</code> ont été observés. Le hero devient un motif générique au lieu de la composition photo dirigée de la maquette ; les cartes ne peuvent pas être comparées aux cartes photo finales. La Home Paris a un <code>main</code> vide puis le footer, ce qui est cohérent avec le plan différé mais empêche une validation contre <code>Ferme_1440.jpg</code>.</p>
+        <p><strong>Conseil :</strong> créer un manifeste versionné de médias approuvés (droit/crédit, alt text, légende, focal point, section), les importer de façon reproductible et art-diriger un hero fixe avec la vraie photo, son cadrage et un contraste réel. Ne pas ajouter un carousel simplement parce que la maquette comporte des points.</p>
+      </article>
+
+      <article class="finding urgent">
+        <span class="priority p1">P1 · portabilité</span>
+        <h3>Les URLs sont couplées à l'environnement local</h3>
+        <p>Des patterns et le footer sérialisent <code>/wp-content/themes/lepaysanurbain/…</code> (<code>parts/footer.html:7-9</code>, <code>patterns/hero.php:11-13</code>). Les menus réseau contiennent <code>*.lepaysanurbain.test:8888</code> (<code>navigation-menus/network.html:3-5</code>, <code>footer-menus/network.html:7-9</code>).</p>
+        <p><strong>Conseil :</strong> produire les URLs de patterns PHP avec <code>esc_url( get_theme_file_uri() )</code>, utiliser une solution site-aware dans le template part et résoudre les fermes depuis un manifeste/API multisite durant le provisioning. Les médias éditoriaux doivent aussi exister en source versionnée : la médiathèque seule est perdue au reset.</p>
+      </article>
+
+      <article class="finding urgent">
+        <span class="priority p1">P1 · provisioning</span>
+        <h3>Le bootstrap ne peut pas réellement être rejoué</h3>
+        <p><code>setup-multisite-network.sh:48</code> lance tous les contenus, dont <code>home-network</code>. Or <code>home-network/setup.sh:130-136</code> refuse justement d'écraser une Home assemblée sans <code>--force</code>. Cela contredit la promesse d'idempotence du README et rend le hook <code>afterStart</code> dangereux.</p>
+        <p><strong>Conseil :</strong> rendre Home opt-in dans le bootstrap, ou enregistrer une empreinte/version gérée : contenu généré identique = no-op ; contenu éditorial modifié = protection. Ne jamais ajouter <code>--force</code> automatiquement.</p>
+      </article>
+
+      <article class="finding urgent">
+        <span class="priority p1">P1 · typographie</span>
+        <h3>DM Sans est déclarée mais non livrée</h3>
+        <p><code>theme.json:117-121,169-172</code> choisit DM Sans pour le corps, sans asset ni <code>fontFace</code> local. Les textes et boutons tombent donc en Arial/fallback, ce qui invalide une validation fine de la maquette.</p>
+        <p><strong>Conseil :</strong> intégrer les WOFF2 sous licence Regular 400 et Bold 700, avec <code>font-display: swap</code>, puis revalider tailles et interlignages avant feu vert visuel.</p>
+      </article>
+    </section>
+
+    <section aria-labelledby="p2">
+      <h2 id="p2">Priorité 2 — solidifier l'architecture</h2>
+
+      <article class="finding">
+        <span class="priority p2">P2 · éditeur</span>
+        <h3>Décider : patterns Core ou plugin custom</h3>
+        <p>Le plan est Core-first, mais le plugin réseau <code>lpu-split-section</code> recouvre les patterns côte-à-côte. Dès qu'une page emploie un bloc <code>lpu/*</code>, ce plugin devient une dépendance de production.</p>
+        <ul>
+          <li><strong>Core-first :</strong> conserver les patterns et isoler/retirer le plugin avant tout contenu de production.</li>
+          <li><strong>Plugin produit :</strong> adopter <code>block.json</code>, versioning, migration, tests et ownership de déploiement.</li>
+        </ul>
+        <p>Dans tous les cas, <code>lpu/split-zone</code> doit déclarer <code>lpu/split-section</code> comme parent (<code>lpu-split-section.php:227-266</code>, <code>editor.js:255-284</code>). Le catalogue de cadres doit conserver les valeurs historiques valides même lorsqu'elles ne sont plus proposées, afin de ne pas invalider un bloc existant.</p>
+      </article>
+
+      <article class="finding">
+        <span class="priority p2">P2 · navigation</span>
+        <h3>Conserver le principe multisite, encadrer sa fragilité</h3>
+        <p>La liaison par <code>render_block_data</code> évite correctement les IDs de navigation figés. Elle dépend toutefois de classes marqueuses, d'options locales, du markup Core et d'une grille desktop prévue pour exactement trois ou cinq éléments (<code>functions.php:445-490</code>, <code>theme.css:754-814</code>).</p>
+        <p><strong>Conseil :</strong> enrichir la vérification (option absente, navigation brouillon/corbeille, fallback de nombre d'items), tester les quatre sites à chaque mise à jour Core/menu et restaurer aussi <code>srcset</code>/<code>sizes</code> lors du basculement de logo transparent ; le JS ne rétablit aujourd'hui que <code>src</code>.</p>
+      </article>
+
+      <article class="finding">
+        <span class="priority p2">P2 · sémantique</span>
+        <h3>Garantir un H1 par page</h3>
+        <p><code>templates/page.html</code> ne rend pas <code>post-title</code> : une page standard peut être dépourvue de H1. <code>index.html</code> n'a pas de titre de requête. Le padding de <code>404.html:2</code> est dans l'attribut top-level <code>spacing</code>, au lieu de <code>style.spacing</code>.</p>
+        <p><strong>Conseil :</strong> Home = H1 du hero ; pages standards = <code>post-title</code> ; listes = <code>query-title</code> ; corriger la structure 404.</p>
+      </article>
+
+      <article class="finding">
+        <span class="priority p2">P2 · charte</span>
+        <h3>Réduire les occasions de dérive éditoriale</h3>
+        <p><code>appearanceTools: true</code>, les unités étendues et les bordures rendent la charte facile à contourner (<code>theme.json:5-9,62-97</code>). Le filtre <code>disableContentOnlyForUnsyncedPatterns</code> s'applique à tous les patterns non synchronisés, pas seulement LPU.</p>
+        <p><strong>Conseil :</strong> présenter les choix fréquents sous forme de variations nommées, verrouiller les structures qui doivent rester intactes et décider explicitement de <code>defaultSpacingSizes: false</code> après test réel de Gutenberg.</p>
+      </article>
+
+      <article class="finding">
+        <span class="priority p2">P2 · fixtures</span>
+        <h3>Clarifier fixtures et logos</h3>
+        <p>La page de revue des patterns est publiée et réécrite ; les logos sont retrouvés par recherche large sans empreinte de source. Une fixture publique peut être indexée et un SVG obsolète peut être réutilisé.</p>
+        <p><strong>Conseil :</strong> rendre la fixture explicitement dev-only, privée ou noindex, proposer une commande de refresh volontaire et marquer les attachments gérés avec métadonnée + hash de source.</p>
+      </article>
+    </section>
+
+    <section aria-labelledby="p3">
+      <h2 id="p3">Priorité 3 — tests, documentation et maintenance</h2>
+      <div class="finding"><span class="priority p3">P3 · QA</span><h3>Étendre la vérification et introduire une CI</h3><p>Le vérificateur confirme la topologie, mais pas activation thème/plugin, locales, front pages, logos, IDs de navigation ou fixture Home. <code>package.json</code> ne fournit aucun script de test/lint/CI. Ajouter un smoke test read-only et une CI statique, puis une CI wp-env sur environnement propre après accord explicite sur le reset. Couvrir 390, 768, 1024, 1280 et 1440 px, header opaque/transparent, Home et ferme pilote.</p></div>
+      <div class="finding"><span class="priority p3">P3 · reproductibilité</span><h3>Figer ou documenter la matrice d'environnement</h3><p><code>core: null</code>, wp-env global non épinglé et PHP non fixé rendent une installation fraîche dépendante de la date. <code>jq</code>, <code>rg</code> et <code>getent</code> sont implicites, ce dernier étant Linux-spécifique. Documenter une matrice supportée wp-env/WordPress/PHP, prévoir les prérequis/fallbacks et centraliser la topologie dans un manifeste plutôt que de dupliquer domaines et IDs.</p></div>
+      <div class="finding"><span class="priority p3">P3 · docs/cache</span><h3>Synchroniser README et pratiques d'assets</h3><p>Le README dit encore que les plugins sont vides alors que <code>.wp-env.json</code> monte le plugin LPU. CSS/JS du thème emploient une version statique tandis que le plugin utilise <code>filemtime()</code>. Mettre la doc à jour et employer un mtime réservé au développement, ou exiger une hausse de version du thème à chaque release.</p></div>
+    </section>
+
+    <section aria-labelledby="visual">
+      <h2 id="visual">Fidélité visuelle</h2>
+      <p>La fondation reprend déjà le fond écru, la palette, le footer sombre, les motifs, la navigation centrée, des états de focus et un comportement responsive propre. Le footer est la section la plus proche de sa référence.</p>
+      <p>Les écarts majeurs restent : hero générique au lieu d'une photo dirigée, cartes de substitution au lieu de cartes photo compactes, séparateurs de ferme rendus via le caractère Unicode <code>✳</code> (<code>theme.css:410-418</code>) plutôt que les assets livrés, et corps en fallback faute de DM Sans. Le breakpoint 1099 px est documenté ; il devra être revalidé avec les libellés/logos finaux. L'overlay mobile et le mega-menu sont bien opaques une fois la transition terminée : une recette automatisée doit donc attendre cette stabilisation.</p>
+    </section>
+
+    <section aria-labelledby="roadmap">
+      <h2 id="roadmap">Ordre de construction conseillé</h2>
+      <ol class="roadmap">
+        <li><strong>Sécuriser le contenu publiable :</strong> liens, ancres, réseaux sociaux, pages légales et règle H1.</li>
+        <li><strong>Rendre les assets portables :</strong> médias source, URLs WordPress, DM Sans, hero et alt text.</li>
+        <li><strong>Fiabiliser la plateforme :</strong> bootstrap idempotent, manifeste multisite, verification enrichie et fixtures dev-only.</li>
+        <li><strong>Décider de l'expérience éditeur :</strong> Core patterns ou plugin produit, puis locks/variations cohérents.</li>
+        <li><strong>Assembler une ferme pilote :</strong> contenu réel, responsive et propre à la ferme.</li>
+        <li><strong>Valider avant livraison :</strong> clavier, lecteur d'écran, Firefox/Chromium, forced-colors, poids des images et comparaison aux maquettes.</li>
+      </ol>
+    </section>
+
+    <section class="good" aria-labelledby="strengths">
+      <h2 id="strengths">Points solides à conserver</h2>
+      <ul>
+        <li>Structure de block theme sobre avec header, main, footer et skip link.</li>
+        <li>Tokens de design centralisés dans <code>theme.json</code>.</li>
+        <li>Meta du header transparent protégée par nonce, capacité et sanitation REST.</li>
+        <li>SVG limités au provisioning WP-CLI de confiance.</li>
+        <li>Focus visible, préférence de mouvement réduit et rendu navigateur sans erreur observée.</li>
+        <li>Navigation multisite sans ID de menu ou <code>blog_id</code> figé dans les templates.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Conclusion : passer maintenant du prototype à un contenu réel, portable et testé — plutôt que d'ajouter davantage de CSS générique.</p>
+  </footer>
+</body>
+</html>
