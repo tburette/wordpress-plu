@@ -72,6 +72,50 @@
 	object-fit: contain;
 }
 
+.lpu-split-v2__zone--frame-none {
+	background: transparent;
+}
+
+.lpu-split-v2__zone--frame-ecru {
+	background-color: var( --wp--preset--color--ecru );
+}
+
+.lpu-split-v2__zone--frame-green {
+	background-color: var( --wp--preset--color--vert-fonce );
+}
+
+.lpu-split-v2__zone--frame-yellow {
+	background-color: var( --wp--preset--color--jaune );
+}
+
+.lpu-split-v2__zone--frame-motif-1 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-1-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-2 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-2-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-3 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-3-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-4 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-4-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-5 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-5-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-7 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-7-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-8 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-8-carre.svg" ) center / cover no-repeat;
+}
+
 @media ( max-width: 781px ) {
 	.lpu-split-v2 {
 		grid-template-columns: 1fr;

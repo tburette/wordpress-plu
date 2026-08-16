@@ -24,40 +24,36 @@
 	var SelectControl = components.SelectControl;
 	var ToggleControl = components.ToggleControl;
 
-	var configuredFrameOptions = window.lpuSplitSectionConfig && window.lpuSplitSectionConfig.frames;
-	var frameOptions = Array.isArray( configuredFrameOptions )
-		? configuredFrameOptions.filter( function ( option ) {
-			return option && option.label && option.value;
-		} )
-		: [];
-
-	if ( ! frameOptions.length ) {
-		frameOptions = [
-			{ label: __( 'Aucun cadre', 'lpu-split-section' ), value: 'none' },
-			{ label: __( 'Cadre écru', 'lpu-split-section' ), value: 'ecru' },
-		];
-	}
+	var frameOptions = [
+		{ label: __( 'Aucun cadre', 'lpu-split-section' ), value: 'none' },
+		{ label: __( 'Cadre écru', 'lpu-split-section' ), value: 'ecru' },
+		{ label: __( 'Cadre vert foncé', 'lpu-split-section' ), value: 'green' },
+		{ label: __( 'Cadre jaune', 'lpu-split-section' ), value: 'yellow' },
+		{ label: __( 'Motif carré 1', 'lpu-split-section' ), value: 'motif-1' },
+		{ label: __( 'Motif carré 2', 'lpu-split-section' ), value: 'motif-2' },
+		{ label: __( 'Motif carré 3', 'lpu-split-section' ), value: 'motif-3' },
+		{ label: __( 'Motif carré 4', 'lpu-split-section' ), value: 'motif-4' },
+		{ label: __( 'Motif carré 5', 'lpu-split-section' ), value: 'motif-5' },
+		{ label: __( 'Motif carré 7', 'lpu-split-section' ), value: 'motif-7' },
+		{ label: __( 'Motif carré 8', 'lpu-split-section' ), value: 'motif-8' },
+	];
 
 	var allowedFrames = frameOptions.map( function ( option ) {
 		return option.value;
 	} );
 
-	function getSafeFrame( frame ) {
-		if ( allowedFrames.indexOf( frame ) !== -1 ) {
-			return frame;
-		}
+	var parentTemplate = [
+		[ 'lpu/split-zone', { side: 'left', frame: 'ecru', mediaFill: false } ],
+		[ 'lpu/split-zone', { side: 'right', frame: 'none', mediaFill: true } ],
+	];
 
-		return allowedFrames.indexOf( 'ecru' ) !== -1 ? 'ecru' : allowedFrames[ 0 ];
+	function getSafeFrame( frame ) {
+		return allowedFrames.indexOf( frame ) !== -1 ? frame : 'ecru';
 	}
 
 	function getSafeSide( side ) {
 		return side === 'right' ? 'right' : 'left';
 	}
-
-	var parentTemplate = [
-		[ 'lpu/split-zone', { side: 'left', frame: getSafeFrame( 'ecru' ), mediaFill: false } ],
-		[ 'lpu/split-zone', { side: 'right', frame: 'none', mediaFill: true } ],
-	];
 
 	function getZoneClassName( attributes ) {
 		var side  = getSafeSide( attributes.side );
@@ -68,9 +64,6 @@
 			'lpu-split-v2__zone--frame-' + frame,
 		];
 
-		// The serialized attribute name is retained for compatibility with the
-		// first prototype. It removes the zone padding for any content; direct
-		// Images additionally receive the cover treatment from CSS.
 		if ( attributes.mediaFill ) {
 			classes.push( 'lpu-split-v2__zone--media-fill' );
 		}
@@ -157,9 +150,9 @@
 						},
 					} ),
 					el( ToggleControl, {
-						label: __( 'Contenu pleine zone', 'lpu-split-section' ),
+						label: __( 'Image pleine zone', 'lpu-split-section' ),
 						checked: !! attributes.mediaFill,
-						help: __( 'Retire les marges intérieures de cette moitié. Les blocs Image directs sont aussi recadrés pour la remplir.', 'lpu-split-section' ),
+						help: __( 'S’applique aux blocs Image placés directement dans cette moitié.', 'lpu-split-section' ),
 						onChange: function ( value ) {
 							setAttributes( { mediaFill: !! value } );
 						},
