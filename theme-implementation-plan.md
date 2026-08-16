@@ -27,14 +27,13 @@ Tous les chemins et toutes les commandes ci-dessous sont relatifs à `site/wordp
 
 ## État d'avancement
 
-**Dernière mise à jour :** 2026-08-15 23:36 (Europe/Paris)
+**Dernière mise à jour :** 2026-08-16 07:12 (Europe/Paris)
 
-**Position exacte dans le plan :** Étape 6 est terminée. Attention, des éléments ont été laissés à traiter plus tard 
+**Position exacte dans le plan :** Étape 7 est en cours. L’étape 6 est terminée ; des éléments ont été laissés à traiter plus tard.
 
 
 ### Points ouverts
 
-- créer un fichier image (svg?) de la flèche qui pointe vers la droite au lieu d'uliliser l'image de flèche pointant en bas créé par Fanny. Dans le code de la page, utiliser cette flèche au lieu de réalser des transformation css de rotation)
 - Vérifier la généricité multisite de ce qui reste actif après le lancement : aucun `blog_id`, ID de site, ID de page, ID de navigation, ID de logo ou autre identifiant propre à un site ne doit être codé en dur dans le thème, les templates ou les hooks de rendu. Les scripts de provisioning (`scripts/setup-multisite-network.sh` et `scripts/content/`) sont hors de ce périmètre : ils servent à initialiser l’environnement de démonstration et ne seront plus utilisés après le lancement. Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`.
 - Gutenberg émet encore un avertissement générique sur le contraste automatique de la couleur écru dans ses composants ; il ne produit ni bloc invalide ni défaut de rendu et reste non bloquant.
 - Vérifier dans Gutenberg la présence éventuelle des presets d’espacement Core : `theme.json` définit ses `spacingSizes`, mais ne fixe pas encore explicitement `defaultSpacingSizes: false`. Décider si l’éditeur doit rester limité à l’échelle d’espacement LPU.
@@ -548,4 +547,3 @@ Vérifier aussi qu’aucune personnalisation de test de template ou template par
 Documenter : démarrage de l’environnement, activation du thème, provisioning des accueils, emplacement des assets, construction des patterns, et ce qui est volontairement différé. Ajouter une note sur les modifications de template part dans le Site Editor : elles sont locales à un site et peuvent masquer les fichiers du thème.
 
 ---
-

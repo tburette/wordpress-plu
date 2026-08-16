@@ -1264,9 +1264,9 @@ main.wp-block-group {
 
 /* The Hero uses the regular core Button so its editable text remains the
  * accessible link name. On the public site, its dedicated modifier presents
- * Fanny's organic arrow asset, rotated to point right, inside the circled
- * action. The editor is intentionally not targeted, so the label stays easy
- * to edit there. */
+ * Fanny's organic right-facing arrow asset inside the circled action. The
+ * editor is intentionally not targeted, so the label stays easy to edit
+ * there. */
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:focus-visible {
@@ -1283,15 +1283,14 @@ main.wp-block-group {
 
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link::after {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 1.25rem;
-	height: 1.75rem;
+	inset: 0;
+	width: 1.75rem;
+	height: 1.25rem;
+	margin: auto;
 	background-color: var(--wp--preset--color--vert-fonce);
 	content: "";
-	mask: url("../images/arrow.svg") center / contain no-repeat;
-	transform: translate(-50%, -50%) rotate(-90deg);
-	-webkit-mask: url("../images/arrow.svg") center / contain no-repeat;
+	mask: url("../images/arrow-right.svg") center / contain no-repeat;
+	-webkit-mask: url("../images/arrow-right.svg") center / contain no-repeat;
 }
 
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover::after,
