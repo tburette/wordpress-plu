@@ -1,0 +1,126 @@
+/* Keep the two-zone contract visible while editing. */
+.wp-block-lpu-split-section.lpu-split-v2.alignfull {
+	width: 100%;
+	max-width: none;
+}
+
+.wp-block-lpu-split-section.lpu-split-v2 > .block-editor-inner-blocks {
+	grid-column: 1 / -1;
+	width: 100%;
+}
+
+.wp-block-lpu-split-section.lpu-split-v2
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	display: grid;
+	grid-template-columns: repeat( 2, minmax( 0, 1fr ) );
+	align-items: stretch;
+	gap: 0;
+}
+
+.wp-block-lpu-split-section.lpu-split-v2
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> .wp-block-lpu-split-zone {
+	margin-block-start: 0;
+}
+
+.wp-block-lpu-split-zone > .block-editor-inner-blocks {
+	display: flex;
+	flex: 1;
+	width: 100%;
+}
+
+.lpu-split-v2__zone--media-fill {
+	padding: 0 !important;
+}
+
+.wp-block-lpu-split-zone
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	width: 100%;
+}
+
+.lpu-split-v2__zone--media-fill
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	height: 100% !important;
+}
+
+.lpu-split-v2__zone--media-fill
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> .wp-block-image {
+	align-self: stretch;
+	display: flex;
+	flex: 1 1 0 !important;
+	width: 100%;
+	height: 100% !important;
+	min-height: 0 !important;
+	margin: 0;
+	overflow: hidden;
+}
+
+/* Gutenberg may add an extra block-list wrapper around a core Image. Keep
+ * the media-fill behavior resilient to that wrapper shape. */
+.lpu-split-v2__zone--media-fill .wp-block-image {
+	display: flex;
+	flex: 1 1 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-height: 0 !important;
+	aspect-ratio: auto !important;
+	margin: 0;
+}
+
+/* The core Image editor keeps an intrinsic 4:3 ratio in some WordPress
+ * versions. Absolute inset coordinates let the editor preview match the
+ * front-end media-fill contract while preserving the normal block controls. */
+.lpu-split-v2__zone--media-fill {
+	position: relative;
+}
+
+.lpu-split-v2__zone--media-fill .wp-block-image {
+	position: absolute !important;
+	inset: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.lpu-split-v2__zone--media-fill:has(
+		> .block-editor-inner-blocks
+		> .block-editor-block-list__layout
+		> .wp-block-image
+) {
+	padding: 0 !important;
+}
+
+.lpu-split-v2__zone--media-fill
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> .wp-block-image
+	img {
+	width: 100%;
+	height: 100% !important;
+	max-height: none;
+	aspect-ratio: auto;
+	object-fit: cover;
+}
+
+.lpu-split-v2__zone--media-fill .wp-block-image img {
+	height: 100% !important;
+	max-height: none !important;
+	aspect-ratio: auto;
+	object-fit: cover;
+}
+
+@media ( max-width: 781px ) {
+	.wp-block-lpu-split-section.lpu-split-v2
+		> .block-editor-inner-blocks
+		> .block-editor-block-list__layout {
+		grid-template-columns: 1fr;
+	}
+}

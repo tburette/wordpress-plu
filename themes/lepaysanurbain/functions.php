@@ -46,6 +46,42 @@ function lpu_register_pattern_categories() {
 add_action( 'init', 'lpu_register_pattern_categories' );
 
 /**
+ * Register the frame styles used by the additive Core-block split patterns.
+ *
+ * These styles deliberately target the Group block instead of introducing a
+ * new block. Each half of a split section can therefore choose its own frame
+ * in Gutenberg without coupling it to the other half.
+ *
+ * @return void
+ */
+function lpu_register_split_group_styles() {
+	$styles = array(
+		'lpu-split-frame-none'    => 'Aucun cadre',
+		'lpu-split-frame-ecru'    => 'Cadre écru',
+		'lpu-split-frame-green'   => 'Cadre vert foncé',
+		'lpu-split-frame-yellow'  => 'Cadre jaune',
+		'lpu-split-frame-motif-1' => 'Motif carré 1',
+		'lpu-split-frame-motif-2' => 'Motif carré 2',
+		'lpu-split-frame-motif-3' => 'Motif carré 3',
+		'lpu-split-frame-motif-4' => 'Motif carré 4',
+		'lpu-split-frame-motif-5' => 'Motif carré 5',
+		'lpu-split-frame-motif-7' => 'Motif carré 7',
+		'lpu-split-frame-motif-8' => 'Motif carré 8',
+	);
+
+	foreach ( $styles as $name => $label ) {
+		register_block_style(
+			'core/group',
+			array(
+				'name'  => $name,
+				'label' => $label,
+			)
+		);
+	}
+}
+add_action( 'init', 'lpu_register_split_group_styles' );
+
+/**
  * Keep locally inserted patterns editable as ordinary page content.
  *
  * WordPress 7 enables content-only mode for unsynced patterns by default.
@@ -118,29 +154,22 @@ function lpu_get_current_site_key() {
 /**
  * Return configuration keyed by the stable current-site identity.
  *
- * Keep site-specific theme settings here rather than scattering blog-ID
- * checks through the theme. New settings can be added to a site's array as
- * the multisite grows.
+ * Transparent logos follow the convention
+ * {site-key}-horizontal-ecru-baseline.svg in the theme's logo directory. A
+ * newly added site therefore needs only its correctly named asset; when that
+ * asset is not present, the site keeps its opaque header and remains usable.
  *
- * @return array<string, array<string, string>>
+ * @return array<string, string>
  */
 function lpu_get_current_site_config() {
-	$config = array(
-		'network'   => array(
-			'transparent_logo_file' => 'network-horizontal-ecru-baseline.svg',
-		),
-		'paris'     => array(
-			'transparent_logo_file' => 'paris-horizontal-ecru-baseline.svg',
-		),
-		'lyon'      => array(
-			'transparent_logo_file' => 'lyon-horizontal-ecru-baseline.svg',
-		),
-		'marseille' => array(
-			'transparent_logo_file' => 'marseille-horizontal-ecru-baseline.svg',
-		),
-	);
+	$site_key  = sanitize_key( lpu_get_current_site_key() );
+	$logo_file = $site_key . '-horizontal-ecru-baseline.svg';
 
-	return $config[ lpu_get_current_site_key() ] ?? array();
+	if ( '' === $site_key || ! file_exists( get_theme_file_path( 'assets/images/logos/' . $logo_file ) ) ) {
+		return array();
+	}
+
+	return array( 'transparent_logo_file' => $logo_file );
 }
 
 /**

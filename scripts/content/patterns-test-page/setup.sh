@@ -2,13 +2,15 @@
 set -euo pipefail
 
 # Create or refresh the developer-only page used to inspect every pattern
-# provided by the active theme. The page content is assembled from WordPress's
-# pattern registry so the test page does not duplicate pattern markup in the
-# repository or require a second list of pattern names.
+# provided by the active theme and the local split-section prototype. The page
+# content is assembled from WordPress's pattern registry so the test page does
+# not duplicate pattern markup in the repository or require a second list of
+# pattern names.
 #
 # The managed page is published at /lpu-sections-patterns-test/ on the network
 # site and is refreshed when it already exists. Patterns are filtered to the
-# active theme and sorted by name for deterministic output. This page is a
+# active theme and the split-section prototype, then sorted by name for
+# deterministic output. This page is a
 # developer fixture only: it does not configure the network Home, farm links,
 # header transparency or editorial media.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
@@ -61,6 +63,7 @@ while IFS='|' read -r site_url page_title page_slug post_status post_author comm
 \$ping_status = ${ping_status_php};
 \$patterns_by_name = array();
 \$theme_namespace = trailingslashit( get_stylesheet() );
+\$prototype_namespace = 'lpu-split-section/';
 
 function lpu_pattern_with_metadata( \$content, \$pattern ) {
 	\$blocks = parse_blocks( \$content );
@@ -84,7 +87,8 @@ foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$
 
 	\$source = isset( \$pattern['source'] ) ? (string) \$pattern['source'] : '';
 	\$is_theme_pattern = 'theme' === \$source || 0 === strpos( \$pattern['name'], \$theme_namespace );
-	if ( ! \$is_theme_pattern ) {
+	\$is_split_prototype_pattern = 0 === strpos( \$pattern['name'], \$prototype_namespace );
+	if ( ! \$is_theme_pattern && ! \$is_split_prototype_pattern ) {
 		continue;
 	}
 
@@ -93,7 +97,7 @@ foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as \$
 
 ksort( \$patterns_by_name, SORT_NATURAL | SORT_FLAG_CASE );
 if ( ! \$patterns_by_name ) {
-	WP_CLI::error( 'No patterns provided by the active theme.' );
+	WP_CLI::error( 'No patterns provided by the active theme or split-section prototype.' );
 }
 
 \$page_content = '';

@@ -40,8 +40,11 @@ done
 cd -- "${project_dir}"
 
 run_wp() {
-	# Keep WP-CLI from consuming the TSV currently driving the loop below.
-	wp-env run cli wp "$@" </dev/null
+	# The page TSV is read through file descriptor 3 below, so stdin remains
+	# available for wp-env. This matches the patterns-test-page runner and keeps
+	# wp-env run from trying to attach a TTY to /dev/null when launched from a
+	# terminal.
+	wp-env run cli wp "$@"
 }
 
 php_quote() {

@@ -55,7 +55,16 @@ npm run env:start
 npm run env:status
 ```
 
-The `afterStart` lifecycle script in `.wp-env.json` then:
+Starting the environment only starts the local WordPress containers. Run the
+multisite bootstrap explicitly when the environment is new or after its local
+database has been reset:
+
+```sh
+npm run env:multisite:setup
+npm run env:multisite:verify
+```
+
+The multisite bootstrap:
 
 1. checks the local hostnames;
 2. confirms that WordPress is a network;
@@ -70,11 +79,31 @@ The `afterStart` lifecycle script in `.wp-env.json` then:
    network Home fixture; then
 7. verifies the network and site domain/path records.
 
-The bootstrap is safe to run repeatedly:
+The bootstrap is safe to run repeatedly. The verification command can be run
+independently:
 
 ```sh
-npm run env:multisite:setup
 npm run env:multisite:verify
+```
+
+#### Optional automatic bootstrap after `env:start`
+
+If automatic provisioning is useful again later, add the following block to
+`.wp-env.json` at the top level:
+
+```json
+"lifecycleScripts": {
+  "afterStart": "bash scripts/setup-multisite-network.sh"
+}
+```
+
+With that block enabled, `npm run env:start` runs the complete multisite
+bootstrap after the containers start. Do not run
+`npm run env:multisite:setup` immediately afterward, or the same bootstrap
+will be invoked twice. To bypass the hook for one start, use:
+
+```sh
+npm run env:start -- --scripts=false
 ```
 
 The default credentials are `admin` / `password`.
@@ -255,11 +284,6 @@ mega-menu below the header, with an écru background and readable columns. It
 must be reachable by click and keyboard focus; hover may be an additional
 desktop shortcut. The hamburger is reserved for the responsive overlay on
 tablet and mobile.
-
-The current theme files are still the Step 3 scaffold: they do not yet prove
-the final centered geometry, mega-menu presentation, transparent-header toggle,
-or complete keyboard and pointer behavior. Those points must be tested and
-implemented before Step 3 is validated.
 
 The opaque écru header is the default. A transparent header over a sufficiently
 contrasted hero is an explicit per-page option, and an opened mega-menu always

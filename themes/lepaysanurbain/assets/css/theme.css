@@ -73,6 +73,123 @@ body {
 	background-image: url("../images/motif-8-carre.svg");
 }
 
+/* Version 1: a Core-only split section. The Columns block owns the exact
+ * two-column contract; each Group inside it owns its own frame and content. */
+.lpu-split-v1 {
+	margin-block: 0;
+}
+
+.lpu-split-v1__columns {
+	align-items: stretch;
+	gap: 0;
+	margin-block: 0;
+}
+
+.lpu-split-v1__column {
+	display: flex;
+	min-width: 0;
+}
+
+.lpu-split-v1__side {
+	box-sizing: border-box;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	min-height: min(50vw, 45rem);
+	padding: var(--wp--preset--spacing--xl);
+}
+
+.lpu-split-v1__side > * {
+	width: 100%;
+}
+
+.lpu-split-v1__side > .wp-block-image {
+	align-self: stretch;
+	flex: 1;
+	width: 100%;
+	min-height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+.lpu-split-v1__side > .wp-block-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.lpu-split-v1__side:has(> .wp-block-image) {
+	padding: 0;
+}
+
+.lpu-split-v1__side.lpu-split-v1__side--logo:has(> .wp-block-image) {
+	padding: var(--wp--preset--spacing--xl);
+}
+
+.lpu-split-v1__side--logo > .wp-block-image {
+	flex: 0 1 auto;
+	min-height: 0;
+	margin: auto;
+}
+
+.lpu-split-v1__side--logo > .wp-block-image img {
+	height: auto;
+	max-height: 12rem;
+	object-fit: contain;
+}
+
+.lpu-split-v1__inset {
+	box-sizing: border-box;
+	width: 100%;
+	padding: var(--wp--preset--spacing--xl);
+}
+
+.is-style-lpu-split-frame-none {
+	background: transparent;
+}
+
+.is-style-lpu-split-frame-ecru {
+	background-color: var(--wp--preset--color--ecru);
+}
+
+.is-style-lpu-split-frame-green {
+	background-color: var(--wp--preset--color--vert-fonce);
+}
+
+.is-style-lpu-split-frame-yellow {
+	background-color: var(--wp--preset--color--jaune);
+}
+
+.is-style-lpu-split-frame-motif-1 {
+	background: url("../images/motif-1-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-2 {
+	background: url("../images/motif-2-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-3 {
+	background: url("../images/motif-3-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-4 {
+	background: url("../images/motif-4-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-5 {
+	background: url("../images/motif-5-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-7 {
+	background: url("../images/motif-7-carre.svg") center / cover no-repeat;
+}
+
+.is-style-lpu-split-frame-motif-8 {
+	background: url("../images/motif-8-carre.svg") center / cover no-repeat;
+}
+
 /* Reusable editorial sections. Patterns keep the structure in Gutenberg;
  * these rules provide the shared proportions, media placeholders and
  * responsive behaviour that theme.json cannot express on its own. */
@@ -471,6 +588,13 @@ body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
 	margin-block-start: 0;
 }
 
+/* The footer follows the last editorial section directly. WordPress adds its
+ * normal site-stack gap to every sibling; that creates an unintended écru
+ * strip after a full-width closing band. */
+.wp-site-blocks > main + footer.wp-block-template-part {
+	margin-block-start: 0;
+}
+
 body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
 	.wp-block-navigation-item__content,
 body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
@@ -849,8 +973,8 @@ main.wp-block-group {
 	position: relative;
 	overflow: hidden;
 	margin-block-start: 0;
-	/* Exact dark green sampled from sections/pied-de-page.jpg. */
-	background-color: #003d2e !important;
+	/* Dark green from the approved design palette. */
+	background-color: var(--wp--preset--color--vert-fonce) !important;
 	color: var(--wp--preset--color--ecru);
 }
 

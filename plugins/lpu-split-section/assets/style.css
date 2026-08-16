@@ -1,0 +1,140 @@
+/*
+ * Version 2: the parent block is a two-column grid and each child block owns
+ * its own frame plus InnerBlocks tree. This namespace intentionally does not
+ * share the Core-only prototype's classes.
+ */
+.lpu-split-v2 {
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: repeat( 2, minmax( 0, 1fr ) );
+	align-items: stretch;
+	gap: 0;
+	width: 100%;
+	margin-block: 0;
+}
+
+.lpu-split-v2__zone {
+	box-sizing: border-box;
+	display: flex;
+	min-width: 0;
+	min-height: min( 50vw, 45rem );
+	flex-direction: column;
+	justify-content: center;
+	padding: var( --wp--preset--spacing--xl );
+}
+
+.lpu-split-v2__zone > * {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.lpu-split-v2__zone > .wp-block-image {
+	margin-block: 0;
+}
+
+.lpu-split-v2__zone--media-fill {
+	padding: 0;
+}
+
+.lpu-split-v2__zone--media-fill > .wp-block-image {
+	align-self: stretch;
+	display: flex;
+	flex: 1 1 auto;
+	width: 100%;
+	min-height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+.lpu-split-v2__zone--media-fill > .wp-block-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.lpu-split-v2__inset {
+	box-sizing: border-box;
+	width: 100%;
+	padding: var( --wp--preset--spacing--xl );
+}
+
+.lpu-split-v2__logo {
+	width: min( 100%, 18rem );
+	margin: auto;
+}
+
+.lpu-split-v2__logo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: 12rem;
+	object-fit: contain;
+}
+
+.lpu-split-v2__zone--frame-none {
+	background: transparent;
+}
+
+.lpu-split-v2__zone--frame-ecru {
+	background-color: var( --wp--preset--color--ecru );
+}
+
+.lpu-split-v2__zone--frame-green {
+	background-color: var( --wp--preset--color--vert-fonce );
+}
+
+.lpu-split-v2__zone--frame-yellow {
+	background-color: var( --wp--preset--color--jaune );
+}
+
+.lpu-split-v2__zone--frame-motif-1 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-1-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-2 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-2-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-3 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-3-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-4 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-4-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-5 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-5-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-7 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-7-carre.svg" ) center / cover no-repeat;
+}
+
+.lpu-split-v2__zone--frame-motif-8 {
+	background: url( "../../../themes/lepaysanurbain/assets/images/motif-8-carre.svg" ) center / cover no-repeat;
+}
+
+@media ( max-width: 781px ) {
+	.lpu-split-v2 {
+		grid-template-columns: 1fr;
+	}
+
+	.lpu-split-v2__zone {
+		min-height: min( 100vw, 30rem );
+		padding: var( --wp--preset--spacing--lg );
+	}
+
+	.lpu-split-v2__zone--media-fill {
+		min-height: min( 100vw, 30rem );
+	}
+
+	.lpu-split-v2__inset {
+		padding: var( --wp--preset--spacing--lg );
+	}
+
+	.lpu-split-v2__logo {
+		width: min( 100%, 15rem );
+	}
+}
