@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Revue de code — 16 août 2026</title>
+<style>
+:root { color-scheme: light; }
+body { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; background: #f8f8f0; color: #153d30; font: 16px/1.6 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+h1, h2, h3 { line-height: 1.2; color: #153d30; }
+h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3rem); }
+h2 { margin-top: 3rem; padding-bottom: .4rem; border-bottom: 2px solid #3a9b64; }
+h3 { margin-top: 2rem; font-size: 1.35rem; }
+p, li { max-width: 80ch; }
+strong { color: #153d30; }
+ul, ol { padding-left: 1.5rem; }
+li + li { margin-top: .35rem; }
+code { padding: .1em .25em; border-radius: .2em; background: #e2e6e4; }
+@media print { body { max-width: none; padding: 1cm; } }
+</style>
+</head>
+<body>
+<h1>Revue de code — 16 août 2026</h1>
+<p><strong>Périmètre.</strong> Revue indépendante du dépôt WordPress wordpress-lpu, centrée sur le worktree et complétée par l'examen de l'architecture, du provisioning, des tests et du déploiement. Les modifications locales du plugin lpu-split-section n'ont pas été modifiées. Révision de départ : 476abe3 sur main.</p>
+<h2>Synthèse</h2>
+<p>Aucune vulnérabilité critique n'a été trouvée. Trois corrections doivent toutefois précéder une mise en production ou une diffusion du bloc :</p>
+<ol><li>Désactiver un cadre comme le documente le plugin peut invalider des blocs Gutenberg existants.</li><li>Une zone peut être insérée hors de sa section parent, alors que le bloc promet exactement deux zones.</li><li>Le bootstrap multisite annoncé comme rejouable échoue après le premier assemblage de l'accueil réseau.</li></ol>
+<h2>Méthode et contrôles</h2>
+<p>Trois revues en lecture seule ont été menées en parallèle : standards/architecture WordPress, qualité-maintenance, et tests-outillage-déploiement. Les constats en double sont fusionnés ci-dessous.</p>
+<p>Contrôles réussis :</p>
+<ul><li>git diff --check ;</li><li>syntaxe PHP de tous les fichiers PHP ;</li><li>node --check de tous les fichiers JavaScript ;</li><li>bash -n de tous les scripts shell ;</li><li>JSON de .wp-env.json ;</li><li>au début de la revue, WordPress 7.0.4 était disponible, le plugin était actif sur le réseau en version 0.2.0, les deux blocs étaient enregistrés et le CSS dynamique des cadres était généré.</li></ul>
+<p>Limites :</p>
+<ul><li>aucun reset ni bootstrap propre n'a été lancé : ces opérations détruisent les données locales et demandent une confirmation ;</li><li>aucune comparaison visuelle front/editor avec les maquettes n'a été réalisée ;</li><li>l'environnement Docker, actif au début de la revue, s'est arrêté durant les appels CLI. Il n'a pas été redémarré, afin de ne pas modifier l'état local sans nécessité.</li></ul>
+<h2>Constats élevés</h2>
+<h3>1. La désactivation d'un cadre invalide les blocs existants</h3>
+<p>Le commentaire de plugins/lpu-split-section/lpu-split-section.php:32-35 promet qu'un cadre peut être conservé avec available: false sans altérer les pages existantes. Or lpu_split_section_editor_frame_options() retire ce cadre des options à plugins/lpu-split-section/lpu-split-section.php:105-108. assets/editor.js:45-50 le remplace ensuite par ecru (ou le premier cadre disponible) ; la classe régénérée à assets/editor.js:62-69 et 201-204 ne correspond plus au HTML enregistré.</p>
+<p>Impact : si un cadre est retiré selon l'API documentée, Gutenberg peut déclarer chaque bloc concerné invalide puis le sauver avec un autre cadre.</p>
+<p>Recommandation : transmettre séparément les valeurs historiques acceptées pour validation/sérialisation et les valeurs encore proposées dans le SelectControl. Une valeur retirée peut rester affichée comme héritée sans être disponible à l'insertion.</p>
+<h3>2. Le contrat « exactement deux zones » est contournable</h3>
+<p>Le parent verrouille ses deux enfants (plugins/lpu-split-section/assets/editor.js:221-226), mais lpu/split-zone ne déclare aucune restriction parent dans plugins/lpu-split-section/lpu-split-section.php:227-266 ni dans assets/editor.js:255-284.</p>
+<p>Impact : l'éditrice peut ajouter une demi-section seule, ou l'imbriquer dans une autre zone, malgré la promesse fonctionnelle du bloc.</p>
+<p>Recommandation : ajouter parent: [ 'lpu/split-section' ] côté JavaScript et 'parent' =&gt; array( 'lpu/split-section' ) côté PHP, tout en conservant le template verrouillé du parent.</p>
+<h3>3. Le bootstrap multisite n'est pas idempotent après l'assemblage de Home</h3>
+<p>scripts/setup-multisite-network.sh:48 appelle toujours scripts/content/setup.sh. Sans argument, ce dispatcher inclut home-network (scripts/content/setup.sh:43-50 et 85-98). Or scripts/content/home-network/setup.sh:130-136 refuse une Home déjà assemblée sans --force.</p>
+<p>Impact : un second npm run env:multisite:setup échoue après le premier assemblage, contrairement à README.md:82 qui promet un bootstrap rejouable.</p>
+<p>Recommandation : ne lancer home-network depuis le bootstrap que si la page contient encore le placeholder, ou rendre cette fixture explicitement opt-in. Ne pas injecter --force automatiquement : cela écraserait potentiellement du contenu éditorial.</p>
+<h2>Constats importants</h2>
+<h3>4. Les menus supprimés ou brouillons peuvent vider header et footer</h3>
+<p>Les provisioners sélectionnent des wp_navigation de tout statut puis enregistrent leur ID (scripts/content/navigation-menus/setup.sh:53-72 et scripts/content/footer-menus/setup.sh:42-61). Le renderer refuse ensuite les éléments non publiés (themes/lepaysanurbain/functions.php:471-473).</p>
+<p>Impact : un menu supprimé ou passé en brouillon est réutilisé sans restauration ; la navigation partagée n'est alors plus liée.</p>
+<p>Recommandation : sélectionner exclusivement les éléments publiés ou restaurer/recréer tout élément non publié avant de mémoriser son ID.</p>
+<h3>5. Un ref Navigation existant court-circuite la liaison multisite</h3>
+<p>themes/lepaysanurbain/functions.php:445-452 retourne immédiatement lorsqu'un bloc Navigation possède ref. Une révision de template part enregistrée dans le Site Editor peut donc garder l'ID de navigation d'un autre site plutôt que l'ID local. Le plan d'implémentation note déjà ce risque.</p>
+<p>Recommandation : identifier précisément les Navigation blocks de header/footer LPU et remplacer leur ref par l'ID local, tout en préservant les blocs Navigation éditoriaux hors de ce périmètre.</p>
+<h3>6. Le basculement de logo transparent ne restaure pas srcset</h3>
+<p>Le rendu PHP remplace srcset à themes/lepaysanurbain/functions.php:354-359, mais navigation.js:39-46 ne conserve et ne commute que src.</p>
+<p>Impact : avec un logo raster ou responsive, un navigateur qui choisit srcset peut conserver la mauvaise variante à la fermeture du menu.</p>
+<p>Recommandation : stocker et basculer srcset (et si nécessaire sizes) pour les deux variantes, au même titre que src.</p>
+<h3>7. Les chemins de thème et URLs locales ne sont pas portables</h3>
+<p>Des patterns et une template part sérialisent des chemins /wp-content/... (par exemple themes/lepaysanurbain/patterns/hero.php:11-13 et themes/lepaysanurbain/parts/footer.html:7-8). Les menus de démonstration sérialisent aussi des URLs *.lepaysanurbain.test:8888 (scripts/content/navigation-menus/network.html:3-5 et scripts/content/footer-menus/network.html:7-9).</p>
+<p>Impact : ces ressources et liens peuvent casser sous un sous-répertoire, un WP_CONTENT_URL personnalisé, un domaine de préproduction ou le multisite en ligne prévu.</p>
+<p>Recommandation : générer les URLs des patterns PHP par les helpers WordPress, adopter un mécanisme portable pour les templates statiques, et résoudre les liens de sites au provisioning/exécution plutôt que persister le domaine local.</p>
+<h3>8. Le cache des assets du thème ne se renouvelle pas en développement</h3>
+<p>themes/lepaysanurbain/functions.php:19-31 et 112-123 versionnent CSS et JavaScript avec la version statique du thème. Les navigateurs peuvent donc garder une ancienne theme.css ou navigation.js. Le plugin emploie déjà les mtimes, ce qui rend l'incohérence visible.</p>
+<p>Recommandation : utiliser filemtime() avec fallback de version en développement, ou augmenter la version de thème à chaque changement d'asset.</p>
+<h3>9. La commande de vérification ne vérifie pas ce qu'elle provisionne</h3>
+<p>Après la langue, le thème, le plugin et le contenu (scripts/setup-multisite-network.sh:45-49), scripts/verify-multisite-network.sh:22-62 ne vérifie que la topologie et les constantes multisite.</p>
+<p>Impact : un thème inactif, plugin absent, locale incorrecte, front page erronée ou navigation non liée peut tout de même produire une vérification réussie.</p>
+<p>Recommandation : vérifier explicitement thèmes/plugins actifs, locales, front pages et options/objets Navigation attendus.</p>
+<h3>10. Ni tests automatisés ni CI ne protègent les flux critiques</h3>
+<p>package.json:4-20 ne propose que des commandes d'environnement ; aucun test, linter ou workflow CI ne couvre la sérialisation des blocs, l'idempotence du provisioning ou les liaisons multisite.</p>
+<p>Recommandation : créer une commande de contrôles non destructifs (PHP, JS, shell, JSON, XML et diff), l'exécuter dans une CI, puis ajouter un test wp-env sur environnement propre une fois la politique de reset explicitement validée.</p>
+<h3>11. Les dépendances et versions de l'environnement sont insuffisamment maîtrisées</h3>
+<p>README.md:22-32 ne documente que Docker et wp-env. Or les scripts requièrent aussi getent, rg et jq (par exemple scripts/check-local-hosts.sh:13-14 et scripts/verify-multisite-network.sh:45-58). core: null, une version PHP non fixée et une installation globale non versionnée de wp-env rendent une installation fraîche dépendante de la date de création.</p>
+<p>Recommandation : documenter ou rendre portables ces dépendances, et épingler les versions testées de wp-env, WordPress et PHP — ou publier une matrice de compatibilité supportée.</p>
+<h3>12. Le changement de domaine peut produire des sites en doublon</h3>
+<p>README.md:174-181 recommande cleanup/recreate lors d'un changement de domaine, mais scripts/setup-multisite-network.sh:6 recherche toujours lepaysanurbain.test pour détecter les sites existants.</p>
+<p>Recommandation : dériver le domaine de WordPress ou de la configuration active, source unique de vérité, puis ajouter un test de réexécution après changement de domaine.</p>
+<h2>Améliorations de qualité et d'accessibilité</h2>
+<h3>13. Internationalisation serveur incomplète</h3>
+<p>Les catégories/styles du thème, la meta box et plusieurs titres/descriptions de bloc/pattern du plugin sont des chaînes françaises brutes (themes/lepaysanurbain/functions.php:38-43, plugins/lpu-split-section/lpu-split-section.php:208-233 et 280+).</p>
+<p>Recommandation : employer __(), esc_html__() ou esc_html_x() avec le text domain approprié si thème et plugin doivent être réutilisables hors de ce réseau francophone.</p>
+<h3>14. Certains patterns créent des liens sans href</h3>
+<p>Le sélecteur de fermes et des CTA insèrent des éléments a sans href (themes/lepaysanurbain/patterns/network-farm-selector.php:22 et themes/lepaysanurbain/patterns/graphic-band.php:23-25).</p>
+<p>Impact : ces liens ne sont pas atteignables au clavier avant intervention de l'éditrice.</p>
+<p>Recommandation : fournir une destination sûre si le pattern est publiable tel quel ; sinon remplacer le placeholder par un élément non interactif et expliciter dans le pattern la configuration obligatoire avant publication.</p>
+<h3>15. Documentation et pipelines shell à synchroniser</h3>
+<p>README.md:156-157 indique encore que la liste de plugins est vide, contrairement à .wp-env.json:4 et au bootstrap. Les exemples de structure sont eux aussi dépassés. De plus, scripts/setup-multisite-network.sh:34 et scripts/check-local-hosts.sh:14 utilisent printf | rg -q sous set -o pipefail, malgré l'avertissement explicite de AGENTS.md:25 sur le SIGPIPE.</p>
+<p>Recommandation : mettre le README à jour et remplacer ces recherches par une forme qui consomme le flux entier ou ne repose pas sur un pipeline.</p>
+<h2>Éléments vérifiés comme sains</h2>
+<ul><li>Namespacing cohérent et protection contre l'accès direct dans le plugin.</li><li>La meta box utilise nonce et contrôle de capacité ; la meta REST possède un auth_callback adapté.</li><li>Les URLs dynamiques de logo sont échappées.</li><li>L'upload SVG est limité à WP-CLI, donc au provisioning de confiance.</li><li>ShellCheck n'a signalé qu'une recommandation informative SC2012 dans l'utilitaire Xdebug.</li></ul>
+<h2>Éléments explicitement différés</h2>
+<p>Le plan d'implémentation reporte volontairement SEO, redirections, analytics/consentement, optimisation d'images et typographies finales. Il conserve aussi des images et destinations provisoires. Ce sont des gates de mise en ligne, mais ils ne sont pas comptés comme régressions dans cette revue.</p>
+<h2>Diffusion du rapport</h2>
+<p>Le dépôt distant est déclaré privé dans AGENTS.md. RawGitHack proxifie le contenu brut public de l'hébergeur ; il ne peut donc pas présenter ce rapport à un visiteur non authentifié tant que le dépôt reste privé. Le commit sera poussé comme demandé, mais une consultation publique nécessite un hébergement ou une visibilité explicitement approuvés.</p>
+</body>
+</html>
