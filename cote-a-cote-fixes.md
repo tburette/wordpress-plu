@@ -28,3 +28,14 @@ Validation : syntaxe PHP/JavaScript et JSON vérifiés ; dans WordPress, les 11 
 - Aucun correctif de rendu n’est nécessaire pour cette différence d’icône et de libellé : elle correspond aux deux types d’objets Gutenberg.
 
 À retenir : il faut comparer le canvas après insertion pour mesurer un écart visuel réel. La provisioning ajoute les métadonnées de pattern pour la fixture, mais ne crée pas une autre implémentation de section ; l’item 2 a supprimé les anciennes variantes Core qui pouvaient, elles, produire un rendu différent.
+
+## 4. Remplissage d’une image placée dans un groupe
+
+- Étendu le mode `Image pleine zone` aux images directes et aux images placées dans un bloc conteneur, notamment `core/group`.
+- Remplacé le positionnement absolu de l’éditeur par une chaîne de conteneurs flex en hauteur complète, afin que la hauteur de l’image soit calculable dans Gutenberg.
+- Neutralisé les contraintes de largeur, marges et hauteur intrinsèque de l’image imbriquée pour obtenir le même cadrage `object-fit: cover` que l’image directe.
+- Conservé le remplissage pleine zone sur mobile en supprimant le padding ajouté par la règle responsive générale.
+
+À retenir : le premier rendu était volontairement recadré pour remplir sa moitié ; le défaut concernait le groupe, dont la hauteur tombait à zéro dans l’éditeur et restait à sa hauteur intrinsèque sur le front. Les deux variantes occupent désormais toute leur zone dans le front et Gutenberg.
+
+Validation : captures Web Inspector sans erreur à 1440×1100 et 390×844 ; les deux images mesurent 720×720 sur desktop et 390×390 sur mobile dans le cas de test.

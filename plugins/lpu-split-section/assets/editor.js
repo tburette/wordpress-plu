@@ -146,7 +146,7 @@
 					el( ToggleControl, {
 						label: __( 'Image pleine zone', 'lpu-split-section' ),
 						checked: !! attributes.mediaFill,
-						help: __( 'S’applique aux blocs Image placés directement dans cette moitié.', 'lpu-split-section' ),
+						help: __( 'S’applique aux images placées directement dans cette moitié ou dans un bloc conteneur.', 'lpu-split-section' ),
 						onChange: function ( value ) {
 							setAttributes( { mediaFill: !! value } );
 						},
