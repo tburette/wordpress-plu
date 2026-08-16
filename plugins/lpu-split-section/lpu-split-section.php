@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: LPU — Sections côte à côte
- * Description: Prototype indépendant de sections Gutenberg à deux zones pour Le Paysan Urbain.
+ * Description: Blocs Gutenberg de sections côte à côte à deux zones pour Le Paysan Urbain.
  * Version: 0.2.0
  * Requires at least: 6.4
  * Requires PHP: 7.4
@@ -318,6 +318,7 @@ function lpu_split_section_register_blocks() {
 			'description'   => 'Une moitié indépendante de la section côte à côte.',
 			'category'      => 'design',
 			'icon'          => 'align-wide',
+			'parent'        => array( 'lpu/split-section' ),
 			'editor_script' => 'lpu-split-section-editor',
 			'style'         => 'lpu-split-section',
 			'editor_style'  => 'lpu-split-section-editor',
@@ -355,9 +356,9 @@ add_action( 'init', 'lpu_split_section_register_blocks', 10 );
 /**
  * Register visual patterns for the custom block implementation.
  *
- * These are intentionally separate from the theme's existing patterns. The
- * plugin can therefore be disabled while the Core-only prototype remains
- * available, or enabled for a direct comparison in the same editor.
+ * These are the canonical côte-à-côte patterns for the project. Keeping their
+ * source beside the block guarantees that provisioning scripts and the pattern
+ * inserter use the same LPU structure instead of a duplicate Core layout.
  *
  * @return void
  */
@@ -466,15 +467,15 @@ HTML,
 		<!-- wp:group {"backgroundColor":"ecru","className":"lpu-split-v2__inset","layout":{"type":"constrained"}} -->
 		<div class="wp-block-group lpu-split-v2__inset has-ecru-background-color has-background">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
-			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Une ferme, des savoir-faire</p>
+			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Sur-titre</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:heading {"level":2,"fontSize":"subtitle"} -->
-			<h2 class="wp-block-heading has-subtitle-font-size">Cultiver et transmettre au quotidien</h2>
+			<h2 class="wp-block-heading has-subtitle-font-size">Titre de la mise en avant</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph -->
-			<p>Le panneau intérieur peut accueillir librement le contenu éditorial de cette moitié.</p>
+			<p>Présentez ici le contenu de cette mise en avant.</p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->

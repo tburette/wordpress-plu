@@ -73,123 +73,6 @@ body {
 	background-image: url("../images/motif-8-carre.svg");
 }
 
-/* Version 1: a Core-only split section. The Columns block owns the exact
- * two-column contract; each Group inside it owns its own frame and content. */
-.lpu-split-v1 {
-	margin-block: 0;
-}
-
-.lpu-split-v1__columns {
-	align-items: stretch;
-	gap: 0;
-	margin-block: 0;
-}
-
-.lpu-split-v1__column {
-	display: flex;
-	min-width: 0;
-}
-
-.lpu-split-v1__side {
-	box-sizing: border-box;
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	justify-content: center;
-	min-height: min(50vw, 45rem);
-	padding: var(--wp--preset--spacing--xl);
-}
-
-.lpu-split-v1__side > * {
-	width: 100%;
-}
-
-.lpu-split-v1__side > .wp-block-image {
-	align-self: stretch;
-	flex: 1;
-	width: 100%;
-	min-height: 100%;
-	margin: 0;
-	overflow: hidden;
-}
-
-.lpu-split-v1__side > .wp-block-image img {
-	display: block;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.lpu-split-v1__side:has(> .wp-block-image) {
-	padding: 0;
-}
-
-.lpu-split-v1__side.lpu-split-v1__side--logo:has(> .wp-block-image) {
-	padding: var(--wp--preset--spacing--xl);
-}
-
-.lpu-split-v1__side--logo > .wp-block-image {
-	flex: 0 1 auto;
-	min-height: 0;
-	margin: auto;
-}
-
-.lpu-split-v1__side--logo > .wp-block-image img {
-	height: auto;
-	max-height: 12rem;
-	object-fit: contain;
-}
-
-.lpu-split-v1__inset {
-	box-sizing: border-box;
-	width: 100%;
-	padding: var(--wp--preset--spacing--xl);
-}
-
-.is-style-lpu-split-frame-none {
-	background: transparent;
-}
-
-.is-style-lpu-split-frame-ecru {
-	background-color: var(--wp--preset--color--ecru);
-}
-
-.is-style-lpu-split-frame-green {
-	background-color: var(--wp--preset--color--vert-fonce);
-}
-
-.is-style-lpu-split-frame-yellow {
-	background-color: var(--wp--preset--color--jaune);
-}
-
-.is-style-lpu-split-frame-motif-1 {
-	background: url("../images/motif-1-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-2 {
-	background: url("../images/motif-2-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-3 {
-	background: url("../images/motif-3-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-4 {
-	background: url("../images/motif-4-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-5 {
-	background: url("../images/motif-5-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-7 {
-	background: url("../images/motif-7-carre.svg") center / cover no-repeat;
-}
-
-.is-style-lpu-split-frame-motif-8 {
-	background: url("../images/motif-8-carre.svg") center / cover no-repeat;
-}
-
 /* Reusable editorial sections. Patterns keep the structure in Gutenberg;
  * these rules provide the shared proportions, media placeholders and
  * responsive behaviour that theme.json cannot express on its own. */
@@ -293,29 +176,6 @@ body {
 
 .lpu-hero__actions {
 	margin-block-start: var(--wp--preset--spacing--lg);
-}
-
-.lpu-text-image__columns {
-	align-items: center;
-	gap: var(--wp--preset--spacing--xl);
-}
-
-.lpu-text-image__content > .wp-block-heading {
-	max-width: 18ch;
-	margin-block: 0 var(--wp--preset--spacing--md);
-	text-wrap: balance;
-}
-
-.lpu-text-image__content > .wp-block-paragraph {
-	max-width: 34rem;
-}
-
-.lpu-text-image__content .wp-block-buttons {
-	margin-block-start: var(--wp--preset--spacing--lg);
-}
-
-.lpu-text-image__media-column {
-	min-width: 0;
 }
 
 .lpu-card-grid {
@@ -475,61 +335,6 @@ body {
 	font-size: 0.9rem;
 	line-height: 1.45;
 	text-align: center;
-}
-
-.lpu-text-image-motif {
-	padding: 0;
-}
-
-.lpu-text-image-motif__columns {
-	align-items: stretch;
-	gap: 0;
-	width: 100%;
-	max-width: none;
-	margin: 0;
-}
-
-.lpu-text-image-motif__media-column,
-.lpu-text-image-motif__content {
-	box-sizing: border-box;
-	min-width: 0;
-}
-
-.lpu-text-image-motif__media {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	height: 100%;
-	min-height: 30rem;
-	padding: var(--wp--preset--spacing--xl);
-}
-
-.lpu-text-image-motif__media .lpu-media-placeholder {
-	width: min(100%, 34rem);
-}
-
-.lpu-text-image-motif__content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding-block: var(--wp--preset--spacing--section);
-	padding-inline: clamp(var(--wp--preset--spacing--lg), 7vw, var(--wp--preset--spacing--xl));
-}
-
-.lpu-text-image-motif__content > .wp-block-heading {
-	max-width: 18ch;
-	margin-block: 0 var(--wp--preset--spacing--md);
-	text-wrap: balance;
-}
-
-.lpu-text-image-motif__content > .wp-block-paragraph:not(.lpu-eyebrow) {
-	max-width: 34rem;
-	margin-block: 0;
-}
-
-.lpu-text-image-motif__content .wp-block-buttons {
-	margin-block-start: var(--wp--preset--spacing--lg);
 }
 
 .lpu-graphic-band {
@@ -1332,40 +1137,6 @@ main.wp-block-group {
 
 	.lpu-hero__content .wp-block-heading {
 		max-width: 11ch;
-	}
-
-	.lpu-text-image__columns {
-		gap: var(--wp--preset--spacing--xl);
-	}
-
-	.lpu-text-image__columns > .wp-block-column {
-		flex-basis: 100% !important;
-	}
-
-	.lpu-text-image__media-column {
-		order: 2;
-	}
-
-	.lpu-text-image-motif {
-		padding-inline: 0;
-	}
-
-	.lpu-text-image-motif__columns {
-		flex-direction: column;
-	}
-
-	.lpu-text-image-motif__columns > .wp-block-column {
-		flex-basis: 100% !important;
-	}
-
-	.lpu-text-image-motif__media {
-		min-height: 0;
-		padding: var(--wp--preset--spacing--md);
-	}
-
-	.lpu-text-image-motif__content {
-		padding-block: var(--wp--preset--spacing--xl);
-		padding-inline: var(--wp--preset--spacing--md);
 	}
 
 	.lpu-farm-selector__columns {

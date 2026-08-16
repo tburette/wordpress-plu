@@ -1,9 +1,9 @@
 # Canonical section order used by the network Home fixture.
 lepaysanurbain/hero
-lepaysanurbain/text-image
+lpu-split-section/split-content-image
 lepaysanurbain/cards
 lepaysanurbain/network-farm-selector
 lepaysanurbain/cards
 lepaysanurbain/columns
-lepaysanurbain/text-image-motif
+lpu-split-section/split-motif-image
 lepaysanurbain/graphic-band

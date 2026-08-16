@@ -1,7 +1,7 @@
 /*
  * Version 2: the parent block is a two-column grid and each child block owns
  * its own frame plus InnerBlocks tree. This namespace intentionally does not
- * share the Core-only prototype's classes.
+ * remain independent from the theme's unrelated editorial section classes.
  */
 .lpu-split-v2 {
 	box-sizing: border-box;

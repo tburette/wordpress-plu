@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Network-activate the local split-section prototype so its blocks and
+# Network-activate the LPU split-section plugin so its blocks and
 # patterns are available on every site in the development multisite.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"

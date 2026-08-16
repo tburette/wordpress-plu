@@ -244,6 +244,7 @@
 		title: __( 'Zone de section côte à côte', 'lpu-split-section' ),
 		description: __( 'Une moitié indépendante avec son propre cadre et ses propres blocs.', 'lpu-split-section' ),
 		icon: 'align-wide',
+		parent: [ 'lpu/split-section' ],
 		attributes: {
 			side: {
 				type: 'string',

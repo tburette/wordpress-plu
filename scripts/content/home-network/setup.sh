@@ -208,10 +208,10 @@ foreach ( \$pattern_order as \$pattern_name ) {
 		\$section = lpu_home_text( \$section, 'Présentez ici le sujet principal de la page en quelques mots.', 'Présentez ici la promesse de cette page et le rôle du Paysan Urbain dans la ville.', 'Home hero text' );
 	}
 
-	if ( 'lepaysanurbain/text-image' === \$pattern_name ) {
-		\$section = lpu_home_text( \$section, 'Sur-titre', 'Une histoire à raconter', 'Home text-image eyebrow' );
-		\$section = lpu_home_text( \$section, 'Titre de la section', 'Présentez votre action sur deux lignes', 'Home text-image title' );
-		\$section = lpu_home_text( \$section, 'Présentez ici le contenu principal de cette section.', 'Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.', 'Home text-image text' );
+	if ( 'lpu-split-section/split-content-image' === \$pattern_name ) {
+		\$section = lpu_home_text( \$section, 'Sur-titre', 'Une histoire à raconter', 'Home split content eyebrow' );
+		\$section = lpu_home_text( \$section, 'Un titre qui tient dans sa moitié', 'Présentez votre action sur deux lignes', 'Home split content title' );
+		\$section = lpu_home_text( \$section, 'Ajoutez ici le texte, les informations et les appels à l’action propres à cette zone.', 'Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.', 'Home split content text' );
 	}
 	if ( 'lepaysanurbain/network-farm-selector' === \$pattern_name ) {
 		\$farm_placeholders = array(
@@ -295,7 +295,7 @@ foreach ( \$pattern_order as \$pattern_name ) {
 		\$section = lpu_home_text( \$section, 'Troisième message à présenter dans cette colonne.', 'Ajoutez un dernier repère, un chiffre ou un lien vers une information complémentaire.', 'Home columns text 3' );
 	}
 
-	if ( 'lepaysanurbain/text-image-motif' === \$pattern_name ) {
+	if ( 'lpu-split-section/split-motif-image' === \$pattern_name ) {
 		\$section = lpu_home_text( \$section, 'Sur-titre', 'Une ferme, des savoir-faire', 'Home motif eyebrow' );
 		\$section = lpu_home_text( \$section, 'Titre de la mise en avant', 'Cultiver et transmettre au quotidien', 'Home motif title' );
 		\$section = lpu_home_text( \$section, 'Présentez ici le contenu de cette mise en avant.', 'Décrivez ici l’action mise en avant, les personnes concernées et la manière dont cette initiative fait grandir le vivant en ville.', 'Home motif text' );

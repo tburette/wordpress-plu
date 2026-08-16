@@ -409,7 +409,7 @@ Un fichier PHP placé dans `patterns/` et muni d’un en-tête (`Title`, `Slug`,
 
 **Fichiers à créer ou modifier**
 
-- `wordpress-lpu/themes/lepaysanurbain/patterns/*.php`
+- `wordpress-lpu/themes/lepaysanurbain/patterns/*.php` and `wordpress-lpu/plugins/lpu-split-section/lpu-split-section.php`
 - `wordpress-lpu/themes/lepaysanurbain/functions.php` — seulement pour créer la catégorie de patterns « Sections Le Paysan Urbain » si nécessaire
 - `wordpress-lpu/themes/lepaysanurbain/assets/css/theme.css`
 
@@ -420,11 +420,11 @@ Les noms de sections ci-dessous suivent `description-sections.txt`. Les deux occ
 | Fichier                     | Usage                                                                                                                      | Blocs cœur principaux                                    |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `hero.php`                  | `hero` : image pleine largeur, titre et texte superposé.                                                                   | Cover, Heading, Paragraph, Buttons                       |
-| `text-image.php`            | `cote-a-cote titre-texte et image` : texte à gauche, image à droite.                                                       | Group, Columns, Image, Heading, Paragraph, Buttons       |
+| `lpu-split-section/split-content-image` | `cote-a-cote titre-texte et image` : texte à gauche, image à droite.                                            | `lpu/split-section`, `lpu/split-zone`, Image, Heading, Paragraph, Buttons |
 | `cards.php`                 | `grille-cartes` : cartes avec image, titre, description et bouton facultatifs.                                             | Group, Columns, Image, Heading, Paragraph, Buttons/links |
 | `network-farm-selector.php` | `selecteur-ferme` : présentation visuelle des trois fermes du réseau.                                                      | Group, Columns, Heading, Buttons/links                   |
 | `columns.php`               | `colonnes-texte` : titre commun et plusieurs colonnes de texte ou d’images.                                                | Group, Columns, Heading, Paragraph, Image                |
-| `text-image-motif.php`      | `cote-a-cote titre-texte-motif et image2` : variante avec motif bleu/vert et image, adaptée à l’ordre de la maquette Home. | Group, Columns, Image, Heading, Paragraph, Buttons       |
+| `lpu-split-section/split-motif-image` | `cote-a-cote titre-texte-motif et image2` : variante avec motif bleu/vert et image, adaptée à l’ordre de la maquette Home. | `lpu/split-section`, `lpu/split-zone`, Group, Image, Heading, Paragraph |
 | `graphic-band.php`          | `section-mise-en-valeur-couleur` : bandeau final coloré, contenu centré et bouton.                                         | Group, Heading, Paragraph, Buttons                       |
 
 **Règles de conception des patterns**

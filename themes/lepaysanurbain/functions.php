@@ -46,46 +46,10 @@ function lpu_register_pattern_categories() {
 add_action( 'init', 'lpu_register_pattern_categories' );
 
 /**
- * Register the frame styles used by the additive Core-block split patterns.
- *
- * These styles deliberately target the Group block instead of introducing a
- * new block. Each half of a split section can therefore choose its own frame
- * in Gutenberg without coupling it to the other half.
- *
- * @return void
- */
-function lpu_register_split_group_styles() {
-	$styles = array(
-		'lpu-split-frame-none'    => 'Aucun cadre',
-		'lpu-split-frame-ecru'    => 'Cadre écru',
-		'lpu-split-frame-green'   => 'Cadre vert foncé',
-		'lpu-split-frame-yellow'  => 'Cadre jaune',
-		'lpu-split-frame-motif-1' => 'Motif carré 1',
-		'lpu-split-frame-motif-2' => 'Motif carré 2',
-		'lpu-split-frame-motif-3' => 'Motif carré 3',
-		'lpu-split-frame-motif-4' => 'Motif carré 4',
-		'lpu-split-frame-motif-5' => 'Motif carré 5',
-		'lpu-split-frame-motif-7' => 'Motif carré 7',
-		'lpu-split-frame-motif-8' => 'Motif carré 8',
-	);
-
-	foreach ( $styles as $name => $label ) {
-		register_block_style(
-			'core/group',
-			array(
-				'name'  => $name,
-				'label' => $label,
-			)
-		);
-	}
-}
-add_action( 'init', 'lpu_register_split_group_styles' );
-
-/**
  * Keep locally inserted patterns editable as ordinary page content.
  *
  * WordPress 7 enables content-only mode for unsynced patterns by default.
- * That protects their structure, but makes a Columns block inaccessible until
+ * That protects their structure, but makes an LPU section inaccessible until
  * an editor explicitly enters the composition. LPU section patterns are
  * reusable starting points, not global components: each page must therefore
  * be able to adapt its own layout without changing another instance or the
