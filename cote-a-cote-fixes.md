@@ -19,3 +19,12 @@ Validation : syntaxe PHP/JavaScript et JSON vérifiés ; dans WordPress, les 11 
 - Restreint `lpu/split-zone` à son parent `lpu/split-section` et nettoyé la fixture des patterns pour ne plus parler de prototype.
 
 À retenir : les blocs Core `Columns` restent utilisés pour les grilles et les colonnes de texte qui ne sont pas des sections côte à côte ; la structure deux-zones LPU est désormais la seule source pour ce cas.
+
+## 3. Différence observée dans l’inséreur Gutenberg
+
+- Identifié la capture du 23:56 comme l’entrée d’un pattern prérempli (`Côte à côte — logo et titre-texte (bloc LPU)`).
+- Identifié la capture du 23:59 comme l’entrée du bloc vierge `Section côte à côte`.
+- Confirmé que le pattern et le bloc utilisent tous deux `lpu/split-section` ; le premier ajoute seulement une composition initiale, tandis que le second crée les deux zones par son template Gutenberg.
+- Aucun correctif de rendu n’est nécessaire pour cette différence d’icône et de libellé : elle correspond aux deux types d’objets Gutenberg.
+
+À retenir : il faut comparer le canvas après insertion pour mesurer un écart visuel réel. La provisioning ajoute les métadonnées de pattern pour la fixture, mais ne crée pas une autre implémentation de section ; l’item 2 a supprimé les anciennes variantes Core qui pouvaient, elles, produire un rendu différent.
