@@ -12,5 +12,8 @@
     "**/.git": true,
     "**/.github": true,
     "**/vendor/composer": true
-  }
+  },
+  "intelephense.environment.includePaths": [
+    "/home/tburette/dev/wordpress/wordpress-core-7.0/"
+  ]
 }
