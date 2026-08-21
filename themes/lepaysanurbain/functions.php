@@ -165,10 +165,7 @@ function lpu_is_transparent_header() {
 }
 
 /**
- * Register the per-page transparent-header setting in the block editor REST
- * schema as well as in the classic meta-box compatibility layer.
- *
- * @return void
+ * Make the the per-page transparent-header setting available in the REST API.
  */
 function lpu_register_header_meta() {
 	register_post_meta(
@@ -189,78 +186,31 @@ function lpu_register_header_meta() {
 add_action( 'init', 'lpu_register_header_meta' );
 
 /**
- * Add the explicit header variant control to pages.
- *
- * @return void
+ * Enqueue the page settings control in the block editor sidebar.
  */
-function lpu_add_header_meta_box() {
-	add_meta_box(
-		'lpu-header-settings',
-		'Header de la page',
-		'lpu_render_header_meta_box',
-		'page',
-		'side',
-		'default'
+function lpu_enqueue_editor_settings() {
+	// there is no build step (at the moment), therefore must declare the
+	// dependencies manually
+	wp_enqueue_script(
+		'lpu-editor-settings',
+		get_theme_file_uri( 'assets/js/editor-settings.js' ),
+		array( 'wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins' ),
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
+
+	wp_add_inline_script(
+		'lpu-editor-settings',
+		'window.lpuEditorSettings = ' . wp_json_encode(
+			array(
+				'logoAvailable' => '' !== lpu_transparent_logo_file(),
+			)
+		) . ';',
+		'before'
 	);
 }
-add_action( 'add_meta_boxes_page', 'lpu_add_header_meta_box' );
-
-/**
- * Render the explicit transparent-header setting.
- *
- * @param WP_Post $post Current page.
- * @return void
- */
-function lpu_render_header_meta_box( $post ) {
-	wp_nonce_field( 'lpu_save_header_settings', 'lpu_header_settings_nonce' );
-
-	$logo_file = lpu_transparent_logo_file();
-	if ( '' === $logo_file ) {
-		// themes/lepaysanurbain/assets/images/logos/
-		echo '<p>La variante transparente est indisponible sur ce site (logo transparent manquant).</p>';
-		return;
-	}
-
-	$enabled = (bool) get_post_meta( $post->ID, 'lpu_header_transparent', true );
-	printf(
-		'<label><input type="checkbox" name="lpu_header_transparent" value="1" %1$s /> Menu transparent sur cette page</label>',
-		checked( $enabled, true, false )
-	);
-	echo '<p>À utiliser uniquement si un hero contrasté se trouve directement derrière le header.</p>';
-}
-
-/**
- * Save the explicit transparent-header setting.
- *
- * @param int $post_id Page ID.
- * @return void
- */
-function lpu_save_header_meta( $post_id ) {
-	if (
-		! isset( $_POST['lpu_header_settings_nonce'] )
-		|| ! wp_verify_nonce(
-			sanitize_text_field( wp_unslash( $_POST['lpu_header_settings_nonce'] ) ),
-			'lpu_save_header_settings'
-		)
-		|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-		|| wp_is_post_revision( $post_id )
-		|| ! current_user_can( 'edit_post', $post_id )
-	) {
-		return;
-	}
-
-	if ( '' === lpu_transparent_logo_file() ) {
-		delete_post_meta( $post_id, 'lpu_header_transparent' );
-		return;
-	}
-
-	if ( isset( $_POST['lpu_header_transparent'] ) ) {
-		update_post_meta( $post_id, 'lpu_header_transparent', true );
-	} else {
-		delete_post_meta( $post_id, 'lpu_header_transparent' );
-	}
-}
-add_action( 'save_post_page', 'lpu_save_header_meta' );
+// enqueue_block_editor_assets is meant for block editor UI (not the content)
+add_action( 'enqueue_block_editor_assets', 'lpu_enqueue_editor_settings' );
 
 /**
  * Add the transparent state to the page body when explicitly enabled.
