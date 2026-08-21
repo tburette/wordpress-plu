@@ -216,13 +216,14 @@ function lpu_render_header_meta_box( $post ) {
 
 	$logo_file = lpu_transparent_logo_file();
 	if ( '' === $logo_file ) {
-		echo '<p>La variante transparente est indisponible sur ce site tant que le logo horizontal écru territorial correct n’est pas livré.</p>';
+		// themes/lepaysanurbain/assets/images/logos/
+		echo '<p>La variante transparente est indisponible sur ce site (logo transparent manquant).</p>';
 		return;
 	}
 
 	$enabled = (bool) get_post_meta( $post->ID, 'lpu_header_transparent', true );
 	printf(
-		'<label><input type="checkbox" name="lpu_header_transparent" value="1" %1$s /> Header transparent sur le hero (état initial)</label>',
+		'<label><input type="checkbox" name="lpu_header_transparent" value="1" %1$s /> Menu transparent sur cette page</label>',
 		checked( $enabled, true, false )
 	);
 	echo '<p>À utiliser uniquement si un hero contrasté se trouve directement derrière le header.</p>';
