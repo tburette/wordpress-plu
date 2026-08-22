@@ -1,41 +1,40 @@
 <?php
+
 /**
  * Theme bootstrap for Le Paysan Urbain.
  *
  * @package Le_Paysan_Urbain
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
 /**
- * Enqueue the shared theme stylesheet on the front end and in the editor
- * canvas. `enqueue_block_assets` is the supported hook for the iframe used by
- * the block editor.
- *
- * @return void
+ * Enqueue the shared theme stylesheet for the frontend and the editor
+ * canvas. 
  */
-function lpu_enqueue_theme_styles() {
+function lpu_enqueue_theme_styles()
+{
 	$theme = wp_get_theme();
-	$version = $theme->get( 'Version' );
-
+	$version = $theme->get('Version');
 	wp_enqueue_style(
 		'lpu-theme',
-		get_theme_file_uri( 'assets/css/theme.css' ),
+		get_theme_file_uri('assets/css/theme.css'),
 		array(),
 		$version
 	);
 }
-add_action( 'wp_enqueue_scripts', 'lpu_enqueue_theme_styles' );
-add_action( 'enqueue_block_assets', 'lpu_enqueue_theme_styles' );
+// 'enqueue_block_assets' => applies to frontend + editor content but not the
+// editor UI (sidebar,...)
+add_action('enqueue_block_assets', 'lpu_enqueue_theme_styles');
 
 /**
  * Register the reusable section patterns category.
- *
- * @return void
+ * Otherwise they appear in an 'Uncategorized' patterns section.
  */
-function lpu_register_pattern_categories() {
+function lpu_register_pattern_categories()
+{
 	register_block_pattern_category(
 		'lpu-sections',
 		array(
@@ -43,48 +42,50 @@ function lpu_register_pattern_categories() {
 		)
 	);
 }
-add_action( 'init', 'lpu_register_pattern_categories' );
+add_action('init', 'lpu_register_pattern_categories');
 
 /**
- * Keep locally inserted patterns editable as ordinary page content.
+ * Keep the unsynced patterns inserted into post editable as normal blocks are.
  *
- * WordPress 7 enables content-only mode for unsynced patterns by default.
- * That protects their structure, but makes an LPU section inaccessible until
- * an editor explicitly enters the composition. LPU section patterns are
- * reusable starting points, not global components: each page must therefore
- * be able to adapt its own layout without changing another instance or the
- * pattern source.
+ * WordPress 7 enables contentOnly mode for unsynced patterns by default.
+ * Reminder : on a container block, content-only mode restricts a user to
+ * changing content (text, image, urls,..) of a block and its children. 
+ * It prevents structural changes of the blocks inside (add a block, move a 
+ * block,..) and also prevents the use of the block styling options usually 
+ * available in the sidebar.
+ * This enables the old behavior back where unsynced patterns are freely 
+ * editable by default.
  *
- * Synced patterns and template parts retain their separate Core behaviour.
+ * Can activate contentPnly mode for individual unsynced patterns by using 
+ * {"templateLock":"contentOnly"}
  *
  * @param array $settings Block editor settings.
  * @return array
  */
-function lpu_allow_local_pattern_structure_editing( $settings ) {
+function lpu_disable_unsynced_pattern_content_only_by_default($settings)
+{
 	$settings['disableContentOnlyForUnsyncedPatterns'] = true;
 
 	return $settings;
 }
-add_filter( 'block_editor_settings_all', 'lpu_allow_local_pattern_structure_editing' );
+add_filter('block_editor_settings_all', 'lpu_disable_unsynced_pattern_content_only_by_default');
 
 /**
- * Enqueue the small front-end behavior that completes the shared menu
- * contract.
- *
- * @return void
+ * Enqueue the frontend js code for the menu (header)
  */
-function lpu_enqueue_navigation_script() {
+function lpu_enqueue_navigation_script()
+{
 	$theme = wp_get_theme();
 
 	wp_enqueue_script(
 		'lpu-navigation',
-		get_theme_file_uri( 'assets/js/navigation.js' ),
+		get_theme_file_uri('assets/js/navigation.js'),
 		array(),
-		$theme->get( 'Version' ),
+		$theme->get('Version'),
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'lpu_enqueue_navigation_script' );
+add_action('wp_enqueue_scripts', 'lpu_enqueue_navigation_script');
 
 /**
  * Return a stable key for the current site in this subdomain multisite.
@@ -95,21 +96,22 @@ add_action( 'wp_enqueue_scripts', 'lpu_enqueue_navigation_script' );
  *
  * @return string
  */
-function lpu_get_current_site_key() {
-	if ( is_main_site() ) {
+function lpu_get_current_site_key()
+{
+	if (is_main_site()) {
 		return 'network';
 	}
 
-	$site_host    = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
-	$network_host = strtolower( (string) wp_parse_url( network_home_url(), PHP_URL_HOST ) );
+	$site_host    = strtolower((string) wp_parse_url(home_url(), PHP_URL_HOST));
+	$network_host = strtolower((string) wp_parse_url(network_home_url(), PHP_URL_HOST));
 	$suffix       = '.' . $network_host;
 
 	if (
 		'' !== $network_host
-		&& strlen( $site_host ) > strlen( $suffix )
-		&& 0 === substr_compare( $site_host, $suffix, -strlen( $suffix ) )
+		&& strlen($site_host) > strlen($suffix)
+		&& 0 === substr_compare($site_host, $suffix, -strlen($suffix))
 	) {
-		return substr( $site_host, 0, -strlen( $suffix ) );
+		return substr($site_host, 0, -strlen($suffix));
 	}
 
 	return $site_host;
@@ -125,15 +127,16 @@ function lpu_get_current_site_key() {
  *
  * @return array<string, string>
  */
-function lpu_get_current_site_config() {
-	$site_key  = sanitize_key( lpu_get_current_site_key() );
+function lpu_get_current_site_config()
+{
+	$site_key  = sanitize_key(lpu_get_current_site_key());
 	$logo_file = $site_key . '-horizontal-ecru-baseline.svg';
 
-	if ( '' === $site_key || ! file_exists( get_theme_file_path( 'assets/images/logos/' . $logo_file ) ) ) {
+	if ('' === $site_key || ! file_exists(get_theme_file_path('assets/images/logos/' . $logo_file))) {
 		return array();
 	}
 
-	return array( 'transparent_logo_file' => $logo_file );
+	return array('transparent_logo_file' => $logo_file);
 }
 
 /**
@@ -141,7 +144,8 @@ function lpu_get_current_site_config() {
  *
  * @return string
  */
-function lpu_transparent_logo_file() {
+function lpu_transparent_logo_file()
+{
 	$config = lpu_get_current_site_config();
 
 	return $config['transparent_logo_file'] ?? '';
@@ -152,8 +156,9 @@ function lpu_transparent_logo_file() {
  *
  * @return bool
  */
-function lpu_is_transparent_header() {
-	if ( ! is_singular( 'page' ) ) {
+function lpu_is_transparent_header()
+{
+	if (! is_singular('page')) {
 		return false;
 	}
 
@@ -167,7 +172,8 @@ function lpu_is_transparent_header() {
 /**
  * Make the the per-page transparent-header setting available in the REST API.
  */
-function lpu_register_header_meta() {
+function lpu_register_header_meta()
+{
 	register_post_meta(
 		'page',
 		'lpu_header_transparent',
@@ -177,25 +183,26 @@ function lpu_register_header_meta() {
 			'default'           => false,
 			'show_in_rest'      => true,
 			'sanitize_callback' => 'rest_sanitize_boolean',
-			'auth_callback'     => function ( $allowed, $meta_key, $post_id, $user_id ) {
-				return user_can( $user_id, 'edit_post', $post_id );
+			'auth_callback'     => function ($allowed, $meta_key, $post_id, $user_id) {
+				return user_can($user_id, 'edit_post', $post_id);
 			},
 		)
 	);
 }
-add_action( 'init', 'lpu_register_header_meta' );
+add_action('init', 'lpu_register_header_meta');
 
 /**
  * Enqueue the page settings control in the block editor sidebar.
  */
-function lpu_enqueue_editor_settings() {
+function lpu_enqueue_editor_settings()
+{
 	// there is no build step (at the moment), therefore must declare the
 	// dependencies manually
 	wp_enqueue_script(
 		'lpu-editor-settings',
-		get_theme_file_uri( 'assets/js/editor-settings.js' ),
-		array( 'wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins' ),
-		wp_get_theme()->get( 'Version' ),
+		get_theme_file_uri('assets/js/editor-settings.js'),
+		array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
+		wp_get_theme()->get('Version'),
 		true
 	);
 
@@ -210,7 +217,7 @@ function lpu_enqueue_editor_settings() {
 	);
 }
 // enqueue_block_editor_assets is meant for block editor UI (not the content)
-add_action( 'enqueue_block_editor_assets', 'lpu_enqueue_editor_settings' );
+add_action('enqueue_block_editor_assets', 'lpu_enqueue_editor_settings');
 
 /**
  * Add the transparent state to the page body when explicitly enabled.
@@ -218,14 +225,15 @@ add_action( 'enqueue_block_editor_assets', 'lpu_enqueue_editor_settings' );
  * @param array $classes Body classes.
  * @return array
  */
-function lpu_add_header_body_class( $classes ) {
-	if ( lpu_is_transparent_header() ) {
+function lpu_add_header_body_class($classes)
+{
+	if (lpu_is_transparent_header()) {
 		$classes[] = 'lpu-header-transparent';
 	}
 
 	return $classes;
 }
-add_filter( 'body_class', 'lpu_add_header_body_class' );
+add_filter('body_class', 'lpu_add_header_body_class');
 
 /**
  * Swap the shared Site Logo to the official écru variant in the transparent
@@ -235,45 +243,46 @@ add_filter( 'body_class', 'lpu_add_header_body_class' );
  * @param array  $block         Parsed block.
  * @return string
  */
-function lpu_render_transparent_site_logo( $block_content, $block ) {
+function lpu_render_transparent_site_logo($block_content, $block)
+{
 	if (
 		! lpu_is_transparent_header()
-		|| 'core/site-logo' !== ( $block['blockName'] ?? '' )
-		|| false === strpos( $block_content, 'lpu-header__logo' )
+		|| 'core/site-logo' !== ($block['blockName'] ?? '')
+		|| false === strpos($block_content, 'lpu-header__logo')
 	) {
 		return $block_content;
 	}
 
 	$logo_file = lpu_transparent_logo_file();
-	$logo_url  = get_theme_file_uri( 'assets/images/logos/' . $logo_file );
+	$logo_url  = get_theme_file_uri('assets/images/logos/' . $logo_file);
 	$opaque_url = '';
 
-	if ( preg_match( '/<img\\b[^>]*\\bsrc="([^"]+)"/i', $block_content, $matches ) ) {
+	if (preg_match('/<img\\b[^>]*\\bsrc="([^"]+)"/i', $block_content, $matches)) {
 		$opaque_url = $matches[1];
 	}
 
 	$block_content = preg_replace(
 		'/(<img\\b)/i',
-		'$1 data-lpu-opaque-src="' . esc_attr( $opaque_url ) . '" data-lpu-transparent-src="' . esc_attr( $logo_url ) . '"',
+		'$1 data-lpu-opaque-src="' . esc_attr($opaque_url) . '" data-lpu-transparent-src="' . esc_attr($logo_url) . '"',
 		$block_content,
 		1
 	);
 
 	$block_content = preg_replace(
 		'/(<img\\b[^>]*\\bsrc=")[^"]*(")/i',
-		'$1' . esc_url( $logo_url ) . '$2',
+		'$1' . esc_url($logo_url) . '$2',
 		$block_content,
 		1
 	);
 
 	return preg_replace(
 		'/(<img\\b[^>]*\\bsrcset=")[^"]*(")/i',
-		'$1' . esc_url( $logo_url ) . '$2',
+		'$1' . esc_url($logo_url) . '$2',
 		$block_content,
 		1
 	);
 }
-add_filter( 'render_block', 'lpu_render_transparent_site_logo', 10, 2 );
+add_filter('render_block', 'lpu_render_transparent_site_logo', 10, 2);
 
 /**
  * Allow the provisioning script to import the official, theme-owned SVG
@@ -283,14 +292,15 @@ add_filter( 'render_block', 'lpu_render_transparent_site_logo', 10, 2 );
  * @param array $mimes Allowed upload MIME types.
  * @return array
  */
-function lpu_allow_cli_svg_upload( $mimes ) {
-	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+function lpu_allow_cli_svg_upload($mimes)
+{
+	if (defined('WP_CLI') && WP_CLI) {
 		$mimes['svg'] = 'image/svg+xml';
 	}
 
 	return $mimes;
 }
-add_filter( 'upload_mimes', 'lpu_allow_cli_svg_upload' );
+add_filter('upload_mimes', 'lpu_allow_cli_svg_upload');
 
 /**
  * WordPress may identify an SVG as text during the CLI import preflight.
@@ -304,17 +314,18 @@ add_filter( 'upload_mimes', 'lpu_allow_cli_svg_upload' );
  * @param string|false $real_mime MIME detected from file contents.
  * @return array
  */
-function lpu_allow_cli_svg_filetype( $data, $file, $filename, $mimes, $real_mime ) {
-	$extension = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+function lpu_allow_cli_svg_filetype($data, $file, $filename, $mimes, $real_mime)
+{
+	$extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-	if ( defined( 'WP_CLI' ) && WP_CLI && 'svg' === $extension ) {
+	if (defined('WP_CLI') && WP_CLI && 'svg' === $extension) {
 		$data['ext']  = 'svg';
 		$data['type'] = 'image/svg+xml';
 	}
 
 	return $data;
 }
-add_filter( 'wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5 );
+add_filter('wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5);
 
 /**
  * Count the direct navigation items in a serialized Navigation post.
@@ -322,14 +333,15 @@ add_filter( 'wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5 );
  * @param string $navigation_content Serialized Navigation block content.
  * @return int
  */
-function lpu_get_navigation_item_count( $navigation_content ) {
+function lpu_get_navigation_item_count($navigation_content)
+{
 	$count = 0;
 
-	foreach ( parse_blocks( $navigation_content ) as $block ) {
+	foreach (parse_blocks($navigation_content) as $block) {
 		if (
 			in_array(
 				$block['blockName'] ?? '',
-				array( 'core/navigation-link', 'core/navigation-submenu' ),
+				array('core/navigation-link', 'core/navigation-submenu'),
 				true
 			)
 		) {
@@ -357,50 +369,51 @@ function lpu_get_navigation_item_count( $navigation_content ) {
  * @param WP_Block|null $parent_block The parent block, if any.
  * @return array
  */
-function lpu_bind_site_navigation( $parsed_block, $source_block, $parent_block ) {
-	if ( 'core/navigation' !== ( $parsed_block['blockName'] ?? '' ) ) {
+function lpu_bind_site_navigation($parsed_block, $source_block, $parent_block)
+{
+	if ('core/navigation' !== ($parsed_block['blockName'] ?? '')) {
 		return $parsed_block;
 	}
 
-	if ( isset( $parsed_block['attrs']['ref'] ) ) {
+	if (isset($parsed_block['attrs']['ref'])) {
 		return $parsed_block;
 	}
 
 	$classes = preg_split(
 		'/\s+/',
-		trim( (string) ( $parsed_block['attrs']['className'] ?? '' ) )
+		trim((string) ($parsed_block['attrs']['className'] ?? ''))
 	);
-	$is_footer_navigation = in_array( 'lpu-footer-navigation', $classes, true );
-	$is_header_navigation = in_array( 'lpu-header__navigation', $classes, true );
+	$is_footer_navigation = in_array('lpu-footer-navigation', $classes, true);
+	$is_header_navigation = in_array('lpu-header__navigation', $classes, true);
 
-	if ( ! $is_footer_navigation && ! $is_header_navigation ) {
+	if (! $is_footer_navigation && ! $is_header_navigation) {
 		return $parsed_block;
 	}
 
 	$option_name   = $is_footer_navigation ? 'lpu_footer_navigation_id' : 'lpu_navigation_id';
-	$navigation_id = absint( get_option( $option_name, 0 ) );
-	if ( ! $navigation_id ) {
+	$navigation_id = absint(get_option($option_name, 0));
+	if (! $navigation_id) {
 		return $parsed_block;
 	}
 
-	$navigation = get_post( $navigation_id );
-	if ( ! $navigation || 'wp_navigation' !== $navigation->post_type || 'publish' !== $navigation->post_status ) {
+	$navigation = get_post($navigation_id);
+	if (! $navigation || 'wp_navigation' !== $navigation->post_type || 'publish' !== $navigation->post_status) {
 		return $parsed_block;
 	}
 
 	$parsed_block['attrs']['ref'] = $navigation_id;
 
-	if ( $is_header_navigation ) {
-		$top_level_item_count = lpu_get_navigation_item_count( $navigation->post_content );
+	if ($is_header_navigation) {
+		$top_level_item_count = lpu_get_navigation_item_count($navigation->post_content);
 
-		if ( ! in_array( $top_level_item_count, array( 3, 5 ), true ) ) {
+		if (! in_array($top_level_item_count, array(3, 5), true)) {
 			$parsed_block['attrs']['className'] = trim(
-				(string) ( $parsed_block['attrs']['className'] ?? '' )
-				. ' lpu-navigation--unsupported-count'
+				(string) ($parsed_block['attrs']['className'] ?? '')
+					. ' lpu-navigation--unsupported-count'
 			);
 		}
 	}
 
 	return $parsed_block;
 }
-add_filter( 'render_block_data', 'lpu_bind_site_navigation', 10, 3 );
+add_filter('render_block_data', 'lpu_bind_site_navigation', 10, 3);

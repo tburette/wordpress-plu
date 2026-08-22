@@ -1,5 +1,6 @@
 /*
- * Shared visual rules that are not expressed cleanly by theme.json.
+ * frontend + editor (Gutenberg) content (in the iframe)
+ * does not apply to the editor (Gutenbeg) UI in general
  */
 
 html {
