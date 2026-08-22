@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "env:start": "wp-env start",
-    "env:start:xdebug": "wp-env start --xdebug",
+    "env:start:xdebug": "wp-env start --xdebug && npm run env:xdebug:patch",
     "env:stop": "wp-env stop",
     "env:status": "wp-env status",
     "env:logs": "wp-env logs",

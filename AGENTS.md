@@ -110,12 +110,9 @@ important.
 
 ## Xdebug
 
-- Start with `wp-env start --xdebug` or `npm run env:start:xdebug`.
-- Run `bash scripts/update-xdebug-path-mapping.sh` (or
-  `npm run env:xdebug:patch`) before launching the VS Code debugger.
-- Do not assume the container is named `wp-env-$(basename "$PWD")`. Compose
-  adds the generated project hash, service name, and instance suffix. Use the
-  script or the diagnostic commands in `README.md` to find the real instance.
+- Start with `npm run env:start:xdebug` (it will run the required
+  `bash scripts/update-xdebug-path-mapping.sh` via `npm run env:xdebug:patch`).
+  Restart the environment if needed.
 
 ## Do not
 

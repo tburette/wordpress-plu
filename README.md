@@ -8,11 +8,11 @@ them.
 The environment is a fresh WordPress Multisite network. It currently contains
 the network site and three local farm sites:
 
-| Site | Local URL |
-| --- | --- |
-| Network | `http://lepaysanurbain.test:8888` |
-| Paris | `http://paris.lepaysanurbain.test:8888` |
-| Lyon | `http://lyon.lepaysanurbain.test:8888` |
+| Site      | Local URL                                   |
+| --------- | ------------------------------------------- |
+| Network   | `http://lepaysanurbain.test:8888`           |
+| Paris     | `http://paris.lepaysanurbain.test:8888`     |
+| Lyon      | `http://lyon.lepaysanurbain.test:8888`      |
 | Marseille | `http://marseille.lepaysanurbain.test:8888` |
 
 The port is fixed because it is part of the effective local WordPress host.
@@ -315,12 +315,13 @@ Start with Xdebug enabled:
 
 ```sh
 npm run env:start:xdebug
-npm run env:xdebug:patch
 ```
 
-Then launch `wp-env listen for XDebug` in VS Code. The patch script discovers
-the current generated WordPress source path and updates the core mapping while
-preserving more-specific theme or plugin mappings.
+it will trigger a patch script with `npm run env:xdebug:patch`.
+
+Then launch `wp-env listen for XDebug` in VS Code (F5). The patch script
+discovers the current generated WordPress source path and updates the core
+mapping while preserving more-specific theme or plugin mappings.
 
 Do not assume a fixed Docker container name. Use `wp-env status`, Docker's
 container list, or the provided path-mapping script.

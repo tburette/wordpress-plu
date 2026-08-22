@@ -7,7 +7,9 @@
       "request": "launch",
       "port": 9003,
       "pathMappings": {
-        "/var/www/html": "/home/tburette/wp-env/wp-env-xxx-yyy/WordPress"
+        "/var/www/html": "/home/tburette/wp-env/wp-env-wordpress-lpu-4afbad01/WordPress",
+        "/var/www/html/wp-content/themes/lepaysanurbain": "/home/tburette/dev/lepaysanurbain/site/wordpress-lpu/themes/lepaysanurbain",
+        "/var/www/html/wp-content/plugins/lpu-split-section": "/home/tburette/dev/lepaysanurbain/site/wordpress-lpu/plugins/lpu-split-section"
       }
     }
   ]
