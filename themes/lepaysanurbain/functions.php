@@ -88,11 +88,14 @@ function lpu_enqueue_navigation_script()
 add_action('wp_enqueue_scripts', 'lpu_enqueue_navigation_script');
 
 /**
- * Return a stable key for the current site in this subdomain multisite.
- *
- * Blog IDs are installation-specific and can change when the network is
- * recreated. The project topology keeps each farm under the network host, so
- * the subdomain is a stable site identity across fresh installations.
+ * Return a stable identifier for the current subsite in this multisite : the
+ * DNS subdomain name.
+ * 
+ * Eg. subsite.example.com => "subsite"
+ * Eg. example.com => "network"
+ * The Blog IDs are installation-specific and can change when the network is
+ * recreated. The subdomain is a stable unique key for the subsite.
+ * Only works as expected if multisite with subdomains are used!
  *
  * @return string
  */
@@ -102,18 +105,23 @@ function lpu_get_current_site_key()
 		return 'network';
 	}
 
-	$site_host    = strtolower((string) wp_parse_url(home_url(), PHP_URL_HOST));
+	// subsite.example.com
+	$site_host = strtolower((string) wp_parse_url(home_url(), PHP_URL_HOST));
+	// example.com
 	$network_host = strtolower((string) wp_parse_url(network_home_url(), PHP_URL_HOST));
-	$suffix       = '.' . $network_host;
+	// .example.com
+	$network_suffix = '.' . $network_host;
 
+	// Extract the subdomain when the current site belongs to the network domain.
 	if (
 		'' !== $network_host
-		&& strlen($site_host) > strlen($suffix)
-		&& 0 === substr_compare($site_host, $suffix, -strlen($suffix))
+		&& strlen($site_host) > strlen($network_suffix)
+		&& str_ends_with($site_host, $network_suffix)
 	) {
-		return substr($site_host, 0, -strlen($suffix));
+		return substr($site_host, 0, -strlen($network_suffix));
 	}
 
+	// Fall back to the full hostname if the site is not a subdomain of the network.
 	return $site_host;
 }
 
