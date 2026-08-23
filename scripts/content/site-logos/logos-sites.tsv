@@ -1,5 +1,5 @@
-# site_url	logo_title	logo_file
-lepaysanurbain.test:8888	Le Paysan Urbain — logo réseau	network-horizontal-green-baseline.svg
-paris.lepaysanurbain.test:8888	Le Paysan Urbain Paris — logo	paris-horizontal-green-baseline.svg
-lyon.lepaysanurbain.test:8888	Le Paysan Urbain Lyon — logo	lyon-horizontal-green-baseline.svg
-marseille.lepaysanurbain.test:8888	Le Paysan Urbain Marseille — logo	marseille-horizontal-green-baseline.svg
+# site_url	logo_title	logo_file	transparent_logo_title	transparent_logo_file
+lepaysanurbain.test:8888	Le Paysan Urbain — logo réseau	network-horizontal-green-baseline.svg	Le Paysan Urbain — logo réseau écru	network-horizontal-ecru-baseline.svg
+paris.lepaysanurbain.test:8888	Le Paysan Urbain Paris — logo	paris-horizontal-green-baseline.svg	Le Paysan Urbain Paris — logo écru	paris-horizontal-ecru-baseline.svg
+lyon.lepaysanurbain.test:8888	Le Paysan Urbain Lyon — logo	lyon-horizontal-green-baseline.svg	Le Paysan Urbain Lyon — logo écru	lyon-horizontal-ecru-baseline.svg
+marseille.lepaysanurbain.test:8888	Le Paysan Urbain Marseille — logo	marseille-horizontal-green-baseline.svg	Le Paysan Urbain Marseille — logo écru	marseille-horizontal-ecru-baseline.svg

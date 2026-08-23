@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Import the official theme-owned SVG and select it as the Site Logo on each
-# multisite blog.
-# The opaque header uses the horizontal green logotype with baseline; the
-# corresponding écru variants are available in the theme for transparent-header
-# pages. 
+# Import the official theme-owned SVG logos and select them on each multisite
+# blog: the horizontal green logotype as custom_logo (opaque header) and the
+# corresponding écru variant as the lpu_transparent_logo theme mod used by the
+# transparent header state.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
 logos_file="${script_dir}/logos-sites.tsv"
@@ -24,7 +23,7 @@ run_wp() {
 	wp-env run cli wp "$@" </dev/null
 }
 
-select_logo() {
+find_or_import_logo() {
 	local site_url="$1"
 	local logo_title="$2"
 	local logo_file="$3"
@@ -42,7 +41,9 @@ select_logo() {
 		--post_type=attachment \
 		--post_status=inherit \
 		--post_mime_type=image/svg+xml \
-		--search="${logo_title}" \
+		--meta_key=_wp_attached_file \
+		--meta_value="/${logo_file}" \
+		--meta_compare=LIKE \
 		--posts_per_page=1 \
 		--orderby=ID \
 		--order=DESC \
@@ -61,17 +62,36 @@ select_logo() {
 		exit 1
 	fi
 
-	run_wp theme mod set custom_logo "${attachment_id}" --url="${site_url}" >/dev/null
-	printf '%s: custom_logo %s (%s)\n' "${site_url}" "${attachment_id}" "${logo_file}"
+	printf '%s' "${attachment_id}"
 }
 
-while IFS=$'\t' read -r site_url logo_title logo_file; do
+select_logos() {
+	local site_url="$1"
+	local logo_title="$2"
+	local logo_file="$3"
+	local transparent_logo_title="$4"
+	local transparent_logo_file="$5"
+	local logo_id
+	local transparent_logo_id
+
+	logo_id="$(find_or_import_logo "${site_url}" "${logo_title}" "${logo_file}")"
+	run_wp theme mod set custom_logo "${logo_id}" --url="${site_url}" >/dev/null
+
+	transparent_logo_id="$(find_or_import_logo "${site_url}" "${transparent_logo_title}" "${transparent_logo_file}")"
+	run_wp theme mod set lpu_transparent_logo "${transparent_logo_id}" --url="${site_url}" >/dev/null
+
+	printf '%s: custom_logo %s (%s), lpu_transparent_logo %s (%s)\n' \
+		"${site_url}" "${logo_id}" "${logo_file}" \
+		"${transparent_logo_id}" "${transparent_logo_file}"
+}
+
+while IFS=$'\t' read -r site_url logo_title logo_file transparent_logo_title transparent_logo_file; do
 	[[ -z "${site_url}" || "${site_url}" == \#* ]] && continue
 
-	if [[ -z "${logo_title}" || -z "${logo_file}" ]]; then
-		printf 'Invalid logo data row for %s. Expected tab-separated site_url, logo_title and logo_file.\n' "${site_url}" >&2
+	if [[ -z "${logo_title}" || -z "${logo_file}" || -z "${transparent_logo_title}" || -z "${transparent_logo_file}" ]]; then
+		printf 'Invalid logo data row for %s. Expected tab-separated site_url, logo_title, logo_file, transparent_logo_title and transparent_logo_file.\n' "${site_url}" >&2
 		exit 1
 	fi
 
-	select_logo "${site_url}" "${logo_title}" "${logo_file}"
+	select_logos "${site_url}" "${logo_title}" "${logo_file}" "${transparent_logo_title}" "${transparent_logo_file}"
 done < "${logos_file}"
