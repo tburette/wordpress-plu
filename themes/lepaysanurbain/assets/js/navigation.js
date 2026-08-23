@@ -11,56 +11,40 @@
 	'use strict';
 	var submenuSelector = '.lpu-header .wp-block-navigation-submenu';
 
-	function syncHeaderVariant() {
+	function syncMenuOpenState() {
 		var header = document.querySelector( '.lpu-header' );
 
 		if ( ! header ) {
 			return;
 		}
 
-		var menuOpen = Boolean(
-			header.querySelector(
-				'.wp-block-navigation__responsive-container.is-menu-open,' +
-				' .wp-block-navigation__submenu-icon[aria-expanded="true"],' +
-				' .wp-block-navigation-submenu.lpu-hover-bridge-open'
+		header.classList.toggle(
+			'lpu-menu-open',
+			Boolean(
+				header.querySelector(
+					'.wp-block-navigation__responsive-container.is-menu-open,' +
+					' .wp-block-navigation__submenu-icon[aria-expanded="true"],' +
+					' .wp-block-navigation-submenu.lpu-hover-bridge-open'
+				)
 			)
 		);
-		var transparentPage = document.body.classList.contains(
-			'lpu-header-transparent'
-		);
-		var logo = header.querySelector( 'img[data-lpu-transparent-src]' );
-
-		header.classList.toggle( 'lpu-menu-open', menuOpen );
-
-		if ( ! logo ) {
-			return;
-		}
-
-		var sourceAttribute = transparentPage && ! menuOpen
-			? 'data-lpu-transparent-src'
-			: 'data-lpu-opaque-src';
-		var source = logo.getAttribute( sourceAttribute );
-
-		if ( source && logo.getAttribute( 'src' ) !== source ) {
-			logo.setAttribute( 'src', source );
-		}
 	}
 
-	function scheduleHeaderVariantSync() {
-		window.setTimeout( syncHeaderVariant, 0 );
+	function scheduleMenuOpenSync() {
+		window.setTimeout( syncMenuOpenState, 0 );
 	}
 
-	new MutationObserver( scheduleHeaderVariantSync ).observe(
-		document.documentElement,
-		{
+	var header = document.querySelector( '.lpu-header' );
+
+	if ( header ) {
+		new MutationObserver( scheduleMenuOpenSync ).observe( header, {
 			attributes: true,
 			attributeFilter: [ 'aria-expanded', 'class' ],
 			subtree: true,
-		}
-	);
-	document.addEventListener( 'click', scheduleHeaderVariantSync );
-	document.addEventListener( 'keydown', scheduleHeaderVariantSync );
-	syncHeaderVariant();
+		} );
+	}
+
+	syncMenuOpenState();
 
 	function getSubmenu( target ) {
 		return target instanceof Element ? target.closest( submenuSelector ) : null;
