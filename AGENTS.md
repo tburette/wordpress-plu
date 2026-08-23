@@ -120,6 +120,7 @@ important.
 - Write project code within the local `wordpress/` tree or WordPress installation. It can be deleted at any
   time and doing so would result in data loss.
 - Add data that exists only in the WordPress database and would be lost when the installation is deleted.
+- do not git push.
 
 ## Reference
 
