@@ -91,62 +91,7 @@ function lpu_enqueue_navigation_script()
 add_action('wp_enqueue_scripts', 'lpu_enqueue_navigation_script');
 
 /**
- * Return a stable identifier for the current subsite in this multisite : the
- * DNS subdomain name.
- * 
- * Eg. subsite.example.com => "subsite"
- * Eg. example.com => "network"
- * The Blog IDs are installation-specific and can change when the network is
- * recreated. The subdomain is a stable unique key for the subsite.
- * Only works as expected if multisite with subdomains are used!
- *
- * @return string
- */
-function lpu_get_current_site_key()
-{
-	if (is_main_site()) {
-		return 'network';
-	}
-
-	// subsite.example.com
-	$site_host = strtolower((string) wp_parse_url(home_url(), PHP_URL_HOST));
-	// example.com
-	$network_host = strtolower((string) wp_parse_url(network_home_url(), PHP_URL_HOST));
-	// .example.com
-	$network_suffix = '.' . $network_host;
-
-	// Extract the subdomain when the current site belongs to the network domain.
-	if (
-		'' !== $network_host
-		&& strlen($site_host) > strlen($network_suffix)
-		&& str_ends_with($site_host, $network_suffix)
-	) {
-		return substr($site_host, 0, -strlen($network_suffix));
-	}
-
-	// Fall back to the full hostname if the site is not a subdomain of the network.
-	return $site_host;
-}
-
-/**
- * Return the official horizontal écru logo available for the current site.
- *
- * @return string
- */
-function lpu_transparent_logo_file()
-{
-	$site_key  = sanitize_key(lpu_get_current_site_key());
-	$logo_file = $site_key . '-horizontal-ecru-baseline.svg';
-
-	if ('' === $site_key || ! file_exists(get_theme_file_path('assets/images/logos/' . $logo_file))) {
-		return '';
-	}
-
-	return $logo_file;
-}
-
-/**
- * Whether the current page wants and can use the transparent header.
+ * Whether the current page requests the transparent header.
  *
  * @return bool
  */
@@ -160,7 +105,7 @@ function lpu_is_transparent_header()
 		get_queried_object_id(),
 		'lpu_header_transparent',
 		true
-	) && '' !== lpu_transparent_logo_file();
+	);
 }
 
 /**
@@ -192,23 +137,13 @@ function lpu_enqueue_editor_settings()
 {
 	// there is no build step (at the moment), therefore must declare the
 	// dependencies manually
-	wp_enqueue_script(
-		'lpu-editor-settings',
-		get_theme_file_uri('assets/js/editor-settings.js'),
-		array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
-		wp_get_theme()->get('Version'),
-	);
-
-	wp_add_inline_script(
-		'lpu-editor-settings',
-		'window.lpuEditorSettings = ' . wp_json_encode(
-			array(
-				'logoAvailable' => '' !== lpu_transparent_logo_file(),
-			)
-		) . ';',
-		'before'
-	);
-}
+		wp_enqueue_script(
+			'lpu-editor-settings',
+			get_theme_file_uri('assets/js/editor-settings.js'),
+			array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
+			wp_get_theme()->get('Version'),
+		);
+	}
 // enqueue_block_editor_assets is meant for block editor UI (not the content)
 add_action('enqueue_block_editor_assets', 'lpu_enqueue_editor_settings');
 
@@ -227,55 +162,6 @@ function lpu_add_header_body_class($classes)
 	return $classes;
 }
 add_filter('body_class', 'lpu_add_header_body_class');
-
-/**
- * Swap the shared Site Logo to the official écru variant in the transparent
- * state. The opaque state continues to use the per-site custom_logo setting.
- *
- * @param string $block_content Rendered block HTML.
- * @param array  $block         Parsed block.
- * @return string
- */
-function lpu_render_transparent_site_logo($block_content, $block)
-{
-	if (
-		! lpu_is_transparent_header()
-		|| 'core/site-logo' !== ($block['blockName'] ?? '')
-		|| false === strpos($block_content, 'lpu-header__logo')
-	) {
-		return $block_content;
-	}
-
-	$logo_file = lpu_transparent_logo_file();
-	$logo_url  = get_theme_file_uri('assets/images/logos/' . $logo_file);
-	$opaque_url = '';
-
-	if (preg_match('/<img\\b[^>]*\\bsrc="([^"]+)"/i', $block_content, $matches)) {
-		$opaque_url = $matches[1];
-	}
-
-	$block_content = preg_replace(
-		'/(<img\\b)/i',
-		'$1 data-lpu-opaque-src="' . esc_attr($opaque_url) . '" data-lpu-transparent-src="' . esc_attr($logo_url) . '"',
-		$block_content,
-		1
-	);
-
-	$block_content = preg_replace(
-		'/(<img\\b[^>]*\\bsrc=")[^"]*(")/i',
-		'$1' . esc_url($logo_url) . '$2',
-		$block_content,
-		1
-	);
-
-	return preg_replace(
-		'/(<img\\b[^>]*\\bsrcset=")[^"]*(")/i',
-		'$1' . esc_url($logo_url) . '$2',
-		$block_content,
-		1
-	);
-}
-add_filter('render_block', 'lpu_render_transparent_site_logo', 10, 2);
 
 /**
  * Enable SVG file upload
