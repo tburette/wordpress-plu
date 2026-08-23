@@ -5,7 +5,7 @@ setup and workflow documentation lives in `README.md`.
 
 ## Provisioning script tests
 
-- Before testing or retesting scripts that create or configure WordPress content, start from a clean local environment. Announce the operation then use `npm run env:cleanup`, `npm run env:multisite:setup`, and `npm run env:status`. Resetting deletes all local database content; never run the reset command autonomously. Confirmation is required.
+- Before testing or retesting scripts that create or configure WordPress content, start from a clean local environment. Announce the operation then use `npm run env:cleanup`, `npm run env:provision`, and `npm run env:status`. Resetting deletes all local database content; never run the reset command autonomously. Confirmation is required.
 - If the Docker environment or its generated files are broken, use `npm run env:cleanup`; it recreates them on the next start while preserving Docker images.
 
 ## Implementation plan

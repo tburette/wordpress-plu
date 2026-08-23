@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# setup the development site
-# create subsites, put in place language, theme, plugins, content,..
+# setup the multisite network only
+# check hosts, align network metadata, create subsites
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"
@@ -46,9 +46,3 @@ for definition in "${sites[@]}"; do
     --email="wordpress@example.com" \
     --porcelain >/dev/null
 done
-
-bash "${script_dir}/setup-language.sh"
-bash "${script_dir}/setup-theme.sh"
-bash "${script_dir}/setup-split-plugin.sh"
-bash "${script_dir}/content/setup.sh"
-bash "${script_dir}/verify-multisite-network.sh"

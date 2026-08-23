@@ -56,15 +56,15 @@ npm run env:status
 ```
 
 Starting the environment only starts the local WordPress containers. Run the
-multisite bootstrap explicitly when the environment is new or after its local
+provisioning explicitly when the environment is new or after its local
 database has been reset:
 
 ```sh
-npm run env:multisite:setup
+npm run env:provision
 npm run env:multisite:verify
 ```
 
-The multisite bootstrap:
+Provisioning:
 
 1. checks the local hostnames;
 2. confirms that WordPress is a network;
@@ -79,28 +79,28 @@ The multisite bootstrap:
    network Home fixture; then
 7. verifies the network and site domain/path records.
 
-The bootstrap is safe to run repeatedly. The verification command can be run
+Provisioning is safe to run repeatedly. The verification command can be run
 independently:
 
 ```sh
 npm run env:multisite:verify
 ```
 
-#### Optional automatic bootstrap after `env:start`
+#### Optional automatic provisioning after `env:start`
 
 If automatic provisioning is useful again later, add the following block to
 `.wp-env.json` at the top level:
 
 ```json
 "lifecycleScripts": {
-  "afterStart": "bash scripts/setup-multisite-network.sh"
+  "afterStart": "bash scripts/provision-environment.sh"
 }
 ```
 
-With that block enabled, `npm run env:start` runs the complete multisite
-bootstrap after the containers start. Do not run
-`npm run env:multisite:setup` immediately afterward, or the same bootstrap
-will be invoked twice. To bypass the hook for one start, use:
+With that block enabled, `npm run env:start` runs the complete provisioning
+after the containers start. Do not run `npm run env:provision` immediately
+afterward, or the same provisioning will be invoked twice. To bypass the hook
+for one start, use:
 
 ```sh
 npm run env:start -- --scripts=false
@@ -108,7 +108,7 @@ npm run env:start -- --scripts=false
 
 The default credentials are `admin` / `password`.
 
-The bootstrap keeps the local WordPress administration in French. To apply the
+Provisioning keeps the local WordPress administration in French. To apply the
 language setup independently to an existing environment, run:
 
 ```sh
@@ -122,7 +122,7 @@ recreating the Docker environment, use:
 
 ```sh
 npm run env:reset
-npm run env:multisite:setup
+npm run env:provision
 npm run env:status
 ```
 
@@ -158,8 +158,8 @@ The active configuration is `.wp-env.json`. Important settings include:
 
 `wp-env` generates the multisite constants such as `MULTISITE`,
 `DOMAIN_CURRENT_SITE`, and `PATH_CURRENT_SITE` during the fresh installation.
-The setup script also updates the network metadata used for the subdomain
-choice before it creates child sites.
+`scripts/setup-multisite-network.sh` also updates the network metadata used
+for the subdomain choice before it creates child sites.
 
 `WP_ALLOW_MULTISITE` is not required for this automated setup. It only enables
 the manual Network Setup screen in the WordPress administration interface.
@@ -218,7 +218,7 @@ wordpress-lpu/
 
 `wp-env` mounts themes but does not activate them automatically. Activate the
 theme on the required network sites with WP-CLI after it has been mounted.
-The multisite bootstrap does this through `scripts/setup-theme.sh`; run it
+Provisioning does this through `scripts/setup-theme.sh`; run it
 manually with `npm run env:theme:setup` when needed.
 
 Plugins can be mounted and activated when listed in `.wp-env.json`:
