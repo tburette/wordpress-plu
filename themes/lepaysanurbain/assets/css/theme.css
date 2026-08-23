@@ -388,6 +388,21 @@ body.lpu-header-transparent .lpu-header {
 	background: transparent;
 }
 
+/* Absolute positioning removes the transparent header from the normal
+ * document flow, so account for WordPress's fixed admin bar when an editor
+ * is previewing the page while logged in. Without this offset the admin bar
+ * covers the top of the header and makes its contents appear shorter than
+ * the opaque state. WordPress uses a taller admin bar on narrow screens. */
+body.admin-bar.lpu-header-transparent .lpu-header {
+	top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+	body.admin-bar.lpu-header-transparent .lpu-header {
+		top: 46px;
+	}
+}
+
 /* The transparent header is removed from normal flow, so the block-theme
  * site-stack gap must not leave an écru strip before the hero. */
 body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
