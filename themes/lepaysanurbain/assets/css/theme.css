@@ -463,9 +463,28 @@ body.lpu-header-transparent .lpu-header
 	height: auto;
 }
 
+/* The header link stacks the opaque logo (custom_logo) and the transparent
+ * variant in the same grid cell; the visibility rules below pick which one
+ * shows for the current header state. */
 .lpu-header .wp-block-site-logo > a {
-	display: block;
+	display: grid;
 	width: 100%;
+}
+
+.lpu-header .wp-block-site-logo > a > img {
+	grid-area: 1 / 1;
+}
+
+.lpu-header .lpu-logo-transparent {
+	display: none;
+}
+
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .custom-logo {
+	display: none;
+}
+
+body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .lpu-logo-transparent {
+	display: block;
 }
 
 .lpu-header .wp-block-navigation {
