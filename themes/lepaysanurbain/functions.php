@@ -10,6 +10,9 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
+// Site logos (normal + transparent header variants).
+require_once __DIR__ . '/inc/site-logos.php';
+
 /**
  * Enqueue the shared theme stylesheet for the frontend and the editor
  * canvas. 
