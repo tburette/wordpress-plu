@@ -59,7 +59,7 @@ add_action('init', 'lpu_register_pattern_categories');
  * This enables the old behavior back where unsynced patterns are freely 
  * editable by default.
  *
- * Can activate contentPnly mode for individual unsynced patterns by using 
+ * Can activate contentOnly mode for individual unsynced patterns by using 
  * {"templateLock":"contentOnly"}
  *
  * @param array $settings Block editor settings.
@@ -137,13 +137,13 @@ function lpu_enqueue_editor_settings()
 {
 	// there is no build step (at the moment), therefore must declare the
 	// dependencies manually
-		wp_enqueue_script(
-			'lpu-editor-settings',
-			get_theme_file_uri('assets/js/editor-settings.js'),
-			array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
-			wp_get_theme()->get('Version'),
-		);
-	}
+	wp_enqueue_script(
+		'lpu-editor-settings',
+		get_theme_file_uri('assets/js/editor-settings.js'),
+		array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
+		wp_get_theme()->get('Version'),
+	);
+}
 // enqueue_block_editor_assets is meant for block editor UI (not the content)
 add_action('enqueue_block_editor_assets', 'lpu_enqueue_editor_settings');
 
