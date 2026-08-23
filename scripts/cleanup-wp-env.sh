@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Remove the generated wp-env containers, volumes, networks, and local files
-# while preserving Docker images. The next `npm run env:start` recreates the
-# environment without downloading the images again.
+# wp-env cleanup of the environment gated by user confirmation.
+# Removes all the containers, volumes, networks, and local files.
+# It does keep the Docker images (unlike wp-env destroy) to make recreating the
+# environment faster.
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"
 

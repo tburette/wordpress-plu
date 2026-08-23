@@ -4,6 +4,7 @@ set -euo pipefail
 # Install and activate the French core language pack for every site, then set
 # the default local admin user's profile locale so wp-admin is French even
 # when the user has an explicit locale preference.
+
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"
 locale="fr_FR"

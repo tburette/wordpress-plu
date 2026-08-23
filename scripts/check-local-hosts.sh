@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Makes sure the test domains are working.
+# They are required for the dev environment to work correctly
+
 hosts=(
   "lepaysanurbain.test"
   "paris.lepaysanurbain.test"

@@ -3,19 +3,13 @@ set -euo pipefail
 
 # Provision WordPress content for the local multisite network.
 #
-# With no arguments this runs every content operation in dependency order:
-# logos, front pages, local header/footer navigations, the typography test page,
-# the all-patterns review page, and the network Home fixture.
+# With no arguments this runs every content operation in dependency order.
 #
 # Pass one or more directory names to run only selected operations, for example:
 #   npm run env:content -- patterns-test-page
 #   npm run env:content -- home-network navigation-menus
 #
-# The network and active theme must already exist. The parent multisite setup
-# invokes this dispatcher after creating the sites and activating the theme.
-# Each operation keeps its data beside its shell script. Ordinary editorial
-# pages and navigations are preserved; managed developer fixtures are refreshed
-# according to their own contracts.
+# The network and active theme must already exist. 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 usage() {

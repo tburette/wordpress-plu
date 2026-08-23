@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# basic checks on multisite configuration
+
 run_wp() {
   wp-env run cli wp "$@"
 }
 
-expect_true_constant() {
+expect_true_wp_constant() {
   local name="$1"
   local value
   value="$(run_wp config get "${name}" --type=constant | tr -d '\r')"
@@ -19,18 +21,14 @@ expect_true_constant() {
   esac
 }
 
-expect_true_constant MULTISITE
-expect_true_constant SUBDOMAIN_INSTALL
+expect_true_wp_constant MULTISITE
+expect_true_wp_constant SUBDOMAIN_INSTALL
 
 network_meta="$(run_wp network meta get 1 subdomain_install | tr -d '\r')"
-case "${network_meta,,}" in
-  1|true)
-    ;;
-  *)
+if [[ ! "${network_meta,,}" =~ ^(1|true)$ ]]; then
     printf 'Network subdomain_install metadata must be true; got %s.\n' "${network_meta}" >&2
     exit 1
-    ;;
-esac
+fi
 
 network_domain="$(run_wp config get DOMAIN_CURRENT_SITE --type=constant | tr -d '\r')"
 network_path="$(run_wp config get PATH_CURRENT_SITE --type=constant | tr -d '\r')"
@@ -57,7 +55,7 @@ for slug in paris lyon marseille; do
   expected_domain="${slug}.${base_domain}"
   if ! jq -e --arg domain "${expected_domain}" --arg path "${network_path}" '.[] | select(.domain == $domain and .path == $path)' <<<"${blogs}" >/dev/null; then
     printf 'Missing or mismatched site: %s.%s%s\n' "${slug}" "${base_domain}" "${network_path}" >&2
-    exit 1
+    exit 1eval 'global $wpdb; echo wp_json_encode( $wpdb->get_row( "SELECT id, domain, path FROM {$wpdb->site} WHERE id = 1", ARRAY_A ) );')
   fi
 done
 

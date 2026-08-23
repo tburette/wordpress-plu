@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Reset only the local development WordPress database. This is the quick way
-# to obtain a clean database for provisioning-script tests while preserving
-# the Docker containers, volumes, images, mounted source, and configuration.
+# wp-env reset of the environment gated by user confirmation
+# resets database but not files
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"
 

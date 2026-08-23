@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# setup the development site
+# create subsites, put in place language, theme, plugins, content,..
+
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 project_dir="$(cd -- "${script_dir}/.." && pwd -P)"
 network_domain="lepaysanurbain.test"
@@ -31,10 +34,12 @@ for definition in "${sites[@]}"; do
   IFS='|' read -r slug title <<<"${definition}"
   existing_urls="$(run_wp site list --network=1 --field=url)"
 
+  # already in place
   if printf '%s\n' "${existing_urls}" | rg -Fq -- "//${slug}.${network_domain}"; then
     continue
   fi
 
+  # create subsite
   run_wp site create \
     --slug="${slug}" \
     --title="${title}" \

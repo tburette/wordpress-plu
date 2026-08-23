@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Update .vscode/launch.json to make debugging work
+# Update .vscode/launch.json to make debugging work correctly
+# updates pathmappings to the correct values
 
 project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 project_name="$(basename -- "${project_dir}")"
