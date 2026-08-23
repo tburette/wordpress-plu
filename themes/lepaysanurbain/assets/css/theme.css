@@ -475,7 +475,8 @@ body.lpu-header-transparent .lpu-header
 	grid-area: 1 / 1;
 }
 
-.lpu-header .lpu-logo-transparent {
+/* Specificity note: this must outrank the shared img display rule above. */
+.lpu-header .wp-block-site-logo img.lpu-logo-transparent {
 	display: none;
 }
 
@@ -560,15 +561,22 @@ body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .lpu-logo-transparen
 	}
 
 	/* Keep Core's internal grid as the containing block for the absolute
-	 * submenu, but place the panel below the complete header. The navigation
-	 * row is vertically centred in that grid, so plain top:100% starts roughly
-	 * 1.8rem above the header bottom and cuts through the logo baseline. */
+	 * submenu, but place the panel below the complete header. */
 	.lpu-header .wp-block-navigation,
-	.lpu-header .wp-block-navigation__responsive-container,
 	.lpu-header .wp-block-navigation__responsive-close,
 	.lpu-header .wp-block-navigation__responsive-dialog,
 	.lpu-header .wp-block-navigation__responsive-container-content,
 	.lpu-header .wp-block-navigation__container {
+		position: static;
+	}
+
+	/* Core gives the closed responsive container position:relative from 600px
+	 * with a three-class selector; this stronger match is required so the
+	 * full-width submenu panels resolve their containing block against the
+	 * header itself instead of that container (whose height changes when a
+	 * top-level label wraps, misaligning the panels). */
+	.lpu-header .wp-block-navigation
+		.wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) {
 		position: static;
 	}
 
@@ -641,12 +649,14 @@ body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .lpu-logo-transparen
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu {
 		position: static;
-		--lpu-submenu-bridge-height: 1.8rem;
 	}
 
+	/* With every intermediate element static, the panel resolves against the
+	 * header, so top:100% is exactly the header's bottom edge regardless of
+	 * how many lines a top-level label occupies. */
 	.lpu-header .wp-block-navigation__container >
 		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container {
-		top: calc(100% + var(--lpu-submenu-bridge-height));
+		top: 100%;
 		right: auto;
 		bottom: auto;
 		left: 50%;
@@ -664,20 +674,6 @@ body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .lpu-logo-transparen
 		background: var(--wp--preset--color--ecru) !important;
 		border: 0;
 		color: var(--wp--preset--color--vert-fonce);
-	}
-
-	/* The visual gap between the parent option and its panel is part of the
-	 * same hover target. Keep it transparent, but let it receive the pointer so
-	 * Core does not close the submenu while the pointer crosses this zone. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container::before {
-		position: absolute;
-		top: calc(-1 * var(--lpu-submenu-bridge-height));
-		right: 0;
-		left: 0;
-		height: var(--lpu-submenu-bridge-height);
-		content: '';
-		pointer-events: auto;
 	}
 
 	/* Keep the active panel hit-testable while the pointer crosses the empty
