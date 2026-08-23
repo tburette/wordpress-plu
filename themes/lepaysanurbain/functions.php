@@ -126,41 +126,24 @@ function lpu_get_current_site_key()
 }
 
 /**
- * Return configuration keyed by the stable current-site identity.
- *
- * Transparent logos follow the convention
- * {site-key}-horizontal-ecru-baseline.svg in the theme's logo directory. A
- * newly added site therefore needs only its correctly named asset; when that
- * asset is not present, the site keeps its opaque header and remains usable.
- *
- * @return array<string, string>
- */
-function lpu_get_current_site_config()
-{
-	$site_key  = sanitize_key(lpu_get_current_site_key());
-	$logo_file = $site_key . '-horizontal-ecru-baseline.svg';
-
-	if ('' === $site_key || ! file_exists(get_theme_file_path('assets/images/logos/' . $logo_file))) {
-		return array();
-	}
-
-	return array('transparent_logo_file' => $logo_file);
-}
-
-/**
  * Return the official horizontal écru logo available for the current site.
  *
  * @return string
  */
 function lpu_transparent_logo_file()
 {
-	$config = lpu_get_current_site_config();
+	$site_key  = sanitize_key(lpu_get_current_site_key());
+	$logo_file = $site_key . '-horizontal-ecru-baseline.svg';
 
-	return $config['transparent_logo_file'] ?? '';
+	if ('' === $site_key || ! file_exists(get_theme_file_path('assets/images/logos/' . $logo_file))) {
+		return '';
+	}
+
+	return $logo_file;
 }
 
 /**
- * Whether the current page explicitly requests the transparent header.
+ * Whether the current page wants and can use the transparent header.
  *
  * @return bool
  */
@@ -211,7 +194,6 @@ function lpu_enqueue_editor_settings()
 		get_theme_file_uri('assets/js/editor-settings.js'),
 		array('wp-components', 'wp-data', 'wp-element', 'wp-edit-post', 'wp-plugins'),
 		wp_get_theme()->get('Version'),
-		true
 	);
 
 	wp_add_inline_script(
@@ -293,40 +275,25 @@ function lpu_render_transparent_site_logo($block_content, $block)
 add_filter('render_block', 'lpu_render_transparent_site_logo', 10, 2);
 
 /**
- * Allow the provisioning script to import the official, theme-owned SVG
- * logos. This is intentionally limited to WP-CLI; regular media uploads do
- * not gain a new file type from the theme.
- *
- * @param array $mimes Allowed upload MIME types.
- * @return array
+ * Enable SVG file upload
  */
-function lpu_allow_cli_svg_upload($mimes)
+function lpu_allow_svg_upload($mimes)
 {
-	if (defined('WP_CLI') && WP_CLI) {
-		$mimes['svg'] = 'image/svg+xml';
-	}
-
+	$mimes['svg'] = 'image/svg+xml';
 	return $mimes;
 }
-add_filter('upload_mimes', 'lpu_allow_cli_svg_upload');
+add_filter('upload_mimes', 'lpu_allow_svg_upload');
 
 /**
- * WordPress may identify an SVG as text during the CLI import preflight.
+ * WordPress may identify some SVG files as text or xml.
  * Treat SVG files as the official theme logo type in that same CLI-only
  * provisioning context.
- *
- * @param array       $data      File type data from WordPress.
- * @param string      $file      Temporary file path.
- * @param string      $filename  Original filename.
- * @param array       $mimes     Allowed MIME types.
- * @param string|false $real_mime MIME detected from file contents.
- * @return array
  */
 function lpu_allow_cli_svg_filetype($data, $file, $filename, $mimes, $real_mime)
 {
 	$extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-	if (defined('WP_CLI') && WP_CLI && 'svg' === $extension) {
+	if ('svg' === $extension) {
 		$data['ext']  = 'svg';
 		$data['type'] = 'image/svg+xml';
 	}
