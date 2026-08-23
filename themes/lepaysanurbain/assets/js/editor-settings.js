@@ -16,8 +16,6 @@
 			return null;
 		}
 
-		const logoAvailable = Boolean( window.lpuEditorSettings?.logoAvailable );
-
 		return createElement(
 			PluginDocumentSettingPanel,
 			{
@@ -27,11 +25,8 @@
 			},
 			createElement( ToggleControl, {
 				label: 'Menu transparent sur cette page',
-				help: logoAvailable
-					? 'À utiliser uniquement si un hero contrasté se trouve directement derrière le header.'
-					: 'La variante transparente est indisponible sur ce site.',
+				help: 'À utiliser uniquement si un hero contrasté se trouve directement derrière le header.',
 				checked: Boolean( meta.lpu_header_transparent ),
-				disabled: ! logoAvailable,
 				onChange: ( value ) => editPost( { meta: { lpu_header_transparent: value } } ),
 			} )
 		);
