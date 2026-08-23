@@ -86,6 +86,31 @@ function lpu_customize_register_transparent_logo($wp_customize)
 add_action('customize_register', 'lpu_customize_register_transparent_logo');
 
 /**
+ * Make both images in the header logo decorative.
+ *
+ * The Site Logo block supplies an alt value for the normal logo by default.
+ * The header deliberately treats the logo as decorative, so clear the alt
+ * value on every image rendered by this specific Site Logo instance.
+ *
+ * @param string $block_content Rendered block HTML.
+ * @return string
+ */
+function lpu_make_header_logos_decorative($block_content)
+{
+	if (! class_exists('WP_HTML_Tag_Processor')) {
+		return $block_content;
+	}
+
+	$processor = new WP_HTML_Tag_Processor($block_content);
+
+	while ($processor->next_tag('img')) {
+		$processor->set_attribute('alt', '');
+	}
+
+	return $processor->get_updated_html();
+}
+
+/**
  * Append the transparent logo image to the header's Site Logo output.
  *
  * Runs only for the Site Logo instance identified by its `lpu-header__logo`
@@ -107,6 +132,8 @@ function lpu_render_header_transparent_logo($block_content, $parsed_block)
 	if (! in_array('lpu-header__logo', $classes, true)) {
 		return $block_content;
 	}
+
+	$block_content = lpu_make_header_logos_decorative($block_content);
 
 	// Pages without the transparent-header setting carry the normal logo only.
 	if (! lpu_is_transparent_header()) {
