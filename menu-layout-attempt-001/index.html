@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu layout attempt 001</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <nav class="site-nav" id="siteNav" aria-label="Menu principal">
+        <button
+          class="menu-toggle"
+          id="menuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+          aria-label="Ouvrir le menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- One source list. JS partitions these items for the desktop layout. -->
+        <ul class="menu-source" id="menuSource">
+          <li><a href="#" data-submenu>Qui sommes-nous</a></li>
+          <li><a href="#" data-submenu>Nos activités</a></li>
+          <li><a href="#" data-submenu>Nos cultures</a></li>
+          <li><a href="#" data-submenu>Nos projets et initiatives</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+
+        <div class="desktop-layout" id="desktopLayout">
+          <ul class="desktop-menu desktop-menu--left" id="menuLeft"></ul>
+
+          <a class="site-logo" href="#" aria-label="Le Paysan Urbain — accueil">
+            <img
+              src="../themes/lepaysanurbain/assets/images/logos/network-horizontal-green-baseline.svg"
+              alt="Le Paysan Urbain"
+            />
+          </a>
+
+          <ul class="desktop-menu desktop-menu--right" id="menuRight"></ul>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu" hidden>
+          <ul class="mobile-menu__list" id="mobileMenuList"></ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="demo">
+      <h1>Menu layout attempt 001</h1>
+      <p>
+        Resize the viewport. The logo remains independently centered; when the
+        complete desktop navigation no longer fits, the links disappear and the
+        hamburger appears.
+      </p>
+      <p>
+        Edit the items in <code>#menuSource</code> to test different menu
+        counts.
+      </p>
+      <p>Current test: <strong>7 items → 4 left / 3 right</strong>.</p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

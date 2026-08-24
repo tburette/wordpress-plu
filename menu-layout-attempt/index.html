@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav prototype — logo centré</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav" id="nav" aria-label="Menu principal">
+
+    <!-- Hamburger : masqué par défaut, affiché par le JS quand ça déborde -->
+    <button class="nav__hamburger" id="navHamburger" aria-expanded="false" aria-controls="navMobilePanel" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="nav__row">
+
+      <ul class="nav__list nav__list--left" id="navLeft">
+        <li><a href="#">Qui sommes-nous</a></li>
+        <li><a href="#">Nos activités</a></li>
+        <li><a href="#">Nos cultures</a></li>
+      </ul>
+
+      <a href="#" class="nav__logo" aria-label="Le Paysan Urbain — accueil">
+        <img src="logo.svg" alt="Le Paysan Urbain">
+      </a>
+
+      <ul class="nav__list nav__list--right" id="navRight">
+        <li><a href="#">Nos projets et initiatives</a></li>
+        <li><a href="#">Infos pratiques</a></li>
+      </ul>
+
+    </div>
+
+  </nav>
+
+  <!-- Panneau mobile / overflow : mêmes liens, à plat, affiché par le JS -->
+  <div class="nav__mobile-panel" id="navMobilePanel" hidden>
+    <ul class="nav__mobile-list">
+      <li><a href="#">Qui sommes-nous</a></li>
+      <li><a href="#">Nos activités</a></li>
+      <li><a href="#">Nos cultures</a></li>
+      <li><a href="#">Nos projets et initiatives</a></li>
+      <li><a href="#">Infos pratiques</a></li>
+    </ul>
+  </div>
+</header>
+
+<main class="demo-content">
+  <p>Redimensionnez la fenêtre pour tester le basculement en hamburger. Le centrage du logo est garanti en CSS pur (grid à colonnes égales) ; le JS ne fait que détecter le débordement et basculer l'affichage.</p>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

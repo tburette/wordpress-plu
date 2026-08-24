@@ -1,0 +1,199 @@
+:root {
+  --nav-bg: #f4f1e9;
+  --nav-fg: #1f3d2b;
+  --nav-gap: 32px;        /* espace entre les items d'un même côté */
+  --nav-logo-gap: 40px;   /* espace entre le logo et l'item le plus proche */
+  --nav-height: 88px;
+  --nav-hpad: 24px;       /* marge latérale de la barre */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: var(--nav-fg);
+}
+
+/* ============================
+   Barre de nav — structure grid
+   ============================ */
+
+.site-header {
+  background: var(--nav-bg);
+  position: relative;
+}
+
+.nav {
+  position: relative;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+
+/* Rangée grid à 3 colonnes : gauche (1fr) / logo (auto) / droite (1fr).
+   Les deux 1fr restent toujours égales, donc le logo reste centré
+   sur toute la largeur, quel que soit le nombre d'items de chaque côté. */
+.nav__row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--nav-hpad);
+  column-gap: var(--nav-logo-gap);
+}
+
+.nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--nav-gap);
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Colonne gauche : les items s'alignent contre le logo (à droite de leur colonne) */
+.nav__list--left {
+  justify-content: flex-end;
+}
+
+/* Colonne droite : les items s'alignent contre le logo (à gauche de leur colonne) */
+.nav__list--right {
+  justify-content: flex-start;
+}
+
+.nav__list a {
+  color: var(--nav-fg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.nav__list a:hover {
+  opacity: 0.7;
+}
+
+.nav__logo {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+
+.nav__logo img {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+
+/* ============================
+   Hamburger
+   ============================ */
+
+.nav__hamburger {
+  display: none; /* affiché via .nav--collapsed */
+  position: absolute;
+  left: var(--nav-hpad);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 24px;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+
+.nav__hamburger span {
+  display: block;
+  height: 2px;
+  background: var(--nav-fg);
+}
+
+/* Quand le menu est "réduit" (mobile OU débordement desktop) :
+   on cache la rangée d'items et on montre le hamburger.
+   Le logo reste en place car il est un enfant direct de .nav (position statique/flex). */
+.nav--collapsed .nav__row {
+  grid-template-columns: 1fr auto 1fr; /* logo reste centré */
+}
+
+.nav--collapsed .nav__list {
+  visibility: hidden; /* garde la colonne en place mais invisible, logo reste centré */
+  pointer-events: none;
+}
+
+.nav--collapsed .nav__hamburger {
+  display: flex;
+}
+
+/* ============================
+   Panneau mobile (liste empilée)
+   ============================ */
+
+.nav__mobile-panel {
+  background: var(--nav-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.nav__mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 16px var(--nav-hpad);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav__mobile-list a {
+  color: var(--nav-fg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ============================
+   Mesureur invisible
+   Sert uniquement à calculer la largeur totale "naturelle" du menu
+   (items + logo) sans jamais être visible ni affecter le flux de page.
+   ============================ */
+
+.nav__measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  top: -9999px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--nav-logo-gap);
+  white-space: nowrap;
+  width: max-content;
+}
+
+.nav__measure .nav__list {
+  justify-content: flex-start; /* pas de centrage ici, on veut juste la somme des largeurs */
+}
+
+.nav__logo-space {
+  width: 56px; /* doit correspondre à la largeur réelle approx. du logo */
+}
+
+/* ============================
+   Démo
+   ============================ */
+
+.demo-content {
+  max-width: 640px;
+  margin: 60px auto;
+  padding: 0 24px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}

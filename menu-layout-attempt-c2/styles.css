@@ -1,0 +1,421 @@
+/* =========================================================
+   Tokens
+   ========================================================= */
+:root {
+  --header-h: 128px;
+  --side-inset: 72px; /* hamburger inset + header edge padding */
+  --logo-w: 260px;
+  --logo-gap: 36px; /* space between a nav group and the logo */
+  --item-gap: 28px; /* space between items inside one group */
+
+  --ink: #223b2c; /* dark green foreground (écru variant) */
+  --cream: #f4f1ea; /* écru background */
+  --white: #ffffff; /* foreground on the photo variant */
+
+  --nav-font: "Oswald", "Arial Narrow", sans-serif;
+  --serif-font: "Fraunces", Georgia, serif;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--serif-font);
+  color: #1c2b21;
+  background: #0e1710;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+button {
+  font: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Respect reduced-motion throughout */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* Consistent, visible focus ring for keyboard users */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   HEADER
+   position: relative is needed here — and only here — because
+   the hamburger button is deliberately taken OUT of the flex
+   flow (absolutely positioned) so it can never influence the
+   nav-left / logo / nav-right centering math below. It needs a
+   positioned ancestor to anchor to, rather than accidentally
+   anchoring to <body> or whatever wraps this in the real theme.
+   (The future full-width mega-menu panel will anchor here too.)
+   ========================================================= */
+.site-header {
+  position: relative;
+  height: var(--header-h);
+  width: 100%;
+}
+
+.site-header[data-theme="transparent"] {
+  color: var(--white);
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.15)),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="%23273524"/><circle cx="40" cy="360" r="140" fill="%232f4429"/><circle cx="360" cy="20" r="160" fill="%23223a26"/></svg>')
+      center / cover;
+}
+
+.site-header[data-theme="ecru"] {
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.header-inner {
+  height: 100%;
+  padding: 0 var(--side-inset);
+  overflow: hidden; /* clip visually only; scrollWidth used for measurement is unaffected */
+}
+
+/* =========================================================
+   HAMBURGER
+   Hidden until the header is in its collapsed state. Absolutely
+   positioned: it never takes part in the flex-sandwich, so it
+   can sit anywhere without shifting the logo by half its width.
+   ========================================================= */
+.hamburger {
+  display: none;
+  position: absolute;
+  left: var(--side-inset);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 18px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  z-index: 2;
+}
+
+.site-header.is-collapsed .hamburger {
+  display: flex;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+}
+
+/* =========================================================
+   NAV — the flex-sandwich
+   nav-left and nav-right each get flex:1, so whatever space is
+   free on either side of the fixed-width logo is split evenly
+   and absorbed on the *outside* of each group (justify-content
+   pushes the actual links toward the logo, matching "items lean
+   toward the logo" in the brief). The logo's screen position
+   never depends on how many items are in either group.
+   ========================================================= */
+.main-nav {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* Inert while both nav-groups are present (they're flex:1, so
+     there's never leftover space to justify) — but it's what
+     re-centers the logo once those two are display:none in the
+     collapsed state, where the logo is the only child left. */
+  justify-content: center;
+  white-space: nowrap; /* let content overflow rather than wrap, so the overflow check is a simple scrollWidth vs clientWidth read */
+}
+
+.nav-group {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: var(--item-gap);
+  /* min-width is deliberately left at its default (auto), NOT 0:
+     that's what stops the group from ever shrinking narrower than
+     its (nowrap) content, which is exactly what makes .main-nav's
+     scrollWidth a truthful "does this actually fit?" signal. */
+}
+
+.nav-left {
+  justify-content: flex-end;
+}
+.nav-right {
+  justify-content: flex-start;
+}
+
+/* Collapsed: the groups are simply removed from layout. (The
+   script measures by briefly forcing the expanded state before
+   deciding, rather than by keeping a hidden copy around — see
+   checkOverflow() in script.js — so this can stay a plain
+   display:none with no knock-on effect on the logo's centering. */
+.site-header.is-collapsed .nav-group {
+  display: none;
+}
+
+.nav-group a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--nav-font);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav-group .chevron {
+  width: 9px;
+  height: 9px;
+  flex: none;
+}
+
+/* =========================================================
+   LOGO — fixed-width flex item, dead center by construction
+   ========================================================= */
+.site-logo {
+  flex: 0 0 auto;
+  width: var(--logo-w);
+  margin: 0 var(--logo-gap);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.site-logo__sprout {
+  flex: none;
+}
+
+.site-logo__type {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.site-logo__le {
+  font-family: var(--nav-font);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  font-weight: 500;
+}
+
+.site-logo__name {
+  font-family: var(--serif-font);
+  font-style: italic;
+  font-size: 26px;
+  font-weight: 600;
+  margin: 2px 0 4px;
+}
+
+.site-logo__tagline {
+  font-family: var(--nav-font);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* =========================================================
+   MOBILE / OVERFLOW OVERLAY
+   position: fixed — deliberately NOT relying on .site-header as
+   an anchor, since this needs to sit above the entire viewport
+   regardless of where the header is in the page flow.
+   ========================================================= */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.22s var(--ease),
+    transform 0.22s var(--ease);
+  z-index: 10;
+}
+
+.mobile-overlay.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-overlay__top {
+  height: var(--header-h);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--side-inset);
+}
+
+.mobile-overlay__brand {
+  font-family: var(--serif-font);
+  font-style: italic;
+  font-size: 20px;
+}
+
+.mobile-overlay__close {
+  position: relative;
+  width: 26px;
+  height: 26px;
+}
+
+.mobile-overlay__close span {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+}
+.mobile-overlay__close span:first-child {
+  transform: rotate(45deg);
+}
+.mobile-overlay__close span:last-child {
+  transform: rotate(-45deg);
+}
+
+.mobile-overlay__list {
+  /* flex-start + scroll, not centered: a centered flex column
+     combined with overflow:auto can't be scrolled to reveal the
+     start of content that overflows it (the item count here is
+     open-ended, so that clipping would eventually bite). */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 22px;
+  padding: calc(var(--header-h) * 0.35) var(--side-inset)
+    calc(var(--header-h) * 0.6);
+  overflow-y: auto;
+}
+
+.mobile-overlay__list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--nav-font);
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.mobile-overlay__list .chevron {
+  width: 11px;
+  height: 11px;
+}
+
+body.overlay-open {
+  overflow: hidden;
+}
+
+/* =========================================================
+   DEMO HARNESS (not part of the shippable component)
+   ========================================================= */
+.demo {
+  min-height: calc(100vh - var(--header-h));
+  background: #0e1710;
+  color: #eef2ea;
+  padding: 40px var(--side-inset) 80px;
+}
+
+.demo__panel {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 40px;
+  max-width: 780px;
+}
+
+.demo__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.demo__label {
+  font-family: var(--nav-font);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  width: 130px;
+  flex: none;
+}
+
+.demo__btn {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: inherit;
+}
+
+.demo__btn.is-active {
+  background: #eef2ea;
+  color: #16241a;
+  border-color: #eef2ea;
+}
+
+.demo__hint {
+  font-size: 13px;
+  opacity: 0.7;
+  margin: 12px 0 0;
+  max-width: 60ch;
+}
+
+.demo__notes h1 {
+  font-family: var(--serif-font);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 28px;
+  max-width: 20ch;
+}
+
+.demo__notes p {
+  max-width: 62ch;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* Narrow viewports: shrink the demo text, header math itself
+   needs no breakpoint — it reacts to real available width. */
+@media (max-width: 600px) {
+  :root {
+    --side-inset: 20px;
+  }
+  .demo__label {
+    width: auto;
+  }
+}

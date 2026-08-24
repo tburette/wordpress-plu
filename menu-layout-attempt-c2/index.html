@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Le Paysan Urbain — Header prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Fraunces:ital,opsz@1,9..144&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+     THE ACTUAL COMPONENT
+     Everything inside <header id="siteHeader"> is what would be
+     produced by the WordPress nav walker: one flat, admin-ordered
+     menu, split into <ul class="nav-left"> / logo / <ul class="nav-right">
+     around whichever item is flagged as the logo entry.
+     nav-left / nav-right are filled by script.js from a flat array,
+     standing in for that walker output.
+     ============================================================ -->
+    <header class="site-header" data-theme="transparent" id="siteHeader">
+      <div class="header-inner">
+        <button
+          type="button"
+          class="hamburger"
+          id="hamburgerBtn"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobileOverlay"
+        >
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="main-nav" id="mainNav" aria-label="Menu principal">
+          <ul class="nav-group nav-left" id="navLeft"></ul>
+
+          <a class="site-logo" href="#" aria-label="Le Paysan Urbain — Accueil">
+            <svg
+              class="site-logo__sprout"
+              width="18"
+              height="26"
+              viewBox="0 0 18 26"
+              aria-hidden="true"
+            >
+              <path
+                d="M9 26V11"
+                stroke="currentColor"
+                stroke-width="1.6"
+                fill="none"
+              />
+              <path d="M9 13c0-5 4-8 8-8-1 5-4 8-8 8Z" fill="currentColor" />
+              <path
+                d="M9 11c0-4.5-4-7-8-7 1 4.5 4 7 8 7Z"
+                fill="currentColor"
+              />
+              <circle cx="9" cy="4" r="2.4" fill="currentColor" />
+            </svg>
+            <span class="site-logo__type">
+              <span class="site-logo__le">Le</span>
+              <span class="site-logo__name">Paysan<br />Urbain</span>
+              <span class="site-logo__tagline"
+                >Agroécologique et solidaire</span
+              >
+            </span>
+          </a>
+
+          <ul class="nav-group nav-right" id="navRight"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true">
+      <div class="mobile-overlay__top">
+        <span class="mobile-overlay__brand">Le Paysan Urbain</span>
+        <button
+          type="button"
+          class="mobile-overlay__close"
+          id="overlayClose"
+          aria-label="Fermer le menu"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+      <ul class="mobile-overlay__list" id="overlayList"></ul>
+    </div>
+
+    <!-- ============================================================
+     DEMO HARNESS — not part of the component, just lets you
+     poke at every state described in the brief without resizing
+     the real window each time.
+     ============================================================ -->
+    <main class="demo">
+      <div class="demo__panel">
+        <div class="demo__group">
+          <span class="demo__label">Fond / couleur</span>
+          <button
+            type="button"
+            class="demo__btn is-active"
+            data-theme="transparent"
+          >
+            Transparent (photo)
+          </button>
+          <button type="button" class="demo__btn" data-theme="ecru">
+            Écru
+          </button>
+        </div>
+        <div class="demo__group">
+          <span class="demo__label">Jeu de liens</span>
+          <button type="button" class="demo__btn is-active" data-menu="few">
+            4 liens (Accueil)
+          </button>
+          <button type="button" class="demo__btn" data-menu="many">
+            5 liens (Ferme)
+          </button>
+          <button type="button" class="demo__btn" data-menu="stress">
+            9 liens — force le hamburger même en grand écran
+          </button>
+        </div>
+        <p class="demo__hint">
+          Redimensionnez la fenêtre pour voir le repli vers le hamburger
+          déclenché par la largeur réelle du viewport, indépendamment du fond ou
+          du nombre de liens choisis ci-dessus.
+        </p>
+      </div>
+
+      <section class="demo__notes">
+        <h1>Prototype — header centré sur le logo</h1>
+        <p>
+          Le logo reste un ancrage fixe au centre du viewport. La navigation est
+          un seul menu à plat (le logo y occupe conceptuellement une position,
+          comme un item parmi les autres pour la personne qui édite le menu) ;
+          ici le script le simule en répartissant un tableau de liens en deux
+          groupes avant/après le logo. Le repli en hamburger est déclenché par
+          un vrai constat de dépassement (largeur réelle nécessaire &gt; largeur
+          disponible), pas par un point de rupture fixe — donc il se déclenche
+          aussi bien sur mobile que sur un grand écran si la liste de liens est
+          longue.
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

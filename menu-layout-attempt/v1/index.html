@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav prototype — logo centré</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Menu principal">
+
+    <!-- Bouton hamburger : caché par défaut, affiché en JS quand ça déborde ou en mobile -->
+    <button class="nav__hamburger" id="navHamburger" aria-expanded="false" aria-controls="navMobilePanel" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Rangée visible : grid à 3 colonnes, gauche / logo / droite -->
+    <div class="nav__row" id="navRow">
+      <ul class="nav__list nav__list--left" id="navLeft"></ul>
+
+      <a href="#" class="nav__logo" aria-label="Le Paysan Urbain — accueil">
+        <img src="logo.svg" alt="Le Paysan Urbain" id="navLogoImg">
+      </a>
+
+      <ul class="nav__list nav__list--right" id="navRight"></ul>
+    </div>
+
+  </nav>
+
+  <!-- Panneau mobile / overflow, affiché par le JS -->
+  <div class="nav__mobile-panel" id="navMobilePanel" hidden>
+    <ul class="nav__mobile-list" id="navMobileList"></ul>
+  </div>
+</header>
+
+<!-- Mesureur invisible : jamais affiché, sert uniquement à calculer la largeur nécessaire -->
+<div class="nav__measure" id="navMeasure" aria-hidden="true">
+  <ul class="nav__list" id="navMeasureLeft"></ul>
+  <div class="nav__logo-space" id="navMeasureLogoSpace"></div>
+  <ul class="nav__list" id="navMeasureRight"></ul>
+</div>
+
+<main class="demo-content">
+  <p>Redimensionnez la fenêtre, ou changez le nombre d'éléments dans <code>script.js</code> (tableau <code>MENU_ITEMS</code>) pour tester le basculement en hamburger.</p>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
