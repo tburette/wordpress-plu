@@ -1,85 +1,159 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Create or select one site-local wp_navigation post for each row in
-# navigation-sites.tsv. The block markup is loaded from the HTML files in
-# this directory, never assembled inside this shell script. The resulting post
-# ID is stored in the lpu_navigation_id option so the shared theme header can
-# bind the correct navigation on each multisite blog. Existing navigation
-# content is preserved.
-#
-# The network menu has Le Projet, Nos Fermes (with the three farms) and
-# Contact. Farm menus have Qui sommes-nous, Nos Activités, Nos Cultures,
-# Nos Projets & Initiatives and Infos pratiques. The fragments contain only
-# child blocks; the shared theme supplies the outer Navigation block.
-#
-# The current local destinations are prototype destinations: missing pages use
-# the home URL or an anchor, and farm links use the local multisite hostnames.
-# Keep the site-specific rows and content files here rather than hard-coding a
-# numeric Navigation ID in the theme. The theme supports the validated desktop
-# counts of three network items and five farm items; other counts use the
-# responsive/unsupported-count presentation.
-script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-project_dir="$(cd -- "${script_dir}/../../.." && pwd -P)"
-navigation_sites_file="${script_dir}/navigation-sites.tsv"
+# Provisions for each site:
+# - The main menu (a wp_navigation).
+# - The `header` template part from parts/ is inserted in the DB using override
 
-if [[ ! -f "${navigation_sites_file}" ]]; then
-  printf 'Missing navigation data file: %s\n' "${navigation_sites_file}" >&2
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+project_dir="$(cd -- "$script_dir/../../.." && pwd -P)"
+navigation_sites_file="$script_dir/navigation-sites.tsv"
+header_template_file="$project_dir/themes/lepaysanurbain/parts/header.html"
+navigation_menu_name="menu-principal"
+
+if [[ ! -f "$navigation_sites_file" ]]; then
+  printf 'Missing navigation data file: %s\n' "$navigation_sites_file" >&2
   exit 1
 fi
 
-cd -- "${project_dir}"
+cd -- "$project_dir"
 
 run_wp() {
   # Keep WP-CLI from consuming the TSV currently driving the loop below.
+  # may cause this script to fail if invoked directly from a terminal
   wp-env run cli wp "$@" </dev/null
 }
 
+# return the header template with the ref to the navigation menu
+# It is modified to add the appropriate menu ref.
+# Do not change the header template-part if it already exists in the DB and
+# has been changed by user (avoids risking losing user changes)
+render_header_template_part() {
+  local navigation_id="$1"
+
+  if [[ ! -f "$header_template_file" ]]; then
+    printf 'Missing shared header template part: %s\n' "$header_template_file" >&2
+    exit 1
+  fi
+
+  # The theme fallback deliberately has no site-specific ref. The database
+  # template-part database override receives the local Navigation ID here.
+  sed "0,/wp:navigation {/s//wp:navigation {\"ref\":$navigation_id,/" \
+    "$header_template_file"
+}
+
+create_or_update_header_template_part() {
+  local site_url="$1"
+  local navigation_id="$2"
+  local template_content
+  local template_id
+  local template_origin
+
+  template_content="$(render_header_template_part "$navigation_id")"
+  # check to see if already exists
+  template_id="$(run_wp post list \
+    --url="$site_url" \
+    --post_type=wp_template_part \
+    --post_status=any \
+    --name=header \
+    --posts_per_page=1 \
+    --field=ID | tr -d '\r')"
+
+  if [[ -z "$template_id" ]]; then
+	# create if doesn't exist
+    template_id="$(run_wp post create \
+      --url="$site_url" \
+      --post_type=wp_template_part \
+      --post_status=publish \
+      --post_title="En-tête" \
+      --post_name=header \
+      --post_content="$template_content" \
+      --porcelain | tr -d '\r')"
+    printf '%s: created native header template part %s\n' "$site_url" "$template_id"
+  else
+    # exist, update only if used hasn't customized it yet
+
+	# meaning of origin meta value for a wp_template_part:
+	# origin is unset => not in the db but on disk (parts or templates/), rendered from disk. Safe to overwrite
+	# origin=theme => in the DB, not customized by user. Programmatically created, safe to overwrite (overwriting it would not result in losing changes made by user)
+	# origin=user => in the DB, modified in the wordpress editor by the user (overwriting it could result in user changes loss) 
+    template_origin="$(run_wp post meta get "$template_id" origin --single --url="$site_url" 2>/dev/null | tr -d '\r' || true)"
+
+    if [[ -z "$template_origin" || "theme" == "$template_origin" ]]; then
+	  # not touched by user, can update it
+      run_wp post update "$template_id" \
+        --url="$site_url" \
+        --post_content="$template_content" >/dev/null
+      printf '%s: updated native header template part %s\n' "$site_url" "$template_id"
+    else
+	  # replacing value could result in losing data set by user
+      printf '%s: preserved custom header template part %s; associate it with Navigation %s manually\n' \
+        "$site_url" "$template_id" "$navigation_id" >&2
+	  # return needed to avoid changing meta value such as the origin
+      return
+    fi
+  fi
+
+  # wp_theme taxonomy states which theme this element is linked with. This
+  # avoids this element from still being used if another theme is used, which
+  # could happen because it remains in the DB after theme switch.
+  # wp_template_part_area taxonomy : header, footer, sidebar or uncategorized. 
+  # Where it can be used. group by area in the Site Editor.
+  run_wp eval \
+    "wp_set_post_terms($template_id, 'lepaysanurbain', 'wp_theme', false); wp_set_post_terms($template_id, 'header', 'wp_template_part_area', false); update_post_meta($template_id, 'origin', 'theme');" \
+    --url="$site_url" >/dev/null
+}
+
+# The menu content (block markup) is loaded from the HTML files in this directory. 
+# Does not change the menu if it already exists (avoids risking losing user
+# changes).
 create_or_select_menu() {
   local site_url="$1"
-  local title="$2"
+  local navigation_title="$2"
   local content_file="$3"
   local menu_id
-  local content_path="${script_dir}/${content_file}"
+  local content_path="$script_dir/$content_file"
 
-  if [[ ! -f "${content_path}" ]]; then
-    printf 'Missing navigation content file: %s\n' "${content_path}" >&2
+  if [[ ! -f "$content_path" ]]; then
+    printf 'Missing navigation content file: %s\n' "$content_path" >&2
     exit 1
   fi
 
   local menu_content
-  menu_content="$(<"${content_path}")"
+  menu_content="$(<"$content_path")"
 
   menu_id="$(run_wp post list \
-    --url="${site_url}" \
+    --url="$site_url" \
     --post_type=wp_navigation \
     --post_status=any \
-    --name=menu-principal \
+    --name="$navigation_menu_name" \
     --posts_per_page=1 \
     --field=ID | tr -d '\r')"
 
-  if [[ -z "${menu_id}" ]]; then
+  if [[ -z "$menu_id" ]]; then
     menu_id="$(run_wp post create \
-      --url="${site_url}" \
+      --url="$site_url" \
       --post_type=wp_navigation \
       --post_status=publish \
-      --post_title="${title}" \
-      --post_name=menu-principal \
-      --post_content="${menu_content}" \
+      --post_title="$navigation_title" \
+      --post_name="$navigation_menu_name" \
+      --post_content="$menu_content" \
       --porcelain | tr -d '\r')"
   fi
 
-  run_wp option update lpu_navigation_id "${menu_id}" --url="${site_url}" >/dev/null
-  printf '%s: navigation %s (data: %s)\n' "${site_url}" "${menu_id}" "${content_path}"
+  echo "$menu_id"
 }
 
 while IFS=$'\t' read -r site_url navigation_title content_file; do
-  [[ -z "${site_url}" || "${site_url}" == \#* ]] && continue
+  # line is an empty line or a comment
+  [[ -z "$site_url" || "$site_url" == \#* ]] && continue
 
-  if [[ -z "${navigation_title}" || -z "${content_file}" ]]; then
-    printf 'Invalid navigation data row for %s. Expected tab-separated site_url, title and content_file.\n' "${site_url}" >&2
+  if [[ -z "$navigation_title" || -z "$content_file" ]]; then
+    printf 'Invalid navigation data row for %s. Expected tab-separated site_url, title and content_file.\n' "$site_url" >&2
     exit 1
   fi
 
-  create_or_select_menu "${site_url}" "${navigation_title}" "${content_file}"
-done < "${navigation_sites_file}"
+  menu_id=$(create_or_select_menu "$site_url" "$navigation_title" "$content_file")
+  printf '%s: navigation %s (data: %s)\n' "$site_url" "$menu_id" "$content_file"
+  create_or_update_header_template_part "$site_url" "$menu_id"
+done < "$navigation_sites_file"

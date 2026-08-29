@@ -2,16 +2,16 @@
   Shared menu contract:
   - desktop: horizontal logo centered, links on both sides, no hamburger;
   - a submenu is the contextual mega-menu of this same Navigation block;
-  - tablet/mobile: the same block uses its responsive overlay and hamburger.
 
-  The Navigation block intentionally has no hard-coded ref. Navigation posts
-  are site-local in a multisite network and are configured independently on
-  each site by scripts/content/navigation-menus/.
-
+  The site-local template-part override supplies the ref to each site's native
+  Navigation post. wp:site-logo is there as a fallback in case no ref is 
+  provided
 -->
+  
 <!-- wp:group {"align":"full","className":"lpu-header","layout":{"type":"default"}} -->
 <div class="wp-block-group alignfull lpu-header">
-	<!-- wp:site-logo {"width":190,"shouldSyncIcon":false,"className":"lpu-header__logo"} /-->
-	<!-- wp:navigation {"overlayMenu":"mobile","submenuVisibility":"hover","showSubmenuIcon":true,"ariaLabel":"Navigation principale","overlayBackgroundColor":"ecru","overlayTextColor":"vert-fonce","className":"lpu-header__navigation","layout":{"type":"flex","justifyContent":"center"}} /-->
+	<!-- wp:navigation {"overlayMenu":"mobile","submenuVisibility":"hover","showSubmenuIcon":true,"ariaLabel":"Navigation principale","overlayBackgroundColor":"ecru","overlayTextColor":"vert-fonce","className":"lpu-header__navigation","layout":{"type":"flex","justifyContent":"left"}} -->
+		<!-- wp:site-logo {"width":190,"shouldSyncIcon":false,"className":"lpu-header__logo"} /-->
+	<!-- /wp:navigation -->
 </div>
 <!-- /wp:group -->

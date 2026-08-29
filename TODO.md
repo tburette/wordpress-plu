@@ -14,14 +14,9 @@
 
 ## Header/menu
 
-- [ ] Test a CSS-only replacement for the `.lpu-menu-open` class that `navigation.js` maintains with its MutationObserver. Idea: delete the observer + `syncMenuOpenState()` entirely and rewrite the ~10 `theme.css` rules that use `.lpu-menu-open` with `:has()` selectors instead:
-      `body.lpu-header-transparent .lpu-header:has(.wp-block-navigation__responsive-container.is-menu-open)`,
-      `body.lpu-header-transparent .lpu-header:has(.wp-block-navigation__submenu-icon[aria-expanded="true"])`,
-      `body.lpu-header-transparent .lpu-header:has(.wp-block-navigation-submenu.lpu-hover-bridge-open)`
-      (and the `:not(...)` equivalents for the transparent-state rules). Then re-test every menu state: desktop submenu hover + hover-bridge traversal, mobile overlay open/close, keyboard Tab/Escape, and the transparent-header background/color/logo swaps. Only worth doing if the observer proves costly or the JS state ever desynchronizes; `:has()` support is baseline in all evergreen browsers.
-- [ ] Replace `lpu_bind_site_navigation()` and the `lpu_navigation_id`/`lpu_footer_navigation_id` runtime lookup with native, site-local Navigation block ownership. Provision the appropriate header and footer template-part/navigation association for each site, then verify that shared theme markup still updates as intended.
-- [ ] Remove `lpu_get_navigation_item_count()` and the `lpu-navigation--unsupported-count` fallback once the layout no longer assumes a fixed number of top-level items; arbitrary menu sizes should work through the native Navigation layout.
-- [ ] Remove `assets/js/navigation.js`, or reduce it to the smallest narrowly justified enhancement after Core Navigation and the CSS refactor have been tested. Core should remain responsible for menu opening, submenu controls, focus, Escape, and the mobile overlay.
+- [ ] Manually validate the minimal `assets/js/navigation.js` collision observer with the network and farm menus: resize through the transition, confirm the inline menu never overlaps the centred logo, and confirm Core still owns the overlay, submenu controls, focus and Escape.
+- [ ] Recheck the `:has()` transparent-header state selectors after the adaptive layout observer is validated, especially the logo swap while the overlay or a mega-menu is open.
 - [ ] Simplify the transparent-logo implementation in `inc/site-logos.php`; revisit the current rendered-markup injection and determine whether the two logo variants can be represented with simpler native block/template markup. Recheck responsive/raster-logo `srcset` behavior when such assets are introduced.
-- [ ] Replace the manually recreated hamburger icon with the Core Navigation icon/control once the header layout is stable.
-- [ ] Consolidate the responsive breakpoint used by CSS and JavaScript so it has one documented source of truth, or at least document it well. remove the JavaScript dependency on that breakpoint entirely if possible.
+- is the <!-- wp:site-logo ... /--> needed in `themes/lepaysanurbain/parts/header.html` ? It is not in the database version of the template part, not in the rendered html and the wp_navigation menu-principal is what contains the logo anyway (cf `scripts/content/navigation-menus`).
+- `scripts/content/navigation-menus/setup.sh` should always recreate the menu, even if it already exists, instead of re-using the existing one if it is there.
+- Nice to have: add a warning somewhere in WP admin when the navigation used by the `header` template part does not contain exactly one `lpu-header__logo` / site-logo item. Ideally show it while editing the navigation menu, but identifying which navigation is used by the `header` template part may be difficult. The requirement is already documented in `documentation utilisateur et technique.md`.

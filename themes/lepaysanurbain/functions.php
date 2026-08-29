@@ -33,6 +33,28 @@ function lpu_enqueue_theme_styles()
 add_action('enqueue_block_assets', 'lpu_enqueue_theme_styles');
 
 /**
+ * Enqueue the small header-layout observer.
+ *
+ * Core Navigation remains responsible for all menu interaction. This script
+ * only chooses between the inline and overlay presentation when the native
+ * menu no longer fits in its actual navigation rail.
+ */
+function lpu_enqueue_navigation_layout_script()
+{
+	wp_enqueue_script_module(
+		'lpu-navigation-layout',
+		get_theme_file_uri('assets/js/navigation.js'),
+		array(),
+		wp_get_theme()->get('Version'),
+		array(
+			'strategy'  => 'defer',
+		)
+	);
+}
+add_action('wp_enqueue_scripts', 'lpu_enqueue_navigation_layout_script');
+add_action('admin_enqueue_scripts', 'lpu_enqueue_navigation_layout_script');
+
+/**
  * Register the reusable section patterns category.
  * Otherwise they appear in an 'Uncategorized' patterns section.
  */
@@ -72,23 +94,6 @@ function lpu_disable_unsynced_pattern_content_only_by_default($settings)
 	return $settings;
 }
 add_filter('block_editor_settings_all', 'lpu_disable_unsynced_pattern_content_only_by_default');
-
-/**
- * Enqueue the frontend js code for the menu (header)
- */
-function lpu_enqueue_navigation_script()
-{
-	$theme = wp_get_theme();
-
-	wp_enqueue_script(
-		'lpu-navigation',
-		get_theme_file_uri('assets/js/navigation.js'),
-		array(),
-		$theme->get('Version'),
-		true
-	);
-}
-add_action('wp_enqueue_scripts', 'lpu_enqueue_navigation_script');
 
 /**
  * Whether the current page requests the transparent header.
@@ -190,94 +195,3 @@ function lpu_allow_cli_svg_filetype($data, $file, $filename, $mimes, $real_mime)
 	return $data;
 }
 add_filter('wp_check_filetype_and_ext', 'lpu_allow_cli_svg_filetype', 10, 5);
-
-/**
- * Count the direct navigation items in a serialized Navigation post.
- *
- * @param string $navigation_content Serialized Navigation block content.
- * @return int
- */
-function lpu_get_navigation_item_count($navigation_content)
-{
-	$count = 0;
-
-	foreach (parse_blocks($navigation_content) as $block) {
-		if (
-			in_array(
-				$block['blockName'] ?? '',
-				array('core/navigation-link', 'core/navigation-submenu'),
-				true
-			)
-		) {
-			$count++;
-		}
-	}
-
-	return $count;
-}
-
-/**
- * Bind a Navigation block to the correct navigation element (the one set for
- * the current site). Navigation "posts" (the things holding all data of a
- * navigation elements) are site-local in a multisite network.
- * We can't just create a template part, say, a header or footer, and assign it
- * a fixed navigation "post". The reason is that the template part is shared.
- * The header and footer use separate site-local Navigation posts, identified
- * by their class names.
- * There is a detection mechanism to only change navigations that are using this
- * mechanism, other Navigation blocks are intentionally left untouched so inline
- * content navigations cannot be hijacked by the shared menus.
- *
- * @param array         $parsed_block The block being prepared for rendering.
- * @param array         $source_block The original parsed block.
- * @param WP_Block|null $parent_block The parent block, if any.
- * @return array
- */
-function lpu_bind_site_navigation($parsed_block, $source_block, $parent_block)
-{
-	if ('core/navigation' !== ($parsed_block['blockName'] ?? '')) {
-		return $parsed_block;
-	}
-
-	if (isset($parsed_block['attrs']['ref'])) {
-		return $parsed_block;
-	}
-
-	$classes = preg_split(
-		'/\s+/',
-		trim((string) ($parsed_block['attrs']['className'] ?? ''))
-	);
-	$is_footer_navigation = in_array('lpu-footer-navigation', $classes, true);
-	$is_header_navigation = in_array('lpu-header__navigation', $classes, true);
-
-	if (! $is_footer_navigation && ! $is_header_navigation) {
-		return $parsed_block;
-	}
-
-	$option_name   = $is_footer_navigation ? 'lpu_footer_navigation_id' : 'lpu_navigation_id';
-	$navigation_id = absint(get_option($option_name, 0));
-	if (! $navigation_id) {
-		return $parsed_block;
-	}
-
-	$navigation = get_post($navigation_id);
-	if (! $navigation || 'wp_navigation' !== $navigation->post_type || 'publish' !== $navigation->post_status) {
-		return $parsed_block;
-	}
-
-	$parsed_block['attrs']['ref'] = $navigation_id;
-
-	if ($is_header_navigation) {
-		$top_level_item_count = lpu_get_navigation_item_count($navigation->post_content);
-
-		if (! in_array($top_level_item_count, array(3, 5), true)) {
-			$parsed_block['attrs']['className'] = trim(
-				(string) ($parsed_block['attrs']['className'] ?? '')
-					. ' lpu-navigation--unsupported-count'
-			);
-		}
-	}
-
-	return $parsed_block;
-}
-add_filter('render_block_data', 'lpu_bind_site_navigation', 10, 3);

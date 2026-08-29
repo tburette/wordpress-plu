@@ -89,9 +89,9 @@ add_action('customize_register', 'lpu_customize_register_transparent_logo');
  * Append the transparent logo image to the header's Site Logo output.
  *
  * Runs only for the Site Logo instance identified by its `lpu-header__logo`
- * class in parts/header.html. The normal image is the untouched core
- * output; the transparent variant is appended inside the same home link and
- * CSS decides which image is visible.
+ * class in the native header Navigation content. The normal image is the
+ * untouched core output; the transparent variant is appended inside the same
+ * home link and CSS decides which image is visible.
  *
  * @param string $block_content Rendered block HTML.
  * @param array  $parsed_block  Parsed block.
@@ -151,4 +151,6 @@ function lpu_render_header_transparent_logo($block_content, $parsed_block)
 	// A Site Logo block contains exactly one home link.
 	return str_replace('</a>', $transparent_img . '</a>', $block_content);
 }
+// dynamic filter hook
+// https://make.wordpress.org/core/2021/02/18/wordpress-5-7-a-new-dynamic-hook-to-filter-the-content-of-a-single-block/
 add_filter('render_block_core/site-logo', 'lpu_render_header_transparent_logo', 10, 2);

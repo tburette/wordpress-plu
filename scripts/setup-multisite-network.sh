@@ -45,4 +45,11 @@ for definition in "${sites[@]}"; do
     --title="${title}" \
     --email="wordpress@example.com" \
     --porcelain >/dev/null
+
+  # activate plugins network-wide
+  # TODO might be better to activate all the plugins network-wide at the same
+  # time by reading from .wp-env or something.
+  # if plugins used change in .wp-env it might not be updated correctly here
+  # also, there is another place with network plugin activation atm : setup-split-plugin.sh
+  run_wp plugin activate query-monitor --network
 done

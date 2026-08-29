@@ -85,6 +85,7 @@ for operation in "${selected_operations[@]}"; do
   if [[ "${operation}" == "home-network" && "${force}" == true ]]; then
     bash "${script_dir}/${operation}/setup.sh" --force
   elif [[ "${operation}" != "home-network" && "${force}" == true ]]; then
+    # weird to have special handling of one argument for one script here
     printf 'The --force option is only supported for home-network.\n' >&2
     exit 1
   else

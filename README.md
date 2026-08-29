@@ -272,18 +272,27 @@ Gutenberg and are protected from replacement unless `--force` is supplied.
 
 ### Shared header and navigation
 
-The four sites use one shared `parts/header.html` template part and one core
+The four sites use the shared `parts/header.html` structure and one core
 Navigation block per site. The navigation content is site-local and is
-provisioned from `scripts/content/navigation-menus/`; a numeric Navigation
-`ref` must never be copied from one site to another.
+provisioned from `scripts/content/navigation-menus/`. Provisioning creates a
+native site-local `header` template-part override containing that site's
+Navigation `ref`; the shared theme never looks up a menu ID at render time.
+The footer uses the same native association for its own Navigation post.
+
+The header logo is a top-level Site Logo block inside the native Navigation
+content. It is the visual divider: items before it render on the left and items
+after it render on the right. The layout does not depend on a particular number
+of top-level menu items.
 
 The target desktop composition is a full-width header with the horizontal logo
 centered and the links on both sides. There is no hamburger on large screens.
 A submenu is the expanded version of the same Navigation block: a contextual
 mega-menu below the header, with an écru background and readable columns. It
 must be reachable by click and keyboard focus; hover may be an additional
-desktop shortcut. The hamburger is reserved for the responsive overlay on
-tablet and mobile.
+desktop shortcut. The inline menu is constrained to a centred navigation rail;
+the small `assets/js/navigation.js` observer compares the rendered logo and
+top-level item rectangles and switches to Core's responsive overlay only when
+they collide. It does not count or redistribute menu items.
 
 The opaque écru header is the default. A transparent header over a sufficiently
 contrasted hero is an explicit per-page option, and an opened mega-menu always

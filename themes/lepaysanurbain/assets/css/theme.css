@@ -4,388 +4,386 @@
  */
 
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-	background: var(--wp--preset--color--ecru);
+  background: var(--wp--preset--color--ecru);
 }
 
 /* Decorative motifs are applied as backgrounds, not editorial images. */
 .lpu-motif {
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .lpu-motif-1-bandeau {
-	background-image: url("../images/motif-1-bandeau.svg");
+  background-image: url("../images/motif-1-bandeau.svg");
 }
 
 .lpu-motif-1-carre {
-	background-image: url("../images/motif-1-carre.svg");
+  background-image: url("../images/motif-1-carre.svg");
 }
 
 .lpu-motif-2-bandeau {
-	background-image: url("../images/motif-2-bandeau.svg");
+  background-image: url("../images/motif-2-bandeau.svg");
 }
 
 .lpu-motif-2-carre {
-	background-image: url("../images/motif-2-carre.svg");
+  background-image: url("../images/motif-2-carre.svg");
 }
 
 .lpu-motif-3-bandeau {
-	background-image: url("../images/motif-3-bandeau.svg");
+  background-image: url("../images/motif-3-bandeau.svg");
 }
 
 .lpu-motif-3-carre {
-	background-image: url("../images/motif-3-carre.svg");
+  background-image: url("../images/motif-3-carre.svg");
 }
 
 .lpu-motif-4-bandeau {
-	background-image: url("../images/motif-4-bandeau.svg");
+  background-image: url("../images/motif-4-bandeau.svg");
 }
 
 .lpu-motif-4-carre {
-	background-image: url("../images/motif-4-carre.svg");
+  background-image: url("../images/motif-4-carre.svg");
 }
 
 .lpu-motif-5-bandeau {
-	background-image: url("../images/motif-5-bandeau.svg");
+  background-image: url("../images/motif-5-bandeau.svg");
 }
 
 .lpu-motif-5-carre {
-	background-image: url("../images/motif-5-carre.svg");
+  background-image: url("../images/motif-5-carre.svg");
 }
 
 .lpu-motif-7-bandeau {
-	background-image: url("../images/motif-7-bandeau.svg");
+  background-image: url("../images/motif-7-bandeau.svg");
 }
 
 .lpu-motif-7-carre {
-	background-image: url("../images/motif-7-carre.svg");
+  background-image: url("../images/motif-7-carre.svg");
 }
 
 .lpu-motif-8-bandeau {
-	background-image: url("../images/motif-8-bandeau.svg");
+  background-image: url("../images/motif-8-bandeau.svg");
 }
 
 .lpu-motif-8-carre {
-	background-image: url("../images/motif-8-carre.svg");
+  background-image: url("../images/motif-8-carre.svg");
 }
 
 /* Reusable editorial sections. Patterns keep the structure in Gutenberg;
  * these rules provide the shared proportions, media placeholders and
  * responsive behaviour that theme.json cannot express on its own. */
 .lpu-band {
-	box-sizing: border-box;
-	margin-block: 0;
-	padding-block: var(--wp--preset--spacing--section);
-	padding-inline: var(--wp--preset--spacing--lg);
+  box-sizing: border-box;
+  margin-block: 0;
+  padding-block: var(--wp--preset--spacing--section);
+  padding-inline: var(--wp--preset--spacing--lg);
 }
 
 /* Root editorial sections already own their vertical rhythm through their
  * padding. Keep the block-gap generated for normal constrained content, but
  * do not insert an additional gap between consecutive full-width bands. */
 .wp-block-post-content.is-layout-constrained > .lpu-band {
-	margin-block: 0;
+  margin-block: 0;
 }
 
 .lpu-band > .wp-block-columns,
 .lpu-band > .wp-block-heading,
 .lpu-band > .wp-block-group,
 .lpu-band > .wp-block-buttons {
-	box-sizing: border-box;
-	width: 100%;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .lpu-eyebrow {
-	margin-block: 0 var(--wp--preset--spacing--sm);
-	font-size: 1rem;
-	line-height: 1.1;
-	letter-spacing: 0.02em;
-	text-transform: uppercase;
+  margin-block: 0 var(--wp--preset--spacing--sm);
+  font-size: 1rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .lpu-media-placeholder {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-sizing: border-box;
-	min-height: 16rem;
-	aspect-ratio: 4 / 3;
-	margin: 0;
-	overflow: hidden;
-	background-color: var(--wp--preset--color--vert-grise);
-	color: var(--wp--preset--color--vert-fonce);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 16rem;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--wp--preset--color--vert-grise);
+  color: var(--wp--preset--color--vert-fonce);
 }
 
 .lpu-media-placeholder figcaption {
-	margin: 0;
-	font-family: var(--wp--preset--font-family--oswald);
-	font-size: 0.9rem;
-	line-height: 1.2;
-	text-align: center;
-	text-transform: uppercase;
+  margin: 0;
+  font-family: var(--wp--preset--font-family--oswald);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .lpu-media-placeholder img {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .lpu-media-placeholder:has(img) figcaption {
-	display: none;
+  display: none;
 }
 
 .lpu-hero {
-	display: flex;
-	align-items: flex-end;
-	box-sizing: border-box;
-	min-height: clamp(34rem, 75vh, 48rem);
-	padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
-	background-position: center;
-	background-size: cover;
+  display: flex;
+  align-items: flex-end;
+  box-sizing: border-box;
+  min-height: clamp(34rem, 75vh, 48rem);
+  padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
+  background-position: center;
+  background-size: cover;
 }
 
 .lpu-hero .wp-block-cover__inner-container {
-	box-sizing: border-box;
-	width: 100%;
-	margin-inline: auto;
+  box-sizing: border-box;
+  width: 100%;
+  margin-inline: auto;
 }
 
 .lpu-hero__content {
-	width: 100%;
-	max-width: 36rem;
-	margin-inline: 0;
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: 0;
 }
 
 .lpu-hero__content .wp-block-heading {
-	max-width: 10ch;
-	margin-block: 0 var(--wp--preset--spacing--md);
-	text-wrap: balance;
+  max-width: 10ch;
+  margin-block: 0 var(--wp--preset--spacing--md);
+  text-wrap: balance;
 }
 
 .lpu-hero__content > .wp-block-paragraph {
-	max-width: 31rem;
-	margin-block: 0;
+  max-width: 31rem;
+  margin-block: 0;
 }
 
 .lpu-hero__actions {
-	margin-block-start: var(--wp--preset--spacing--lg);
+  margin-block-start: var(--wp--preset--spacing--lg);
 }
 
 .lpu-card-grid {
-	padding-block: var(--wp--preset--spacing--xl);
+  padding-block: var(--wp--preset--spacing--xl);
 }
 
 .lpu-card-grid__title {
-	max-width: 30rem;
-	margin-block: 0 var(--wp--preset--spacing--lg);
+  max-width: 30rem;
+  margin-block: 0 var(--wp--preset--spacing--lg);
 }
 
 .lpu-card-grid__columns {
-	align-items: stretch;
-	gap: var(--wp--preset--spacing--md);
+  align-items: stretch;
+  gap: var(--wp--preset--spacing--md);
 }
 
 /* Core stacks ordinary Columns at 782px; keep the card items explicitly
  * full-width so the reusable pattern does not inherit a narrow flex basis. */
 @media (max-width: 781px) {
-	.lpu-card-grid__columns {
-		flex-direction: column;
-		gap: var(--wp--preset--spacing--lg);
-	}
+  .lpu-card-grid__columns {
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--lg);
+  }
 
-	.lpu-card-grid__columns > .wp-block-column {
-		flex-basis: 100% !important;
-		width: 100%;
-		margin-block-start: 0;
-	}
+  .lpu-card-grid__columns > .wp-block-column {
+    flex-basis: 100% !important;
+    width: 100%;
+    margin-block-start: 0;
+  }
 }
 
 .lpu-card {
-	display: flex;
-	flex-direction: column;
-	min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .lpu-card .lpu-media-placeholder {
-	width: 100%;
+  width: 100%;
 }
 
 .lpu-card__body {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: var(--wp--preset--spacing--xs);
-	padding-block: var(--wp--preset--spacing--sm) 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--wp--preset--spacing--xs);
+  padding-block: var(--wp--preset--spacing--sm) 0;
 }
 
 .lpu-card__body > .wp-block-heading {
-	margin: 0;
-	font-size: 1rem;
-	line-height: 1.15;
-	text-transform: uppercase;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.15;
+  text-transform: uppercase;
 }
 
 .lpu-card__body > .wp-block-paragraph {
-	margin: 0;
-	font-size: 0.9rem;
-	line-height: 1.35;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
 }
 
 .lpu-card__body .wp-block-buttons {
-	margin-block-start: auto;
-	padding-block-start: var(--wp--preset--spacing--sm);
+  margin-block-start: auto;
+  padding-block-start: var(--wp--preset--spacing--sm);
 }
 
 .lpu-card__body .wp-block-button__link {
-	padding: 0.4rem 0.85rem;
-	font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
 }
 
 .lpu-farm-selector {
-	padding-block: var(--wp--preset--spacing--section);
+  padding-block: var(--wp--preset--spacing--section);
 }
 
 .lpu-farm-selector > .wp-block-heading {
-	margin-block: 0 var(--wp--preset--spacing--section);
+  margin-block: 0 var(--wp--preset--spacing--section);
 }
 
 .lpu-farm-selector__columns {
-	align-items: center;
-	gap: var(--wp--preset--spacing--md);
+  align-items: center;
+  gap: var(--wp--preset--spacing--md);
 }
 
 .lpu-farm-selector__item {
-	position: relative;
-	min-width: 0;
+  position: relative;
+  min-width: 0;
 }
 
 .lpu-farm-selector__item + .lpu-farm-selector__item::before {
-	position: absolute;
-	top: 50%;
-	left: 0;
-	font-size: clamp(1.5rem, 3vw, 2.5rem);
-	line-height: 1;
-	color: var(--wp--preset--color--vert-fonce);
-	content: "✳";
-	transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1;
+  color: var(--wp--preset--color--vert-fonce);
+  content: "✳";
+  transform: translate(-50%, -50%);
 }
 
 .lpu-farm-selector__item .wp-block-heading {
-	margin: 0;
-	font-size: clamp(2rem, 5vw, 3.5rem);
-	line-height: 1;
-	text-transform: uppercase;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .lpu-farm-selector__item a {
-	color: inherit;
-	text-decoration-line: underline;
-	text-decoration-thickness: 2px;
-	text-underline-offset: 0.15em;
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
 }
 
 .lpu-farm-selector__item a:hover,
 .lpu-farm-selector__item a:focus-visible {
-	text-decoration-thickness: 3px;
+  text-decoration-thickness: 3px;
 }
 
 .lpu-columns-text {
-	/* This composition intentionally leaves more room below the messages, as
+  /* This composition intentionally leaves more room below the messages, as
 	 * in the "titre-colonnes" reference. Keep the values tied to the shared
 	 * spacing scale rather than introducing one-off pixel measurements. */
-	padding-block-start: calc(var(--wp--preset--spacing--section) * 2);
-	padding-block-end: calc(
-		var(--wp--preset--spacing--section) * 3 + var(--wp--preset--spacing--lg)
-	);
-	background-color: var(--wp--preset--color--vert-fonce);
-	color: var(--wp--preset--color--ecru);
+  padding-block-start: calc(var(--wp--preset--spacing--section) * 2);
+  padding-block-end: calc(
+    var(--wp--preset--spacing--section) * 3 + var(--wp--preset--spacing--lg)
+  );
+  background-color: var(--wp--preset--color--vert-fonce);
+  color: var(--wp--preset--color--ecru);
 }
 
 .lpu-columns-text > .lpu-columns-text__title {
-	max-width: 36rem;
-	margin-block: 0
-		calc(
-			var(--wp--preset--spacing--xl) + var(--wp--preset--spacing--lg)
-		);
-	margin-inline: auto;
-	text-wrap: balance;
+  max-width: 36rem;
+  margin-block: 0
+    calc(var(--wp--preset--spacing--xl) + var(--wp--preset--spacing--lg));
+  margin-inline: auto;
+  text-wrap: balance;
 }
 
 .lpu-columns-text__columns {
-	align-items: flex-start;
-	gap: var(--wp--preset--spacing--xl);
+  align-items: flex-start;
+  gap: var(--wp--preset--spacing--xl);
 }
 
 .lpu-columns-text__columns > .wp-block-column {
-	min-width: 0;
+  min-width: 0;
 }
 
 .lpu-columns-text__columns .wp-block-paragraph {
-	max-width: 18rem;
-	margin-block: 0;
-	margin-inline: auto;
-	font-size: 0.9rem;
-	line-height: 1.45;
-	text-align: center;
+  max-width: 18rem;
+  margin-block: 0;
+  margin-inline: auto;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .lpu-graphic-band {
-	padding-block: var(--wp--preset--spacing--section);
-	background-color: var(--wp--preset--color--jaune);
-	color: var(--wp--preset--color--vert-fonce);
-	text-align: center;
+  padding-block: var(--wp--preset--spacing--section);
+  background-color: var(--wp--preset--color--jaune);
+  color: var(--wp--preset--color--vert-fonce);
+  text-align: center;
 }
 
 .lpu-graphic-band > .wp-block-heading {
-	max-width: 36rem;
-	margin-block: 0 var(--wp--preset--spacing--md);
-	margin-inline: auto;
-	text-wrap: balance;
+  max-width: 36rem;
+  margin-block: 0 var(--wp--preset--spacing--md);
+  margin-inline: auto;
+  text-wrap: balance;
 }
 
 .lpu-graphic-band > .wp-block-paragraph {
-	max-width: 42rem;
-	margin-block: 0;
-	margin-inline: auto;
+  max-width: 42rem;
+  margin-block: 0;
+  margin-inline: auto;
 }
 
 .lpu-graphic-band > .wp-block-buttons {
-	justify-content: center;
-	margin-block-start: var(--wp--preset--spacing--lg);
+  justify-content: center;
+  margin-block-start: var(--wp--preset--spacing--lg);
 }
 
 .lpu-header {
-	position: relative;
-	z-index: 20;
-	display: grid;
-	grid-template-columns: repeat(8, minmax(0, 1fr));
-	grid-template-rows: auto;
-	align-items: center;
-	box-sizing: border-box;
-	min-height: 5.5rem;
-	padding: 1rem clamp(1rem, 3vw, 3rem);
-	background: var(--wp--preset--color--ecru);
+  position: relative;
+  z-index: 20;
+  display: block;
+  box-sizing: border-box;
+  --lpu-header-block-padding: 1rem;
+  --lpu-header-content-min-height: 3.5rem;
+  min-height: calc(
+    var(--lpu-header-content-min-height) + var(--lpu-header-block-padding) +
+      var(--lpu-header-block-padding)
+  );
+  padding: var(--lpu-header-block-padding) clamp(1rem, 3vw, 3rem);
+  background: var(--wp--preset--color--ecru);
+  --lpu-header-foreground: var(--wp--preset--color--vert-fonce);
 }
 
-/* Keep the transparent Home header out of normal flow in both menu states. The
- * navigation script adds .lpu-menu-open when Core opens a submenu or the
- * responsive overlay; that class changes the background without pushing the
- * first section down. */
+/* Keep the transparent Home header out of normal flow in both menu states. */
 body.lpu-header-transparent .lpu-header {
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	background: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: transparent;
 }
 
 /* Absolute positioning removes the transparent header from the normal
@@ -394,708 +392,739 @@ body.lpu-header-transparent .lpu-header {
  * covers the top of the header and makes its contents appear shorter than
  * the opaque state. WordPress uses a taller admin bar on narrow screens. */
 body.admin-bar.lpu-header-transparent .lpu-header {
-	top: 32px;
+  top: 32px;
 }
 
 @media screen and (max-width: 782px) {
-	body.admin-bar.lpu-header-transparent .lpu-header {
-		top: 46px;
-	}
+  body.admin-bar.lpu-header-transparent .lpu-header {
+    top: 46px;
+  }
 }
 
 /* The transparent header is removed from normal flow, so the block-theme
  * site-stack gap must not leave an écru strip before the hero. */
 body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
-	margin-block-start: 0;
+  margin-block-start: 0;
 }
 
 /* The footer follows the last editorial section directly. WordPress adds its
  * normal site-stack gap to every sibling; that creates an unintended écru
  * strip after a full-width closing band. */
 .wp-site-blocks > main + footer.wp-block-template-part {
-	margin-block-start: 0;
+  margin-block-start: 0;
 }
 
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation-item__content,
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation__submenu-icon,
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation__responsive-container-open {
-	color: var(--wp--preset--color--ecru) !important;
+/* Transparent pages start with the light foreground. Core already exposes
+ * every interactive menu state in the DOM, so one positive :has() selector
+ * is enough to switch the whole header back to its opaque treatment. */
+body.lpu-header-transparent .lpu-header {
+  --lpu-header-foreground: var(--wp--preset--color--ecru);
 }
 
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation-item__content:focus-visible,
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation__submenu-icon:focus-visible,
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open)
-	.wp-block-navigation__responsive-container-open:focus-visible {
-	outline-color: var(--wp--preset--color--ecru);
+body.lpu-header-transparent
+  .lpu-header:has(
+    .wp-block-navigation__responsive-container.is-menu-open,
+    .wp-block-navigation-submenu:hover,
+    .wp-block-navigation-submenu:focus-within,
+    .wp-block-navigation-submenu__toggle[aria-expanded="true"],
+    .wp-block-navigation__submenu-icon[aria-expanded="true"]
+  ) {
+  --lpu-header-foreground: var(--wp--preset--color--vert-fonce);
+  background: var(--wp--preset--color--ecru);
 }
 
-body.lpu-header-transparent .lpu-header.lpu-menu-open {
-	background: var(--wp--preset--color--ecru);
+.lpu-header .wp-block-navigation-item__content,
+.lpu-header .wp-block-navigation__submenu-icon,
+.lpu-header .wp-block-navigation__responsive-container-open {
+  color: var(--lpu-header-foreground) !important;
 }
 
-body.lpu-header-transparent .lpu-header.lpu-menu-open
-	.wp-block-navigation-item__content,
-body.lpu-header-transparent .lpu-header.lpu-menu-open
-	.wp-block-navigation__submenu-icon {
-	color: var(--wp--preset--color--vert-fonce) !important;
+.lpu-header .wp-block-navigation-item__content:focus-visible,
+.lpu-header .wp-block-navigation__submenu-icon:focus-visible,
+.lpu-header .wp-block-navigation__responsive-container-open:focus-visible {
+  outline-color: var(--lpu-header-foreground);
 }
 
-body.lpu-header-transparent .lpu-header
-	.wp-block-navigation__responsive-container.is-menu-open {
-	background: var(--wp--preset--color--ecru);
-	color: var(--wp--preset--color--vert-fonce);
+body.lpu-header-transparent .lpu-header .wp-block-site-logo img.custom-logo {
+  display: none;
 }
 
-body.lpu-header-transparent .lpu-header
-	.wp-block-navigation__responsive-container.is-menu-open
-	.wp-block-navigation-item__content,
-body.lpu-header-transparent .lpu-header
-	.wp-block-navigation__responsive-container.is-menu-open
-	.wp-block-navigation__submenu-icon {
-	color: var(--wp--preset--color--vert-fonce) !important;
+body.lpu-header-transparent
+  .lpu-header
+  .wp-block-site-logo
+  img.lpu-logo-transparent {
+  display: block;
 }
 
-.lpu-header > .wp-block-site-logo {
-	grid-column: 4 / 6;
-	grid-row: 1;
-	justify-self: center;
-	position: relative;
-	z-index: 2;
-	margin: 0;
-	width: 190px;
-	max-width: 100%;
+body.lpu-header-transparent
+  .lpu-header:has(
+    .wp-block-navigation__responsive-container.is-menu-open,
+    .wp-block-navigation-submenu:hover,
+    .wp-block-navigation-submenu:focus-within,
+    .wp-block-navigation-submenu__toggle[aria-expanded="true"],
+    .wp-block-navigation__submenu-icon[aria-expanded="true"]
+  )
+  .wp-block-site-logo
+  img.custom-logo {
+  display: block;
+}
+
+body.lpu-header-transparent
+  .lpu-header:has(
+    .wp-block-navigation__responsive-container.is-menu-open,
+    .wp-block-navigation-submenu:hover,
+    .wp-block-navigation-submenu:focus-within,
+    .wp-block-navigation-submenu__toggle[aria-expanded="true"],
+    .wp-block-navigation__submenu-icon[aria-expanded="true"]
+  )
+  .wp-block-site-logo
+  img.lpu-logo-transparent {
+  display: none;
+}
+
+.lpu-header .wp-block-site-logo {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  width: 190px;
+  max-width: 100%;
+}
+
+.lpu-header .lpu-header__logo {
+  max-width: min(190px, calc(100vw - 2rem));
 }
 
 .lpu-header .wp-block-site-logo img {
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 /* The header link stacks the opaque logo (custom_logo) and the transparent
  * variant in the same grid cell; the visibility rules below pick which one
  * shows for the current header state. */
 .lpu-header .wp-block-site-logo > a {
-	display: grid;
-	width: 100%;
+  display: grid;
+  width: 100%;
 }
 
 .lpu-header .wp-block-site-logo > a > img {
-	grid-area: 1 / 1;
+  grid-area: 1 / 1;
 }
 
 /* Specificity note: this must outrank the shared img display rule above. */
 .lpu-header .wp-block-site-logo img.lpu-logo-transparent {
-	display: none;
-}
-
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .custom-logo {
-	display: none;
-}
-
-body.lpu-header-transparent .lpu-header:not(.lpu-menu-open) .lpu-logo-transparent {
-	display: block;
+  display: none;
 }
 
 .lpu-header .wp-block-navigation {
-	grid-column: 1 / -1;
-	grid-row: 1;
-	justify-self: stretch;
-	width: 100%;
-	min-width: 0;
+  width: min(100%, 60rem);
+  margin-inline: auto;
+  min-width: 0;
+  max-width: none;
 }
 
 .lpu-header .wp-block-navigation__responsive-container,
 .lpu-header .wp-block-navigation__responsive-close,
 .lpu-header .wp-block-navigation__responsive-dialog,
 .lpu-header .wp-block-navigation__responsive-container-content {
-	width: 100%;
+  width: 100%;
 }
 
 .lpu-header .wp-block-navigation__container {
-	width: 100%;
-	max-width: none;
+  width: 100%;
+  max-width: none;
 }
 
 .lpu-header .wp-block-navigation-item__content {
-	padding: 0.5rem 0.75rem;
-	font-family: var(--wp--preset--font-family--ruden);
-	font-size: 0.95rem;
-	line-height: 1.1;
-	text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--wp--preset--font-family--ruden);
+  font-size: 0.95rem;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .lpu-header .wp-block-navigation-item__content:focus-visible,
 .lpu-header .wp-block-navigation__submenu-icon:focus-visible,
 .lpu-header .wp-block-navigation__responsive-container-open:focus-visible,
 .lpu-header .wp-block-navigation__responsive-container-close:focus-visible {
-	outline: 2px solid var(--wp--preset--color--vert-fonce);
-	outline-offset: 3px;
+  outline: 2px solid var(--wp--preset--color--vert-fonce);
+  outline-offset: 3px;
 }
 
 .lpu-header .wp-block-navigation-item__content:hover {
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.25em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 
 .lpu-header .wp-block-navigation__submenu-icon {
-	color: var(--wp--preset--color--vert-fonce);
+  color: var(--wp--preset--color--vert-fonce);
 }
 
 .lpu-header .wp-block-navigation__responsive-container.is-menu-open {
-	box-sizing: border-box;
-	padding: 1.5rem;
-	background: var(--wp--preset--color--ecru);
-	color: var(--wp--preset--color--vert-fonce);
+  box-sizing: border-box;
+  padding: 1.5rem;
+  background: var(--wp--preset--color--ecru);
+  color: var(--wp--preset--color--vert-fonce);
 }
 
-.lpu-header .wp-block-navigation__responsive-container.is-menu-open
-	.wp-block-navigation-item__content {
-	font-size: 1.15rem;
+.lpu-header
+  .wp-block-navigation__responsive-container.is-menu-open
+  .wp-block-navigation-item__content {
+  font-size: 1.15rem;
 }
 
-/*
- * The core Navigation block keeps the parent link and its submenu toggle
- * separate when submenuVisibility is "hover". On large screens, turn each
- * top-level submenu into one absolute, full-width panel. The panel remains
- * part of the same navigation tree and does not push the page content down.
+/* When the full desktop menu fits, keep Core's flex list and use the logo item
+ * as the only layout marker. Items before it occupy the left side; the first
+ * item after it receives the automatic spacer and occupies the right side.
+ * The layout state is selected by navigation.js from the rendered positions
+ * of the logo and top-level items, not from a viewport or item-count rule.
+ * Without JavaScript this remains the desktop fallback, while Core still
+ * supplies its own small-screen fallback.
  */
-@media (min-width: 1100px) {
-	.lpu-header .wp-block-navigation__container {
-		display: grid;
-		grid-template-columns: repeat(8, minmax(0, 1fr));
-		align-items: center;
-		column-gap: clamp(0.25rem, 1vw, 1rem);
-	}
-
-	/* Keep Core's internal grid as the containing block for the absolute
-	 * submenu, but place the panel below the complete header. */
-	.lpu-header .wp-block-navigation,
-	.lpu-header .wp-block-navigation__responsive-close,
-	.lpu-header .wp-block-navigation__responsive-dialog,
-	.lpu-header .wp-block-navigation__responsive-container-content,
-	.lpu-header .wp-block-navigation__container {
-		position: static;
-	}
-
-	/* Core gives the closed responsive container position:relative from 600px
-	 * with a three-class selector; this stronger match is required so the
-	 * full-width submenu panels resolve their containing block against the
-	 * header itself instead of that container (whose height changes when a
-	 * top-level label wraps, misaligning the panels). */
-	.lpu-header .wp-block-navigation
-		.wp-block-navigation__responsive-container:not(.hidden-by-default):not(.is-menu-open) {
-		position: static;
-	}
-
-	.lpu-header .wp-block-navigation__container > .wp-block-navigation-item {
-		min-width: 0;
-	}
-
-	/* Reserve the two centre columns for the logo and send the right-hand
-	 * half of every known menu after that gap. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-item:nth-child(3) {
-		grid-column: 6;
-	}
-
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-item:nth-child(4) {
-		grid-column: 7;
-	}
-
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-item:nth-child(5) {
-		grid-column: 8;
-	}
-
-	/* The centered desktop grid supports the three-item network menu and the
-	 * five-item farm menus. If an editor changes that top-level count, PHP adds
-	 * this class and the same Core responsive overlay becomes the safe desktop
-	 * fallback instead of letting grid auto-placement create another row. */
-	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count {
-		grid-column: 7 / 9;
-		justify-self: end;
-		width: auto;
-		margin: 0;
-	}
-
-	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
-		.wp-block-navigation__responsive-container-open {
-		box-sizing: border-box;
-		display: flex !important;
-		width: 2rem;
-		min-width: 2rem;
-		height: 2rem;
-		margin: 0;
-		padding: 0;
-		color: var(--wp--preset--color--vert-fonce);
-		background:
-			linear-gradient(currentColor, currentColor) 0 20% / 100% 2px no-repeat,
-			linear-gradient(currentColor, currentColor) 0 50% / 100% 2px no-repeat,
-			linear-gradient(currentColor, currentColor) 0 80% / 100% 2px no-repeat;
-	}
-
-	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
-		.wp-block-navigation__responsive-container-open svg {
-		display: none;
-	}
-
-	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
-		.wp-block-navigation__responsive-container:not(.is-menu-open) {
-		display: none;
-	}
-
-	.lpu-header .wp-block-navigation.lpu-navigation--unsupported-count
-		.wp-block-navigation__responsive-container.is-menu-open {
-		position: fixed;
-		inset: 0;
-		z-index: 100000;
-		overflow-y: auto;
-	}
-
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu {
-		position: static;
-	}
-
-	/* With every intermediate element static, the panel resolves against the
-	 * header, so top:100% is exactly the header's bottom edge regardless of
-	 * how many lines a top-level label occupies. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container {
-		top: 100%;
-		right: auto;
-		bottom: auto;
-		left: 50%;
-		box-sizing: border-box;
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-		gap: 0.75rem 1.5rem;
-		/* Core Navigation's open-state rule has higher specificity for these
-		 * two properties; keep the contextual panel genuinely full-width. */
-		width: 100vw !important;
-		min-width: 0 !important;
-		height: auto;
-		transform: translateX(-50%);
-		padding: 1.5rem clamp(1rem, 5vw, 4rem) 2rem;
-		background: var(--wp--preset--color--ecru) !important;
-		border: 0;
-		color: var(--wp--preset--color--vert-fonce);
-	}
-
-	/* Keep the active panel hit-testable while the pointer crosses the empty
-	 * part of the header on its way from a parent item to the panel. The
-	 * navigation script removes this bridge when another parent is intentionally
-	 * entered or after the pointer has left the whole menu for a short grace
-	 * period. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu.lpu-hover-bridge-open >
-		.wp-block-navigation__submenu-container {
-		visibility: visible !important;
-		opacity: 1 !important;
-		pointer-events: auto !important;
-	}
-
-	/* Do not switch the panel for a parent that the pointer only crosses on
-	 * its way to the currently active panel. The navigation script removes
-	 * this pending state after the short hover-intent delay. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu.lpu-hover-pending >
-		.wp-block-navigation__submenu-container {
-		visibility: hidden !important;
-		opacity: 0 !important;
-		pointer-events: none !important;
-	}
-
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container
-		> .wp-block-navigation-item {
-		min-width: 0;
-	}
-
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu > .wp-block-navigation__submenu-container
-		> .wp-block-navigation-item > .wp-block-navigation-item__content {
-		padding: 0.5rem 0;
-		font-family: var(--wp--preset--font-family--dm-sans);
-		font-size: 1rem;
-		line-height: 1.35;
-		text-transform: none;
-	}
-
-	/* Escape must win over the browser's :hover state until the pointer
-	 * leaves and re-enters the parent item. */
-	.lpu-header .wp-block-navigation__container >
-		.wp-block-navigation-submenu.lpu-submenu-escape-closed:hover >
-		.wp-block-navigation__submenu-container {
-		visibility: hidden !important;
-		overflow: hidden !important;
-		opacity: 0 !important;
-		width: 0 !important;
-		min-width: 0 !important;
-		height: 0 !important;
-		pointer-events: none;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container {
+  position: static;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  min-height: var(--lpu-header-content-min-height);
+  gap: clamp(0.25rem, 1vw, 1rem);
 }
 
-/*
- * The longest local menu no longer fits comfortably beside the centred logo
- * at this width. Reuse the responsive markup generated by core Navigation and
- * expose its overlay on tablet as well as on mobile. This is a component
- * breakpoint, not a breakpoint copied from a design screenshot; it must be
- * rechecked when the final labels or logo variants are known.
- */
-@media (max-width: 1099px) {
-	.lpu-header {
-		grid-template-columns: 1fr auto 1fr;
-		padding-inline: 1rem;
-	}
+.lpu-header .lpu-header__navigation:not(.lpu-navigation--compact),
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open),
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-close,
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-dialog,
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-container-content {
+  position: static;
+}
 
-	.lpu-header > .wp-block-site-logo {
-		grid-column: 2;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-item {
+  min-width: 0;
+}
 
-	.lpu-header .wp-block-navigation {
-		grid-column: 3;
-		justify-self: end;
-		width: auto;
-		margin: 0;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-item:has(> .lpu-header__logo) {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  transform: translate(-50%, -50%);
+}
 
-	.lpu-header .wp-block-navigation__responsive-container-open {
-		box-sizing: border-box;
-		width: 2rem;
-		min-width: 2rem;
-		height: 2rem;
-		padding: 0;
-		display: flex;
-		margin-inline-start: auto;
-		color: var(--wp--preset--color--vert-fonce);
-		background:
-			linear-gradient(currentColor, currentColor) 0 20% / 100% 2px no-repeat,
-			linear-gradient(currentColor, currentColor) 0 50% / 100% 2px no-repeat,
-			linear-gradient(currentColor, currentColor) 0 80% / 100% 2px no-repeat;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-item:has(> .lpu-header__logo)
+  + .wp-block-navigation-item {
+  margin-inline-start: auto;
+}
 
-	.lpu-header .wp-block-navigation__responsive-container-open svg {
-		display: none;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu {
+  position: static;
+}
 
-	.lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open) {
-		display: none;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu
+  > .wp-block-navigation__submenu-container {
+  top: 100%;
+  inset-inline: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem 1.5rem;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  padding: 1.5rem clamp(1rem, 5vw, 4rem) 2rem;
+  background: var(--wp--preset--color--ecru) !important;
+  border: 0;
+  color: var(--wp--preset--color--vert-fonce);
+  z-index: 1;
+}
 
-	.lpu-header .wp-block-navigation__container {
-		width: auto;
-		max-width: 100%;
-	}
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu
+  > .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item {
+  flex: 1 1 12rem;
+  min-width: 12rem;
+}
+
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu
+  > .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item
+  > .wp-block-navigation-item__content {
+  padding: 0.5rem 0;
+  font-family: var(--wp--preset--font-family--dm-sans);
+  font-size: 1rem;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.lpu-header
+  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open) {
+  padding-inline: 0;
+}
+
+/* The compact state is selected when the rendered desktop items collide with
+ * the logo. Core still controls the open overlay; these rules only choose the
+ * closed presentation. The same native Site Logo remains the compact logo. */
+.lpu-header .lpu-header__navigation.lpu-navigation--compact {
+  position: relative;
+  display: block;
+  justify-content: flex-start;
+  /* Keep the compact logo and the hamburger in the same header row. */
+  min-height: 0;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container-open {
+  box-sizing: border-box;
+  display: flex;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  color: var(--wp--preset--color--vert-fonce);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 50%;
+  z-index: 3;
+  transform: translateY(-50%);
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open) {
+  display: block;
+  position: static;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-container-close {
+  display: none;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-close,
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-dialog,
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__responsive-container-content {
+  position: static;
+  width: 100%;
+  padding: 0;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-item {
+  display: none;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container
+  > .wp-block-navigation-item:has(> .lpu-header__logo) {
+  display: block;
+  position: static;
+  margin: 0;
+  transform: none;
+}
+
+.lpu-header
+  .lpu-header__navigation.lpu-navigation--compact
+  .wp-block-navigation__responsive-container.is-menu-open
+  .wp-block-navigation__container
+  > .wp-block-navigation-item:has(> .lpu-header__logo) {
+  order: -1;
+  align-self: center;
+  margin-block-end: 1.5rem;
 }
 
 main.wp-block-group {
-	min-height: 30vh;
+  min-height: 30vh;
 }
 
 /* Shared footer frame. The footer Navigation receives site-local content at
  * render time, while this layout and its visual treatment remain shared. */
 .lpu-footer {
-	position: relative;
-	overflow: hidden;
-	margin-block-start: 0;
-	/* Dark green from the approved design palette. */
-	background-color: var(--wp--preset--color--vert-fonce) !important;
-	color: var(--wp--preset--color--ecru);
+  position: relative;
+  overflow: hidden;
+  margin-block-start: 0;
+  /* Dark green from the approved design palette. */
+  background-color: var(--wp--preset--color--vert-fonce) !important;
+  color: var(--wp--preset--color--ecru);
 }
 
 .lpu-footer::after {
-	position: absolute;
-	right: clamp(1.25rem, 4vw, 3.5rem);
-	bottom: clamp(1rem, 3vw, 2rem);
-	width: clamp(2.25rem, 4vw, 3.5rem);
-	height: clamp(2.25rem, 4vw, 3.5rem);
-	background: url("../images/footer/footer-star-ecru.svg") center / contain no-repeat;
-	content: "";
-	pointer-events: none;
+  position: absolute;
+  right: clamp(1.25rem, 4vw, 3.5rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  width: clamp(2.25rem, 4vw, 3.5rem);
+  height: clamp(2.25rem, 4vw, 3.5rem);
+  background: url("../images/footer/footer-star-ecru.svg") center / contain
+    no-repeat;
+  content: "";
+  pointer-events: none;
 }
 
 .lpu-footer__main {
-	align-items: flex-start;
-	gap: clamp(2rem, 4vw, 4.5rem);
-	margin-block: 0;
+  align-items: flex-start;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  margin-block: 0;
 }
 
 .lpu-footer__identity .wp-block-image {
-	width: 160px;
-	max-width: 100%;
-	margin: 0;
+  width: 160px;
+  max-width: 100%;
+  margin: 0;
 }
 
 .lpu-footer__identity .wp-block-image > a {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .lpu-footer__identity .wp-block-image img {
-	display: block;
-	width: 100%;
-	height: auto;
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .lpu-footer__intro {
-	max-width: 13rem;
-	margin: 0;
-	font-family: var(--wp--preset--font-family--dm-sans);
-	font-size: 0.85rem;
-	line-height: 1.4;
-	color: var(--wp--preset--color--ecru);
+  max-width: 13rem;
+  margin: 0;
+  font-family: var(--wp--preset--font-family--dm-sans);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--wp--preset--color--ecru);
 }
 
 .lpu-footer__links .wp-block-navigation {
-	width: 100%;
-	max-width: none;
-	margin: 0;
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .lpu-footer .wp-block-navigation__container {
-	display: grid !important;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	align-items: start;
-	gap: var(--wp--preset--spacing--lg) clamp(1rem, 2vw, 2rem);
-	width: 100%;
-	max-width: none;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--wp--preset--spacing--lg) clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  max-width: none;
 }
 
 .lpu-footer .wp-block-navigation__container > .wp-block-navigation-submenu {
-	display: block;
-	min-width: 0;
+  display: block;
+  min-width: 0;
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu
-	> .wp-block-navigation-item__content {
-	display: block;
-	padding: 0;
-	margin-block-end: 0.65rem;
-	font-family: var(--wp--preset--font-family--ruden);
-	font-size: 0.8rem;
-	line-height: 1.2;
-	color: var(--wp--preset--color--ecru) !important;
-	text-transform: uppercase;
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu
+  > .wp-block-navigation-item__content {
+  display: block;
+  padding: 0;
+  margin-block-end: 0.65rem;
+  font-family: var(--wp--preset--font-family--ruden);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--wp--preset--color--ecru) !important;
+  text-transform: uppercase;
 }
 
 .lpu-footer .wp-block-navigation__submenu-icon {
-	display: none;
+  display: none;
 }
 
 .lpu-footer .wp-block-navigation__submenu-container {
-	position: static;
-	display: block;
-	visibility: visible;
-	opacity: 1;
-	width: auto;
-	min-width: 0;
-	height: auto;
-	padding: 0;
-	background: transparent;
-	border: 0;
+  position: static;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
 
 /* Core's submenu rule is more specific than the generic footer rule above.
  * Repeat the direct-child relationship and force the footer columns open;
  * unlike the header, these submenus are always expanded. */
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu
-	> .wp-block-navigation__submenu-container {
-	position: static !important;
-	display: block !important;
-	visibility: visible !important;
-	opacity: 1 !important;
-	width: auto !important;
-	min-width: 0 !important;
-	height: auto !important;
-	max-height: none !important;
-	overflow: visible !important;
-	padding: 0 !important;
-	background: transparent !important;
-	border: 0 !important;
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu
+  > .wp-block-navigation__submenu-container {
+  position: static !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
 }
 
-.lpu-footer .wp-block-navigation__submenu-container
-	> .wp-block-navigation-item {
-	display: block;
-	min-width: 0;
+.lpu-footer
+  .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item {
+  display: block;
+  min-width: 0;
 }
 
-.lpu-footer .wp-block-navigation__submenu-container
-	.wp-block-navigation-item__content {
-	display: inline-block;
-	padding: 0.18rem 0;
-	font-family: var(--wp--preset--font-family--dm-sans);
-	font-size: 0.78rem;
-	line-height: 1.35;
-	color: var(--wp--preset--color--ecru) !important;
+.lpu-footer
+  .wp-block-navigation__submenu-container
+  .wp-block-navigation-item__content {
+  display: inline-block;
+  padding: 0.18rem 0;
+  font-family: var(--wp--preset--font-family--dm-sans);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--wp--preset--color--ecru) !important;
 }
 
-.lpu-footer .wp-block-navigation__submenu-container
-	> .wp-block-navigation-item
-	> .wp-block-navigation-item__content::before {
-	content: "> ";
+.lpu-footer
+  .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item
+  > .wp-block-navigation-item__content::before {
+  content: "> ";
 }
 
 .lpu-footer .wp-block-navigation-item__content:hover,
 .lpu-footer .wp-block-navigation-item__content:focus-visible {
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 0.25em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu:last-child {
-	grid-column: 1 / -1;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: 0.5rem 1rem;
-	margin-block-start: 0.5rem;
-	padding-block-start: 0.75rem;
-	border-top: 1px solid rgba(248, 248, 240, 0.35);
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu:last-child {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+  margin-block-start: 0.5rem;
+  padding-block-start: 0.75rem;
+  border-top: 1px solid rgba(248, 248, 240, 0.35);
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu:last-child
-	> .wp-block-navigation-item__content {
-	margin: 0;
-	font-family: var(--wp--preset--font-family--ruden);
-	font-size: 0.68rem;
-	color: rgba(248, 248, 240, 0.8) !important;
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu:last-child
+  > .wp-block-navigation-item__content {
+  margin: 0;
+  font-family: var(--wp--preset--font-family--ruden);
+  font-size: 0.68rem;
+  color: rgba(248, 248, 240, 0.8) !important;
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu:last-child
-	> .wp-block-navigation__submenu-container {
-	display: flex !important;
-	flex-wrap: wrap;
-	gap: 0.25rem 1rem;
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu:last-child
+  > .wp-block-navigation__submenu-container {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu:last-child
-	> .wp-block-navigation__submenu-container
-	> .wp-block-navigation-item__content {
-	padding: 0;
-	font-size: 0.68rem;
-	color: rgba(248, 248, 240, 0.8) !important;
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu:last-child
+  > .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item__content {
+  padding: 0;
+  font-size: 0.68rem;
+  color: rgba(248, 248, 240, 0.8) !important;
 }
 
-.lpu-footer .wp-block-navigation__container
-	> .wp-block-navigation-submenu:last-child
-	> .wp-block-navigation__submenu-container
-	> .wp-block-navigation-item
-	> .wp-block-navigation-item__content::before {
-	content: "";
+.lpu-footer
+  .wp-block-navigation__container
+  > .wp-block-navigation-submenu:last-child
+  > .wp-block-navigation__submenu-container
+  > .wp-block-navigation-item
+  > .wp-block-navigation-item__content::before {
+  content: "";
 }
 
 .lpu-footer__bottom {
-	align-items: center;
-	gap: var(--wp--preset--spacing--md);
-	margin-block-start: var(--wp--preset--spacing--lg);
-	color: var(--wp--preset--color--ecru);
+  align-items: center;
+  gap: var(--wp--preset--spacing--md);
+  margin-block-start: var(--wp--preset--spacing--lg);
+  color: var(--wp--preset--color--ecru);
 }
 
 .lpu-footer__social,
 .lpu-footer__copyright {
-	margin-block: 0;
+  margin-block: 0;
 }
 
 .lpu-footer__social .wp-social-link {
-	background: transparent !important;
-	color: var(--wp--preset--color--ecru) !important;
+  background: transparent !important;
+  color: var(--wp--preset--color--ecru) !important;
 }
 
 .lpu-footer__copyright {
-	font-size: 0.75rem;
-	color: rgba(248, 248, 240, 0.8);
+  font-size: 0.75rem;
+  color: rgba(248, 248, 240, 0.8);
 }
 
 @media (max-width: 900px) {
-	.lpu-footer {
-		padding-inline: 1rem !important;
-	}
+  .lpu-footer {
+    padding-inline: 1rem !important;
+  }
 
-	.lpu-footer__main {
-		flex-direction: column;
-		gap: var(--wp--preset--spacing--lg);
-	}
+  .lpu-footer__main {
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--lg);
+  }
 
-	.lpu-footer__main > .wp-block-column {
-		flex-basis: 100% !important;
-		width: 100%;
-	}
+  .lpu-footer__main > .wp-block-column {
+    flex-basis: 100% !important;
+    width: 100%;
+  }
 
-	.lpu-footer__intro {
-		max-width: 24rem;
-	}
+  .lpu-footer__intro {
+    max-width: 24rem;
+  }
 
-	.lpu-footer .wp-block-navigation__container {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+  .lpu-footer .wp-block-navigation__container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 600px) {
-	.lpu-footer {
-		padding-top: 3rem !important;
-		padding-bottom: 4rem !important;
-	}
+  .lpu-footer {
+    padding-top: 3rem !important;
+    padding-bottom: 4rem !important;
+  }
 
-	.lpu-footer__identity .wp-block-image {
-		width: 140px;
-	}
+  .lpu-footer__identity .wp-block-image {
+    width: 140px;
+  }
 
-	.lpu-footer .wp-block-navigation__container {
-		grid-template-columns: 1fr;
-	}
+  .lpu-footer .wp-block-navigation__container {
+    grid-template-columns: 1fr;
+  }
 
-	.lpu-footer__bottom {
-		align-items: flex-start;
-		flex-direction: column;
-	}
+  .lpu-footer__bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 .wp-block-button__link {
-	transition: background-color 100ms ease, color 100ms ease;
+  transition:
+    background-color 100ms ease,
+    color 100ms ease;
 }
 
 .wp-block-button__link:hover,
 .wp-block-button__link:focus-visible {
-	background: var(--wp--preset--color--vert-fonce);
-	color: var(--wp--preset--color--ecru);
+  background: var(--wp--preset--color--vert-fonce);
+  color: var(--wp--preset--color--ecru);
 }
 
 .wp-block-button__link:focus-visible {
-	outline: 2px solid var(--wp--preset--color--vert-fonce);
-	outline-offset: 2px;
+  outline: 2px solid var(--wp--preset--color--vert-fonce);
+  outline-offset: 2px;
 }
 
 .lpu-button-on-color .wp-block-button__link {
-	border-color: var(--wp--preset--color--ecru);
-	color: var(--wp--preset--color--ecru);
+  border-color: var(--wp--preset--color--ecru);
+  color: var(--wp--preset--color--ecru);
 }
 
 .lpu-button-on-color .wp-block-button__link:hover,
 .lpu-button-on-color .wp-block-button__link:focus-visible {
-	background: var(--wp--preset--color--ecru);
-	color: var(--wp--preset--color--vert-fonce);
+  background: var(--wp--preset--color--ecru);
+  color: var(--wp--preset--color--vert-fonce);
 }
 
 .lpu-button-on-color .wp-block-button__link:focus-visible {
-	outline-color: var(--wp--preset--color--ecru);
+  outline-color: var(--wp--preset--color--ecru);
 }
 
 /* The Hero uses the regular core Button so its editable text remains the
@@ -1106,107 +1135,111 @@ main.wp-block-group {
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:focus-visible {
-	position: relative;
-	display: grid;
-	place-items: center;
-	width: 3rem;
-	min-width: 3rem;
-	height: 3rem;
-	padding: 0;
-	overflow: hidden;
-	color: transparent;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
 }
 
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link::after {
-	position: absolute;
-	inset: 0;
-	width: 1.75rem;
-	height: 1.25rem;
-	margin: auto;
-	background-color: var(--wp--preset--color--vert-fonce);
-	content: "";
-	mask: url("../images/arrow-right.svg") center / contain no-repeat;
-	-webkit-mask: url("../images/arrow-right.svg") center / contain no-repeat;
+  position: absolute;
+  inset: 0;
+  width: 1.75rem;
+  height: 1.25rem;
+  margin: auto;
+  background-color: var(--wp--preset--color--vert-fonce);
+  content: "";
+  mask: url("../images/arrow-right.svg") center / contain no-repeat;
+  -webkit-mask: url("../images/arrow-right.svg") center / contain no-repeat;
 }
 
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover::after,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:focus-visible::after {
-	background-color: var(--wp--preset--color--ecru);
+  background-color: var(--wp--preset--color--ecru);
 }
 
-.wp-site-blocks .lpu-button-on-color.lpu-button-arrow .wp-block-button__link::after {
-	background-color: var(--wp--preset--color--ecru);
-}
-
-.wp-site-blocks .lpu-button-on-color.lpu-button-arrow .wp-block-button__link:hover::after,
 .wp-site-blocks
-	.lpu-button-on-color.lpu-button-arrow
-	.wp-block-button__link:focus-visible::after {
-	background-color: var(--wp--preset--color--vert-fonce);
+  .lpu-button-on-color.lpu-button-arrow
+  .wp-block-button__link::after {
+  background-color: var(--wp--preset--color--ecru);
+}
+
+.wp-site-blocks
+  .lpu-button-on-color.lpu-button-arrow
+  .wp-block-button__link:hover::after,
+.wp-site-blocks
+  .lpu-button-on-color.lpu-button-arrow
+  .wp-block-button__link:focus-visible::after {
+  background-color: var(--wp--preset--color--vert-fonce);
 }
 
 @media (max-width: 900px) {
-	.lpu-header {
-		min-height: 4.5rem;
-		padding: 0.75rem 1rem;
-	}
+  .lpu-header {
+    min-height: 4.5rem;
+    padding: 0.75rem 1rem;
+  }
 
-	.lpu-header .wp-block-site-logo img {
-		max-height: 3.25rem;
-	}
+  .lpu-header .wp-block-site-logo img {
+    max-height: 3.25rem;
+  }
 }
 
 @media (max-width: 781px) {
-	.lpu-band {
-		padding-inline: var(--wp--preset--spacing--md);
-	}
+  .lpu-band {
+    padding-inline: var(--wp--preset--spacing--md);
+  }
 
-	.lpu-hero {
-		min-height: 34rem;
-		padding-block: 5rem var(--wp--preset--spacing--xl);
-	}
+  .lpu-hero {
+    min-height: 34rem;
+    padding-block: 5rem var(--wp--preset--spacing--xl);
+  }
 
-	.lpu-hero__content .wp-block-heading {
-		max-width: 11ch;
-	}
+  .lpu-hero__content .wp-block-heading {
+    max-width: 11ch;
+  }
 
-	.lpu-farm-selector__columns {
-		gap: var(--wp--preset--spacing--lg);
-	}
+  .lpu-farm-selector__columns {
+    gap: var(--wp--preset--spacing--lg);
+  }
 
-	.lpu-farm-selector__item + .lpu-farm-selector__item::before {
-		top: 0;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+  .lpu-farm-selector__item + .lpu-farm-selector__item::before {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-	.lpu-columns-text__columns {
-		gap: var(--wp--preset--spacing--lg);
-	}
+  .lpu-columns-text__columns {
+    gap: var(--wp--preset--spacing--lg);
+  }
 
-	.lpu-columns-text {
-		padding-block: var(--wp--preset--spacing--section);
-	}
+  .lpu-columns-text {
+    padding-block: var(--wp--preset--spacing--section);
+  }
 
-	.lpu-columns-text > .lpu-columns-text__title {
-		margin-block-end: var(--wp--preset--spacing--xl);
-	}
+  .lpu-columns-text > .lpu-columns-text__title {
+    margin-block-end: var(--wp--preset--spacing--xl);
+  }
 
-	.lpu-columns-text__columns .wp-block-paragraph {
-		max-width: 30rem;
-	}
+  .lpu-columns-text__columns .wp-block-paragraph {
+    max-width: 30rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
+  html {
+    scroll-behavior: auto;
+  }
 
-	*,
-	*::before,
-	*::after {
-		transition-duration: 0.01ms !important;
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-	}
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
