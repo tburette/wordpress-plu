@@ -14,6 +14,8 @@ if (this !== undefined) {
   );
 }
 // parent <nav>
+// not any navigation but a/ .lpu-header__navigation : our special navigation
+// that goes with the header behavior
 const navigationSelector =
   ".lpu-header nav.wp-block-navigation.lpu-header__navigation";
 // <ul> containining the menu items
@@ -22,12 +24,6 @@ const listSelector =
 
 function getList(navigation) {
   return navigation.querySelector(listSelector);
-}
-
-function getLogoItem(list) {
-  return Array.from(list.children).find(function (item) {
-    return item.querySelector(".lpu-header__logo");
-  });
 }
 
 function rectanglesOverlap(first, second) {
@@ -41,20 +37,32 @@ function rectanglesOverlap(first, second) {
 }
 
 function isLogoCollidingWithMainMenuItems(list) {
-  const listRect = list.getBoundingClientRect();
-  const logoItem = getLogoItem(list);
+  const logoListItem = list.querySelector(":scope > li:has(.lpu-header__logo)");
+  //   const logoItem = logo?.closest("li");
 
-  /* Core hides the closed responsive container below its own breakpoint. */
-  if (!listRect.width || !logoItem) {
-    return Boolean(!listRect.width);
+  // wp core activation of mobile menu:
+  // wp core code hides .wp-block-navigation__responsive-container
+  // (which is a descendant of navigation and a parent of list)
+  // when the viewport is under a certain width (600px when I checked).
+  // this test is an indirect way of checking if it is the case
+  if (!list.getBoundingClientRect().width) {
+    // when wp core think the mobile version of the menu should be active then
+    // behave as if there was a collision (will trigger compact mode)
+    return true;
   }
 
-  const logo = logoItem.querySelector(".lpu-header__logo");
-  const logoRect = logo.getBoundingClientRect();
+  // couldn't find the logo !
+  // This should probably be an error instead of silently returning but this
+  // is a high frequency, critical to rendering, code.
+  if (!logoListItem) {
+    return false;
+  }
+
+  const logoRect = logoListItem.getBoundingClientRect();
 
   return Array.from(list.children).some(function (item) {
     return (
-      item !== logoItem &&
+      item !== logoListItem &&
       rectanglesOverlap(logoRect, item.getBoundingClientRect())
     );
   });
@@ -62,18 +70,19 @@ function isLogoCollidingWithMainMenuItems(list) {
 
 /**
  * The menu that opens in mobile mode when pressing the hamburger menu icon.
- * Not to be confused with the mega-menu.
+ * Not to be confused with the mega-menu or when the desktop menu is not in use
+ * and the mobile mebu behavor is activated (show hamburger instead of full menu)
  */
-function ismobileOverlayOpen(list) {
+function isMobileOverlayOpen(list) {
   const container = list.closest(".wp-block-navigation__responsive-container");
 
-  return Boolean(container && container.classList.contains("is-menu-open"));
+  return Boolean(container?.classList.contains("is-menu-open"));
 }
 
 function updateNavigation(navigation) {
   const list = getList(navigation);
 
-  if (!list || !navigation.clientWidth || ismobileOverlayOpen(list)) {
+  if (!list || isMobileOverlayOpen(list)) {
     return;
   }
   /*
@@ -82,7 +91,6 @@ function updateNavigation(navigation) {
    * in desktop mode instead of the compact mode.
    */
   navigation.classList.remove("lpu-navigation--compact");
-
   const enableCompact = isLogoCollidingWithMainMenuItems(list);
   navigation.classList.toggle("lpu-navigation--compact", enableCompact);
 }
@@ -100,17 +108,19 @@ function scheduleUpdate(navigation) {
 }
 
 function observeNavigation(navigation) {
-  // won't trigger if the viewport width changes but the navigation doesn't
-  // happens when navigation has enough space to fit completely
-  // nicely avoids needless calls.
+  // won't trigger if the viewport width changes but the navigation doesn't change
+  // size. This happens when navigation has enough space to fit completely.
+  // Nicely avoids some needless calls.
   const resizeObserver = new ResizeObserver(function () {
     scheduleUpdate(navigation);
   });
-  const list = getList(navigation);
-
   resizeObserver.observe(navigation);
 
-  if (list) {
+  const list = getList(navigation);
+  if (!list) {
+    console.error(`navigation (${navigationSelector}) has no list \
+		(${listSelector}), cannot execute navigation.js logic`);
+  } else {
     // navigation menu content changes
     new MutationObserver(function () {
       scheduleUpdate(navigation);
@@ -146,6 +156,7 @@ function observeNavigation(navigation) {
     });
   }
 
+  // makes sure it runs at least once
   scheduleUpdate(navigation);
 }
 
