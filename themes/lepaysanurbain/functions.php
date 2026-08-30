@@ -168,6 +168,52 @@ function lpu_add_header_body_class($classes)
 }
 add_filter('body_class', 'lpu_add_header_body_class');
 
+add_filter('register_block_type_args', function ($args, $name) {
+	if ('core/navigation' === $name) {
+		// accept navigation to have group as a child
+		$args['allowed_blocks'][] = 'core/group';
+	}
+
+	if (
+		'core/navigation-link' === $name || 'core/navigation-submenu' === $name
+	) {
+		// they accept group as parent
+		$args['parent'][] = 'core/group';
+	}
+
+	return $args;
+}, 10, 2);
+
+/* messes up the rendered html
+ * should be:
+ * ul
+ * 	group
+ * 		li*3
+ * 	li
+ * 		logo
+ * 	group
+ * 		li*3
+ * 
+ * ul
+ * 	li
+ * 		group
+ * 	li*3 items that should be in the group
+ * 	li
+ * 		logo
+ * 	3*li they should be in a group
+*/
+
+add_filter('block_core_navigation_listable_blocks', function ($blocks) {
+	$blocks[] = 'core/group';
+	return $blocks;
+});
+
+add_filter('render_block_core/group', function ($block_content, $block) {
+	error_log('--- GROUP RENDER ---');
+	error_log($block_content);
+	return $block_content;
+}, 20, 2);
+
 /**
  * Enable SVG file upload
  */
