@@ -26,8 +26,6 @@ run_wp() {
 
 # return the header template with the ref to the navigation menu
 # It is modified to add the appropriate menu ref.
-# Do not change the header template-part if it already exists in the DB and
-# has been changed by user (avoids risking losing user changes)
 render_header_template_part() {
   local navigation_id="$1"
 
@@ -47,10 +45,8 @@ create_or_update_header_template_part() {
   local navigation_id="$2"
   local template_content
   local template_id
-  local template_origin
 
   template_content="$(render_header_template_part "$navigation_id")"
-  # check to see if already exists
   template_id="$(run_wp post list \
     --url="$site_url" \
     --post_type=wp_template_part \
@@ -60,7 +56,6 @@ create_or_update_header_template_part() {
     --field=ID | tr -d '\r')"
 
   if [[ -z "$template_id" ]]; then
-	# create if doesn't exist
     template_id="$(run_wp post create \
       --url="$site_url" \
       --post_type=wp_template_part \
@@ -71,27 +66,10 @@ create_or_update_header_template_part() {
       --porcelain | tr -d '\r')"
     printf '%s: created native header template part %s\n' "$site_url" "$template_id"
   else
-    # exist, update only if used hasn't customized it yet
-
-	# meaning of origin meta value for a wp_template_part:
-	# origin is unset => not in the db but on disk (parts or templates/), rendered from disk. Safe to overwrite
-	# origin=theme => in the DB, not customized by user. Programmatically created, safe to overwrite (overwriting it would not result in losing changes made by user)
-	# origin=user => in the DB, modified in the wordpress editor by the user (overwriting it could result in user changes loss) 
-    template_origin="$(run_wp post meta get "$template_id" origin --single --url="$site_url" 2>/dev/null | tr -d '\r' || true)"
-
-    if [[ -z "$template_origin" || "theme" == "$template_origin" ]]; then
-	  # not touched by user, can update it
-      run_wp post update "$template_id" \
-        --url="$site_url" \
-        --post_content="$template_content" >/dev/null
-      printf '%s: updated native header template part %s\n' "$site_url" "$template_id"
-    else
-	  # replacing value could result in losing data set by user
-      printf '%s: preserved custom header template part %s; associate it with Navigation %s manually\n' \
-        "$site_url" "$template_id" "$navigation_id" >&2
-	  # return needed to avoid changing meta value such as the origin
-      return
-    fi
+    run_wp post update "$template_id" \
+      --url="$site_url" \
+      --post_content="$template_content" >/dev/null
+    printf '%s: updated native header template part %s\n' "$site_url" "$template_id"
   fi
 
   # wp_theme taxonomy states which theme this element is linked with. This

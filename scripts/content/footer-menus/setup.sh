@@ -4,7 +4,7 @@ set -euo pipefail
 # Create or select one site-local footer Navigation post for each row in
 # footer-sites.tsv. The fragments provide the three visual footer columns and
 # their secondary legal-information group; the shared visual frame lives in
-# themes/lepaysanurbain/parts/footer.html. Existing footer content is preserved.
+# themes/lepaysanurbain/parts/footer.html.
 #
 # The script also creates the native, site-local footer template-part override.
 # That override contains the ref to this site's footer Navigation post, so the
@@ -46,7 +46,6 @@ ensure_footer_template_part() {
   local navigation_id="$2"
   local template_content
   local template_id
-  local template_origin
 
   template_content="$(render_footer_template_part "${navigation_id}")"
   template_id="$(run_wp post list \
@@ -68,18 +67,10 @@ ensure_footer_template_part() {
       --porcelain | tr -d '\r')"
     printf '%s: created native footer template part %s\n' "${site_url}" "${template_id}"
   else
-    template_origin="$(run_wp post meta get "${template_id}" origin --single --url="${site_url}" 2>/dev/null | tr -d '\r' || true)"
-
-    if [[ -z "${template_origin}" || "theme" == "${template_origin}" ]]; then
-      run_wp post update "${template_id}" \
-        --url="${site_url}" \
-        --post_content="${template_content}" >/dev/null
-      printf '%s: updated native footer template part %s\n' "${site_url}" "${template_id}"
-    else
-      printf '%s: preserved custom footer template part %s; associate it with Navigation %s manually\n' \
-        "${site_url}" "${template_id}" "${navigation_id}" >&2
-      return
-    fi
+    run_wp post update "${template_id}" \
+      --url="${site_url}" \
+      --post_content="${template_content}" >/dev/null
+    printf '%s: updated native footer template part %s\n' "${site_url}" "${template_id}"
   fi
 
   run_wp eval \
