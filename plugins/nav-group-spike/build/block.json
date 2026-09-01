@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "lpu/nav-group",
+  "title": "Nav Group (TEST)",
+  "category": "design",
+  "icon": "list-view",
+  "description": "Spike block: groups navigation links inside core/navigation using a real <ul><li> structure instead of a <div>.",
+  "parent": ["core/navigation"],
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "textdomain": "nav-group-spike",
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}
