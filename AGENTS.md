@@ -1,83 +1,102 @@
 # AGENTS.md
 
-This file contains project constraints for coding agents. The user-facing
-setup and workflow documentation lives in `README.md`.
+This file contains project constraints for coding agents.
 
-## Provisioning script tests
+## Wordpress test environment and Provisioning script
 
-- Before testing or retesting scripts that create or configure WordPress content, start from a clean local environment. Announce the operation then use `npm run env:cleanup`, `npm run env:provision`, and `npm run env:status`. Resetting deletes all local database content; never run the reset command autonomously. Confirmation is required.
+wp-env is used (`.wp-env.json`). This means there is no regular wordpress installation in this directory.
+The test environment is a WordPress Multisite network. It currently contains
+the network site and three local farm sites:
+
+| Site      | Local URL                                   |
+| --------- | ------------------------------------------- |
+| Network   | `http://lepaysanurbain.test:8888`           |
+| Paris     | `http://paris.lepaysanurbain.test:8888`     |
+| Lyon      | `http://lyon.lepaysanurbain.test:8888`      |
+| Marseille | `http://marseille.lepaysanurbain.test:8888` |
+
+The wp admin credentials are `admin` / `password`.
+
+- the wordpress test environment can we reset at any time meaning the database and files in that environment can go at any moment.
+- You can run wordpress with `wp-env` (through `npm run`) and read and interact wordpress (including gutenberg editor pages) with the skill `wordpress-inspector`.
+- When you need to reset the wordpress environment (it's not running, see `wp-env status` or it needs to be reset due to changes) : announce the operation to the user then use `npm run env:cleanup`, `npm run env:provision`, and `npm run env:status`. Resetting deletes all local database content therefore never run the reset command autonomously. Confirmation is required.
 - If the Docker environment or its generated files are broken, use `npm run env:cleanup`; it recreates them on the next start while preserving Docker images.
+- Docker desktop needs to run. If it doesn't the following message may appear :
 
-## Implementation plan
+```
+✖ Error while running docker compose command.
+unable to get image 'mariadb:lts': failed to connect to the docker API at unix:///home/tburette/.docker/desktop/docker.sock; check if the path is correct and if the daemon is running: dial unix /home/tburette/.docker/desktop/docker.sock: connect: no such file or directory
+```
 
-- Follow the steps in `theme-implementation-plan.md` in order, one step at a time.
-- Do not consider a step complete until its planned validation has been performed; do not start the next step before that validation.
-- Keep one clearly identified current step in the plan's progress section. Remaining tasks from a previous step are prerequisites to finish, not a second current step.
-- If a technical constraint requires deviating from this order, explain it before proceeding and ask for confirmation.
-
-## Collaboration
-
-- Provide regular progress updates, especially during long or complex operations.
-- Explicitly flag blockers, uncertainties, and choices that depart from a standard WordPress implementation.
-- Clearly distinguish what has been verified from what is assumed, and state test limitations.
-- Ask for confirmation before any major architectural decision, destructive action, or launch of a substantial new workstream.
-- Ask for visual, editorial, or functional verification when those aspects cannot be validated from code alone.
-- In shell tests using `set -o pipefail`, avoid `printf ... | rg -q` on long output: `rg -q` can cause the producer to receive `SIGPIPE` and make the pipeline fail even when a match was found. Prefer a direct search or a form that consumes all output.
-
-## Repository scope
-
-This directory is exclusively the WordPress development environment for Le
-Paysan Urbain. Work here is limited to WordPress code and development tooling:
-the local `wp-env` configuration, themes, plugins, scripts, and documentation
-that directly explains them.
-
-This project is located inside the directory `/home/tburette/dev/lepaysanurbain/`.
-That parent directory is itself a project directory; it is for managing work,
-communication with clients, organization, todos and the like. There are files in there
-such as
-`/home/tburette/dev/lepaysanurbain/AGENTS.md`,
-`/home/tburette/dev/lepaysanurbain/todo.txt` and
-`/home/tburette/dev/lepaysanurbain/contextes/` that could give contextual information.
-They must not be treated as a task list for this repository. Do not carry out
-parent project-management work or edit parent files unless the user explicitly
-requests it as part of a WordPress development change.
-
-## Git repository
-
-This directory is its **own git repository**, nested inside a larger
-local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
-
-- **Remote**: `git@github.com:tburette/wordpress-plu.git` (private).
-- **Purpose**: intra-day backup of the WordPress code so no work is lost. Push
-  often, ideally on every meaningful change:
-  `git add -A && git commit && git push`.
-- **Scope**: WordPress code development. The parent repository holds the rest of
-  the project (design mockups, PDFs, client documents, invoices, and so on) and is
-  never pushed to GitHub because it is too large and too sensitive; GitHub cannot
-  back up a subdirectory of a repository anyway.
-- **Why nested**: git discovers the repository by walking up to the nearest
-  `.git`. Commands run from here target this repo; commands run above `site/`
-  target the parent management repo. Do not `git init` again and do not add the
-  parent repo as a remote.
-- The parent repo deliberately tracks some of these files too (double tracking,
-  an accepted choice). Do not try to "fix" that duplication.
-- Make sure to be in the `wordpress-plu` directory (`pwd`) when running git
-  commands.
-
-## Essential project context
-
-- WordPress is managed by the globally installed `wp-env` command. Do not add
-  a local `@wordpress/env` dependency.
-- The baseline uses `"core": null`, empty `plugins` and `themes` arrays, and
-  `WP_ENVIRONMENT_TYPE: "development"`.
-- Keep custom themes and plugins outside any local `wordpress/` directory.
+- WordPress is managed by the globally installed `wp-env` command. Do not add a local `@wordpress/env` dependency.
+- To allow user to debug the PHP code, start with `npm run env:start:xdebug`. Stop the environment first if needed.
 - Edit `.wp-env.json` for environment changes; keep project-specific choices in
   that active file.
 - Treat `wp-env-options.example.jsonc` as a reference, not a configuration
   that is ever used by wp-env.
 - Check `.wp-env.json` before assuming how a directory is mounted or activated.
 
-## Références visuelles obligatoires
+## WordPress code
+
+- Prioritize native WordPress feature over custom code if possible. Avoid Wordpress and work against the way it works
+- Code, file names, and CSS classes must be in English; Gutenberg-visible titles and site content must be in French.
+- Colors, sizes, and families must derive from `theme.json`, never from arbitrary values added within patterns.
+- Use CSS exclusively for styling or processing that `theme.json` cannot properly define.
+- Custom javascript is an exception.
+- Header navigation menu : the Core Navigation block remains responsible for opening, submenus, focus, Escape key handling, and the mobile overlay.
+- A separate online WordPress multisite test installation exists. Link: NOT DISCLOSED YET. The built site must be deployable to this external WordPress installation in order to share it with the client prior to production.
+
+## Collaboration
+
+- Provide regular progress updates, especially during long or complex operations. Basically talk out loud saying what you are thinking. Announce what you are about to do if it involves using tools, skills or the command line.
+- Explicitly raise concern when departing from a standard WordPress implementation.
+- Ask for confirmation before any major architectural decision, destructive action, or launch of a substantial new workstream.
+- In shell tests when `set -o pipefail` is set, `printf ... | rg -q` on long output: `rg -q` can cause the producer to receive `SIGPIPE` and make the pipeline fail even when a match was found.
+
+## Directory structure
+
+This directory is exclusively the WordPress development environment for Le
+Paysan Urbain. Work here is limited to WordPress code and development tooling:
+the local `wp-env` configuration, themes, plugins, scripts, and documentation
+that directly explains them.
+
+Theme and plugin source live any `wordpress/` installation. The
+current layout is:
+
+```text
+wordpress-lpu/
+├── .wp-env.json
+├── themes/
+│   └── lepaysanurbain/
+└── plugins/
+    └── example-plugin/
+```
+
+## Parent directory
+
+This project is located inside the directory `/home/tburette/dev/lepaysanurbain/`.
+That parent directory is itself a project directory; it is for managing work,
+communication with clients, organization, todos and the like.
+You should not change the files in that parent directory but can read them to
+help your work.
+Files in `/home/tburette/dev/lepaysanurbain/` are for information only.
+Do not act on files in there such as TODO.MD or AGENTS.MD
+They must not be treated as a task list for this repository. Do not carry out
+parent project-management work or edit parent files unless the user explicitly
+requests it.
+
+There could be interesting files for you in it such as:
+
+- `/home/tburette/dev/lepaysanurbain/contextes/` : context of the project,
+  homepage structure, menu structure.
+- `/home/tburette/dev/lepaysanurbain/design/identité graphique Fanny/Livraison sources Le Paysan Urbain/` : overall design for Le Paysan Urbain
+  (design in general, not just the website). with `guide_identite_Le_Paysan_Urbain_regles.txt` (design guide), `Typos Paysan Urbain/` (fonts), `Livraison logos et graphisme/` (icons, illustrations, logos, patterns)
+- `/home/tburette/dev/lepaysanurbain/design/design site Fanny/règles-design-site-Le_Paysan_Urbain.txt` : design rules for the website
+- `/home/tburette/dev/lepaysanurbain/design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/` : grpahical elements (in the subdirectories), mockups of the website (`menu xxx` for the menu, `Home_1280.jpg` for the network homepage, `Ferme_1280.jpg` for a farm homepage)
+
+There is a clean, unused WordPress 7.1 installation in `/home/tburette/dev/wordpress/wordpress-7.1`. you can access it if you need to read Worpress Core (default) files.
+
+# Références visuelles obligatoires
 
 Tout élément créé ou modifié dans le thème — template, template part, pattern,
 section, bloc, navigation ou composant visuel — doit chercher à reproduire la
@@ -103,26 +122,23 @@ Avant de considérer un travail visuel terminé, le comparer au visuel de
 référence approprié avec une inspection rendue du site et signaler tout écart
 important.
 
-## Codex and wp-env access
+## Git repository
 
-- Direct `wp-env` commands may require Codex authorization for Docker access
-  and may fail. Prefer the project scripts `npm run env:*` when available.
+This directory is its **own git repository**, nested inside a larger
+local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
 
-## Xdebug
-
-- Start with `npm run env:start:xdebug` (it will run the required
-  `bash scripts/update-xdebug-path-mapping.sh` via `npm run env:xdebug:patch`).
-  Restart the environment if needed.
-
-## Do not
-
-- Create themes or plugins inside `wordpress/wp-content/`.
-- Write project code within the local `wordpress/` tree or WordPress installation. It can be deleted at any
-  time and doing so would result in data loss.
-- Add data that exists only in the WordPress database and would be lost when the installation is deleted.
-- do not git push.
-
-## Reference
-
-Read `README.md` for prerequisites, plugin/theme/workspace setup, Xdebug,
-formatter behavior, CLI workflows, and the tests-environment explanation.
+- **Remote**: `git@github.com:tburette/wordpress-plu.git` (private).
+- **Purpose**: intra-day backup of the WordPress code so no work is lost. Commit
+  often, ideally on every meaningful change:
+  `git add -A && git commit`.
+- **Scope**: WordPress code development. The parent repository holds the rest of
+  the project (design mockups, PDFs, client documents, invoices, and so on) and is
+  never pushed to GitHub.
+- **Why nested**: git discovers the repository by walking up to the nearest
+  `.git`. Commands run from here target this repo; commands run above `site/`
+  target the parent management repo. Do not `git init` again and do not add the
+  parent repo as a remote.
+- The parent repo deliberately tracks some of these files too (double tracking,
+  an accepted choice). Do not try to "fix" that duplication.
+- Make sure to be in the `wordpress-plu` directory (`pwd`) when running git
+  commands.

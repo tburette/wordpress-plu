@@ -1,18 +1,18 @@
 # Pre-prepared editor building blocks in a WordPress theme
 
-This guide uses the current theme’s text domain, **atheme**, and assumes WordPress 7.0. Paths are relative to themes/atheme.
+This guide uses the current theme’s text domain, **atheme**, and assumes WordPress 7.1. Paths are relative to themes/atheme.
 
-| Need | Best fit |
-| --- | --- |
-| Different appearance for one existing block | Block style variation |
-| Different visual treatment for a whole section | Section style |
-| A preset existing block, possibly with inner blocks | Block variation |
-| A ready-made layout that editors can change independently | Non-synced pattern |
-| One layout whose original updates every use | Synced pattern |
-| Central layout plus per-instance content | Synced pattern + overrides |
-| Preserve structure after insertion | Locks/template locking |
-| Restrict direct children of a custom container | allowedBlocks |
-| Remove a block type’s design controls | theme.json settings.blocks |
+| Need                                                      | Best fit                   |
+| --------------------------------------------------------- | -------------------------- |
+| Different appearance for one existing block               | Block style variation      |
+| Different visual treatment for a whole section            | Section style              |
+| A preset existing block, possibly with inner blocks       | Block variation            |
+| A ready-made layout that editors can change independently | Non-synced pattern         |
+| One layout whose original updates every use               | Synced pattern             |
+| Central layout plus per-instance content                  | Synced pattern + overrides |
+| Preserve structure after insertion                        | Locks/template locking     |
+| Restrict direct children of a custom container            | allowedBlocks              |
+| Remove a block type’s design controls                     | theme.json settings.blocks |
 
 ## 1. Block style variation (custom block style)
 
@@ -26,13 +26,13 @@ Use this for “Outline button”, “Callout heading”, or “Framed image”.
 
 File: styles/block/callout-heading.json
 
-~~~json
+```json
 {
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
   "title": "Callout heading",
   "slug": "callout-heading",
-  "blockTypes": [ "core/heading" ],
+  "blockTypes": ["core/heading"],
   "styles": {
     "border": {
       "left": {
@@ -48,7 +48,7 @@ File: styles/block/callout-heading.json
     }
   }
 }
-~~~
+```
 
 The selected Heading receives `is-style-callout-heading`.
 
@@ -56,7 +56,7 @@ The selected Heading receives `is-style-callout-heading`.
 
 File: functions.php
 
-~~~php
+```php
 add_action( 'init', function () {
     register_block_style(
         'core/heading',
@@ -75,7 +75,7 @@ add_action( 'init', function () {
         )
     );
 } );
-~~~
+```
 
 ## 2. Section style
 
@@ -87,13 +87,13 @@ It is ideal for “Dark section”, “Soft card”, or “Brand-colour band”.
 
 File: styles/block/section-dark.json
 
-~~~json
+```json
 {
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
   "title": "Dark section",
   "slug": "section-dark",
-  "blockTypes": [ "core/group", "core/columns", "core/cover" ],
+  "blockTypes": ["core/group", "core/columns", "core/cover"],
   "styles": {
     "color": {
       "background": "#1B1B1D",
@@ -125,11 +125,11 @@ File: styles/block/section-dark.json
     }
   }
 }
-~~~
+```
 
 The PHP equivalent can register one variation for multiple blocks:
 
-~~~php
+```php
 add_action( 'init', function () {
     register_block_style(
         array( 'core/group', 'core/columns', 'core/cover' ),
@@ -145,7 +145,7 @@ add_action( 'init', function () {
         ),
     );
 } );
-~~~
+```
 
 Use a shared slug such as `section-dark` or `section-1`. A section style is not a global style variation: global variations skin the whole site; section styles are chosen on individual blocks.
 
@@ -159,7 +159,7 @@ Use this for a preconfigured Core block that should still expose its normal cont
 
 File: functions.php
 
-~~~php
+```php
 add_action( 'enqueue_block_editor_assets', function () {
     wp_enqueue_script(
         'atheme-feature-split-variation',
@@ -169,47 +169,53 @@ add_action( 'enqueue_block_editor_assets', function () {
         true
     );
 } );
-~~~
+```
 
 File: assets/js/feature-split-variation.js
 
-~~~js
-( function ( blocks, domReady, i18n ) {
-    const { registerBlockVariation } = blocks;
-    const { __ } = i18n;
+```js
+(function (blocks, domReady, i18n) {
+  const { registerBlockVariation } = blocks;
+  const { __ } = i18n;
 
-    domReady( function () {
-        registerBlockVariation( 'core/media-text', {
-            name: 'atheme/feature-split',
-            title: __( 'Feature split', 'atheme' ),
-            description: __( 'A wide media-and-copy feature section.', 'atheme' ),
-            icon: 'align-pull-right',
-            attributes: {
-                align: 'wide',
-                mediaPosition: 'right',
-                backgroundColor: 'redish'
-            },
-            innerBlocks: [
-                [ 'core/heading', {
-                    level: 2,
-                    placeholder: __( 'Feature title', 'atheme' )
-                } ],
-                [ 'core/paragraph', {
-                    placeholder: __( 'Explain the feature…', 'atheme' )
-                } ]
-            ],
-            scope: [ 'inserter' ],
-            isActive: [ 'align', 'mediaPosition', 'backgroundColor' ]
-        } );
-    } );
-} )( window.wp.blocks, window.wp.domReady, window.wp.i18n );
-~~~
+  domReady(function () {
+    registerBlockVariation("core/media-text", {
+      name: "atheme/feature-split",
+      title: __("Feature split", "atheme"),
+      description: __("A wide media-and-copy feature section.", "atheme"),
+      icon: "align-pull-right",
+      attributes: {
+        align: "wide",
+        mediaPosition: "right",
+        backgroundColor: "redish",
+      },
+      innerBlocks: [
+        [
+          "core/heading",
+          {
+            level: 2,
+            placeholder: __("Feature title", "atheme"),
+          },
+        ],
+        [
+          "core/paragraph",
+          {
+            placeholder: __("Explain the feature…", "atheme"),
+          },
+        ],
+      ],
+      scope: ["inserter"],
+      isActive: ["align", "mediaPosition", "backgroundColor"],
+    });
+  });
+})(window.wp.blocks, window.wp.domReady, window.wp.i18n);
+```
 
 `isActive` lets WordPress recognize an existing block as this variation. A custom block you own can alternatively declare its own `variations` in its block.json.
 
 **PHP alternative.** Use the server-side filter when the choices depend on registered post types, taxonomies, or other PHP data. In PHP, use an attribute array for `isActive` rather than a JavaScript callback.
 
-~~~php
+```php
 add_filter(
     'get_block_type_variations',
     function ( $variations, $block_type ) {
@@ -230,7 +236,7 @@ add_filter(
     10,
     2
 );
-~~~
+```
 
 ## 4. Non-synced pattern
 
@@ -244,7 +250,7 @@ This is usually the right answer for an editor-customisable hero, card, testimon
 
 File: patterns/feature-card.php
 
-~~~php
+```php
 <?php
 /**
  * Title: Feature card
@@ -275,11 +281,11 @@ File: patterns/feature-card.php
     <!-- /wp:buttons -->
 </div>
 <!-- /wp:group -->
-~~~
+```
 
 **Programmatic alternative.** Prefer the file form unless PHP must generate the pattern dynamically.
 
-~~~php
+```php
 add_action( 'init', function () {
     register_block_pattern(
         'atheme/short-notice',
@@ -290,7 +296,7 @@ add_action( 'init', function () {
         )
     );
 } );
-~~~
+```
 
 ## 5. Synced pattern
 
@@ -308,7 +314,7 @@ Use it for an identical notice, CTA, disclaimer, or component that must remain c
 
 **Programmatic creation.** This is a deliberate migration/setup technique, not normal theme registration. Run it once from a setup plugin or migration, not on every request. Omitting `wp_pattern_sync_status` creates a fully synced pattern; the `unsynced` meta value is only used for non-synced user patterns.
 
-~~~php
+```php
 function atheme_create_synced_site_notice() {
     if ( get_option( 'atheme_synced_site_notice_id' ) ) {
         return;
@@ -328,13 +334,13 @@ function atheme_create_synced_site_notice() {
         update_option( 'atheme_synced_site_notice_id', $pattern_id );
     }
 }
-~~~
+```
 
 Once its ID is 123, an insertion is a reference:
 
-~~~html
+```html
 <!-- wp:block {"ref":123} /-->
-~~~
+```
 
 ## 6. Page pattern (starter page pattern)
 
@@ -348,7 +354,7 @@ It suits About, Contact, Service, and landing-page starting layouts. Do not norm
 
 File: patterns/page-about.php
 
-~~~php
+```php
 <?php
 /**
  * Title: About page
@@ -370,7 +376,7 @@ File: patterns/page-about.php
     <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
-~~~
+```
 
 The filename is not what makes it a page pattern; those two headers are.
 
@@ -389,33 +395,35 @@ It is neither a standalone pattern nor a universal override system. It uses the 
 
 **Code form.** This markup must live in the original synced pattern in the database. It cannot become a synced pattern merely by putting it in a theme’s patterns directory. Pairing it with content-only editing makes the intended editing surface clearer.
 
-~~~html
+```html
 <!-- wp:group {"templateLock":"contentOnly","layout":{"type":"constrained"}} -->
 <div class="wp-block-group">
-    <!-- wp:heading {"metadata":{"bindings":{"content":{"source":"core/pattern-overrides"}},"name":"card-title"}} -->
-    <h2 class="wp-block-heading">Default card title</h2>
-    <!-- /wp:heading -->
+  <!-- wp:heading {"metadata":{"bindings":{"content":{"source":"core/pattern-overrides"}},"name":"card-title"}} -->
+  <h2 class="wp-block-heading">Default card title</h2>
+  <!-- /wp:heading -->
 
-    <!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"core/pattern-overrides"}},"name":"card-summary"}} -->
-    <p>Default card summary.</p>
-    <!-- /wp:paragraph -->
+  <!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"core/pattern-overrides"}},"name":"card-summary"}} -->
+  <p>Default card summary.</p>
+  <!-- /wp:paragraph -->
 
-    <!-- wp:buttons -->
-    <div class="wp-block-buttons">
-        <!-- wp:button {"metadata":{"bindings":{"text":{"source":"core/pattern-overrides"},"url":{"source":"core/pattern-overrides"}},"name":"card-cta"}} -->
-        <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#">Read more</a></div>
-        <!-- /wp:button -->
+  <!-- wp:buttons -->
+  <div class="wp-block-buttons">
+    <!-- wp:button {"metadata":{"bindings":{"text":{"source":"core/pattern-overrides"},"url":{"source":"core/pattern-overrides"}},"name":"card-cta"}} -->
+    <div class="wp-block-button">
+      <a class="wp-block-button__link wp-element-button" href="#">Read more</a>
     </div>
-    <!-- /wp:buttons -->
+    <!-- /wp:button -->
+  </div>
+  <!-- /wp:buttons -->
 </div>
 <!-- /wp:group -->
-~~~
+```
 
 For pattern ID 123, one instance can store different values like this:
 
-~~~html
+```html
 <!-- wp:block {"ref":123,"content":{"card-title":{"content":"A different title"},"card-summary":{"content":"Text for this card only."},"card-cta":{"text":"Explore","url":"/explore"}}} /-->
-~~~
+```
 
 The editor UI is safer than authoring this markup manually. The markup explains why override names must be unique inside the pattern.
 
@@ -429,33 +437,33 @@ Use it for an important image, required heading, or a pattern element that must 
 
 **Code example.**
 
-~~~html
+```html
 <!-- wp:heading {"lock":{"move":true,"remove":true}} -->
 <h2 class="wp-block-heading">This heading must remain in this position</h2>
 <!-- /wp:heading -->
-~~~
+```
 
 Use only `"move":true` or `"remove":true` if just one restriction is needed.
 
 To let only visual-site editors change locks through the UI:
 
-~~~php
+```php
 add_filter( 'block_editor_settings_all', function ( $settings ) {
     $settings['canLockBlocks'] = current_user_can( 'edit_theme_options' );
     return $settings;
 } );
-~~~
+```
 
 ## 9. Template locking and content-only editing
 
 **What it is.** Despite the name, `templateLock` often refers to the child-block template inside a container such as Group, Cover, Columns, Column, or Navigation. It controls that container’s inner-block structure, not only files in the templates directory.
 
-| Value | Structure | Editor experience |
-| --- | --- | --- |
-| `all` | No insertion, removal, or movement of children | Child content/settings remain normally editable unless separately restricted |
-| `insert` | No insertion or removal; children may move | Child content/settings remain normally editable |
-| `contentOnly` | No structural editing | Only recognised text/media content is exposed in a simplified content interface |
-| `false`/omitted | No lock | Normal editing |
+| Value           | Structure                                      | Editor experience                                                               |
+| --------------- | ---------------------------------------------- | ------------------------------------------------------------------------------- |
+| `all`           | No insertion, removal, or movement of children | Child content/settings remain normally editable unless separately restricted    |
+| `insert`        | No insertion or removal; children may move     | Child content/settings remain normally editable                                 |
+| `contentOnly`   | No structural editing                          | Only recognised text/media content is exposed in a simplified content interface |
+| `false`/omitted | No lock                                        | Normal editing                                                                  |
 
 For `all`, add normal block locking to the wrapper too if the wrapper itself should not move or disappear. [Official block-template documentation](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/)
 
@@ -467,22 +475,22 @@ For `all`, add normal block locking to the wrapper too if the wrapper itself sho
 
 **Pattern example.**
 
-~~~html
+```html
 <!-- wp:group {"templateLock":"contentOnly","lock":{"move":true,"remove":true},"backgroundColor":"redish","layout":{"type":"constrained"}} -->
 <div class="wp-block-group has-redish-background-color has-background">
-    <!-- wp:heading {"level":2} -->
-    <h2 class="wp-block-heading">Editable heading</h2>
-    <!-- /wp:heading -->
-    <!-- wp:paragraph -->
-    <p>Editors can change this copy but cannot normally rearrange the layout.</p>
-    <!-- /wp:paragraph -->
+  <!-- wp:heading {"level":2} -->
+  <h2 class="wp-block-heading">Editable heading</h2>
+  <!-- /wp:heading -->
+  <!-- wp:paragraph -->
+  <p>Editors can change this copy but cannot normally rearrange the layout.</p>
+  <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->
-~~~
+```
 
 **Related, separate API.** A custom post type can preload and lock its whole editor with the underscore form `template_lock`:
 
-~~~php
+```php
 add_action( 'init', function () {
     register_post_type(
         'event',
@@ -496,7 +504,7 @@ add_action( 'init', function () {
         )
     );
 } );
-~~~
+```
 
 `templateLock` is a nested-block attribute. `template_lock` is a post-type registration property.
 
@@ -517,7 +525,7 @@ This is a block-development feature, not a theme.json switch for changing Core G
 
 File: blocks/card/block.json
 
-~~~json
+```json
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
@@ -532,11 +540,11 @@ File: blocks/card/block.json
     "core/image"
   ]
 }
-~~~
+```
 
 File: functions.php
 
-~~~php
+```php
 add_action( 'init', function () {
     wp_register_script(
         'atheme-card-editor',
@@ -548,69 +556,69 @@ add_action( 'init', function () {
 
     register_block_type( get_theme_file_path( 'blocks/card' ) );
 } );
-~~~
+```
 
 The custom block’s editor component must render InnerBlocks. This browser-ready example deliberately avoids a build step; the same array is passed to `useInnerBlocksProps` because that component owns the child inserter.
 
 File: blocks/card/index.js
 
-~~~js
-( function ( blocks, blockEditor, element ) {
-    const { registerBlockType } = blocks;
-    const { useBlockProps, useInnerBlocksProps } = blockEditor;
-    const { createElement: el } = element;
-    const ALLOWED_BLOCKS = [
-        'core/heading',
-        'core/paragraph',
-        'core/buttons',
-        'core/image'
-    ];
+```js
+(function (blocks, blockEditor, element) {
+  const { registerBlockType } = blocks;
+  const { useBlockProps, useInnerBlocksProps } = blockEditor;
+  const { createElement: el } = element;
+  const ALLOWED_BLOCKS = [
+    "core/heading",
+    "core/paragraph",
+    "core/buttons",
+    "core/image",
+  ];
 
-    registerBlockType( 'atheme/card', {
-        apiVersion: 3,
-        title: 'Card',
-        category: 'design',
+  registerBlockType("atheme/card", {
+    apiVersion: 3,
+    title: "Card",
+    category: "design",
 
-        edit: function Edit() {
-            const blockProps = useBlockProps();
-            const innerBlocksProps = useInnerBlocksProps( blockProps, {
-                allowedBlocks: ALLOWED_BLOCKS
-            } );
+    edit: function Edit() {
+      const blockProps = useBlockProps();
+      const innerBlocksProps = useInnerBlocksProps(blockProps, {
+        allowedBlocks: ALLOWED_BLOCKS,
+      });
 
-            return el( 'section', innerBlocksProps );
-        },
+      return el("section", innerBlocksProps);
+    },
 
-        save: function Save() {
-            const blockProps = useBlockProps.save();
-            const innerBlocksProps = useInnerBlocksProps.save( blockProps );
+    save: function Save() {
+      const blockProps = useBlockProps.save();
+      const innerBlocksProps = useInnerBlocksProps.save(blockProps);
 
-            return el( 'section', innerBlocksProps );
-        }
-    } );
-} )( window.wp.blocks, window.wp.blockEditor, window.wp.element );
-~~~
+      return el("section", innerBlocksProps);
+    },
+  });
+})(window.wp.blocks, window.wp.blockEditor, window.wp.element);
+```
 
 **Editor-configurable alternative.**
 
-~~~json
+```json
 {
   "attributes": {
     "allowedBlocks": {
       "type": "array",
-      "default": [ "core/heading", "core/paragraph", "core/buttons" ]
+      "default": ["core/heading", "core/paragraph", "core/buttons"]
     }
   },
   "supports": {
     "allowedBlocks": true
   }
 }
-~~~
+```
 
-~~~js
-const innerBlocksProps = useInnerBlocksProps( blockProps, {
-    allowedBlocks: attributes.allowedBlocks
-} );
-~~~
+```js
+const innerBlocksProps = useInnerBlocksProps(blockProps, {
+  allowedBlocks: attributes.allowedBlocks,
+});
+```
 
 If the requirement is “hide almost every block from the whole editor”, use the separate server-side `allowed_block_types_all` filter. That is a global inserter policy, not `allowedBlocks`.
 
@@ -624,7 +632,7 @@ It curates the UI; it does not delete the block, rewrite existing saved styles, 
 
 File: theme.json
 
-~~~json
+```json
 {
   "$schema": "https://schemas.wp.org/wp/6.9/theme.json",
   "version": 3,
@@ -665,7 +673,7 @@ File: theme.json
     }
   }
 }
-~~~
+```
 
 `customFontSize: false` removes arbitrary size entry. `defaultFontSizes: false` plus an empty `fontSizes` list removes the preset size choices for that target block. Per-block values override global values, including broadly enabled `appearanceTools`.
 

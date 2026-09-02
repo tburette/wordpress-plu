@@ -5,7 +5,7 @@ Urbain. It is intentionally focused on WordPress code and tooling: the
 network, themes, plugins, scripts, and developer documentation that supports
 them.
 
-The environment is a fresh WordPress Multisite network. It currently contains
+The test environment is a WordPress Multisite network. It currently contains
 the network site and three local farm sites:
 
 | Site      | Local URL                                   |
@@ -86,25 +86,9 @@ independently:
 npm run env:multisite:verify
 ```
 
-#### Optional automatic provisioning after `env:start`
+#### Provisioning after `env:start`
 
-If automatic provisioning is useful again later, add the following block to
-`.wp-env.json` at the top level:
-
-```json
-"lifecycleScripts": {
-  "afterStart": "bash scripts/provision-environment.sh"
-}
-```
-
-With that block enabled, `npm run env:start` runs the complete provisioning
-after the containers start. Do not run `npm run env:provision` immediately
-afterward, or the same provisioning will be invoked twice. To bypass the hook
-for one start, use:
-
-```sh
-npm run env:start -- --scripts=false
-```
+`npm run env:provision`
 
 The default credentials are `admin` / `password`.
 
@@ -245,66 +229,6 @@ npm run env:content -- home-network navigation-menus
 npm run env:content -- home-network --force
 ```
 
-With no selector, the command provisions logos, front pages, header and footer
-Navigations, the typography test page, the all-patterns review page at
-`/lpu-sections-patterns-test/`, and the network Home fixture. The review page
-contains every pattern supplied by the active theme and is separate from the
-Home. Ordinary editorial pages and Navigations are preserved; the managed test
-pages are refreshed according to their script contracts, and the Home refuses
-to replace non-placeholder content unless `--force` is supplied.
-
-The front-page operation remains technical provisioning: it selects or creates
-a Page with the `accueil` slug on each site, points the site's reading settings
-to it, and gives a newly created Page an invisible placeholder comment. It does
-not add patterns, images, or sections from the design maquettes. The Home
-operation stores its block markup in the network `Accueil` page, resolves the
-three farm URLs from the current multisite, and enables the transparent-header
-option.
-
-Pattern source files stay generic so that an editor can reuse them on any page.
-When a pattern is provisioned into a page, the content scripts add the same
-root block metadata that Gutenberg adds during manual insertion
-(`patternName`, pattern title and category). The network Home fixture then
-applies its own explicit demonstration copy and farm URLs to those generic
-slots. This keeps the Gutenberg inserter generic while preserving a
-reproducible Home composition; later editorial changes should be made in
-Gutenberg and are protected from replacement unless `--force` is supplied.
-
-### Shared header and navigation
-
-The four sites use the shared `parts/header.html` structure and one core
-Navigation block per site. The navigation content is site-local and is
-provisioned from `scripts/content/navigation-menus/`. Provisioning creates a
-native site-local `header` template-part override containing that site's
-Navigation `ref`; the shared theme never looks up a menu ID at render time.
-The footer uses the same native association for its own Navigation post.
-
-The header logo is a top-level Site Logo block inside the native Navigation
-content. It is the visual divider: items before it render on the left and items
-after it render on the right. The layout does not depend on a particular number
-of top-level menu items.
-
-The target desktop composition is a full-width header with the horizontal logo
-centered and the links on both sides. There is no hamburger on large screens.
-A submenu is the expanded version of the same Navigation block: a contextual
-mega-menu below the header, with an écru background and readable columns. It
-must be reachable by click and keyboard focus; hover may be an additional
-desktop shortcut. The inline menu is constrained to a centred navigation rail;
-the small `assets/js/navigation.js` observer compares the rendered logo and
-top-level item rectangles and switches to Core's responsive overlay only when
-they collide. It does not count or redistribute menu items.
-
-The opaque écru header is the default. A transparent header over a sufficiently
-contrasted hero is an explicit per-page option, and an opened mega-menu always
-returns the header and panel to opaque écru. The screenshots in the design
-delivery show a desktop hamburger and `Agir avec nous`; those are historical
-maquette elements and are not part of the current menu contract.
-
-The complete menu contract, source priorities, current limitations and pending
-checks are documented in the comments at the top of
-`scripts/content/navigation-menus/setup.sh` and in
-[`theme-implementation-plan.md`](theme-implementation-plan.md).
-
 ## VS Code
 
 Open the supplied workspace file:
@@ -346,8 +270,3 @@ npm run env:stop
 `env:stop` preserves the database and generated environment. `env:cleanup`
 removes the generated environment and its local database after confirmation,
 while preserving Docker images.
-
-## Generated files
-
-The local `wordpress/` directory is scratch/generated state and is ignored by
-Git. It can be recreated at any time. Never put project source inside it.
