@@ -2,23 +2,23 @@
   "folders": [
     {
       "name": "wordpress-lpu",
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "settings": {
     "files.readonlyInclude": {
-      "wordpress/**": true
+      "../../../wordpress/wordpress-7.1/**": true,
     },
     "search.exclude": {
       "**/.git": true,
       "**/node_modules": true,
       "**/vendor": true,
-      "**/wordpress": true
+      "**/wordpress": true,
     },
     "intelephense.files.exclude": [
       "**/.git/**",
       "**/node_modules/**",
-      "**/vendor/**"
-    ]
-  }
+      "**/vendor/**",
+    ],
+  },
 }
