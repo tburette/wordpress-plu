@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.wp.org/trunk/wp-env.json",
   "core": null,
-  "plugins": ["./plugins/lpu-split-section", "./plugins/nav-group-spike", "https://downloads.wordpress.org/plugin/query-monitor.zip"],
+  "plugins": ["./plugins/lpu-split-section", "./plugins/nav-group", "https://downloads.wordpress.org/plugin/query-monitor.zip"],
   "themes": ["./themes/lepaysanurbain"],
   "config": {
     "WP_DEBUG": true,

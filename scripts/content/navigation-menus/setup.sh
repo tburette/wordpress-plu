@@ -34,10 +34,17 @@ render_header_template_part() {
     exit 1
   fi
 
-  # The theme fallback deliberately has no site-specific ref. The database
-  # template-part database override receives the local Navigation ID here.
-  sed "0,/wp:navigation {/s//wp:navigation {\"ref\":$navigation_id,/" \
-    "$header_template_file"
+  # The header template part from the theme has no ref (because it is 
+  # site-specific). we set the ref to the local Navigation ID here.
+  local rendered
+  rendered="$(sed "0,/wp:navigation {/s//wp:navigation {\"ref\":$navigation_id,/" "$header_template_file")"
+
+  if ! grep -q '"ref":'"$navigation_id" <<<"$rendered"; then
+    printf 'Could not add Navigation ref to generated header template.\n' >&2
+    exit 1
+  fi
+
+  printf '%s\n' "$rendered"
 }
 
 create_or_update_header_template_part() {
@@ -82,9 +89,7 @@ create_or_update_header_template_part() {
     --url="$site_url" >/dev/null
 }
 
-# The menu content (block markup) is loaded from the HTML files in this directory. 
-# Does not change the menu if it already exists (avoids risking losing user
-# changes).
+# The menu content (block markup) is loaded from the HTML files in this directory.
 create_or_select_menu() {
   local site_url="$1"
   local navigation_title="$2"
@@ -117,6 +122,13 @@ create_or_select_menu() {
       --post_name="$navigation_menu_name" \
       --post_content="$menu_content" \
       --porcelain | tr -d '\r')"
+  else
+  	# The existing menu is recreated so the provisioned content always matches
+	# the current fragment files, even if changes were made.
+    run_wp post update "$menu_id" \
+      --url="$site_url" \
+      --post_content="$menu_content" \
+      --post_title="$navigation_title" >/dev/null
   fi
 
   echo "$menu_id"

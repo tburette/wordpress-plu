@@ -482,9 +482,10 @@ body.lpu-header-transparent
   display: none;
 }
 
+/* The site logo sits inside the navigation, in the center grid track. Core
+ * wraps it in a nav item li; only its own track is sized (auto), so the logo
+ * never overlaps the two flanking nav-groups. */
 .lpu-header .wp-block-site-logo {
-  position: relative;
-  z-index: 2;
   margin: 0;
   width: 190px;
   max-width: 100%;
@@ -535,6 +536,21 @@ body.lpu-header-transparent
 .lpu-header .wp-block-navigation__container {
   width: 100%;
   max-width: none;
+  align-items: center;
+}
+
+/* Desktop three-region layout: the two nav-groups share the side tracks and
+ * the site logo keeps the center track, so the logo is centered by the grid
+ * itself instead of by absolute positioning. Scoped to the closed container
+ * so the mobile overlay keeps Core's single-column list. */
+.lpu-header
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .wp-block-navigation__container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: clamp(0.5rem, 2vw, 1.5rem);
+  min-height: var(--lpu-header-content-min-height);
 }
 
 .lpu-header .wp-block-navigation-item__content {
@@ -576,89 +592,89 @@ body.lpu-header-transparent
   font-size: 1.15rem;
 }
 
-/* When the full desktop menu fits, keep Core's flex list and use the logo item
- * as the only layout marker. Items before it occupy the left side; the first
- * item after it receives the automatic spacer and occupies the right side.
- * The layout state is selected by navigation.js from the rendered positions
- * of the logo and top-level items, not from a viewport or item-count rule.
- * Without JavaScript this remains the desktop fallback, while Core still
- * supplies its own small-screen fallback.
- */
+/* The site logo is a nav item on desktop; in Core's open overlay it would
+ * become an entry of the vertical list, so it is hidden there. */
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container {
-  position: static;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  min-height: var(--lpu-header-content-min-height);
-  gap: clamp(0.25rem, 1vw, 1rem);
+  .wp-block-navigation__responsive-container.is-menu-open
+  li:has(.lpu-header__logo) {
+  display: none;
 }
 
-.lpu-header .lpu-header__navigation:not(.lpu-navigation--compact),
+/* Desktop nav-group: each group is a grid item hugging its rail edge.
+ * min-width: 0 lets its 1fr track shrink; overflow: hidden clips a
+ * still-too-wide group while navigation.js decides whether to switch to
+ * compact. Scoped to the closed container so the mobile overlay keeps Core's
+ * stacked list. */
+.lpu-header .lpu-nav-group__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open),
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .lpu-nav-group {
+  position: static;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .lpu-nav-group__list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(0.25rem, 1vw, 1rem);
+  min-width: 0;
+}
+
+/* The closing group sits in the last (1fr) track; pack its items toward the
+ * rail's outer edge so the three regions mirror each other. */
+.lpu-header
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .lpu-nav-group:last-child
+  .lpu-nav-group__list {
+  justify-content: flex-end;
+}
+
+/* Keep every top-level label on one line; without nowrap the text wraps
+ * inside a shrinking group and the overflow check never triggers. */
+.lpu-header
+  .wp-block-navigation__responsive-container:not(.is-menu-open)
+  .lpu-nav-group
+  > .lpu-nav-group__list
+  > .wp-block-navigation-item
+  > .wp-block-navigation-item__content {
+  white-space: nowrap;
+}
+
+/* Desktop: keep the whole nav stack static so the full-width submenu panel
+ * anchors to .lpu-header (position: relative) rather than to the nav rail. */
+.lpu-header .wp-block-navigation,
+.lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open),
+.lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__responsive-close,
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__responsive-dialog,
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__responsive-container-content {
   position: static;
 }
 
-.lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-item {
-  min-width: 0;
-}
-
-.lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-item:has(> .lpu-header__logo) {
-  position: absolute;
-  inset-inline-start: 50%;
-  inset-block-start: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-item:has(> .lpu-header__logo)
-  + .wp-block-navigation-item {
-  margin-inline-start: auto;
-}
-
-.lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-submenu {
+/* Mega-menu: where the submenu lives inside a nav-group list, it still opens
+ * as a full-width panel under the header bar. */
+.lpu-header .wp-block-navigation-submenu {
   position: static;
 }
 
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
   .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-submenu
-  > .wp-block-navigation__submenu-container {
+  .wp-block-navigation__submenu-container {
   top: 100%;
   inset-inline: 0;
   box-sizing: border-box;
@@ -678,22 +694,16 @@ body.lpu-header-transparent
 }
 
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
   .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-submenu
-  > .wp-block-navigation__submenu-container
+  .wp-block-navigation__submenu-container
   > .wp-block-navigation-item {
   flex: 1 1 12rem;
   min-width: 12rem;
 }
 
 .lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
   .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-submenu
-  > .wp-block-navigation__submenu-container
+  .wp-block-navigation__submenu-container
   > .wp-block-navigation-item
   > .wp-block-navigation-item__content {
   padding: 0.5rem 0;
@@ -703,21 +713,17 @@ body.lpu-header-transparent
   text-transform: none;
 }
 
-.lpu-header
-  .lpu-header__navigation:not(.lpu-navigation--compact)
-  .wp-block-navigation__responsive-container:not(.is-menu-open) {
+.lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open) {
   padding-inline: 0;
 }
 
-/* The compact state is selected when the rendered desktop items collide with
- * the logo. Core still controls the open overlay; these rules only choose the
- * closed presentation. The same native Site Logo remains the compact logo. */
+/* Compact presentation, selected by navigation.js when one nav-group no
+ * longer fits in its track. The grid keeps the logo in the middle; the two
+ * groups are dropped. Core still owns the open overlay; these rules only
+ * choose the closed presentation, mirroring Core's own responsive (<600px)
+ * presentation so the switch between the two is seamless. */
 .lpu-header .lpu-header__navigation.lpu-navigation--compact {
-  position: relative;
   display: block;
-  justify-content: flex-start;
-  /* Keep the compact logo and the hamburger in the same header row. */
-  min-height: 0;
 }
 
 .lpu-header
@@ -730,9 +736,8 @@ body.lpu-header-transparent
   height: 2rem;
   margin: 0;
   padding: 0;
-  color: var(--wp--preset--color--vert-fonce);
   position: absolute;
-  inset-inline-start: 0;
+  inset-inline-start: clamp(1rem, 3vw, 3rem);
   inset-block-start: 50%;
   z-index: 3;
   transform: translateY(-50%);
@@ -740,79 +745,61 @@ body.lpu-header-transparent
 
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open) {
-  display: block;
-  position: static;
-  width: 100%;
-  padding: 0;
-  background: transparent;
-  overflow: visible;
-}
-
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__responsive-container-close {
-  display: none;
-}
-
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__responsive-close,
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__responsive-dialog,
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__responsive-container-content {
-  position: static;
-  width: 100%;
-  padding: 0;
-}
-
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__container {
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
   justify-content: center;
-  gap: 0;
-  width: 100%;
-  max-width: 100%;
 }
 
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
   .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-item {
+  .lpu-nav-group {
   display: none;
 }
 
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container:not(.is-menu-open)
-  .wp-block-navigation__container
-  > .wp-block-navigation-item:has(> .lpu-header__logo) {
-  display: block;
-  position: static;
-  margin: 0;
-  transform: none;
-}
+/* Below 600px Core hides the entire closed Navigation container so only the
+ * hamburger survives. Keep the compact closed presentation on phones too:
+ * centered logo with the open button at the rail's start, the same closed
+ * look the JavaScript class produces at larger widths. */
+@media screen and (max-width: 600px) {
+  .lpu-header
+    nav.lpu-header__navigation
+    .wp-block-navigation__responsive-container:not(.is-menu-open) {
+    display: block;
+  }
 
-.lpu-header
-  .lpu-header__navigation.lpu-navigation--compact
-  .wp-block-navigation__responsive-container.is-menu-open
-  .wp-block-navigation__container
-  > .wp-block-navigation-item:has(> .lpu-header__logo) {
-  order: -1;
-  align-self: center;
-  margin-block-end: 1.5rem;
+  .lpu-header
+    nav.lpu-header__navigation
+    .wp-block-navigation__responsive-container:not(.is-menu-open)
+    .wp-block-navigation__container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .lpu-header
+    nav.lpu-header__navigation
+    .wp-block-navigation__responsive-container:not(.is-menu-open)
+    .lpu-nav-group {
+    display: none;
+  }
+
+  .lpu-header
+    nav.lpu-header__navigation
+    .wp-block-navigation__responsive-container-open {
+    box-sizing: border-box;
+    display: flex;
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    inset-inline-start: clamp(1rem, 3vw, 3rem);
+    inset-block-start: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+  }
 }
 
 main.wp-block-group {

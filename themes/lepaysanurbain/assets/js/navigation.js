@@ -1,24 +1,30 @@
 /**
- * Check if the space available is too tight for the desktop menu and switch it
- * to the compact (mobile) mode
+ * Switch the header navigation to its compact (hamburger) presentation when
+ * the desktop version can no longer fit.
  *
- * WordPress Core still owns the overlay, submenu controls, focus handling,
- * and Escape. This file only switches to the compact presentation when a
- * top-level menu item overlaps the centred logo.
+ * The desktop three-region layout is pure CSS. Core Navigation owns every
+ * interaction (overlay, submenus, focus, Escape). This file only checks
+ * whether a group (the nav-group left and right of the logo) overflows
+ * its track and toggles the compact class when it does.
+ *
+ * Below Core's 600px breakpoint the closed container is hidden and then
+ * restored by pure CSS in theme.css (@media screen and (max-width: 600px)),
+ * so the compact phone presentation does not need this script at all.
  */
 
-// this undefined at top-level in modules
+// we expect to be ins a ES module
+// this is undefined at the top level in a ES modules.
 if (this !== undefined) {
   throw new Error(
-    "Must be run as an ESM module (see wp_enqueue_script_module())",
+    "Must be run as an ESM module (see PHP wp_enqueue_script_module())",
   );
 }
-// parent <nav>
-// not any navigation but a/ .lpu-header__navigation : our special navigation
-// that goes with the header behavior
+
+// Parent <nav>. Only the header navigation is checked; other
+// navigations (eg. footer) must not be impacted.
 const navigationSelector =
   ".lpu-header nav.wp-block-navigation.lpu-header__navigation";
-// <ul> containining the menu items
+// <ul> containing the top-level groups.
 const listSelector =
   ".wp-block-navigation__responsive-container-content > .wp-block-navigation__container";
 
@@ -26,91 +32,84 @@ function getList(navigation) {
   return navigation.querySelector(listSelector);
 }
 
-function rectanglesOverlap(first, second) {
-  // overlap if touch both horizontally and vertically
-  return (
-    first.left < second.right && // first not fully after right
-    first.right > second.left && // first not fully before right
-    first.top < second.bottom && // first not fully under right
-    first.bottom > second.top // first not fully above right
+/**
+ * The full-screen overlay opens on mobile when the
+ * hamburger is pressed. This is handled by WordPress Core native code.
+ * the (mobile) overlay is not to be confused with the desktop mega-menu.
+ */
+function isMobileOverlayOpen(navigation) {
+  const container = navigation.querySelector(
+    ".wp-block-navigation__responsive-container",
   );
-}
 
-function isLogoCollidingWithMainMenuItems(list) {
-  const logoListItem = list.querySelector(":scope > li:has(.lpu-header__logo)");
-  //   const logoItem = logo?.closest("li");
-
-  // wp core activation of mobile menu:
-  // wp core code hides .wp-block-navigation__responsive-container
-  // (which is a descendant of navigation and a parent of list)
-  // when the viewport is under a certain width (600px when I checked).
-  // this test is an indirect way of checking if it is the case
-  if (!list.getBoundingClientRect().width) {
-    // when wp core think the mobile version of the menu should be active then
-    // behave as if there was a collision (will trigger compact mode)
-    return true;
-  }
-
-  // couldn't find the logo !
-  // This should probably be an error instead of silently returning but this
-  // is a high frequency, critical to rendering, code.
-  if (!logoListItem) {
-    return false;
-  }
-
-  const logoRect = logoListItem.getBoundingClientRect();
-
-  return Array.from(list.children).some(function (item) {
-    return (
-      item !== logoListItem &&
-      rectanglesOverlap(logoRect, item.getBoundingClientRect())
-    );
-  });
+  return Boolean(container?.classList.contains("is-menu-open"));
 }
 
 /**
- * The menu that opens in mobile mode when pressing the hamburger menu icon.
- * Not to be confused with the mega-menu or when the desktop menu is not in use
- * and the mobile mebu behavor is activated (show hamburger instead of full menu)
+ * Check whether the header navigation fits.
+ *
+ * The desktop layout of the navigation is a '1fr auto 1fr' grid (see theme.css
+ * "Desktop three-region layout"): one (1fr) track per group and one (auto)
+ * track for the logo.
+ *
+ * Done by checking if one of the two nav-group size no longer fits inside its
+ * grid track (its cell).
+ *
+ * This check compares :
+ * - scrollWidth => how wide a group's content really is (even when clipped
+ * because otherwise it would be overflowing)
+ * - clientWidth => how wide the track actually is (might be clipped).
+ * If any group's content is wider than its track, the menu cannot present
+ * all its items in the desktop layout.
+ *
+ * For the check to be able to detect the overlow, the two nav groups must
+ * possess the following CSS(see theme.css "Desktop nav-group"):
+ *   - min-width: 0 lets its 1fr track shrink below the natural width of the
+ *     text;
+ *   - white-space: nowrap on the labels and flex-wrap: nowrap on the group
+ *     list prevent wrapping onto extra lines (that would make the menu
+ *     taller instead of overflowing);
+ *   - overflow: hidden clips the too-wide content so it never spills onto
+ *     the logo while this script performs the check.
+ * Removing any of these rules would silently break the measurement: the
+ * check could stop detecting overflow and the menu mught not compact.
  */
-function isMobileOverlayOpen(list) {
-  const container = list.closest(".wp-block-navigation__responsive-container");
-
-  return Boolean(container?.classList.contains("is-menu-open"));
+function isOverflowing(list) {
+  const groups = Array.from(list.children).filter((group) =>
+    group.classList.contains("lpu-nav-group"),
+  );
+  // +1px is a small margin against rounding/flicker.
+  return groups.some((group) => group.scrollWidth > group.clientWidth + 1);
 }
 
 function updateNavigation(navigation) {
   const list = getList(navigation);
 
-  if (!list || isMobileOverlayOpen(list)) {
+  if (!list || isMobileOverlayOpen(navigation)) {
     return;
   }
-  /*
-   * Temporarily restore the  desktop layout (if we where currently
-   * in compact mode). This is done to check for collision when the menu is
-   * in desktop mode instead of the compact mode.
-   */
+
+  // Measure in the desktop presentation so the decision reflects what the
+  // closed menu could actually show, not the compact layout below it.
   navigation.classList.remove("lpu-navigation--compact");
-  const enableCompact = isLogoCollidingWithMainMenuItems(list);
+  const enableCompact = isOverflowing(list);
   navigation.classList.toggle("lpu-navigation--compact", enableCompact);
 }
 
 function scheduleUpdate(navigation) {
-  // debouncing
+  // Debounce consecutive resize/font events into a single frame.
   if (navigation.lpuLayoutFrame) {
     window.cancelAnimationFrame(navigation.lpuLayoutFrame);
   }
 
   navigation.lpuLayoutFrame = window.requestAnimationFrame(function () {
     updateNavigation(navigation);
-    navigation.lpuLayoutFrame = null;
   });
 }
 
 function observeNavigation(navigation) {
-  // won't trigger if the viewport width changes but the navigation doesn't change
-  // size. This happens when navigation has enough space to fit completely.
-  // Nicely avoids some needless calls.
+  // On the nav (not the window) so menu resizes are tracked without
+  // re-running for unrelated viewport changes.
   const resizeObserver = new ResizeObserver(function () {
     scheduleUpdate(navigation);
   });
@@ -119,7 +118,7 @@ function observeNavigation(navigation) {
   const list = getList(navigation);
   if (!list) {
     console.error(`navigation (${navigationSelector}) has no list \
-		(${listSelector}), cannot execute navigation.js logic`);
+		(${listSelector}), navigation.js cannot perform needed change detection adequately`);
   } else {
     // navigation menu content changes
     new MutationObserver(function () {
@@ -148,12 +147,13 @@ function observeNavigation(navigation) {
     }
   }
 
-  // probably not needed (covered by the resize observer) but better safe
-  // than sorry
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () {
-      scheduleUpdate(navigation);
-    });
+  // webfonts can change group widths after load.
+  if (document.fonts?.ready) {
+    document.fonts.ready
+      .then(function () {
+        scheduleUpdate(navigation);
+      })
+      .catch(function () {});
   }
 
   // makes sure it runs at least once
@@ -164,10 +164,8 @@ function init() {
   document.querySelectorAll(navigationSelector).forEach(observeNavigation);
 }
 
-if ("ResizeObserver" in window && "MutationObserver" in window) {
-  if ("loading" === document.readyState) {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
-    init();
-  }
+if ("loading" === document.readyState) {
+  document.addEventListener("DOMContentLoaded", init, { once: true });
+} else {
+  init();
 }
