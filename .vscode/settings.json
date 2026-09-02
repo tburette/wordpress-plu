@@ -14,6 +14,6 @@
     "**/vendor/composer": true
   },
   "intelephense.environment.includePaths": [
-    "/home/tburette/dev/wordpress/wordpress-core-7.0/"
+    "/home/tburette/dev/wordpress/wordpress-7.1/"
   ]
 }

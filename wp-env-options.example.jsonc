@@ -7,10 +7,10 @@
   "core": null,
 
   // Or use a local WordPress checkout, relative to the project directory.
-  "core": "../../wordpress-core-7.0",
+  "core": "../../wordpress-7.1",
 
   // Or use a WordPress.org/GitHub reference understood by wp-env.
-  "core": "WordPress/WordPress#7.0",
+  "core": "WordPress/WordPress#7.1",
 
   // Pin the PHP image used by the environment.
   "phpVersion": "8.3",
