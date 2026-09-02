@@ -14,7 +14,6 @@
     "env:hosts:check": "bash scripts/check-local-hosts.sh",
     "env:language:setup": "bash scripts/setup-language.sh",
     "env:provision": "bash scripts/provision-environment.sh",
-    "env:split-plugin:setup": "bash scripts/setup-split-plugin.sh",
     "env:theme:setup": "bash scripts/setup-theme.sh",
     "env:content": "bash scripts/content/setup.sh",
     "env:multisite:verify": "bash scripts/verify-multisite-network.sh"

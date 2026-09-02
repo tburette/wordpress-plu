@@ -7,7 +7,7 @@
 - [ ] `themes/lepaysanurbain/theme.json` : evalute if settings > color > custom should be true
 - [ ] provisioning is slow. I think it might be because every command goes through "wp-env run cli wp". Which incures a cost. Maybe we could put the script (and associated content) in the "cli" environment and run the provisioning scripts there directly, thus skipping the wp-env run cost.
 - [ ] Make content provisioning URL-agnostic and runnable on the target PHP-only OVH Perso hosting installation instead of depending on environment-specific URLs and WP-CLI shell scripts.
-- [ ] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
+- [x] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
 - Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
 
 ## A tester
