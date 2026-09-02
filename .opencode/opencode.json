@@ -2,30 +2,41 @@
     "$schema": "https://opencode.ai/config.json",
     "permission": {
         "*": "ask",
-        "bash": {
-            "*": "ask",
-            "find *": "allow"
-        },
-        "edit": {
-            "*": "allow",
-            "*/opencode.json": "deny",
-            "/wordpress/*": "deny"
-        },
-        "question": "allow",
+        "external_directory": "ask",
         "read": {
             "*": "allow",
             "*.env": "deny",
-            "*.env.*": "deny"
+            "*.env.*": "deny",
+            "*.env.example": "allow"
+        },
+        "edit": {
+            "*": "allow",
+            "**/opencode.json": "deny"
+        },
+        "bash": {
+            "*": "ask",
+            "cd *": "allow",
+            "find *": "allow",
+            "rg *": "allow",
+            "cat *": "allow",
+            "head *": "allow",
+            "tail *": "allow",
+            "echo *": "allow",
+            "ls *": "allow"
         },
         "glob": "allow",
         "grep": "allow",
         "webfetch": "ask",
-        "websearch": "allow"
+        "websearch": "allow",
+        "web-inspector": "allow",
+        "wordpress-inspector": "allow",
+        "task": "allow",
+        "skill": "allow",
+        "question": "allow"
     },
     "watcher": {
         "ignore": [
-            "node_modules/**",
-            "dist/**"
+            "node_modules/**"
         ]
     }
 }
