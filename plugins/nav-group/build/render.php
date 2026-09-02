@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Server-side render for lpu/nav-group.
  *
@@ -9,11 +10,13 @@
 
 $inner_html = '';
 
-foreach ( $block->inner_blocks as $inner_block ) {
+foreach ($block->inner_blocks as $inner_block) {
 	$inner_html .= $inner_block->render();
 }
 
-if ( '' === trim( $inner_html ) ) {
+// If the group is empty (no links added yet), render nothing rather than an
+// empty <li><ul></ul></li> — matches how other empty nav items behave.
+if ('' === trim($inner_html)) {
 	return;
 }
 
