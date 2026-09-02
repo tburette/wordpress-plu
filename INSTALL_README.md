@@ -137,8 +137,6 @@ The active configuration is `.wp-env.json`. Important settings include:
   including the relevant theme and pattern cache handling;
 - `port: 8888` and `autoPort: false` keep the WordPress host stable;
 - `testsEnvironment: false` keeps one development environment only;
-- `plugins` is empty for now; `themes` mounts the versioned
-  `themes/lepaysanurbain` source directory.
 
 `wp-env` generates the multisite constants such as `MULTISITE`,
 `DOMAIN_CURRENT_SITE`, and `PATH_CURRENT_SITE` during the fresh installation.

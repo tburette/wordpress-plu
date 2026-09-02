@@ -38,7 +38,7 @@ unable to get image 'mariadb:lts': failed to connect to the docker API at unix:/
 
 ## WordPress code
 
-- Prioritize native WordPress feature over custom code if possible. Avoid Wordpress and work against the way it works
+- Prioritize native WordPress feature over custom code if possible. Avoid Wordpress working against the way it works
 - Code, file names, and CSS classes must be in English; Gutenberg-visible titles and site content must be in French.
 - Colors, sizes, and families must derive from `theme.json`, never from arbitrary values added within patterns.
 - Use CSS exclusively for styling or processing that `theme.json` cannot properly define.
@@ -60,8 +60,12 @@ Paysan Urbain. Work here is limited to WordPress code and development tooling:
 the local `wp-env` configuration, themes, plugins, scripts, and documentation
 that directly explains them.
 
-Theme and plugin source live any `wordpress/` installation. The
-current layout is:
+There is no wordpress installation here, only theme, plugin, theme.md,....
+A real wordpress only exist in the test `wp-env` environment. If you need to
+lookup wordpress files, there is a clean, default, WordPress installation in
+`/home/tburette/dev/wordpress/wordpress-7.1`. It is unrelated to this project.
+
+The current layout is:
 
 ```text
 wordpress-lpu/
@@ -93,8 +97,6 @@ There could be interesting files for you in it such as:
   (design in general, not just the website). with `guide_identite_Le_Paysan_Urbain_regles.txt` (design guide), `Typos Paysan Urbain/` (fonts), `Livraison logos et graphisme/` (icons, illustrations, logos, patterns)
 - `/home/tburette/dev/lepaysanurbain/design/design site Fanny/règles-design-site-Le_Paysan_Urbain.txt` : design rules for the website
 - `/home/tburette/dev/lepaysanurbain/design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/` : grpahical elements (in the subdirectories), mockups of the website (`menu xxx` for the menu, `Home_1280.jpg` for the network homepage, `Ferme_1280.jpg` for a farm homepage)
-
-There is a clean, unused WordPress 7.1 installation in `/home/tburette/dev/wordpress/wordpress-7.1`. you can access it if you need to read Worpress Core (default) files.
 
 # Références visuelles obligatoires
 
