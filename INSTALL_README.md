@@ -43,7 +43,7 @@ The subdomains must resolve to the local Docker port. Add this line to
 Check the mappings with:
 
 ```sh
-npm run env:hosts:check
+npm run check-local-hosts
 ```
 
 ## Start the environment
@@ -51,8 +51,8 @@ npm run env:hosts:check
 From this directory:
 
 ```sh
-npm run env:start
-npm run env:status
+npm run start
+npm run status
 ```
 
 Starting the environment only starts the local WordPress containers. Run the
@@ -60,8 +60,8 @@ provisioning explicitly when the environment is new or after its local
 database has been reset:
 
 ```sh
-npm run env:provision
-npm run env:multisite:verify
+npm run provision
+npm run verify-multisite
 ```
 
 Provisioning:
@@ -83,12 +83,12 @@ Provisioning is safe to run repeatedly. The verification command can be run
 independently:
 
 ```sh
-npm run env:multisite:verify
+npm run verify-multisite
 ```
 
-#### Provisioning after `env:start`
+#### Provisioning after `npm run start`
 
-`npm run env:provision`
+`npm run provision`
 
 The default credentials are `admin` / `password`.
 
@@ -96,7 +96,7 @@ Provisioning keeps the local WordPress administration in French. To apply the
 language setup independently to an existing environment, run:
 
 ```sh
-npm run env:language:setup
+npm run setup-language
 ```
 
 ## Reset the local database
@@ -105,9 +105,9 @@ To test provisioning scripts from a clean WordPress database without
 recreating the Docker environment, use:
 
 ```sh
-npm run env:reset
-npm run env:provision
-npm run env:status
+npm run reset
+npm run provision
+npm run status
 ```
 
 The reset deletes local WordPress content and multisite records, but preserves
@@ -117,8 +117,8 @@ confirmation prompt is intentional.
 If the generated environment itself is broken, use:
 
 ```sh
-npm run env:cleanup
-npm run env:start
+npm run cleanup
+npm run start
 ```
 
 This removes its containers, volumes, networks, and generated files while
@@ -158,8 +158,8 @@ environment and recreate it. Do not edit the generated `wordpress/` tree or
 manually change only one of the network records:
 
 ```sh
-npm run env:cleanup
-npm run env:start
+npm run cleanup
+npm run start
 ```
 
 The cleanup command asks for confirmation, preserves Docker images, and
@@ -171,11 +171,11 @@ projects.
 Use the npm wrapper for commands against the development container:
 
 ```sh
-npm run env:cli -- core is-installed --network
-npm run env:cli -- site list --fields=blog_id,domain,path,url
-npm run env:cli -- theme list
-npm run env:cli -- plugin list
-npm run env:cli -- option get home
+npm run wp -- core is-installed --network
+npm run wp -- site list --fields=blog_id,domain,path,url
+npm run wp -- theme list
+npm run wp -- plugin list
+npm run wp -- option get home
 ```
 
 The direct form is also available:
@@ -201,7 +201,7 @@ wordpress-lpu/
 `wp-env` mounts themes but does not activate them automatically. Activate the
 theme on the required network sites with WP-CLI after it has been mounted.
 Provisioning does this through `scripts/setup-theme.sh`; run it
-manually with `npm run env:theme:setup` when needed.
+manually with `npm run setup-theme` when needed.
 
 Plugins can be mounted and activated when listed in `.wp-env.json`:
 
@@ -217,14 +217,14 @@ keeps its Gutenberg markup and other data in the same directory, while
 
 ```sh
 # Provision everything, in dependency order.
-npm run env:content
+npm run content
 
 # Provision one or more selected operations.
-npm run env:content -- patterns-test-page
-npm run env:content -- home-network navigation-menus
+npm run content -- patterns-test-page
+npm run content -- home-network navigation-menus
 
 # Intentionally replace an already assembled network Home.
-npm run env:content -- home-network --force
+npm run content -- home-network --force
 ```
 
 ## VS Code
@@ -245,10 +245,10 @@ plugin, or external WordPress core folders can be added to its `folders` list.
 Start with Xdebug enabled:
 
 ```sh
-npm run env:start:xdebug
+npm run start-xdebug
 ```
 
-it will trigger a patch script with `npm run env:xdebug:patch`.
+it will trigger a patch script with `npm run patch-xdebug`.
 
 Then launch `wp-env listen for XDebug` in VS Code (F5). The patch script
 discovers the current generated WordPress source path and updates the core
@@ -260,11 +260,11 @@ container list, or the provided path-mapping script.
 ## Stop and inspect
 
 ```sh
-npm run env:status
-npm run env:logs
-npm run env:stop
+npm run status
+npm run logs
+npm run stop
 ```
 
-`env:stop` preserves the database and generated environment. `env:cleanup`
-removes the generated environment and its local database after confirmation,
-while preserving Docker images.
+`stop` preserves the database and generated environment. `cleanup` removes the
+generated environment and its local database after confirmation, while
+preserving Docker images.

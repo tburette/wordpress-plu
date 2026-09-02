@@ -111,7 +111,7 @@ if ( count( \$pages ) > 1 ) {
 }
 
 if ( ! \$pages ) {
-	WP_CLI::error( 'The technical front page does not exist: ' . \$page_slug . '. Run npm run env:content -- front-pages first.' );
+	WP_CLI::error( 'The technical front page does not exist: ' . \$page_slug . '. Run npm run content -- front-pages first.' );
 }
 
 \$page = \$pages[0];
@@ -124,7 +124,7 @@ if ( (string) \$page->post_title !== \$page_title ) {
 }
 
 if ( 'page' !== get_option( 'show_on_front' ) || (int) get_option( 'page_on_front' ) !== (int) \$page->ID ) {
-	WP_CLI::error( 'The expected Home page is not the current page_on_front. Run npm run env:content -- front-pages first.' );
+	WP_CLI::error( 'The expected Home page is not the current page_on_front. Run npm run content -- front-pages first.' );
 }
 
 \$technical_placeholder = '<!--

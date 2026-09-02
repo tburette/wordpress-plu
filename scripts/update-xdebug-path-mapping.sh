@@ -27,7 +27,7 @@ wordpress_source="$(ls -dt "${cache_root}"/wp-env-"${project_name}"-*/WordPress 
 if [[ -z "${wordpress_source}" ]]; then
   echo "Could not find the wp-env WordPress source for '${project_name}'." >&2
   echo "Expected: ${cache_root}/wp-env-${project_name}-<hash>/WordPress" >&2
-  echo "Start the environment first: npm run env:start:xdebug" >&2
+  echo "Start the environment first: npm run start-xdebug" >&2
   exit 1
 fi
 

@@ -19,8 +19,8 @@ The wp admin credentials are `admin` / `password`.
 
 - the wordpress test environment can we reset at any time meaning the database and files in that environment can go at any moment.
 - You can run wordpress with `wp-env` (through `npm run`) and read and interact wordpress (including gutenberg editor pages) with the skill `wordpress-inspector`.
-- When you need to reset the wordpress environment (it's not running, see `wp-env status` or it needs to be reset due to changes) : announce the operation to the user then use `npm run env:cleanup`, `npm run env:provision`, and `npm run env:status`. Resetting deletes all local database content therefore never run the reset command autonomously. Confirmation is required.
-- If the Docker environment or its generated files are broken, use `npm run env:cleanup`; it recreates them on the next start while preserving Docker images.
+- When you need to reset the wordpress environment (it's not running, see `wp-env status` or it needs to be reset due to changes) : announce the operation to the user then use `npm run cleanup`, `npm run provision`, and `npm run status`. Resetting deletes all local database content therefore never run the reset command autonomously. Confirmation is required.
+- If the Docker environment or its generated files are broken, use `npm run cleanup`; it recreates them on the next start while preserving Docker images.
 - Docker desktop needs to run. If it doesn't the following message may appear :
 
 ```
@@ -29,7 +29,7 @@ unable to get image 'mariadb:lts': failed to connect to the docker API at unix:/
 ```
 
 - WordPress is managed by the globally installed `wp-env` command. Do not add a local `@wordpress/env` dependency.
-- To allow user to debug the PHP code, start with `npm run env:start:xdebug`. Stop the environment first if needed.
+- To allow user to debug the PHP code, start with `npm run start-xdebug`. Stop the environment first if needed.
 - Edit `.wp-env.json` for environment changes; keep project-specific choices in
   that active file.
 - Treat `wp-env-options.example.jsonc` as a reference, not a configuration

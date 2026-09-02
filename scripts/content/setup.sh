@@ -6,15 +6,15 @@ set -euo pipefail
 # With no arguments this runs every content operation in dependency order.
 #
 # Pass one or more directory names to run only selected operations, for example:
-#   npm run env:content -- patterns-test-page
-#   npm run env:content -- home-network navigation-menus
+#   npm run content -- patterns-test-page
+#   npm run content -- home-network navigation-menus
 #
 # The network and active theme must already exist. 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 usage() {
   cat <<'USAGE'
-Usage: npm run env:content [-- [operation ...]]
+Usage: npm run content [-- [operation ...]]
 
 Run every content operation when no operation is provided. Otherwise choose
 one or more of:
@@ -30,7 +30,7 @@ one or more of:
 Use --force with home-network to intentionally replace an already assembled
 network Home:
 
-  npm run env:content -- home-network --force
+  npm run content -- home-network --force
 USAGE
 }
 
