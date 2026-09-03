@@ -37,6 +37,7 @@ class Lpu_Provisioner {
 	public function provision( $force = false ) {
 		$this->force = (bool) $force;
 
+		$this->check_dependencies();
 		$this->register_theme_patterns();
 		$this->log( '==> Provisioning Le Paysan Urbain' );
 		$this->provision_network_sites();
@@ -335,15 +336,29 @@ class Lpu_Provisioner {
 					$slug        = $row[2];
 					$page_content = $this->assemble_patterns_page();
 
-					$page_id = $this->find_post_by_name( 'page', $slug );
+					// Look for the page in any status, including a trashed one
+					// (WordPress renames the slug with a __trashed suffix), so a
+					// trashed page is restored instead of being duplicated.
+					$page_id = $this->find_post_by_name_or_trashed( 'page', $slug );
 					if ( $page_id ) {
-						wp_update_post(
+						// Like the original script, restore the page if it had
+						// been trashed, then refresh its content.
+						$existing = get_post( $page_id );
+						if ( $existing && 'trash' === $existing->post_status && ! wp_untrash_post( $page_id ) ) {
+							$this->fail( 'Could not restore the patterns test page: ' . $page_id );
+						}
+						$updated_id = wp_update_post(
 							array(
 								'ID'           => $page_id,
 								'post_title'   => $title,
+								'post_status'  => $row[3],
 								'post_content' => $page_content,
-							)
+							),
+							true
 						);
+						if ( is_wp_error( $updated_id ) ) {
+							$this->fail( $updated_id->get_error_message() );
+						}
 						$action = 'updated';
 					} else {
 						$page_id = wp_insert_post(
@@ -414,9 +429,9 @@ class Lpu_Provisioner {
 						$this->fail( $updated_id->get_error_message() );
 					}
 
-					if ( ! get_post_meta( $page_id, 'lpu_header_transparent', true ) ) {
-						add_post_meta( $page_id, 'lpu_header_transparent', true, true );
-					}
+					// update_post_meta() both creates the key when absent and
+					// repairs an existing false-valued key to true.
+					update_post_meta( $page_id, 'lpu_header_transparent', true );
 					$this->log( get_home_url( $this->blogs['network'] ) . ': assembled network Home ' . $page_id );
 				}
 			);

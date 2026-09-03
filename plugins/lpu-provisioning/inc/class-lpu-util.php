@@ -247,12 +247,15 @@ trait Lpu_Util {
 				continue;
 			}
 			$this->log( 'Creating sub-site: ' . $slug );
+			// wpmu_create_blog() defaults a new site to public => 0, but the
+			// sites are public (the original scripts used `wp site create`
+			// without --private), so force public visibility.
 			$blog_id = wpmu_create_blog(
 				$slug . '.' . $network_domain,
 				$network_path,
 				'Le Paysan Urbain ' . ucfirst( $slug ),
 				1,
-				array(),
+				array( 'public' => 1 ),
 				$network_id
 			);
 			if ( is_wp_error( $blog_id ) ) {
@@ -340,6 +343,76 @@ trait Lpu_Util {
 			)
 		);
 		return $posts ? (int) $posts[0] : 0;
+	}
+
+	/**
+	 * Find a post by its slug, also matching the `__trashed` variant that
+	 * WordPress gives a trashed post's slug (it renames the slug on trash, so
+	 * the original name no longer matches). Returning the trashed post lets the
+	 * caller restore it instead of creating a duplicate.
+	 *
+	 * @param string $post_type Post type slug.
+	 * @param string $name      Clean post slug.
+	 * @return int Post ID, 0 when none.
+	 */
+	protected function find_post_by_name_or_trashed( $post_type, $name ) {
+		$by_name = $this->find_post_by_name( $post_type, $name );
+		if ( $by_name ) {
+			return $by_name;
+		}
+
+		$posts = get_posts(
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'name'           => $name . '__trashed',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			)
+		);
+		return $posts ? (int) $posts[0] : 0;
+	}
+
+	/**
+	 * Verify the theme and the two companion plugins required by the content
+	 * are present before provisioning starts.
+	 *
+	 * The provisioning content depends on the `lepaysanurbain` theme, the
+	 * `nav-group` block and the `lpu-split-section` patterns. This runs after
+	 * `init`, so a missing dependency shows up as a clear error here instead of
+	 * an obscure failure mid-run (and matches the shared-host requirement that
+	 * these be network-active).
+	 *
+	 * @return void
+	 */
+	protected function check_dependencies() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$theme = wp_get_theme( self::THEME_SLUG );
+		if ( ! $theme->exists() ) {
+			$this->fail( 'Required theme missing: ' . self::THEME_SLUG );
+		}
+
+		$nav_block = WP_Block_Type_Registry::get_instance()->get_registered( 'lpu/nav-group' );
+		if ( ! $nav_block ) {
+			$this->fail( 'Required plugin nav-group is not active ("lpu/nav-group" block not registered).' );
+		}
+
+		$split_namespace = 'lpu-split-section/';
+		$has_split       = false;
+		foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern ) {
+			if ( 0 === strpos( (string) $pattern['name'], $split_namespace ) ) {
+				$has_split = true;
+				break;
+			}
+		}
+		if ( ! $has_split ) {
+			$this->fail( 'Required plugin lpu-split-section is not active (no "lpu-split-section/*" patterns registered).' );
+		}
+
+		$this->log( 'Dependencies OK: theme ' . self::THEME_SLUG . ', nav-group, lpu-split-section' );
 	}
 
 	/**
@@ -536,6 +609,9 @@ trait Lpu_Util {
 	 * @return int Template part post ID.
 	 */
 	protected function create_or_update_template_part( $part_name, $part_title, $navigation_id, $template_file ) {
+		if ( ! file_exists( $template_file ) ) {
+			$this->fail( 'Missing theme template part file: ' . $template_file );
+		}
 		$template_content = (string) file_get_contents( $template_file );
 		$template_content = preg_replace(
 			'/(<!-- wp:navigation \{)/',

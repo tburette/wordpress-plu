@@ -156,5 +156,34 @@ High-level record of what is being done. Entries are dated and timestamped
     "Fichiers" and clarified `Lpu_Provisioner` are the readable steps.
   - corrected the "init tardif pour la commande CLI" line -> the bootstrap
     registers the WP-CLI command immediately when WP_CLI is defined.
-  - updated "Maintenabilité" so the live-WP-CLI/log collection description now
-    refers to the trait, not the provisioner class.
+- updated "Maintenabilité" so the live-WP-CLI/log collection description now
+  refers to the trait, not the provisioner class.
+
+## 2026-09-03 10:14
+
+- Addressed the code-review findings on the ported plugin:
+  1. Sub-sites created via `wpmu_create_blog()` now pass `array('public' => 1)`
+     (defaults to 0 -> farm sites were not public). Verified: blog_public=1 on
+     all three farms.
+  2. Patterns test page: lookup now also matches the `__trashed` slug that
+     WordPress gives a trashed page (the shell had this latent bug too — a
+     trashed page was never found and a duplicate was created). Added trait
+     helper `find_post_by_name_or_trashed()`; update path restores status to
+     `publish` (TSV value) after untrash. Verified: trash -> provision -> page
+     untrashed, slug restored, publish, no duplicate.
+  3. Home `lpu_header_transparent` meta now set via `update_post_meta()` (repair
+     path) — verified value 1.
+  4. New `check_dependencies()` (trait, called at top of `provision()`): fails
+     loudly if theme `lepaysanurbain`, block `lpu/nav-group` or patterns
+     `lpu-split-section/*` are missing. README OVH steps now require
+     network-activating those two plugins. Verified message on run.
+  5. `create_or_update_template_part()` fails loudly if the theme template-part
+     file is missing (added `file_exists()` guard).
+- All five fixes verified end-to-end from a clean DB via the CLI path
+  (`wp lpu provision --force` -> "Provisioning complete").
+- Environment note: after a `cleanup`, `wp-env start` failed because GitHub was
+  rate-limiting unauthenticated clones of the WordPress sources. Works around:
+  the WordPress and the WordPress-PHPUnit (tests) repos under wp-env's workdir
+  are now shallow git clones with an SSH origin
+  (git@github.com:WordPress/...), so wp-env reuses them instead of cloning over
+  HTTPS.

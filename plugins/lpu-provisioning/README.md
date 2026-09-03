@@ -39,8 +39,14 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 
 ## Usage OVH (pas de SSH/WP-CLI)
 
-1. Téléverser le thème `lepaysanurbain` et ce plugin dans wp-admin
-   (Extensions/Distribution → Téléverser), l'activer sur le réseau.
+1. Téléverser dans wp-admin (Extensions/Distribution → Téléverser) et activer
+   sur le **réseau** :
+   - les thèmes/plugins dépendants : le thème `lepaysanurbain`, et les plugins
+     `lpu-split-section` et `nav-group`,
+   - ce plugin `lpu-provisioning`.
+   > Le provisioning vérifie au lancement que le thème et ces deux plugins sont
+   > bien actifs (bloc `lpu/nav-group` et patterns `lpu-split-section/*`) et
+   > s'arrête avec un message clair sinon.
 2. Vérifications manuelles (une seule fois, à documenter) :
    - le réseau multisite doit déjà être activé (OVH gère ça),
    - activer le thème `lepaysanurbain` sur le site principal avant de lancer,
