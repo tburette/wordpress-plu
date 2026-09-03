@@ -187,3 +187,13 @@ High-level record of what is being done. Entries are dated and timestamped
   are now shallow git clones with an SSH origin
   (git@github.com:WordPress/...), so wp-env reuses them instead of cloning over
   HTTPS.
+
+## 2026-09-03 10:43
+
+- Review subagent verified all five fixes against WP 7.1 core semantics:
+  public=>1, patterns untrash + publish restore, Home meta upsert,
+  check_dependencies ordering, template-part file guard all correct.
+  - Applied its single SHOULD-FIX: removed the dead `require_once
+    is_plugin_active` block in `check_dependencies()` (`is_plugin_active()` was
+    never called; the real gates are the nav-group block and split-section
+    pattern registry checks). Re-verified dependency check + full run.

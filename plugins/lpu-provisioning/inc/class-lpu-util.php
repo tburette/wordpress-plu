@@ -386,10 +386,6 @@ trait Lpu_Util {
 	 * @return void
 	 */
 	protected function check_dependencies() {
-		if ( ! function_exists( 'is_plugin_active' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
 		$theme = wp_get_theme( self::THEME_SLUG );
 		if ( ! $theme->exists() ) {
 			$this->fail( 'Required theme missing: ' . self::THEME_SLUG );
