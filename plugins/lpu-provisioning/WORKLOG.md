@@ -135,3 +135,26 @@ High-level record of what is being done. Entries are dated and timestamped
     sub-site all return HTTP 200.
 - Both the CLI and the wp-admin button paths are now verified end-to-end from a
   clean multisite.
+
+## 2026-09-03 08:35
+
+- Re-verified per-site rendering on ALL four sites (posts a review note that Lyon
+  and Marseille had not been individually render-checked). A user `wp-env
+  cleanup` had been run; restarted, then confirmed the 4 sites (network 1,
+  paris 2, lyon 3, marseille 4) were still fully provisioned from the earlier
+  verified admin-path run (theme=lepaysanurbain, blogname per city,
+  show_on_front=page, page_on_front=5, navs menu-principal/footer-principal,
+  template parts header/footer, custom_logo=3), so no fresh provisioning was
+  needed.
+  - Network home HTTP 200 + hero "Cultiver le vivant en ville"; patterns page
+    HTTP 200.
+  - paris / lyon / marseille each HTTP 200 with per-city title, header nav
+    anchor links (local nav: #qui-sommes-nous ...), footer, custom logo,
+    2 wp-block-template-part blocks.
+- Fixed README accuracy after the refactor:
+  - added `inc/class-lpu-util.php` (trait `Lpu_Util`, the machinery) to
+    "Fichiers" and clarified `Lpu_Provisioner` are the readable steps.
+  - corrected the "init tardif pour la commande CLI" line -> the bootstrap
+    registers the WP-CLI command immediately when WP_CLI is defined.
+  - updated "Maintenabilité" so the live-WP-CLI/log collection description now
+    refers to the trait, not the provisioner class.

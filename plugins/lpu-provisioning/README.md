@@ -60,16 +60,21 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 
 ## Fichiers
 
-- `lpu-provisioning.php` : amorce (header, `init` tardif pour la commande CLI,
-  `network_admin_menu` pour l'écran).
-- `inc/class-lpu-provisioner.php` : moteur de provisioning (pas de dépendance
-  CLI : fonctionne aussi en HTTP).
+- `lpu-provisioning.php` : amorce (header, enregistrement immédiat de la
+  commande WP-CLI quand WP_CLI est défini, `network_admin_menu` pour l'écran).
+- `inc/class-lpu-util.php` : trait `Lpu_Util` — toute la machinerie (lecture des
+  fragments/TSV, changement de contexte blog, import média, assemblage des pages,
+  journalisation via `record_log()`/`get_log()`). Pas de dépendance CLI :
+  fonctionne aussi en HTTP.
+- `inc/class-lpu-provisioner.php` : `Lpu_Provisioner`, les étapes de provisioning
+  lisibles qui utilisent le trait `Lpu_Util`.
 - `inc/class-lpu-provision-cli.php` : mince enveloppe `wp lpu provision`.
 - `inc/class-lpu-provision-admin.php` : écran réseau + handler `admin-post`.
 - `content/` : TSV et fragments HTML.
 
 ## Maintenabilité
 
-Le moteur (`Lpu_Provisioner`) n'utilise WP-CLI que pour un affichage live ;
-tous les retour de lignes sont collectés via `record_log()`/`get_log()`, ce qui
-permet le déclenchement HTTP sans interface supplémentaire.
+La logique vit dans le trait `Lpu_Util` ; les étapes (`provision_*`) restent
+courtes et lisibles. WP-CLI n'est utilisé que pour un affichage live ; tous les
+retours de lignes sont collectés via `record_log()`/`get_log()`, ce qui permet
+le déclenchement HTTP sans interface supplémentaire.
