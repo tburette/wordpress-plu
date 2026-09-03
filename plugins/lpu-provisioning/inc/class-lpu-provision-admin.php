@@ -61,6 +61,24 @@ class Lpu_Provision_Admin {
 		set_time_limit( 0 );
 		wp_raise_memory_limit( 'admin' );
 
+		// Now that the run has started, surface a clear error if the PHP
+		// process dies before the result is stored (hard timeout, memory
+		// exhaustion, or a server-level interruption) — those bypass
+		// catch (Throwable). The normal path flips $reached_store before exit.
+		$reached_store = false;
+		register_shutdown_function(
+			function () use ( &$reached_store ) {
+				if ( $reached_store ) {
+					return;
+				}
+				$result                = get_site_option( self::OPTION, array() );
+				$result['time']        = current_time( 'mysql' );
+				$result['error']       = 'Exécution interrompue avant son terme (timeout, épuisement mémoire ou interruption du serveur). Résultat partiel — relancez le bouton.';
+				$result['interrupted'] = true;
+				update_site_option( self::OPTION, $result );
+			}
+		);
+
 		$force = ! empty( $_POST['force'] );
 		$log   = array( 'time' => current_time( 'mysql' ), 'lines' => array() );
 		$error = '';
@@ -74,6 +92,7 @@ class Lpu_Provision_Admin {
 
 		$log['lines'] = Lpu_Provisioner::get_log();
 		$log['error'] = $error;
+		$reached_store = true;
 		update_site_option( self::OPTION, $log );
 
 		wp_safe_redirect(

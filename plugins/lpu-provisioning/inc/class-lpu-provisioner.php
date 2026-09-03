@@ -37,9 +37,12 @@ class Lpu_Provisioner {
 	public function provision( $force = false ) {
 		$this->force = (bool) $force;
 
-		$this->check_dependencies();
 		$this->register_theme_patterns();
 		$this->log( '==> Provisioning Le Paysan Urbain' );
+		// Network-activate the companion plugins, then verify everything the
+		// content needs is present and network-available before touching data.
+		$this->provision_plugins();
+		$this->check_dependencies();
 		$this->provision_network_sites();
 		$this->provision_theme();
 		$this->provision_language();
@@ -60,6 +63,7 @@ class Lpu_Provisioner {
 	 */
 	public function steps() {
 		return array(
+			array( 'id' => 'plugins', 'label' => 'Network-activate companion plugins' ),
 			array( 'id' => 'network', 'label' => 'Multisite network and sub-sites' ),
 			array( 'id' => 'theme', 'label' => 'Theme enable and activation' ),
 			array( 'id' => 'language', 'label' => 'French locale' ),
@@ -71,6 +75,38 @@ class Lpu_Provisioner {
 			array( 'id' => 'patterns-test-page', 'label' => 'Patterns test page' ),
 			array( 'id' => 'home', 'label' => 'Network Home' ),
 		);
+	}
+
+	/**
+	 * Step: network-activate the companion plugins required by the content.
+	 *
+	 * Mirrors the shell's network-activate-plugin.sh for nav-group and
+	 * lpu-split-section: they must be active network-wide so their block and
+	 * patterns are available on every farm site after provisioning, not just on
+	 * the main site. Activation is idempotent — already network-active plugins
+	 * are left untouched; a missing/disabled plugin stops the run clearly.
+	 *
+	 * @return void
+	 */
+	public function provision_plugins() {
+		if ( ! function_exists( 'activate_plugin' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$plugins = array(
+			'nav-group/nav-group.php',
+			'lpu-split-section/lpu-split-section.php',
+		);
+		foreach ( $plugins as $plugin ) {
+			if ( is_plugin_active_for_network( $plugin ) ) {
+				continue;
+			}
+			$result = activate_plugin( $plugin, '', true, true );
+			if ( is_wp_error( $result ) ) {
+				$this->fail( 'Could not network-activate ' . $plugin . ': ' . $result->get_error_message() );
+			}
+			$this->log( 'Network-activated plugin: ' . $plugin );
+		}
 	}
 
 	/**
@@ -133,7 +169,12 @@ class Lpu_Provisioner {
 		$locale = 'fr_FR';
 		$this->ensure_blogs();
 
-		$this->install_language_pack( $locale );
+		if ( ! $this->install_language_pack( $locale ) ) {
+			$this->fail(
+				'The ' . $locale . ' language pack could not be installed automatically. ' .
+				'Install it in wp-admin (Settings -> General -> Site Language) then re-run.'
+			);
+		}
 
 		foreach ( $this->blogs as $role => $blog_id ) {
 			$this->with_blog(
@@ -149,16 +190,8 @@ class Lpu_Provisioner {
 
 		// Force French on the network admin's profile so wp-admin is French
 		// even when that user has an explicit locale preference. Target the
-		// first network super admin (not a hardcoded "admin" login, which may
-		// not exist on a fresh/OVH network) and fall back to the current user.
-		$super_admin = null;
-		foreach ( get_super_admins() as $login ) {
-			$user = get_user_by( 'login', $login );
-			if ( $user ) {
-				$super_admin = $user;
-				break;
-			}
-		}
+		// first network super admin and fall back to the current user.
+		$super_admin = $this->first_super_admin_user();
 		if ( ! $super_admin ) {
 			$current = wp_get_current_user();
 			if ( $current instanceof WP_User && $current->ID ) {

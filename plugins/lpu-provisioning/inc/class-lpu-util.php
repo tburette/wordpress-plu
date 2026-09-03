@@ -242,6 +242,8 @@ trait Lpu_Util {
 		}
 
 		$created_any = false;
+		$owner_id = $this->default_owner_id();
+
 		foreach ( self::FARM_ROLES as $slug ) {
 			if ( isset( $this->blogs[ $slug ] ) ) {
 				continue;
@@ -254,7 +256,7 @@ trait Lpu_Util {
 				$slug . '.' . $network_domain,
 				$network_path,
 				'Le Paysan Urbain ' . ucfirst( $slug ),
-				1,
+				$owner_id,
 				array( 'public' => 1 ),
 				$network_id
 			);
@@ -379,42 +381,81 @@ trait Lpu_Util {
 	 *
 	 * The provisioning content depends on the `lepaysanurbain` theme, the
 	 * `nav-group` block and the `lpu-split-section` patterns. This runs after
-	 * `init`, so a missing dependency shows up as a clear error here instead of
-	 * an obscure failure mid-run.
+	 * the environment steps (and after `init`), so a missing dependency shows
+	 * up as a clear error here instead of an obscure failure mid-run.
 	 *
-	 * We check *functionality* (the block type and the patterns are actually
-	 * registered) rather than strictly `is_plugin_active_for_network()`: what
-	 * matters is that the block/patterns are available in the current request.
-	 * On a network admin run a plugin only needs to be active on the main site
-	 * (or network-wide) to load — strict network-activation would reject a
-	 * working setup and add a false negative.
+	 * The two companion plugins must be *network-active* — this is what makes
+	 * their block and patterns available on every farm site, not just in the
+	 * current request. A plugin active only on the main site would appear to
+	 * work during the run but leave the farm sites without the block/patterns
+	 * they need, so we require `is_plugin_active_for_network()` rather than
+	 * checking the in-request registry (which is unreliable on a first run
+	 * where the plugin is network-activated mid-request, before its code is
+	 * loaded).
 	 *
 	 * @return void
 	 */
 	protected function check_dependencies() {
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		$theme = wp_get_theme( self::THEME_SLUG );
 		if ( ! $theme->exists() ) {
 			$this->fail( 'Required theme missing: ' . self::THEME_SLUG );
 		}
 
-		$nav_block = WP_Block_Type_Registry::get_instance()->get_registered( 'lpu/nav-group' );
-		if ( ! $nav_block ) {
-			$this->fail( 'Required plugin nav-group is not active ("lpu/nav-group" block not registered).' );
+		$nav_plugin = 'nav-group/nav-group.php';
+		if ( ! is_plugin_active_for_network( $nav_plugin ) ) {
+			$this->fail( 'Required plugin nav-group is not network-active: ' . $nav_plugin );
 		}
 
-		$split_namespace = 'lpu-split-section/';
-		$has_split       = false;
-		foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern ) {
-			if ( 0 === strpos( (string) $pattern['name'], $split_namespace ) ) {
-				$has_split = true;
-				break;
+		$split_plugin = 'lpu-split-section/lpu-split-section.php';
+		if ( ! is_plugin_active_for_network( $split_plugin ) ) {
+			$this->fail( 'Required plugin lpu-split-section is not network-active: ' . $split_plugin );
+		}
+
+		$this->log( 'Dependencies OK: theme ' . self::THEME_SLUG . ', nav-group, lpu-split-section (network-active)' );
+	}
+
+	/**
+	 * Resolve the first network super admin that exists as a user, or null.
+	 *
+	 * @return WP_User|null
+	 */
+	protected function first_super_admin_user() {
+		if ( ! function_exists( 'get_super_admins' ) ) {
+			return null;
+		}
+		foreach ( get_super_admins() as $login ) {
+			$user = get_user_by( 'login', $login );
+			if ( $user ) {
+				return $user;
 			}
 		}
-		if ( ! $has_split ) {
-			$this->fail( 'Required plugin lpu-split-section is not active (no "lpu-split-section/*" patterns registered).' );
-		}
+		return null;
+	}
 
-		$this->log( 'Dependencies OK: theme ' . self::THEME_SLUG . ', nav-group, lpu-split-section' );
+	/**
+	 * Resolve the user that should own newly created sub-sites and fixtures.
+	 *
+	 * The old code assumed user ID 1. On an existing shared-host multisite the
+	 * provisioning may be run by a different (super) admin, so prefer the first
+	 * network super admin, then the current user, and only fall back to user 1
+	 * as a last resort.
+	 *
+	 * @return int User ID.
+	 */
+	protected function default_owner_id() {
+		$super_admin = $this->first_super_admin_user();
+		if ( $super_admin ) {
+			return (int) $super_admin->ID;
+		}
+		$current = wp_get_current_user();
+		if ( $current instanceof WP_User && $current->ID ) {
+			return (int) $current->ID;
+		}
+		return 1;
 	}
 
 	/**
@@ -426,12 +467,14 @@ trait Lpu_Util {
 	 * works both from WP-CLI and from the wp-admin button (no CLI needed).
 	 *
 	 * The download can be blocked on some hosts (no outbound HTTP to
-	 * wordpress.org, or no write access to the language directory). In that
-	 * case we do not fail the whole run — we log a clear warning so the OVH
-	 * operator knows to install the pack manually in Réglages → Langue.
+	 * wordpress.org, or no write access to the language directory). We return
+	 * false in that case and let the caller stop the run with a clear error so
+	 * the operator is not shown a false "terminé sans erreur" (the site would
+	 * otherwise stay in English).
 	 *
 	 * @param string $locale Language code to install (default fr_FR).
-	 * @return void
+	 * @return bool True when the pack is available (installed or already
+	 *              present), false when it could not be installed.
 	 */
 	protected function install_language_pack( $locale = 'fr_FR' ) {
 		if ( ! function_exists( 'wp_download_language_pack' ) ) {
@@ -441,15 +484,10 @@ trait Lpu_Util {
 		$installed = wp_download_language_pack( $locale );
 		if ( $locale === $installed ) {
 			$this->log( 'language pack ' . $locale . ' installed (or already present)' );
-			return;
+			return true;
 		}
 
-		// Not installed: the host could not download/write it. Keep going but
-		// tell the operator clearly.
-		$this->log(
-			'WARNING: could not auto-install the ' . $locale . ' language pack from wordpress.org ' .
-			'on this host. Install it manually in wp-admin in Settings -> Language.'
-		);
+		return false;
 	}
 
 	/**
@@ -706,7 +744,7 @@ trait Lpu_Util {
 			array(
 				'post_type'     => 'page',
 				'post_status'   => 'publish',
-				'post_author'   => 1,
+				'post_author'   => $this->default_owner_id(),
 				'comment_status' => 'closed',
 				'ping_status'   => 'closed',
 			),

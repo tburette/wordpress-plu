@@ -44,19 +44,21 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
      thème** (ce n'est pas le menu des extensions),
    - les plugins `lpu-split-section`, `nav-group` et `lpu-provisioning` :
      **Extensions → Ajouter → Téléverser une extension**, puis activer sur le réseau.
-   > Au lancement, le provisioning vérifie que le thème `lepaysanurbain` est
-   > présent et que les plugins fournissant le bloc `lpu/nav-group` et les
-   > patterns `lpu-split-section/*` sont bien chargés (leur bloc/patterns doivent
-   > exister dans le registre, pas seulement être activés) ; il s'arrête avec un
-   > message clair sinon.
+   > Au lancement, le provisioning active d'abord `lpu-split-section` et
+   > `nav-group` sur le réseau (si besoin), puis vérifie que le thème
+   > `lepaysanurbain` est présent et que ces deux plugins sont bien activés
+   > **au niveau du réseau** — c'est ce qui rend le bloc `lpu/nav-group` et les
+   > patterns `lpu-split-section/*` disponibles sur les sites fermes ; il
+   > s'arrête avec un message clair sinon.
 2. Vérifications manuelles (une seule fois) :
    - le réseau multisite doit déjà être activé (OVH gère ça),
    - activer le thème `lepaysanurbain` sur le site principal avant de lancer.
 3. Réglages du réseau → **Provisionnement LPU** → bouton *Provisionner le site*.
    Le paquet de langue `fr_FR` est téléchargé automatiquement par le bouton ; si
-   l'hébergement bloque ce téléchargement (pas d'accès sortant à wordpress.org),
-   l'installer manuellement dans Réglages → Langue — le journal le signale par un
-   `WARNING`.
+   l'hébergement bloque ce téléchargement (pas d'accès sortant à wordpress.org) le
+   provisioning s'arrête avec un message d'erreur : installer le paquet
+   manuellement dans **Réglages → Général → Langue du site**, puis relancer le
+   bouton.
 
 ## Différences local / OVH
 
@@ -64,7 +66,7 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 |-------|--------|------|
 | Réseau + sous-sites | auto | auto (les fermes existent déjà → vérifie) |
 | Thème | auto | thème téléversé + activation à faire |
-| Langue `fr_FR` | auto (paquet + WPLANG + user locale) | auto (téléchargement du paquet ; sinon manuel Réglages → Langue) |
+| Langue `fr_FR` | auto (paquet + WPLANG + user locale) | auto (téléchargement du paquet ; sinon manuel Réglages → Général → Langue du site, puis relancer) |
 | Logos / pages / onglets / Home | auto | auto |
 | Étape palette typographique | shell | shell |
 | Vérif réseau multi-sites | shell | shell |

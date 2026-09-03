@@ -243,3 +243,37 @@ High-level record of what is being done. Entries are dated and timestamped
 - Review subagent on the new language-pack + admin-locale code: no MUST-FIX /
   SHOULD-FIX (correct API, ordering, shared WP_LANG_DIR, robust super-admin
   target, correct network-wide locale semantics).
+
+## 2026-09-03 12:59
+
+- Third review round (4 issues). WIP — most applied, CLI verified.
+  1. MENU WORDING: manual language fallback path now "Réglages → Général →
+     Langue du site" (was "Réglages → Langue") — README + code.
+  2. LANGUAGE PACK FAILURE NOW AN ERROR: `install_language_pack()` returns bool
+     (was a dead WARNING that left the green "sans erreur"); `provision_language()`
+     `fail()`s with a clear message if the pack can't be auto-installed.
+  3. OWNERSHIP PORTABLE: added util helpers `first_super_admin_user()` and
+     `default_owner_id()` (first network super admin → current user → 1). Now
+     used for `wpmu_create_blog` owner and `upsert_page` default author instead
+     of hardcoded user 1; `provision_language()` reuses the same helper
+     (removed duplicate super-admin loop).
+  4. DEPENDENCY CHECK → NETWORK ACTIVATION: reviewer noted a plugin active only
+     on the main site passes the old functional (registry) check but stays off
+     the farm sites. Rewrote `check_dependencies()` to require
+     `is_plugin_active_for_network()` for nav-group + lpu-split-section. Found
+     the shell network-activates them in provision-environment.sh, so added a
+     new step `provision_plugins()` that network-activates both (idempotent,
+     mirrors network-activate-plugin.sh) BEFORE the check. Removed the
+     same-request registry checks (unreliable on first run: a plugin
+     network-activated mid-request isn't loaded yet, so lpu/nav-group and
+     lpu-split-section/* weren't in the registry -> false failure).
+- HTTP hardening: `handle_run()` now registers a shutdown function that writes
+  an "interrupted" error + `interrupted=true` flag to the result option if the
+  process dies (timeout/OOM/server cut) before the result is stored — covers
+  the path that bypasses catch(Throwable).
+- CLI **clean normal run on dirty DB**: provision_plugins() network-activated
+  both companion plugins, dependencies OK, full provisioning complete.
+  Confirmed nav-group/lpu-split-section now active-network.
+- NEXT: reset env (announce) and verify BOTH CLI and admin-HTTP paths on a
+  fresh DB (incl. fresh-state network-activation of the plugins by
+  provision_plugins()), update README/step list, commit, review subagent.
