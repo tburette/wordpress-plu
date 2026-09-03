@@ -22,9 +22,33 @@ remisent au client.
 
 ### Header
 
+#### Header transparent
+
+Une variante du header transparente peut être utilisée.
+
+Cette variante peut s'activer manuellement page par page.
+L'utilisateur peut activer cette valeur via le sidebar dans l'éditeur Gutenberg
+d'un post. Il y a dans la sidebar la section : "Header de la page".
+Cette option ajoute le meta `lpu_header_transparent` au post.
+Dans le frontend, cela ajoute une classe à body :
+`<body class="lpu-header-transparent">`.
+C'est iplémenté par `themes/lepaysanurbain/assets/js/editor-settings.js`.
+
+Pour fonctionner il faut deux versions du logo. Une pour la version normale
+(vert) et une pour la version transparent (écru).
+Les deux logos peuvent être modifiés par un admin dans la section
+`Apparence > Personnaliser`.
+La configuration du logo normal est réalisée en utilisant le theme_support
+'custom_logo'.
+La version transparente est configurée par un réglage ajouté au 'Customize'
+voir `themes/lepaysanurbain/inc/site-logos.php`.
+
+#### Structuration Header
+
 Structuration du header: template part : wp_template_part id 'header', nom
 En-tête. Pour chaque sous-site il faut rattacher à son wp:navigation un menu compatible.
 
+OBSOLETE:
 menu compatible avec le wp_template_part 'header' :
 
 - doit contenir un unique `<!-- wp:site-logo {"width":190,"shouldSyncIcon":false,"className":"lpu-header__logo"} /-->`
