@@ -111,3 +111,27 @@ High-level record of what is being done. Entries are dated and timestamped
   - NEXT: lint done; commit the refactor, then re-test BOTH paths end-to-end:
     (a) clean CLI run, (b) clean admin-only HTTP run (should now assemble the
     network Home and patterns page without the pattern error).
+
+## 2026-09-03 04:45
+
+- Refactor committed (7e2ace9). Verified the pattern fix closes the clean-DB gap
+  on BOTH paths.
+- CLI path on a clean DB (reset env, only blog 1 + network, no sub-sites):
+  `wp lpu provision` runs end-to-end to "Provisioning complete" — sub-sites,
+  theme, language, logos, front pages, navs, footers, test page, patterns test
+  page, network Home. Network Home (200) renders hero text "Cultiver le vivant
+  en ville"; patterns page (200) + post content has 9 patternName stamps.
+- Admin HTTP path on a fresh clean DB (authenticated curl: login → extract
+  nonce from the network settings page → POST admin-post.php):
+  - POST returns 302 (no 400 -> admin_init handler works).
+  - Result page shows success notice "Provisionnement terminé sans erreur", no
+    error notice, and the full log ends with "Provisioning complete".
+  - NO "Active theme pattern is missing: lepaysanurbain/hero" anymore ->
+    register_theme_patterns() fixes the single-request path (the OVH clean-DB
+    button case).
+  - Network Home post content has all 8 expected patterns with patternName
+    metadata (hero, 2x cards, columns, graphic-band, network-farm-selector,
+    split-content-image, split-motif-image); Home + patterns page + paris
+    sub-site all return HTTP 200.
+- Both the CLI and the wp-admin button paths are now verified end-to-end from a
+  clean multisite.
