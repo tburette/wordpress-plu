@@ -380,8 +380,14 @@ trait Lpu_Util {
 	 * The provisioning content depends on the `lepaysanurbain` theme, the
 	 * `nav-group` block and the `lpu-split-section` patterns. This runs after
 	 * `init`, so a missing dependency shows up as a clear error here instead of
-	 * an obscure failure mid-run (and matches the shared-host requirement that
-	 * these be network-active).
+	 * an obscure failure mid-run.
+	 *
+	 * We check *functionality* (the block type and the patterns are actually
+	 * registered) rather than strictly `is_plugin_active_for_network()`: what
+	 * matters is that the block/patterns are available in the current request.
+	 * On a network admin run a plugin only needs to be active on the main site
+	 * (or network-wide) to load — strict network-activation would reject a
+	 * working setup and add a false negative.
 	 *
 	 * @return void
 	 */
@@ -409,6 +415,41 @@ trait Lpu_Util {
 		}
 
 		$this->log( 'Dependencies OK: theme ' . self::THEME_SLUG . ', nav-group, lpu-split-section' );
+	}
+
+	/**
+	 * Install the fr_FR core language pack, if it is not already installed.
+	 *
+	 * This is the PHP equivalent of `wp language core install fr_FR`: it
+	 * downloads the pack from wordpress.org and writes it into WP_LANG_DIR
+	 * (shared across all sites on a multisite, so one install is enough). It
+	 * works both from WP-CLI and from the wp-admin button (no CLI needed).
+	 *
+	 * The download can be blocked on some hosts (no outbound HTTP to
+	 * wordpress.org, or no write access to the language directory). In that
+	 * case we do not fail the whole run — we log a clear warning so the OVH
+	 * operator knows to install the pack manually in Réglages → Langue.
+	 *
+	 * @param string $locale Language code to install (default fr_FR).
+	 * @return void
+	 */
+	protected function install_language_pack( $locale = 'fr_FR' ) {
+		if ( ! function_exists( 'wp_download_language_pack' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+		}
+
+		$installed = wp_download_language_pack( $locale );
+		if ( $locale === $installed ) {
+			$this->log( 'language pack ' . $locale . ' installed (or already present)' );
+			return;
+		}
+
+		// Not installed: the host could not download/write it. Keep going but
+		// tell the operator clearly.
+		$this->log(
+			'WARNING: could not auto-install the ' . $locale . ' language pack from wordpress.org ' .
+			'on this host. Install it manually in wp-admin in Settings -> Language.'
+		);
 	}
 
 	/**

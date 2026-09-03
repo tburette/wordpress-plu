@@ -14,7 +14,7 @@ Remplaçant des scripts shell `wp-env` (`.sh`), il exécute la même logique mai
 
 1. Réseau multisite et sous-sites manquants (`wpmu_create_blog`).
 2. Thème `lepaysanurbain` : activation réseau + activation sur chaque site.
-3. Locale française (`fr_FR`).
+3. Locale française (`fr_FR`) : téléchargement du paquet + langue de chaque site + langue du profil admin réseau.
 4. Logos de site (`custom_logo` + logo transparent).
 5. Pages d'accueil des fermes.
 6. Navigations d'en-tête + template parts.
@@ -39,19 +39,24 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 
 ## Usage OVH (pas de SSH/WP-CLI)
 
-1. Téléverser dans wp-admin (Extensions/Distribution → Téléverser) et activer
-   sur le **réseau** :
-   - les thèmes/plugins dépendants : le thème `lepaysanurbain`, et les plugins
-     `lpu-split-section` et `nav-group`,
-   - ce plugin `lpu-provisioning`.
-   > Le provisioning vérifie au lancement que le thème et ces deux plugins sont
-   > bien actifs (bloc `lpu/nav-group` et patterns `lpu-split-section/*`) et
-   > s'arrête avec un message clair sinon.
-2. Vérifications manuelles (une seule fois, à documenter) :
+1. Téléverser et activer sur le **réseau** :
+   - le thème `lepaysanurbain` : **Apparence → Thèmes → Ajouter → Téléverser un
+     thème** (ce n'est pas le menu des extensions),
+   - les plugins `lpu-split-section`, `nav-group` et `lpu-provisioning` :
+     **Extensions → Ajouter → Téléverser une extension**, puis activer sur le réseau.
+   > Au lancement, le provisioning vérifie que le thème `lepaysanurbain` est
+   > présent et que les plugins fournissant le bloc `lpu/nav-group` et les
+   > patterns `lpu-split-section/*` sont bien chargés (leur bloc/patterns doivent
+   > exister dans le registre, pas seulement être activés) ; il s'arrête avec un
+   > message clair sinon.
+2. Vérifications manuelles (une seule fois) :
    - le réseau multisite doit déjà être activé (OVH gère ça),
-   - activer le thème `lepaysanurbain` sur le site principal avant de lancer,
-   - installer le paquet de langue `fr_FR` dans Réglages → Langue.
+   - activer le thème `lepaysanurbain` sur le site principal avant de lancer.
 3. Réglages du réseau → **Provisionnement LPU** → bouton *Provisionner le site*.
+   Le paquet de langue `fr_FR` est téléchargé automatiquement par le bouton ; si
+   l'hébergement bloque ce téléchargement (pas d'accès sortant à wordpress.org),
+   l'installer manuellement dans Réglages → Langue — le journal le signale par un
+   `WARNING`.
 
 ## Différences local / OVH
 
@@ -59,7 +64,7 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 |-------|--------|------|
 | Réseau + sous-sites | auto | auto (les fermes existent déjà → vérifie) |
 | Thème | auto | thème téléversé + activation à faire |
-| Langue `fr_FR` | auto (`wp language core install`, pas fait ici) | pas d'API → manuel wp-admin |
+| Langue `fr_FR` | auto (paquet + WPLANG + user locale) | auto (téléchargement du paquet ; sinon manuel Réglages → Langue) |
 | Logos / pages / onglets / Home | auto | auto |
 | Étape palette typographique | shell | shell |
 | Vérif réseau multi-sites | shell | shell |

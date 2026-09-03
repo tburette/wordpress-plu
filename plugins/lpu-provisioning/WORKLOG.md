@@ -197,3 +197,49 @@ High-level record of what is being done. Entries are dated and timestamped
     is_plugin_active` block in `check_dependencies()` (`is_plugin_active()` was
     never called; the real gates are the nav-group block and split-section
     pattern registry checks). Re-verified dependency check + full run.
+
+## 2026-09-03 11:46
+
+- Addressed the 4 remaining issues that made the branch an incomplete shell
+  replacement:
+  1. FRENCH LANGUAGE PACK: the PHP port only set WPLANG (never installed the
+     pack; the shell did `wp language core install fr_FR`). Added utility
+     `install_language_pack()` using `wp_download_language_pack()` (the no-CLI
+     PHP API) — installs fr_FR.mo/admin/network packs into the shared
+     WP_LANG_DIR. `provision_language()` now calls it first (correct ordering:
+     pack before locale), then WPLANG per site. Logs a clear WARNING if the
+     host blocks the download (DISALLOW_FILE_MODS / no write access) so the OVH
+     operator installs it manually in Réglages → Langue.
+  2. OWNERSHIP/LOCALE ASSUMPTIONS: the admin-locale step used a hardcoded
+     `get_user_by('login','admin')`. Now targets the first network super admin
+     via `get_super_admins()` (robust to any OVH admin login), falling back to
+     the current user. Site ownership (wpmu_create_blog user 1) and TSV
+     fixture authorship are unchanged — they match the shell (user 1 is the
+     network owner).
+  3. HTTP ERROR REPORTING: verified already correct — `handle_run()` wraps
+     provision() in `catch (Throwable)`, stores `.error` (empty = success green
+     notice, else red notice) + full log in the `lpu_provision_result` site
+     option, shown back on the settings page. `Lpu_Provision_Error extends
+     Exception` so both expected failures (fail()) and PHP errors reach it.
+  4. DEPENDENCY CHECK / OVH DOCS: clarified in code that `check_dependencies()`
+     intentionally checks *functionality* (block `lpu/nav-group` and
+     `lpu-split-section/*` patterns registered, theme exists) rather than strict
+     `is_plugin_active_for_network()` — a plugin active on the main site also
+     loads for the network run, so strict network-checking would add a false
+     negative. Fixed the README OVH theme-upload menu: the theme goes under
+     Apparence → Thèmes → Ajouter → Téléverser (not the plugins menu); plugins
+     under Extensions. Updated README language rows (auto now) + step list.
+- CLI path on a clean DB:
+  Dependencies OK, sub-sites created (public=1), language pack fr_FR installed
+  (fr_FR.mo 532 KB on disk), WPLANG=fr_FR everywhere, super-admin locale
+  fr_FR, "Provisioning complete".
+- Admin HTTP path on a fresh clean DB (no CLI run, authenticated curl):
+  login → extract nonce from the network settings page → POST admin-post.php →
+  success notice "Provisionnement terminé sans erreur", log ends
+  "assembled network Home 6" + "Provisioning complete", stored result
+  `error=''`, language pack + WPLANG + public sites all set.
+- Render: network home 200 + "Cultiver le vivant"; paris/lyon/marseille 200
+  with French core UI strings ("commentaires", "navigation").
+- Review subagent on the new language-pack + admin-locale code: no MUST-FIX /
+  SHOULD-FIX (correct API, ordering, shared WP_LANG_DIR, robust super-admin
+  target, correct network-wide locale semantics).

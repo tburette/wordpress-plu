@@ -118,17 +118,23 @@ class Lpu_Provisioner {
 	}
 
 	/**
-	 * Step: set the French locale on every site and the admin user.
+	 * Step: ensure the French language pack and locale are active everywhere.
 	 *
-	 * The core fr_FR language pack itself cannot be installed from PHP; it is
-	 * installed by WP-CLI locally (`wp language core install`) and manually in
-	 * wp-admin on the OVH target. This step only records the locale choice.
+	 * The fr_FR core language pack is installed once (shared across the
+	 * network) via install_language_pack() — the PHP equivalent of the shell's
+	 * `wp language core install fr_FR`. Then the French locale (WPLANG) is
+	 * recorded on every site, and the network admin's profile language is set
+	 * to French so wp-admin is French even when that user has an explicit
+	 * locale preference.
 	 *
 	 * @return void
 	 */
 	public function provision_language() {
 		$locale = 'fr_FR';
 		$this->ensure_blogs();
+
+		$this->install_language_pack( $locale );
+
 		foreach ( $this->blogs as $role => $blog_id ) {
 			$this->with_blog(
 				$blog_id,
@@ -141,12 +147,29 @@ class Lpu_Provisioner {
 			);
 		}
 
-		// The default account is named "admin" (wp-env default).
-		$admin = get_user_by( 'login', 'admin' );
-		if ( $admin ) {
+		// Force French on the network admin's profile so wp-admin is French
+		// even when that user has an explicit locale preference. Target the
+		// first network super admin (not a hardcoded "admin" login, which may
+		// not exist on a fresh/OVH network) and fall back to the current user.
+		$super_admin = null;
+		foreach ( get_super_admins() as $login ) {
+			$user = get_user_by( 'login', $login );
+			if ( $user ) {
+				$super_admin = $user;
+				break;
+			}
+		}
+		if ( ! $super_admin ) {
+			$current = wp_get_current_user();
+			if ( $current instanceof WP_User && $current->ID ) {
+				$super_admin = $current;
+			}
+		}
+
+		if ( $super_admin ) {
 			// Network-wide so the admin UI is French on every site.
-			update_user_option( $admin->ID, 'locale', $locale, true );
-			$this->log( 'admin: user locale ' . $locale );
+			update_user_option( $super_admin->ID, 'locale', $locale, true );
+			$this->log( $super_admin->user_login . ': user locale ' . $locale );
 		}
 	}
 
