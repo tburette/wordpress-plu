@@ -25,16 +25,33 @@ if ( is_admin() ) {
 }
 
 /**
- * Register the network-admin page and its admin-post handler.
+ * Register the network-admin page.
  *
  * @return void
  */
-function lpu_provisioning_admin() {
+function lpu_provisioning_admin_menu() {
 	if ( ! is_multisite() ) {
 		return;
 	}
 	$admin = new Lpu_Provision_Admin();
 	$admin->register_menu();
+}
+add_action( 'network_admin_menu', 'lpu_provisioning_admin_menu' );
+
+/**
+ * Register the admin-post handler.
+ *
+ * Registered on admin_init (not network_admin_menu) because an admin-post
+ * round trip loads admin-post.php without firing network_admin_menu; this
+ * must run on any admin request regardless of which admin page is loaded.
+ *
+ * @return void
+ */
+function lpu_provisioning_admin_handler() {
+	if ( ! is_multisite() ) {
+		return;
+	}
+	$admin = new Lpu_Provision_Admin();
 	$admin->register_handler();
 }
-add_action( 'network_admin_menu', 'lpu_provisioning_admin' );
+add_action( 'admin_init', 'lpu_provisioning_admin_handler' );

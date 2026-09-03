@@ -57,6 +57,10 @@ class Lpu_Provision_Admin {
 		}
 		check_admin_referer( self::NONCE );
 
+		// Long synchronous run on hosts without CLI: lift PHP limits.
+		set_time_limit( 0 );
+		wp_raise_memory_limit( 'admin' );
+
 		$force = ! empty( $_POST['force'] );
 		$log   = array( 'time' => current_time( 'mysql' ), 'lines' => array() );
 		$error = '';
@@ -64,7 +68,7 @@ class Lpu_Provision_Admin {
 		try {
 			$provisioner = new Lpu_Provisioner();
 			$provisioner->provision( $force );
-		} catch ( Lpu_Provision_Error $e ) {
+		} catch ( Throwable $e ) {
 			$error = $e->getMessage();
 		}
 
@@ -94,7 +98,7 @@ class Lpu_Provision_Admin {
 		?>
 		<div class="wrap">
 			<h1>Provisionnement Le Paysan Urbain</h1>
-			<p>Applique le contenu de développement et la configuration sur ce multisite. Idempotent : peut être relancé sans risque. Destiné à l’environnement de test sans SSH/WP-CLI.</p>
+			<p>Applique le contenu de développement et la configuration sur ce multisite. La plupart des étapes sont idempotentes et peuvent être relancées sans risque. La page d’accueil réseau est protégée : si elle contient déjà du contenu édité, cochez la case « forcée » pour la reconstruire.</p>
 
 			<?php if ( ! empty( $result ) ) : ?>
 				<h2>Dernière exécution (<?php echo esc_html( $result['time'] ); ?>)</h2>
