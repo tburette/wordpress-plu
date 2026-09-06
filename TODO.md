@@ -8,7 +8,7 @@
 - [ ] provisioning is slow. I think it might be because every command goes through "wp-env run cli wp". Which incures a cost. Maybe we could put the script (and associated content) in the "cli" environment and run the provisioning scripts there directly, thus skipping the wp-env run cost.
 - [ ] Make content provisioning URL-agnostic and runnable on the target PHP-only OVH Perso hosting installation instead of depending on environment-specific URLs and WP-CLI shell scripts.
 - [x] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
-- Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
+- [ ] Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
 
 ## A tester
 
@@ -31,3 +31,45 @@
   - The native mobile layout doesn't have the logo in the middle. How is the site logo rendered in compact mode?
 
 - [ ] use block locking (and templateLock?) on blocks + logo to prevent messing with them?
+
+## CSS
+
+- [ ] rationalize box-sizing
+      list which elements usr border/content box
+      find content:
+      ```js
+      function auditBoxSizing() {
+
+        const borderBox = [];
+        const contentBox = [];
+
+        document.querySelectorAll('*').forEach(el => {
+          const value = getComputedStyle(el).boxSizing;
+          if (value === 'border-box') {
+            borderBox.push(el);
+          } else if (value === 'content-box') {
+            contentBox.push(el);
+          }
+        });
+
+        console.log(`border-box: ${borderBox.length} elements`, borderBox);
+        console.log(`content-box: ${contentBox.length} elements`, contentBox);
+
+        return { borderBox, contentBox };
+      }
+      auditBoxSizing();
+      ```
+
+      highlight visually the border-box
+      ```js
+      function highlightMismatches() {
+        document.querySelectorAll('*').forEach(el => {
+          const own = getComputedStyle(el).boxSizing;
+          const parent = el.parentElement && getComputedStyle(el.parentElement).boxSizing;
+          if (parent && own !== parent) {
+            el.style.outline = '2px solid orange';
+            el.style.outlineOffset = '-2px';
+          }
+        });
+      }
+      ```
