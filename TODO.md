@@ -9,6 +9,15 @@
 - [ ] Make content provisioning URL-agnostic and runnable on the target PHP-only OVH Perso hosting installation instead of depending on environment-specific URLs and WP-CLI shell scripts.
 - [x] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
 - [ ] Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
+- [ ] in the templates, do we need the wp:group wrapping the wp:post-content? Might be standard (because there is a <main> there) or might be superfluous
+
+```html
+<!-- wp:group {"tagName":"main","className":"template-page-group"} -->
+<main class="wp-block-group template-page-group">
+  <!-- wp:post-content {"className":"template-page-post-content","style":{"spacing":{"blockGap":"var:preset|spacing|60"}},"layout":{"type":"constrained"}} /-->
+</main>
+<!-- /wp:group -->
+```
 
 ## A tester
 
