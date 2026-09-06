@@ -10,6 +10,55 @@
 - [x] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
 - [ ] Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
 - [ ] in the templates, do we need the wp:group wrapping the wp:post-content? Might be standard (because there is a <main> there) or might be superfluous
+- [ ] lpu/split-section and lpu/split-zone are missing many options in gutenberg that are available in native blocks such as wp:group. If I understand correctly to add them you have to add elements to 'supports' when calling register_block_type (PHP) and registerBlockType (js).
+      At first I thought it's odd to add only top/bottom margin support, there should be for all sides. Thinking more about it, I realize there are many options missing!
+      I see that there a quit a lot of them : https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/.
+      I'm not sure which should be enabled for each. Please make suggetion for both. which support, what it does (very very succintly). Also explain why to add or not add the support (small argumentation).
+- [ ] When two lpu/split-section (Section côte à côte) are one after another it is.. very ugly. There is zero space between the two (as I actually wanted, what with blockGap 0 and all). However here it's ugly (one pattern turns into another one uglily) and hard to understand (when same background color : they meld one to another). should probably also check other combinations.
+- [ ] In "http://lepaysanurbain.test:8888/" (Accueil network?). The lepaysanurbain/columns (Colonnes de texte) containing the text "Un message commun à faire vivre" has humongous margins. We'll have to figure out why.
+- [ ] Check if there is a gap between header <=> main <=> footer, see how it
+      has been implemented and check if it is ok or there is a cleaner way.
+
+      Context: `wp:post-content` now has `blockGap: 0px`, which removes the
+      default space between page sections placed directly in the page content.
+      This raised the question of the gap between  `header`, `main`, and
+      `footer` blocks in a template. WordPress renders the header and footer as
+      `core/template-part` blocks, which do not expose the native spacing
+      controls which is availablein in a container  block.
+      The theme has two targeted CSS rules for the transparent-header-to-content
+      and content-to-footer boundaries:
+      1. When the header is transparent and positioned over the page, remove the top margin of main so no empty strip appears below the header.
+         themes/lepaysanurbain/assets/css/theme.css L411
+         ```css
+         /* The transparent header is removed from normal flow, so the block-theme
+          * site-stack gap must not leave an écru strip before the hero. */
+         body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
+           margin-block-start: 0;
+         }
+         ```
+      2. When the footer directly follows main, remove the default WordPress margin before the footer so it touches the last content section.
+         themes/lepaysanurbain/assets/css/theme.css L
+         ```css
+         /* The footer follows the last editorial section directly. WordPress adds its
+          * normal site-stack gap to every sibling; that creates an unintended écru
+          * strip after a full-width closing band. */
+         .wp-site-blocks > main + footer.wp-block-template-part {
+           margin-block-start: 0;
+         }
+         ```
+
+      Options:
+      - Native container: wrap the header, main, and footer in one Group whose
+        Block spacing is set to `0px`, then verify that the semantic header,
+        main, and footer markup, transparent header, and responsive behavior
+        remain correct. Remove the CSS exceptions if the wrapper handles all
+        three boundaries reliably.
+      - Keep the targeted CSS: retain the current rules because they directly
+        handle boundaries involving `core/template-part`, where Gutenberg does
+        not currently provide an equivalent spacing control.
+      - Hybrid: use native spacing for the boundaries that belong to a Group,
+        and retain a small CSS exception for any boundary involving a
+        `core/template-part` that still cannot be controlled natively.
 
 ```html
 <!-- wp:group {"tagName":"main","className":"template-page-group"} -->
