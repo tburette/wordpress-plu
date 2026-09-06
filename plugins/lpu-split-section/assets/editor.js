@@ -234,6 +234,9 @@
 		supports: {
 			align: [ 'wide', 'full' ],
 			html: false,
+			spacing: {
+				margin: [ 'top', 'bottom' ],
+			},
 		},
 		edit: SectionEdit,
 		save: SectionSave,

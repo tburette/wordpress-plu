@@ -65,7 +65,50 @@ que les menus items. Cela permet d'utiliser les fonctionnalités standards de WP
 et rend les choses simple pour l'utilisateur. Cependant cela rend le code un peu
 plus complexe au niveau du code.
 
+### Espacement entre les sections
+
+Le design du site demane qu'il n'y ai pas de vide avec la couleur de fond par défaut
+(écru) entre les sections créés pour le site (lpu-band) telles que : cards,
+network-farm-selector, split-section,...
+
+Solution NON retenues :
+
+- hardcoder un block-margin de 0 pour nos éléments du theme et des plugins lpu
+  => l'utilisateur pourrait vouloir un espacement entre blocs dans certains cas.
+- mettre block-margin de 0 sur les éléments/lpu-band avec CSS (avec spécificité
+  faible). Si l'utilisateur défini une valeur de block-margin elle prendrait le
+  dessus. Bonne idée mais
+  => ce qui est affiché sur le site ne correspondrait pas toujours aux valeurs
+  affichées/définies dans Gutenberg pour les block (options block margin et
+  blockGap).
+
+Solution retenue :
+Les templates de pages configurent l’option Gutenberg blockGap à `0` sur le
+bloc `wp:post-content`. Les patterns de section placés directement dans ce bloc
+se suivent donc sans bande vide entre leurs arrière-plans.
+Avantages :
+
+- l'utilisateur peut écraser le réglage et ajouter/enlever des espacements
+  verticaux entre éléments comme bon lui semble.
+- ce qui est affiché dans Gutenberg correspond à ce qui sera obtenu dans la
+  page.
+
+Inconvénient :
+
+- un réglage doit être fait (blockGap 0 dans le code, "Block spacing" dans
+  Gutenberg) au niveau du **parent** des éléments qui ne doivent pas avoir de
+  gap. C'est fait automatiquement (via les templates) pour le contenu à la
+  racine de page, mais ce n'est pas le cas pour le contenu qui serait dans un
+  conteneur (wp:block,...) => doit configurer le blockGap à zéro dans l'éditeur
+  au niveau de ce bloc parent. Si ce n'est pas fait : apparence "cassée,
+  fonctionnement des espacement différent des blocs ajouter à la racine d'une
+  page.
+
 ## Documentation utilisateur
 
 Règle pour lemenu utilisé pour le template part `header`. Voir
 [section Header](#header).
+
+### Espacement entre les sections
+
+voir partie doc technique pour l'explication à ajouter.

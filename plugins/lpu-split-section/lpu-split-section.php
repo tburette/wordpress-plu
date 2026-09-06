@@ -304,8 +304,11 @@ function lpu_split_section_register_blocks() {
 			'style'          => 'lpu-split-section',
 			'editor_style'   => 'lpu-split-section-editor',
 			'supports'       => array(
-				'align' => array( 'wide', 'full' ),
-				'html'  => false,
+				'align'   => array( 'wide', 'full' ),
+				'html'    => false,
+				'spacing' => array(
+					'margin' => array( 'top', 'bottom' ),
+				),
 			),
 		)
 	);
