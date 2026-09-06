@@ -3,14 +3,6 @@
  * does not apply to the editor (Gutenbeg) UI in general
  */
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--wp--preset--color--ecru);
-}
-
 /* Decorative motifs are applied as backgrounds, not editorial images. */
 .lpu-motif {
   background-position: center;
@@ -74,9 +66,22 @@ body {
   background-image: url("../images/motif-8-carre.svg");
 }
 
-/* Reusable editorial sections. Patterns keep the structure in Gutenberg;
- * these rules provide the shared proportions, media placeholders and
- * responsive behaviour that theme.json cannot express on its own. */
+/* .lpu-band is used at the root of some of the content specific to the 
+ * lepaysanurbain theme such as patterns, template-parts,..
+ * Contains a section of content visible to the user.
+ * Eg.: hero, farm selector, cards, columns, split section, graphic band,..
+ * Should be only applied at the top level.
+ * 
+ * Allows targeting only content sections specific to our theme and avoids 
+ * accidentally targeting other (wordpress core) content .
+ * A selector like '.lpu-band xxx' means targeting xxx inside 'our' content.
+ * 
+ * Could have called it ".lpu-section" but it could be 
+ * confused with the core Section block.
+ *
+ * Might have been better not to have a generic name but only use specific
+ * classes for specific content (eg. .lpu-hero, .lpu-farm-selector, ...)
+ */
 .lpu-band {
   box-sizing: border-box;
   margin-block: 0;
@@ -86,7 +91,16 @@ body {
 
 /* Root editorial sections already own their vertical rhythm through their
  * padding. Keep the block-gap generated for normal constrained content, but
- * do not insert an additional gap between consecutive full-width bands. */
+ * do not insert an additional gap between consecutive full-width bands.
+ * 
+ * .wp-block-post-content : is the root element of a <!-- wp:post-content /-->
+ * wp:post-content is the block inside a template that tells that the content
+ * of the page goes here.
+ * .is-layout-constrained : when in Gutenberg 
+ * "Layout : Inner blocks use content width" is checked for a container block.
+ * constrained layout = can set the width constraint for child blocks (content,
+ * wide, full width). Cf. theme.js layout section : "contentSize", "wideSize".
+ */
 .wp-block-post-content.is-layout-constrained > .lpu-band {
   margin-block: 0;
 }
