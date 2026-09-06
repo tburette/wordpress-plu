@@ -98,31 +98,34 @@ There could be interesting files for you in it such as:
 - `/home/tburette/dev/lepaysanurbain/design/design site Fanny/règles-design-site-Le_Paysan_Urbain.txt` : design rules for the website
 - `/home/tburette/dev/lepaysanurbain/design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/` : grpahical elements (in the subdirectories), mockups of the website (`menu xxx` for the menu, `Home_1280.jpg` for the network homepage, `Ferme_1280.jpg` for a farm homepage)
 
-# Références visuelles obligatoires
+# Mandatory visual references
 
-Tout élément créé ou modifié dans le thème — template, template part, pattern,
-section, bloc, navigation ou composant visuel — doit chercher à reproduire la
-maquette validée de Fanny : composition, proportions, palette, typographie,
-espacements, traitements des images, motifs et éléments décoratifs. Une
-structure fonctionnelle seule ou un rendu générique WordPress ne constitue pas
-une implémentation suffisante.
+Every element created or modified in the theme — template, template part,
+pattern, section, block, navigation, or visual component — must seek to
+reproduce Fanny's approved mockup: composition, proportions, palette,
+typography, spacing, image treatments, patterns, and decorative elements. A
+functional structure alone or a generic WordPress design does not constitute
+a sufficient implementation.
 
-Les références principales sont les quatre maquettes suivantes, dans le projet
-parent :
+The main visual references are the following four mockups:
 
-- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Ferme_1440.jpg`
-- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Home_1440.jpg`
-- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Home_1440  (transparent).jpg`
-- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Ferme_1440 (fond écru).jpg`
+(`design/` is in `/home/tburette/dev/lepaysanurbain/`)
 
-Il existe également le répertoire
-`design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/`
-qui contient les différentes sections de la maquette individuellement dans
-une image qui leur est propre.
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Ferme_1440.jpg` : mockup of homepage for a farm subsite
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/Home_1440.jpg` : mockup of the homepage for the root (network) site
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Home_1440  (transparent).jpg` : menu/header (transparent version)
+- `design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/menu Ferme_1440 (fond écru).jpg` : normal menu/header
 
-Avant de considérer un travail visuel terminé, le comparer au visuel de
-référence approprié avec une inspection rendue du site et signaler tout écart
-important.
+The directory
+`design/design site Fanny/livraison-des-fichiers-pu_2026-07-30_1227/sections/`,
+contains the different sections of the mockups above split in their own images.
+
+`design/design site Fanny/règles-design-site-Le_Paysan_Urbain.txt` detailed textual explanation
+of the desired website design. Include links to files: logos, patterns, fonts,...
+
+Before considering work involving visual design of an element touching the aboce, compare it with the appropriate
+reference image by inspecting the rendered site and report any significant
+discrepancy.
 
 ## Git repository
 
