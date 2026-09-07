@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: LPU — Sections côte à côte
  * Description: Blocs Gutenberg de sections côte à côte à deux zones pour Le Paysan Urbain.
@@ -8,11 +9,11 @@
  * Text Domain: lpu-split-section
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
-define( 'LPU_SPLIT_SECTION_VERSION', '0.2.0' );
+define('LPU_SPLIT_SECTION_VERSION', '0.2.0');
 
 /**
  * Return a stable development version for a local asset.
@@ -20,8 +21,9 @@ define( 'LPU_SPLIT_SECTION_VERSION', '0.2.0' );
  * @param string $path Absolute asset path.
  * @return string
  */
-function lpu_split_section_asset_version( $path ) {
-	$mtime = file_exists( $path ) ? filemtime( $path ) : false;
+function lpu_split_section_asset_version($path)
+{
+	$mtime = file_exists($path) ? filemtime($path) : false;
 
 	return $mtime ? (string) $mtime : LPU_SPLIT_SECTION_VERSION;
 }
@@ -45,56 +47,57 @@ function lpu_split_section_asset_version( $path ) {
  *
  * @return array<string, array<string, mixed>>
  */
-function lpu_split_section_get_frames() {
-	$manifest_path = plugin_dir_path( __FILE__ ) . 'frames.json';
-	$manifest      = file_exists( $manifest_path ) ? json_decode( file_get_contents( $manifest_path ), true ) : array();
+function lpu_split_section_get_frames()
+{
+	$manifest_path = plugin_dir_path(__FILE__) . 'frames.json';
+	$manifest      = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : array();
 	$frames        = array();
 
-	if ( is_array( $manifest ) ) {
-		foreach ( $manifest as $entry ) {
-			if ( ! is_array( $entry ) || empty( $entry['slug'] ) || empty( $entry['label'] ) ) {
+	if (is_array($manifest)) {
+		foreach ($manifest as $entry) {
+			if (! is_array($entry) || empty($entry['slug']) || empty($entry['label'])) {
 				continue;
 			}
 
-			$slug = sanitize_key( $entry['slug'] );
-			if ( '' === $slug ) {
+			$slug = sanitize_key($entry['slug']);
+			if ('' === $slug) {
 				continue;
 			}
 
-			$background = isset( $entry['background'] ) && is_array( $entry['background'] )
+			$background = isset($entry['background']) && is_array($entry['background'])
 				? $entry['background']
-				: array( 'type' => 'none' );
+				: array('type' => 'none');
 
-			if ( isset( $background['asset'] ) && is_string( $background['asset'] ) ) {
+			if (isset($background['asset']) && is_string($background['asset'])) {
 				$background = array(
 					'type' => 'image',
-					'url'  => get_theme_file_uri( ltrim( $background['asset'], '/' ) ),
+					'url'  => get_theme_file_uri(ltrim($background['asset'], '/')),
 				);
 			}
 
-			$frames[ $slug ] = array(
-				'label'      => __( (string) $entry['label'], 'lpu-split-section' ),
-				'available'  => false !== ( $entry['available'] ?? true ),
-				'default'    => ! empty( $entry['default'] ),
+			$frames[$slug] = array(
+				'label'      => __((string) $entry['label'], 'lpu-split-section'),
+				'available'  => false !== ($entry['available'] ?? true),
+				'default'    => ! empty($entry['default']),
 				'background' => $background,
 			);
 		}
 	}
 
-	$frames = apply_filters( 'lpu_split_section_frames', $frames );
-	if ( ! is_array( $frames ) ) {
+	$frames = apply_filters('lpu_split_section_frames', $frames);
+	if (! is_array($frames)) {
 		$frames = array();
 	}
 
 	// `none` is the safe fallback for unknown or retired frame values. Keep it
 	// in the catalogue even when a filter omits it, so old content remains
 	// valid and new blocks always have a usable fallback.
-	if ( ! isset( $frames['none'] ) || ! is_array( $frames['none'] ) ) {
+	if (! isset($frames['none']) || ! is_array($frames['none'])) {
 		$frames = array(
 			'none' => array(
-				'label'      => __( 'Aucun cadre', 'lpu-split-section' ),
+				'label'      => __('Aucun cadre', 'lpu-split-section'),
 				'available'  => true,
-				'background' => array( 'type' => 'none' ),
+				'background' => array('type' => 'none'),
 			),
 		) + $frames;
 	}
@@ -108,17 +111,18 @@ function lpu_split_section_get_frames() {
  * @param array<string, array<string, mixed>> $frames Frame catalogue.
  * @return array<int, array<string, string>>
  */
-function lpu_split_section_editor_frame_options( $frames ) {
+function lpu_split_section_editor_frame_options($frames)
+{
 	$options = array();
 
-	foreach ( $frames as $name => $frame ) {
-		if ( ! is_array( $frame ) || empty( $frame['label'] ) || false === ( $frame['available'] ?? true ) ) {
+	foreach ($frames as $name => $frame) {
+		if (! is_array($frame) || empty($frame['label']) || false === ($frame['available'] ?? true)) {
 			continue;
 		}
 
 		$options[] = array(
 			'label' => (string) $frame['label'],
-			'value' => (string) sanitize_key( $name ),
+			'value' => (string) sanitize_key($name),
 		);
 	}
 
@@ -131,16 +135,17 @@ function lpu_split_section_editor_frame_options( $frames ) {
  * @param array<string, array<string, mixed>> $frames Frame catalogue.
  * @return array<int, string>
  */
-function lpu_split_section_frame_values( $frames ) {
+function lpu_split_section_frame_values($frames)
+{
 	$values = array();
 
-	foreach ( $frames as $name => $frame ) {
-		if ( is_array( $frame ) ) {
-			$values[] = (string) sanitize_key( $name );
+	foreach ($frames as $name => $frame) {
+		if (is_array($frame)) {
+			$values[] = (string) sanitize_key($name);
 		}
 	}
 
-	return array_values( array_unique( array_filter( $values ) ) );
+	return array_values(array_unique(array_filter($values)));
 }
 
 /**
@@ -149,16 +154,17 @@ function lpu_split_section_frame_values( $frames ) {
  * @param array<string, array<string, mixed>> $frames Frame catalogue.
  * @return string
  */
-function lpu_split_section_default_frame( $frames ) {
-	foreach ( $frames as $name => $frame ) {
-		if ( is_array( $frame ) && ! empty( $frame['default'] ) && ! empty( $frame['available'] ) ) {
-			return (string) sanitize_key( $name );
+function lpu_split_section_default_frame($frames)
+{
+	foreach ($frames as $name => $frame) {
+		if (is_array($frame) && ! empty($frame['default']) && ! empty($frame['available'])) {
+			return (string) sanitize_key($name);
 		}
 	}
 
-	foreach ( $frames as $name => $frame ) {
-		if ( is_array( $frame ) && ! empty( $frame['available'] ) ) {
-			return (string) sanitize_key( $name );
+	foreach ($frames as $name => $frame) {
+		if (is_array($frame) && ! empty($frame['available'])) {
+			return (string) sanitize_key($name);
 		}
 	}
 
@@ -171,28 +177,29 @@ function lpu_split_section_default_frame( $frames ) {
  * @param array<string, mixed> $frame Frame definition.
  * @return string
  */
-function lpu_split_section_frame_declaration( $frame ) {
-	if ( ! is_array( $frame ) || empty( $frame['background'] ) || ! is_array( $frame['background'] ) ) {
+function lpu_split_section_frame_declaration($frame)
+{
+	if (! is_array($frame) || empty($frame['background']) || ! is_array($frame['background'])) {
 		return '';
 	}
 
 	$background = $frame['background'];
-	$type       = isset( $background['type'] ) ? (string) $background['type'] : 'none';
+	$type       = isset($background['type']) ? (string) $background['type'] : 'none';
 
-	if ( 'none' === $type ) {
+	if ('none' === $type) {
 		return 'background: transparent;';
 	}
 
-	if ( 'color' === $type && ! empty( $background['value'] ) ) {
+	if ('color' === $type && ! empty($background['value'])) {
 		$value = (string) $background['value'];
-		if ( preg_match( '/^[a-zA-Z0-9_\\-().%,# ]+$/', $value ) ) {
+		if (preg_match('/^[a-zA-Z0-9_\\-().%,# ]+$/', $value)) {
 			return 'background-color: ' . $value . ';';
 		}
 	}
 
-	if ( 'image' === $type && ! empty( $background['url'] ) ) {
-		$url = esc_url_raw( (string) $background['url'] );
-		if ( '' !== $url ) {
+	if ('image' === $type && ! empty($background['url'])) {
+		$url = esc_url_raw((string) $background['url']);
+		if ('' !== $url) {
 			return 'background: url("' . $url . '") center / cover no-repeat;';
 		}
 	}
@@ -206,14 +213,15 @@ function lpu_split_section_frame_declaration( $frame ) {
  * @param array<string, array<string, mixed>> $frames Frame catalogue.
  * @return string
  */
-function lpu_split_section_frame_css( $frames ) {
+function lpu_split_section_frame_css($frames)
+{
 	$css = '';
 
-	foreach ( $frames as $name => $frame ) {
-		$class_name = sanitize_html_class( (string) $name );
-		$declaration = lpu_split_section_frame_declaration( $frame );
+	foreach ($frames as $name => $frame) {
+		$class_name = sanitize_html_class((string) $name);
+		$declaration = lpu_split_section_frame_declaration($frame);
 
-		if ( '' === $class_name || '' === $declaration ) {
+		if ('' === $class_name || '' === $declaration) {
 			continue;
 		}
 
@@ -232,9 +240,10 @@ function lpu_split_section_frame_css( $frames ) {
  *
  * @return void
  */
-function lpu_split_section_register_assets() {
-	$plugin_path = plugin_dir_path( __FILE__ );
-	$plugin_url  = plugin_dir_url( __FILE__ );
+function lpu_split_section_register_assets()
+{
+	$plugin_path = plugin_dir_path(__FILE__);
+	$plugin_url  = plugin_dir_url(__FILE__);
 	$frames      = lpu_split_section_get_frames();
 
 	wp_register_script(
@@ -248,7 +257,7 @@ function lpu_split_section_register_assets() {
 			'wp-data',
 			'wp-i18n',
 		),
-		lpu_split_section_asset_version( $plugin_path . 'assets/editor.js' ),
+		lpu_split_section_asset_version($plugin_path . 'assets/editor.js'),
 		true
 	);
 
@@ -256,31 +265,31 @@ function lpu_split_section_register_assets() {
 		'lpu-split-section',
 		$plugin_url . 'assets/style.css',
 		array(),
-		lpu_split_section_asset_version( $plugin_path . 'assets/style.css' )
+		lpu_split_section_asset_version($plugin_path . 'assets/style.css')
 	);
 
 	wp_register_style(
 		'lpu-split-section-editor',
 		$plugin_url . 'assets/editor.css',
-		array( 'lpu-split-section' ),
-		lpu_split_section_asset_version( $plugin_path . 'assets/editor.css' )
+		array('lpu-split-section'),
+		lpu_split_section_asset_version($plugin_path . 'assets/editor.css')
 	);
 
 	wp_localize_script(
 		'lpu-split-section-editor',
 		'lpuSplitSectionConfig',
 		array(
-			'frames'       => lpu_split_section_editor_frame_options( $frames ),
-			'frameValues'  => lpu_split_section_frame_values( $frames ),
-			'defaultFrame' => lpu_split_section_default_frame( $frames ),
+			'frames'       => lpu_split_section_editor_frame_options($frames),
+			'frameValues'  => lpu_split_section_frame_values($frames),
+			'defaultFrame' => lpu_split_section_default_frame($frames),
 		)
 	);
 
 	// The editor style depends on this handle, so the generated catalogue CSS
 	// is loaded in both the front end and the Gutenberg canvas from one source.
-	wp_add_inline_style( 'lpu-split-section', lpu_split_section_frame_css( $frames ) );
+	wp_add_inline_style('lpu-split-section', lpu_split_section_frame_css($frames));
 }
-add_action( 'init', 'lpu_split_section_register_assets', 5 );
+add_action('init', 'lpu_split_section_register_assets', 5);
 
 /**
  * Register the parent block and its two-zone child block.
@@ -291,7 +300,8 @@ add_action( 'init', 'lpu_split_section_register_assets', 5 );
  *
  * @return void
  */
-function lpu_split_section_register_blocks() {
+function lpu_split_section_register_blocks()
+{
 	register_block_type(
 		'lpu/split-section',
 		array(
@@ -304,10 +314,10 @@ function lpu_split_section_register_blocks() {
 			'style'          => 'lpu-split-section',
 			'editor_style'   => 'lpu-split-section-editor',
 			'supports'       => array(
-				'align'   => array( 'wide', 'full' ),
+				'align'   => array('wide', 'full'),
 				'html'    => false,
 				'spacing' => array(
-					'margin' => array( 'top', 'bottom' ),
+					'margin' => array('top', 'bottom'),
 				),
 			),
 		)
@@ -321,7 +331,7 @@ function lpu_split_section_register_blocks() {
 			'description'   => 'Une moitié indépendante de la section côte à côte.',
 			'category'      => 'design',
 			'icon'          => 'align-wide',
-			'parent'        => array( 'lpu/split-section' ),
+			'parent'        => array('lpu/split-section'),
 			'editor_script' => 'lpu-split-section-editor',
 			'style'         => 'lpu-split-section',
 			'editor_style'  => 'lpu-split-section-editor',
@@ -354,7 +364,7 @@ function lpu_split_section_register_blocks() {
 		)
 	);
 }
-add_action( 'init', 'lpu_split_section_register_blocks', 10 );
+add_action('init', 'lpu_split_section_register_blocks', 10);
 
 /**
  * Register visual patterns for the custom block implementation.
@@ -365,21 +375,22 @@ add_action( 'init', 'lpu_split_section_register_blocks', 10 );
  *
  * @return void
  */
-function lpu_split_section_register_patterns() {
-	$placeholder = esc_url( get_theme_file_uri( 'assets/images/pattern-placeholder.svg' ) );
-	$network_logo = esc_url( get_theme_file_uri( 'assets/images/logos/network-horizontal-ecru-baseline.svg' ) );
+function lpu_split_section_register_patterns()
+{
+	$placeholder = esc_url(get_theme_file_uri('assets/images/pattern-placeholder.svg'));
+	$network_logo = esc_url(get_theme_file_uri('assets/images/logos/network-horizontal-ecru-baseline.svg'));
 
 	$patterns = array(
 		'lpu-split-section/split-free'          => array(
 			'title'       => 'Côte à côte — deux zones libres (bloc LPU)',
 			'description' => 'Deux zones indépendantes avec un cadre différent de chaque côté.',
-			'keywords'    => array( 'côte à côte', 'deux zones', 'motif', 'bloc' ),
+			'keywords'    => array('côte à côte', 'deux zones', 'motif', 'bloc'),
 			'content'     => <<<'HTML'
 <!-- wp:lpu/split-section {"align":"full"} -->
 <div class="wp-block-lpu-split-section alignfull lpu-split-v2">
 	<!-- wp:lpu/split-zone {"side":"left","frame":"ecru","mediaFill":false} -->
 	<div class="wp-block-lpu-split-zone lpu-split-v2__zone lpu-split-v2__zone--left lpu-split-v2__zone--frame-ecru">
-		<!-- wp:group {"className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|xl"}},"@tablet":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}},"@mobile":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}}}} -->
+		<!-- wp:group {"className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":"var:preset|spacing|xl"},"@tablet":{"spacing":{"padding":"var:preset|spacing|lg"}},"@mobile":{"spacing":{"padding":"var:preset|spacing|lg"}}} -->
 		<div class="wp-block-group lpu-split-v2__inset">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
 			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Sur-titre</p>
@@ -399,7 +410,7 @@ function lpu_split_section_register_patterns() {
 
 	<!-- wp:lpu/split-zone {"side":"right","frame":"motif-4","mediaFill":false} -->
 	<div class="wp-block-lpu-split-zone lpu-split-v2__zone lpu-split-v2__zone--right lpu-split-v2__zone--frame-motif-4">
-		<!-- wp:group {"backgroundColor":"ecru","className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|xl"}},"@tablet":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}},"@mobile":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}}}} -->
+		<!-- wp:group {"backgroundColor":"ecru","className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":"var:preset|spacing|xl"},"@tablet":{"spacing":{"padding":"var:preset|spacing|lg"}},"@mobile":{"spacing":{"padding":"var:preset|spacing|lg"}}} -->
 		<div class="wp-block-group lpu-split-v2__inset has-ecru-background-color has-background">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
 			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Zone droite</p>
@@ -419,7 +430,7 @@ HTML,
 		'lpu-split-section/split-content-image' => array(
 			'title'       => 'Côte à côte — titre, texte et image (bloc LPU)',
 			'description' => 'Contenu éditorial indépendant à gauche et image pleine zone à droite.',
-			'keywords'    => array( 'titre', 'texte', 'image', 'côte à côte', 'bloc' ),
+			'keywords'    => array('titre', 'texte', 'image', 'côte à côte', 'bloc'),
 			'content'     => <<<'HTML'
 <!-- wp:lpu/split-section {"align":"full"} -->
 <div class="wp-block-lpu-split-section alignfull lpu-split-v2">
@@ -461,13 +472,13 @@ HTML,
 		'lpu-split-section/split-motif-image'   => array(
 			'title'       => 'Côte à côte — motif et image (bloc LPU)',
 			'description' => 'Cadre motif et contenu éditorial à gauche, image pleine zone à droite.',
-			'keywords'    => array( 'motif', 'image', 'mise en avant', 'côte à côte', 'bloc' ),
+			'keywords'    => array('motif', 'image', 'mise en avant', 'côte à côte', 'bloc'),
 			'content'     => <<<'HTML'
 <!-- wp:lpu/split-section {"align":"full"} -->
 <div class="wp-block-lpu-split-section alignfull lpu-split-v2">
 	<!-- wp:lpu/split-zone {"side":"left","frame":"motif-7","mediaFill":false} -->
 	<div class="wp-block-lpu-split-zone lpu-split-v2__zone lpu-split-v2__zone--left lpu-split-v2__zone--frame-motif-7">
-		<!-- wp:group {"backgroundColor":"ecru","className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|xl"}},"@tablet":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}},"@mobile":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}}}} -->
+		<!-- wp:group {"backgroundColor":"ecru","className":"lpu-split-v2__inset","layout":{"type":"constrained"},"style":{"spacing":{"padding":"var:preset|spacing|xl"},"@tablet":{"spacing":{"padding":"var:preset|spacing|lg"}},"@mobile":{"spacing":{"padding":"var:preset|spacing|lg"}}} -->
 		<div class="wp-block-group lpu-split-v2__inset has-ecru-background-color has-background">
 			<!-- wp:paragraph {"fontFamily":"oswald","fontSize":"text","className":"lpu-eyebrow"} -->
 			<p class="lpu-eyebrow has-oswald-font-family has-text-font-size">Sur-titre</p>
@@ -499,7 +510,7 @@ HTML,
 		'lpu-split-section/split-logo-content'   => array(
 			'title'       => 'Côte à côte — logo et titre-texte (bloc LPU)',
 			'description' => 'Identité visuelle à gauche et contenu éditorial indépendant à droite.',
-			'keywords'    => array( 'logo', 'titre', 'texte', 'côte à côte', 'bloc' ),
+			'keywords'    => array('logo', 'titre', 'texte', 'côte à côte', 'bloc'),
 			'content'     => <<<'HTML'
 <!-- wp:lpu/split-section {"align":"full"} -->
 <div class="wp-block-lpu-split-section alignfull lpu-split-v2">
@@ -540,15 +551,15 @@ HTML,
 		),
 	);
 
-	foreach ( $patterns as $name => $pattern ) {
-		$pattern['categories'] = array( 'lpu-sections' );
+	foreach ($patterns as $name => $pattern) {
+		$pattern['categories'] = array('lpu-sections');
 		$pattern['content']    = str_replace(
-			array( '{{PLACEHOLDER}}', '{{NETWORK_LOGO}}' ),
-			array( $placeholder, $network_logo ),
+			array('{{PLACEHOLDER}}', '{{NETWORK_LOGO}}'),
+			array($placeholder, $network_logo),
 			$pattern['content']
 		);
 
-		register_block_pattern( $name, $pattern );
+		register_block_pattern($name, $pattern);
 	}
 }
-add_action( 'init', 'lpu_split_section_register_patterns', 20 );
+add_action('init', 'lpu_split_section_register_patterns', 20);
