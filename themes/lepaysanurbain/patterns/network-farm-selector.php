@@ -8,7 +8,7 @@
  * Post Types: page
  */
 ?>
-<!-- wp:group {"align":"full","className":"lpu-band lpu-farm-selector","layout":{"type":"constrained"}} -->
+<!-- wp:group {"align":"full","className":"lpu-band lpu-farm-selector","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|section","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|section","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}}}} -->
 <div class="wp-block-group alignfull lpu-band lpu-farm-selector">
 	<!-- wp:heading {"align":"wide","textAlign":"center","level":2,"fontSize":"subtitle"} -->
 	<h2 class="wp-block-heading alignwide has-text-align-center has-subtitle-font-size">Nos fermes</h2>

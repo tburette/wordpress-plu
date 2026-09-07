@@ -70,8 +70,12 @@
  * top-level editorial sections touch instead of the default gap due to the 
  * margin. This maps to "Block spacing" setting in Gutenberg (on a container 
  * such as wp:content or wp:group).
- * Used to set margin-block to 0px here in CSS but the problem is that it
- * silently overrode the block spacing in Gutenberg.
+ *
+ * Used to set margin-block and some padding values to 0px here for the lpu-band
+ * sections in CSS but the problem was that it silently overrode the block
+ * spacing displayed in Gutenberg : users would see a value for 
+ * block gap/margin/padding but another (the CSS) value was used.
+ * Instead we store the padding/margin data inside the blocks/sections directly.
  */
 
 /* .lpu-band is used at the root of some of the content specific to the 
@@ -92,8 +96,6 @@
  */
 .lpu-band {
   box-sizing: border-box;
-  padding-block: var(--wp--preset--spacing--section);
-  padding-inline: var(--wp--preset--spacing--lg);
 }
 
 .lpu-band > .wp-block-columns,
@@ -152,7 +154,6 @@
   align-items: flex-end;
   box-sizing: border-box;
   min-height: clamp(34rem, 75vh, 48rem);
-  padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
   background-position: center;
   background-size: cover;
 }
@@ -182,10 +183,6 @@
 
 .lpu-hero__actions {
   margin-block-start: var(--wp--preset--spacing--lg);
-}
-
-.lpu-card-grid {
-  padding-block: var(--wp--preset--spacing--xl);
 }
 
 .lpu-card-grid__title {
@@ -229,7 +226,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--wp--preset--spacing--xs);
-  padding-block: var(--wp--preset--spacing--sm) 0;
 }
 
 .lpu-card__body > .wp-block-heading {
@@ -247,16 +243,10 @@
 
 .lpu-card__body .wp-block-buttons {
   margin-block-start: auto;
-  padding-block-start: var(--wp--preset--spacing--sm);
 }
 
 .lpu-card__body .wp-block-button__link {
-  padding: 0.4rem 0.85rem;
   font-size: 0.85rem;
-}
-
-.lpu-farm-selector {
-  padding-block: var(--wp--preset--spacing--section);
 }
 
 .lpu-farm-selector > .wp-block-heading {
@@ -304,13 +294,6 @@
 }
 
 .lpu-columns-text {
-  /* This composition intentionally leaves more room below the messages, as
-	 * in the "titre-colonnes" reference. Keep the values tied to the shared
-	 * spacing scale rather than introducing one-off pixel measurements. */
-  padding-block-start: calc(var(--wp--preset--spacing--section) * 2);
-  padding-block-end: calc(
-    var(--wp--preset--spacing--section) * 3 + var(--wp--preset--spacing--lg)
-  );
   background-color: var(--wp--preset--color--vert-fonce);
   color: var(--wp--preset--color--ecru);
 }
@@ -342,7 +325,6 @@
 }
 
 .lpu-graphic-band {
-  padding-block: var(--wp--preset--spacing--section);
   background-color: var(--wp--preset--color--jaune);
   color: var(--wp--preset--color--vert-fonce);
   text-align: center;
@@ -1182,13 +1164,8 @@ main.wp-block-group {
 }
 
 @media (max-width: 781px) {
-  .lpu-band {
-    padding-inline: var(--wp--preset--spacing--md);
-  }
-
   .lpu-hero {
     min-height: 34rem;
-    padding-block: 5rem var(--wp--preset--spacing--xl);
   }
 
   .lpu-hero__content .wp-block-heading {
@@ -1207,10 +1184,6 @@ main.wp-block-group {
 
   .lpu-columns-text__columns {
     gap: var(--wp--preset--spacing--lg);
-  }
-
-  .lpu-columns-text {
-    padding-block: var(--wp--preset--spacing--section);
   }
 
   .lpu-columns-text > .lpu-columns-text__title {

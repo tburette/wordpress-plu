@@ -8,7 +8,7 @@
  * Post Types: page
  */
 ?>
-<!-- wp:group {"align":"full","backgroundColor":"ecru","className":"lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau","layout":{"type":"constrained"}} -->
+<!-- wp:group {"align":"full","backgroundColor":"ecru","className":"lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}}}} -->
 <div class="wp-block-group alignfull lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau has-ecru-background-color has-background">
 	<!-- wp:heading {"align":"wide","level":2,"fontSize":"subtitle","className":"lpu-card-grid__title"} -->
 	<h2 class="wp-block-heading alignwide lpu-card-grid__title has-subtitle-font-size">Titre de la grille</h2>
@@ -22,7 +22,7 @@
 			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
-			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->
+			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm","bottom":"0"}}}} -->
 			<div class="wp-block-group lpu-card__body is-layout-flex is-vertical">
 				<!-- wp:heading {"level":3,"fontFamily":"oswald","fontSize":"text"} -->
 				<h3 class="wp-block-heading has-oswald-font-family has-text-font-size">Titre de carte 1</h3>
@@ -32,9 +32,9 @@
 				<p class="has-text-font-size">Décrivez brièvement le contenu de cette carte et son intérêt pour vos visiteurs.</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:buttons -->
+				<!-- wp:buttons {"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm"}}}} -->
 				<div class="wp-block-buttons">
-					<!-- wp:button -->
+					<!-- wp:button {"style":{"spacing":{"padding":{"top":"0.4rem","right":"0.85rem","bottom":"0.4rem","left":"0.85rem"}}}} -->
 					<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">En savoir plus</a></div>
 					<!-- /wp:button -->
 				</div>
@@ -50,7 +50,7 @@
 			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
-			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->
+			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm","bottom":"0"}}}} -->
 			<div class="wp-block-group lpu-card__body is-layout-flex is-vertical">
 				<!-- wp:heading {"level":3,"fontFamily":"oswald","fontSize":"text"} -->
 				<h3 class="wp-block-heading has-oswald-font-family has-text-font-size">Titre de carte 2</h3>
@@ -60,9 +60,9 @@
 				<p class="has-text-font-size">Ajoutez une information courte sur cette proposition.</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:buttons -->
+				<!-- wp:buttons {"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm"}}}} -->
 				<div class="wp-block-buttons">
-					<!-- wp:button -->
+					<!-- wp:button {"style":{"spacing":{"padding":{"top":"0.4rem","right":"0.85rem","bottom":"0.4rem","left":"0.85rem"}}}} -->
 					<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">En savoir plus</a></div>
 					<!-- /wp:button -->
 				</div>
@@ -78,7 +78,7 @@
 			<figure class="wp-block-image lpu-media-placeholder"><img src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" alt="" /></figure>
 			<!-- /wp:image -->
 
-			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"}} -->
+			<!-- wp:group {"className":"lpu-card__body","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm","bottom":"0"}}}} -->
 			<div class="wp-block-group lpu-card__body is-layout-flex is-vertical">
 				<!-- wp:heading {"level":3,"fontFamily":"oswald","fontSize":"text"} -->
 				<h3 class="wp-block-heading has-oswald-font-family has-text-font-size">Titre de carte 3</h3>
@@ -88,9 +88,9 @@
 				<p class="has-text-font-size">Présentez un troisième contenu ou une action à découvrir.</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:buttons -->
+				<!-- wp:buttons {"style":{"spacing":{"padding":{"top":"var:preset|spacing|sm"}}}} -->
 				<div class="wp-block-buttons">
-					<!-- wp:button -->
+					<!-- wp:button {"style":{"spacing":{"padding":{"top":"0.4rem","right":"0.85rem","bottom":"0.4rem","left":"0.85rem"}}}} -->
 					<div class="wp-block-button"><a class="wp-block-button__link wp-element-button">En savoir plus</a></div>
 					<!-- /wp:button -->
 				</div>

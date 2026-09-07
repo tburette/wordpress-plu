@@ -8,7 +8,7 @@
  * Post Types: page
  */
 ?>
-<!-- wp:cover {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","dimRatio":30,"isDark":true,"align":"full","backgroundColor":"vert-fonce","className":"lpu-band lpu-hero","layout":{"type":"constrained"}} -->
+<!-- wp:cover {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","dimRatio":30,"isDark":true,"align":"full","backgroundColor":"vert-fonce","className":"lpu-band lpu-hero","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"clamp(5rem, 12vw, 9rem)","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"top":"5rem","right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"top":"5rem","right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}}}} -->
 <div class="wp-block-cover alignfull lpu-band lpu-hero has-vert-fonce-background-color has-background">
 	<img class="wp-block-cover__image-background" alt="" src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" data-object-fit="cover" />
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-30 has-background-dim"></span>
