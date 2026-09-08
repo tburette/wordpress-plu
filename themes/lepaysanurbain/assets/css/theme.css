@@ -3,6 +3,101 @@
  * does not apply to the editor (Gutenbeg) UI in general
  */
 
+/*****************************************************************************/
+/* SHARED EDITORIAL SECTION FRAME: .lpu-band                                 */
+/*****************************************************************************/
+/* The page templates set blockGap to zero on wp:post-content so consecutive
+ * top-level editorial sections touch instead of the default gap due to the 
+ * margin. This maps to "Block spacing" setting in Gutenberg (on a container 
+ * such as wp:content or wp:group).
+ *
+ * Used to set margin-block and some padding values to 0px here for the lpu-band
+ * sections in CSS but the problem was that it silently overrode the block
+ * spacing displayed in Gutenberg : users would see a value for 
+ * block gap/margin/padding but another (the CSS) value was used.
+ * Instead we store the padding/margin data inside the blocks/sections directly.
+ */
+
+/* .lpu-band is used at the root of some of the content specific to the 
+ * lepaysanurbain theme such as patterns, template-parts,..
+ * Contains a section of content visible to the user.
+ * Eg.: hero, farm selector, cards, columns, split section, graphic band,..
+ * Should be only applied at the top level.
+ * 
+ * Allows targeting only content sections specific to our theme and avoids 
+ * accidentally targeting other (wordpress core) content .
+ * A selector like '.lpu-band xxx' means targeting xxx inside 'our' content.
+ * 
+ * Could have called it ".lpu-section" but it could be 
+ * confused with the core Section block.
+ *
+ * Might have been better not to have a generic name but only use specific
+ * classes for specific content (eg. .lpu-hero, .lpu-farm-selector, ...)
+ */
+.lpu-band {
+  box-sizing: border-box;
+}
+
+.lpu-band > .wp-block-columns,
+.lpu-band > .wp-block-heading,
+.lpu-band > .wp-block-group,
+.lpu-band > .wp-block-buttons {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/*****************************************************************************/
+/* SMALL EDITORIAL LABEL: .lpu-eyebrow                                       */
+/*****************************************************************************/
+.lpu-eyebrow {
+  margin-block: 0 var(--wp--preset--spacing--sm);
+  font-size: 1rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/*****************************************************************************/
+/* MEDIA PLACEHOLDER                                                         */
+/*****************************************************************************/
+.lpu-media-placeholder {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 16rem;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--wp--preset--color--vert-grise);
+  color: var(--wp--preset--color--vert-fonce);
+}
+
+.lpu-media-placeholder figcaption {
+  margin: 0;
+  font-family: var(--wp--preset--font-family--oswald);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.lpu-media-placeholder img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lpu-media-placeholder:has(img) figcaption {
+  display: none;
+}
+
+/*****************************************************************************/
+/* DECORATIVE MOTIFS                                                         */
+/*****************************************************************************/
 /* Decorative motifs are applied as backgrounds, not editorial images. */
 .lpu-motif {
   background-position: center;
@@ -66,288 +161,9 @@
   background-image: url("../images/motif-8-carre.svg");
 }
 
-/* The page templates set blockGap to zero on wp:post-content so consecutive
- * top-level editorial sections touch instead of the default gap due to the 
- * margin. This maps to "Block spacing" setting in Gutenberg (on a container 
- * such as wp:content or wp:group).
- *
- * Used to set margin-block and some padding values to 0px here for the lpu-band
- * sections in CSS but the problem was that it silently overrode the block
- * spacing displayed in Gutenberg : users would see a value for 
- * block gap/margin/padding but another (the CSS) value was used.
- * Instead we store the padding/margin data inside the blocks/sections directly.
- */
-
-/* .lpu-band is used at the root of some of the content specific to the 
- * lepaysanurbain theme such as patterns, template-parts,..
- * Contains a section of content visible to the user.
- * Eg.: hero, farm selector, cards, columns, split section, graphic band,..
- * Should be only applied at the top level.
- * 
- * Allows targeting only content sections specific to our theme and avoids 
- * accidentally targeting other (wordpress core) content .
- * A selector like '.lpu-band xxx' means targeting xxx inside 'our' content.
- * 
- * Could have called it ".lpu-section" but it could be 
- * confused with the core Section block.
- *
- * Might have been better not to have a generic name but only use specific
- * classes for specific content (eg. .lpu-hero, .lpu-farm-selector, ...)
- */
-.lpu-band {
-  box-sizing: border-box;
-}
-
-.lpu-band > .wp-block-columns,
-.lpu-band > .wp-block-heading,
-.lpu-band > .wp-block-group,
-.lpu-band > .wp-block-buttons {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.lpu-eyebrow {
-  margin-block: 0 var(--wp--preset--spacing--sm);
-  font-size: 1rem;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.lpu-media-placeholder {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  min-height: 16rem;
-  aspect-ratio: 4 / 3;
-  margin: 0;
-  overflow: hidden;
-  background-color: var(--wp--preset--color--vert-grise);
-  color: var(--wp--preset--color--vert-fonce);
-}
-
-.lpu-media-placeholder figcaption {
-  margin: 0;
-  font-family: var(--wp--preset--font-family--oswald);
-  font-size: 0.9rem;
-  line-height: 1.2;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.lpu-media-placeholder img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.lpu-media-placeholder:has(img) figcaption {
-  display: none;
-}
-
-.lpu-hero {
-  display: flex;
-  align-items: flex-end;
-  box-sizing: border-box;
-  min-height: clamp(34rem, 75vh, 48rem);
-  background-position: center;
-  background-size: cover;
-}
-
-.lpu-hero .wp-block-cover__inner-container {
-  box-sizing: border-box;
-  width: 100%;
-  margin-inline: auto;
-}
-
-.lpu-hero__content {
-  width: 100%;
-  max-width: 36rem;
-  margin-inline: 0;
-}
-
-.lpu-hero__content .wp-block-heading {
-  max-width: 10ch;
-  margin-block: 0 var(--wp--preset--spacing--md);
-  text-wrap: balance;
-}
-
-.lpu-hero__content > .wp-block-paragraph {
-  max-width: 31rem;
-  margin-block: 0;
-}
-
-.lpu-hero__actions {
-  margin-block-start: var(--wp--preset--spacing--lg);
-}
-
-.lpu-card-grid__title {
-  max-width: 30rem;
-  margin-block: 0 var(--wp--preset--spacing--lg);
-}
-
-.lpu-card-grid__columns {
-  align-items: stretch;
-  gap: var(--wp--preset--spacing--md);
-}
-
-/* Core stacks ordinary Columns at 782px; keep the card items explicitly
- * full-width so the reusable pattern does not inherit a narrow flex basis. */
-@media (max-width: 781px) {
-  .lpu-card-grid__columns {
-    flex-direction: column;
-    gap: var(--wp--preset--spacing--lg);
-  }
-
-  .lpu-card-grid__columns > .wp-block-column {
-    flex-basis: 100% !important;
-    width: 100%;
-    margin-block-start: 0;
-  }
-}
-
-.lpu-card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.lpu-card .lpu-media-placeholder {
-  width: 100%;
-}
-
-.lpu-card__body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--wp--preset--spacing--xs);
-}
-
-.lpu-card__body > .wp-block-heading {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.15;
-  text-transform: uppercase;
-}
-
-.lpu-card__body > .wp-block-paragraph {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.35;
-}
-
-.lpu-card__body .wp-block-buttons {
-  margin-block-start: auto;
-}
-
-.lpu-card__body .wp-block-button__link {
-  font-size: 0.85rem;
-}
-
-.lpu-farm-selector > .wp-block-heading {
-  margin-block: 0 var(--wp--preset--spacing--section);
-}
-
-.lpu-farm-selector__columns {
-  align-items: center;
-  gap: var(--wp--preset--spacing--md);
-}
-
-.lpu-farm-selector__item {
-  position: relative;
-  min-width: 0;
-}
-
-.lpu-farm-selector__item + .lpu-farm-selector__item::before {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  line-height: 1;
-  color: var(--wp--preset--color--vert-fonce);
-  content: "✳";
-  transform: translate(-50%, -50%);
-}
-
-.lpu-farm-selector__item .wp-block-heading {
-  margin: 0;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.lpu-farm-selector__item a {
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.15em;
-}
-
-.lpu-farm-selector__item a:hover,
-.lpu-farm-selector__item a:focus-visible {
-  text-decoration-thickness: 3px;
-}
-
-.lpu-columns-text {
-  background-color: var(--wp--preset--color--vert-fonce);
-  color: var(--wp--preset--color--ecru);
-}
-
-.lpu-columns-text > .lpu-columns-text__title {
-  max-width: 36rem;
-  margin-block: 0
-    calc(var(--wp--preset--spacing--xl) + var(--wp--preset--spacing--lg));
-  margin-inline: auto;
-  text-wrap: balance;
-}
-
-.lpu-columns-text__columns {
-  align-items: flex-start;
-  gap: var(--wp--preset--spacing--xl);
-}
-
-.lpu-columns-text__columns > .wp-block-column {
-  min-width: 0;
-}
-
-.lpu-columns-text__columns .wp-block-paragraph {
-  max-width: 18rem;
-  margin-block: 0;
-  margin-inline: auto;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  text-align: center;
-}
-
-.lpu-graphic-band {
-  background-color: var(--wp--preset--color--jaune);
-  color: var(--wp--preset--color--vert-fonce);
-  text-align: center;
-}
-
-.lpu-graphic-band > .wp-block-heading {
-  max-width: 36rem;
-  margin-block: 0 var(--wp--preset--spacing--md);
-  margin-inline: auto;
-  text-wrap: balance;
-}
-
-.lpu-graphic-band > .wp-block-paragraph {
-  max-width: 42rem;
-  margin-block: 0;
-  margin-inline: auto;
-}
-
-.lpu-graphic-band > .wp-block-buttons {
-  justify-content: center;
-  margin-block-start: var(--wp--preset--spacing--lg);
-}
-
+/*****************************************************************************/
+/* HEADER SHELL                                                              */
+/*****************************************************************************/
 .lpu-header {
   position: relative;
   z-index: 20;
@@ -364,6 +180,9 @@
   --lpu-header-foreground: var(--wp--preset--color--vert-fonce);
 }
 
+/*****************************************************************************/
+/* TRANSPARENT HEADER STATE                                                  */
+/*****************************************************************************/
 /* Keep the transparent Home header out of normal flow in both menu states. */
 body.lpu-header-transparent .lpu-header {
   position: absolute;
@@ -394,13 +213,6 @@ body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
   margin-block-start: 0;
 }
 
-/* The footer follows the last editorial section directly. WordPress adds its
- * normal site-stack gap to every sibling; that creates an unintended écru
- * strip after a full-width closing band. */
-.wp-site-blocks > main + footer.wp-block-template-part {
-  margin-block-start: 0;
-}
-
 /* Transparent pages start with the light foreground. Core already exposes
  * every interactive menu state in the DOM, so one positive :has() selector
  * is enough to switch the whole header back to its opaque treatment. */
@@ -420,6 +232,9 @@ body.lpu-header-transparent
   background: var(--wp--preset--color--ecru);
 }
 
+/*****************************************************************************/
+/* HEADER FOREGROUND, FOCUS, AND LOGO VARIANTS                               */
+/*****************************************************************************/
 .lpu-header .wp-block-navigation-item__content,
 .lpu-header .wp-block-navigation__submenu-icon,
 .lpu-header .wp-block-navigation__responsive-container-open {
@@ -469,6 +284,9 @@ body.lpu-header-transparent
   display: none;
 }
 
+/*****************************************************************************/
+/* HEADER NAVIGATION CONTAINER                                               */
+/*****************************************************************************/
 /* The site logo sits inside the navigation, in the center grid track. Core
  * wraps it in a nav item li; only its own track is sized (auto), so the logo
  * never overlaps the two flanking nav-groups. */
@@ -540,6 +358,9 @@ body.lpu-header-transparent
   min-height: var(--lpu-header-content-min-height);
 }
 
+/*****************************************************************************/
+/* HEADER LINK TYPOGRAPHY AND INTERACTION                                    */
+/*****************************************************************************/
 .lpu-header .wp-block-navigation-item__content {
   padding: 0.5rem 0.75rem;
   font-family: var(--wp--preset--font-family--ruden);
@@ -587,6 +408,9 @@ body.lpu-header-transparent
   display: none;
 }
 
+/*****************************************************************************/
+/* HEADER NAVIGATION GROUPS                                                  */
+/*****************************************************************************/
 /* Desktop nav-group: each group is a grid item hugging its rail edge.
  * min-width: 0 lets its 1fr track shrink; overflow: hidden clips a
  * still-too-wide group while navigation.js decides whether to switch to
@@ -637,6 +461,9 @@ body.lpu-header-transparent
   white-space: nowrap;
 }
 
+/*****************************************************************************/
+/* DESKTOP SUBMENU / MEGA-MENU PANEL                                         */
+/*****************************************************************************/
 /* Desktop: keep the whole nav stack static so the full-width submenu panel
  * anchors to .lpu-header (position: relative) rather than to the nav rail. */
 .lpu-header .wp-block-navigation,
@@ -704,6 +531,9 @@ body.lpu-header-transparent
   padding-inline: 0;
 }
 
+/*****************************************************************************/
+/* COMPACT HEADER NAVIGATION                                                 */
+/*****************************************************************************/
 /* Compact presentation, selected by navigation.js when one nav-group no
  * longer fits in its track. The grid keeps the logo in the middle; the two
  * groups are dropped. Core still owns the open overlay; these rules only
@@ -745,6 +575,9 @@ body.lpu-header-transparent
   display: none;
 }
 
+/*****************************************************************************/
+/* PHONE PRESENTATION                                                        */
+/*****************************************************************************/
 /* Below 600px Core hides the entire closed Navigation container so only the
  * hamburger survives. Keep the compact closed presentation on phones too:
  * centered logo with the open button at the rail's start, the same closed
@@ -789,10 +622,286 @@ body.lpu-header-transparent
   }
 }
 
+/*****************************************************************************/
+/* HEADER RESPONSIVE (900px)                                                 */
+/*****************************************************************************/
+@media (max-width: 900px) {
+  .lpu-header {
+    min-height: 4.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .lpu-header .wp-block-site-logo img {
+    max-height: 3.25rem;
+  }
+}
+
+/*****************************************************************************/
+/* HERO SECTION                                                              */
+/*****************************************************************************/
+.lpu-hero {
+  display: flex;
+  align-items: flex-end;
+  box-sizing: border-box;
+  min-height: clamp(34rem, 75vh, 48rem);
+  background-position: center;
+  background-size: cover;
+}
+
+.lpu-hero .wp-block-cover__inner-container {
+  box-sizing: border-box;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.lpu-hero__content {
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: 0;
+}
+
+.lpu-hero__content .wp-block-heading {
+  max-width: 10ch;
+  margin-block: 0 var(--wp--preset--spacing--md);
+  text-wrap: balance;
+}
+
+.lpu-hero__content > .wp-block-paragraph {
+  max-width: 31rem;
+  margin-block: 0;
+}
+
+.lpu-hero__actions {
+  margin-block-start: var(--wp--preset--spacing--lg);
+}
+
+/*****************************************************************************/
+/* CARD GRID                                                                 */
+/*****************************************************************************/
+.lpu-card-grid__title {
+  max-width: 30rem;
+  margin-block: 0 var(--wp--preset--spacing--lg);
+}
+
+.lpu-card-grid__columns {
+  align-items: stretch;
+  gap: var(--wp--preset--spacing--md);
+}
+
+/* Core stacks ordinary Columns at 782px; keep the card items explicitly
+ * full-width so the reusable pattern does not inherit a narrow flex basis. */
+@media (max-width: 781px) {
+  .lpu-card-grid__columns {
+    flex-direction: column;
+    gap: var(--wp--preset--spacing--lg);
+  }
+
+  .lpu-card-grid__columns > .wp-block-column {
+    flex-basis: 100% !important;
+    width: 100%;
+    margin-block-start: 0;
+  }
+}
+
+.lpu-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lpu-card .lpu-media-placeholder {
+  width: 100%;
+}
+
+.lpu-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--wp--preset--spacing--xs);
+}
+
+.lpu-card__body > .wp-block-heading {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.lpu-card__body > .wp-block-paragraph {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.lpu-card__body .wp-block-buttons {
+  margin-block-start: auto;
+}
+
+.lpu-card__body .wp-block-button__link {
+  font-size: 0.85rem;
+}
+
+/*****************************************************************************/
+/* FARM SELECTOR                                                             */
+/*****************************************************************************/
+.lpu-farm-selector > .wp-block-heading {
+  margin-block: 0 var(--wp--preset--spacing--section);
+}
+
+.lpu-farm-selector__columns {
+  align-items: center;
+  gap: var(--wp--preset--spacing--md);
+}
+
+.lpu-farm-selector__item {
+  position: relative;
+  min-width: 0;
+}
+
+.lpu-farm-selector__item + .lpu-farm-selector__item::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1;
+  color: var(--wp--preset--color--vert-fonce);
+  content: "✳";
+  transform: translate(-50%, -50%);
+}
+
+.lpu-farm-selector__item .wp-block-heading {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.lpu-farm-selector__item a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+}
+
+.lpu-farm-selector__item a:hover,
+.lpu-farm-selector__item a:focus-visible {
+  text-decoration-thickness: 3px;
+}
+
+/*****************************************************************************/
+/* TEXT COLUMNS BAND                                                         */
+/*****************************************************************************/
+.lpu-columns-text {
+  background-color: var(--wp--preset--color--vert-fonce);
+  color: var(--wp--preset--color--ecru);
+}
+
+.lpu-columns-text > .lpu-columns-text__title {
+  max-width: 36rem;
+  margin-block: 0
+    calc(var(--wp--preset--spacing--xl) + var(--wp--preset--spacing--lg));
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+.lpu-columns-text__columns {
+  align-items: flex-start;
+  gap: var(--wp--preset--spacing--xl);
+}
+
+.lpu-columns-text__columns > .wp-block-column {
+  min-width: 0;
+}
+
+.lpu-columns-text__columns .wp-block-paragraph {
+  max-width: 18rem;
+  margin-block: 0;
+  margin-inline: auto;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/*****************************************************************************/
+/* GRAPHIC CALL-TO-ACTION BAND                                               */
+/*****************************************************************************/
+.lpu-graphic-band {
+  background-color: var(--wp--preset--color--jaune);
+  color: var(--wp--preset--color--vert-fonce);
+  text-align: center;
+}
+
+.lpu-graphic-band > .wp-block-heading {
+  max-width: 36rem;
+  margin-block: 0 var(--wp--preset--spacing--md);
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+.lpu-graphic-band > .wp-block-paragraph {
+  max-width: 42rem;
+  margin-block: 0;
+  margin-inline: auto;
+}
+
+.lpu-graphic-band > .wp-block-buttons {
+  justify-content: center;
+  margin-block-start: var(--wp--preset--spacing--lg);
+}
+
+/*****************************************************************************/
+/* SECTION RESPONSIVE (781px)                                                */
+/*****************************************************************************/
+@media (max-width: 781px) {
+  .lpu-hero {
+    min-height: 34rem;
+  }
+
+  .lpu-hero__content .wp-block-heading {
+    max-width: 11ch;
+  }
+
+  .lpu-farm-selector__columns {
+    gap: var(--wp--preset--spacing--lg);
+  }
+
+  .lpu-farm-selector__item + .lpu-farm-selector__item::before {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .lpu-columns-text__columns {
+    gap: var(--wp--preset--spacing--lg);
+  }
+
+  .lpu-columns-text > .lpu-columns-text__title {
+    margin-block-end: var(--wp--preset--spacing--xl);
+  }
+
+  .lpu-columns-text__columns .wp-block-paragraph {
+    max-width: 30rem;
+  }
+}
+
+/*****************************************************************************/
+/* GENERIC MAIN AND FOOTER TRANSITION                                        */
+/*****************************************************************************/
 main.wp-block-group {
   min-height: 30vh;
 }
 
+/* The footer follows the last editorial section directly. WordPress adds its
+ * normal site-stack gap to every sibling; that creates an unintended écru
+ * strip after a full-width closing band. */
+.wp-site-blocks > main + footer.wp-block-template-part {
+  margin-block-start: 0;
+}
+
+/*****************************************************************************/
+/* FOOTER COMPONENT                                                          */
+/*****************************************************************************/
 /* Shared footer frame. The footer Navigation receives site-local content at
  * render time, while this layout and its visual treatment remain shared. */
 .lpu-footer {
@@ -1069,6 +1178,9 @@ main.wp-block-group {
   }
 }
 
+/*****************************************************************************/
+/* BUTTONS                                                                   */
+/*****************************************************************************/
 .wp-block-button__link {
   transition:
     background-color 100ms ease,
@@ -1152,49 +1264,9 @@ main.wp-block-group {
   background-color: var(--wp--preset--color--vert-fonce);
 }
 
-@media (max-width: 900px) {
-  .lpu-header {
-    min-height: 4.5rem;
-    padding: 0.75rem 1rem;
-  }
-
-  .lpu-header .wp-block-site-logo img {
-    max-height: 3.25rem;
-  }
-}
-
-@media (max-width: 781px) {
-  .lpu-hero {
-    min-height: 34rem;
-  }
-
-  .lpu-hero__content .wp-block-heading {
-    max-width: 11ch;
-  }
-
-  .lpu-farm-selector__columns {
-    gap: var(--wp--preset--spacing--lg);
-  }
-
-  .lpu-farm-selector__item + .lpu-farm-selector__item::before {
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .lpu-columns-text__columns {
-    gap: var(--wp--preset--spacing--lg);
-  }
-
-  .lpu-columns-text > .lpu-columns-text__title {
-    margin-block-end: var(--wp--preset--spacing--xl);
-  }
-
-  .lpu-columns-text__columns .wp-block-paragraph {
-    max-width: 30rem;
-  }
-}
-
+/*****************************************************************************/
+/* REDUCED MOTION                                                            */
+/*****************************************************************************/
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
