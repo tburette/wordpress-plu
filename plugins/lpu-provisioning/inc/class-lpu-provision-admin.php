@@ -57,18 +57,20 @@ class Lpu_Provision_Admin {
 		}
 		check_admin_referer( self::NONCE );
 
-		// Long synchronous run on hosts without CLI: lift PHP limits.
+		// Long synchronous run on web host : lift PHP limits.
 		set_time_limit( 0 );
 		wp_raise_memory_limit( 'admin' );
 
-		// Now that the run has started, surface a clear error if the PHP
-		// process dies before the result is stored (hard timeout, memory
-		// exhaustion, or a server-level interruption) — those bypass
-		// catch (Throwable). The normal path flips $reached_store before exit.
-		$reached_store = false;
+
+		// shutdown handler guard pattern
+		// Show an error if the request dies before the operation finished
+		// (signaled by $finished_provisioning set to true)
+		// try/catch isn't sufficient because some issue bypass it such as hard
+		// timeout, memory exhaustion, or a server-level interruption.
+		$finished_provisioning = false;
 		register_shutdown_function(
-			function () use ( &$reached_store ) {
-				if ( $reached_store ) {
+			function () use ( &$finished_provisioning ) {
+				if ( $finished_provisioning ) {
 					return;
 				}
 				$result                = get_site_option( self::OPTION, array() );
@@ -92,7 +94,7 @@ class Lpu_Provision_Admin {
 
 		$log['lines'] = Lpu_Provisioner::get_log();
 		$log['error'] = $error;
-		$reached_store = true;
+		$finished_provisioning = true;
 		update_site_option( self::OPTION, $log );
 
 		wp_safe_redirect(

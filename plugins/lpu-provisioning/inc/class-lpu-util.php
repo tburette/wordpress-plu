@@ -249,14 +249,13 @@ trait Lpu_Util {
 				continue;
 			}
 			$this->log( 'Creating sub-site: ' . $slug );
-			// wpmu_create_blog() defaults a new site to public => 0, but the
-			// sites are public (the original scripts used `wp site create`
-			// without --private), so force public visibility.
 			$blog_id = wpmu_create_blog(
 				$slug . '.' . $network_domain,
 				$network_path,
 				'Le Paysan Urbain ' . ucfirst( $slug ),
 				$owner_id,
+				// wpmu_create_blog() defaults a new site to public => 0, but
+				// the sites are public
 				array( 'public' => 1 ),
 				$network_id
 			);
@@ -283,7 +282,7 @@ trait Lpu_Util {
 		);
 
 		if ( $created_any ) {
-			$this->log( 'Created missing sub-sites.' );
+			$this->log( 'Created one or multiple missing sub-site.' );
 		}
 		$this->log( 'Network sites: ' . implode( ', ', array_keys( $this->blogs ) ) );
 		return $this->blogs;
@@ -415,7 +414,7 @@ trait Lpu_Util {
 			$this->fail( 'Required plugin lpu-split-section is not network-active: ' . $split_plugin );
 		}
 
-		$this->log( 'Dependencies OK: theme ' . self::THEME_SLUG . ', nav-group, lpu-split-section (network-active)' );
+		$this->log( 'Dependencies OK: theme, plugins' );
 	}
 
 	/**

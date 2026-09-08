@@ -12,6 +12,8 @@
  * pages, logging) lives in the Lpu_Util trait (inc/class-lpu-util.php) so the
  * steps stay readable top-to-bottom, like the original shell scripts.
  *
+ * Careful with plugins : plugin installation related code is spread throughout
+ *
  * @package Lpu_Provisioning
  */
 
@@ -37,10 +39,8 @@ class Lpu_Provisioner {
 	public function provision( $force = false ) {
 		$this->force = (bool) $force;
 
-		$this->register_theme_patterns();
 		$this->log( '==> Provisioning Le Paysan Urbain' );
-		// Network-activate the companion plugins, then verify everything the
-		// content needs is present and network-available before touching data.
+		$this->register_theme_patterns();
 		$this->provision_plugins();
 		$this->check_dependencies();
 		$this->provision_network_sites();
