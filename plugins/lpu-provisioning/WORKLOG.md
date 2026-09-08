@@ -302,3 +302,17 @@ High-level record of what is being done. Entries are dated and timestamped
   `init` registration for frontend, editor, REST, or WP-CLI requests. Network
   activation loads the plugin on each site; it does not persist or share the
   pattern registry.
+- Refactored the split-section patterns into four plugin-owned files under
+  `plugins/lpu-split-section/patterns/`. The loader now uses explicit
+  `filePath` entries and keeps only the registration metadata in PHP; the
+  block markup is no longer embedded in a function or assembled with token
+  replacement.
+- Raised the split-section plugin requirement to WordPress 7.1, which is the
+  first supported version with `register_block_pattern()`'s `filePath`
+  property. The pattern files contain the final root-relative URLs for the
+  `lepaysanurbain` theme's placeholder and network logo. This deliberately
+  assumes the current theme slug and standard `/wp-content` location; a
+  future theme replacement may require updating those URLs.
+- Verified PHP syntax, all four registry entries, the absence of both
+  placeholder tokens, HTTP 200 responses for both theme assets, and a complete
+  `wp lpu provision --force` run.
