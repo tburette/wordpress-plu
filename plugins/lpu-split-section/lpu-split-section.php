@@ -587,4 +587,5 @@ HTML,
 		register_block_pattern($name, $pattern);
 	}
 }
+
 add_action('init', 'lpu_split_section_register_patterns', 20);

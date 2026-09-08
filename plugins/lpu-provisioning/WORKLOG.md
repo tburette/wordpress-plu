@@ -296,3 +296,9 @@ High-level record of what is being done. Entries are dated and timestamped
   provisioned records are titled `Menu principal réseau` / `Menu principal
   ferme` and `Footer réseau` / `Footer ferme`, so no additional navigation
   record is required.
+- Confirmed that `lpu_split_section_register_patterns()` must run on every
+  request: `register_block_pattern()` stores definitions only in WordPress's
+  in-memory, request-scoped registry. An activation hook cannot replace the
+  `init` registration for frontend, editor, REST, or WP-CLI requests. Network
+  activation loads the plugin on each site; it does not persist or share the
+  pattern registry.

@@ -2,6 +2,10 @@
 
 ## General
 
+- [x] `lpu_split_section_register_patterns()` runs on every request by design. `register_block_pattern()` populates WordPress's in-memory, request-scoped registry; an activation hook runs only once and cannot make the patterns available to later frontend, editor, REST, or WP-CLI requests. Network activation makes the plugin load for each site, while each request registers its own site's patterns.
+- [ ] lpu_split_section_theme_asset_uri : `plugins/lpu-split-section/lpu-split-section.php:29 (lpu_split_section_theme_asset_uri)`.
+      Is it me or that code is ugly. I mean, forcing using another theme like that from a plugin??
+      Isn't there a way to run the code after the theme has changed?
 - [ ] Use https://fullsiteediting.com/lessons/global-style-variations/ to set custom header/menu logo?
 - [ ] `plugins/lpu-split-section/lpu-split-section.php` (pattern registration, `NETWORK_LOGO`): the "Côte à côte — logo et titre-texte" pattern hard-codes the network écru logo asset URL (`assets/images/logos/network-horizontal-ecru-baseline.svg`). It is a content placeholder, not part of the header-logo mechanism, but it should become configurable/per-site (e.g. selected from the media library at insertion time).
 - [ ] `themes/lepaysanurbain/theme.json` : evalute if settings > color > custom should be true
