@@ -277,3 +277,22 @@ High-level record of what is being done. Entries are dated and timestamped
 - NEXT: reset env (announce) and verify BOTH CLI and admin-HTTP paths on a
   fresh DB (incl. fresh-state network-activation of the plugins by
   provision_plugins()), update README/step list, commit, review subagent.
+
+## 2026-09-08
+
+- Investigated the provisioning comparison report. The split-section plugin was
+  resolving theme assets with `get_theme_file_uri()` during `init`; on a first
+  provisioning request this used the bootstrap theme (often Twenty Twenty-Five)
+  even though `lepaysanurbain` was activated later in the same request.
+- Fixed the shared asset resolver for the frame catalogue and all split-section
+  patterns (`split-content-image`, `split-motif-image`, and
+  `split-logo-content`) so they resolve against the `lepaysanurbain` theme
+  object directly.
+- Verified with `wp lpu provision --force`: the network Home and pattern
+  registry now contain LPU theme URLs; the placeholder, logo, and motif assets
+  return HTTP 200 and the Home renders the split image.
+- Confirmed the Site Editor `/navigation` route is healthy and preloads the
+  native `wp_navigation` posts. “Navigation” is the core screen label; the
+  provisioned records are titled `Menu principal réseau` / `Menu principal
+  ferme` and `Footer réseau` / `Footer ferme`, so no additional navigation
+  record is required.

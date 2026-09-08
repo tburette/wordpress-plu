@@ -16,6 +16,31 @@ if (! defined('ABSPATH')) {
 define('LPU_SPLIT_SECTION_VERSION', '0.2.0');
 
 /**
+ * Return a URL for an asset belonging to the LPU theme.
+ *
+ * This plugin is loaded before provisioning may activate the theme in the
+ * current request. Using get_theme_file_uri() here would therefore resolve
+ * against whatever theme was active at bootstrap (often Twenty Twenty-Five),
+ * leaving saved pattern content with a broken asset URL.
+ *
+ * @param string $path Relative path inside the LPU theme.
+ * @return string
+ */
+function lpu_split_section_theme_asset_uri($path)
+{
+	$path  = ltrim((string) $path, '/');
+	$theme = wp_get_theme('lepaysanurbain');
+
+	if ($theme->exists()) {
+		return trailingslashit($theme->get_stylesheet_directory_uri()) . $path;
+	}
+
+	// Keep the plugin usable while the companion theme is being installed. The
+	// provisioning dependency check still reports a missing LPU theme clearly.
+	return get_theme_file_uri($path);
+}
+
+/**
  * Return a stable development version for a local asset.
  *
  * @param string $path Absolute asset path.
@@ -71,7 +96,7 @@ function lpu_split_section_get_frames()
 			if (isset($background['asset']) && is_string($background['asset'])) {
 				$background = array(
 					'type' => 'image',
-					'url'  => get_theme_file_uri(ltrim($background['asset'], '/')),
+					'url'  => lpu_split_section_theme_asset_uri($background['asset']),
 				);
 			}
 
@@ -377,8 +402,8 @@ add_action('init', 'lpu_split_section_register_blocks', 10);
  */
 function lpu_split_section_register_patterns()
 {
-	$placeholder = esc_url(get_theme_file_uri('assets/images/pattern-placeholder.svg'));
-	$network_logo = esc_url(get_theme_file_uri('assets/images/logos/network-horizontal-ecru-baseline.svg'));
+	$placeholder  = esc_url(lpu_split_section_theme_asset_uri('assets/images/pattern-placeholder.svg'));
+	$network_logo = esc_url(lpu_split_section_theme_asset_uri('assets/images/logos/network-horizontal-ecru-baseline.svg'));
 
 	$patterns = array(
 		'lpu-split-section/split-free'          => array(
