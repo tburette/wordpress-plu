@@ -439,8 +439,4 @@ function lpu_split_section_register_patterns()
 	}
 }
 
-/*
- * The pattern registry is request-scoped, so registration remains on init
- * for every request that exposes the patterns.
- */
 add_action('init', 'lpu_split_section_register_patterns', 20);
