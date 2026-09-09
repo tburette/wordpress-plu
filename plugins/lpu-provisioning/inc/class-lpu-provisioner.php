@@ -63,7 +63,7 @@ class Lpu_Provisioner {
 	 */
 	public function steps() {
 		return array(
-			array( 'id' => 'plugins', 'label' => 'Network-activate companion plugins' ),
+			array( 'id' => 'plugins', 'label' => 'Install Query Monitor and activate companion plugins' ),
 			array( 'id' => 'network', 'label' => 'Multisite network and sub-sites' ),
 			array( 'id' => 'theme', 'label' => 'Theme enable and activation' ),
 			array( 'id' => 'language', 'label' => 'French locale' ),
@@ -78,13 +78,16 @@ class Lpu_Provisioner {
 	}
 
 	/**
-	 * Step: network-activate the companion plugins required by the content.
+	 * Step: install Query Monitor and network-activate the companion plugins.
 	 *
-	 * Mirrors the shell's network-activate-plugin.sh for nav-group and
-	 * lpu-split-section: they must be active network-wide so their block and
+	 * Query Monitor is installed from the WordPress.org Plugin API when it is
+	 * not already present, matching the plugin included by wp-env. It is a
+	 * development/debugging tool, not a content dependency. The nav-group and
+	 * lpu-split-section plugins must be active network-wide so their blocks and
 	 * patterns are available on every farm site after provisioning, not just on
-	 * the main site. Activation is idempotent — already network-active plugins
-	 * are left untouched; a missing/disabled plugin stops the run clearly.
+	 * the main site. Installation and activation are idempotent — already
+	 * installed or network-active plugins are left untouched; a missing/disabled
+	 * plugin stops the run clearly.
 	 *
 	 * @return void
 	 */
@@ -93,7 +96,11 @@ class Lpu_Provisioner {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
+		$query_monitor = 'query-monitor/query-monitor.php';
+		$this->install_plugin_from_wordpress_org( 'query-monitor', $query_monitor );
+
 		$plugins = array(
+			$query_monitor,
 			'nav-group/nav-group.php',
 			'lpu-split-section/lpu-split-section.php',
 		);
@@ -107,6 +114,56 @@ class Lpu_Provisioner {
 			}
 			$this->log( 'Network-activated plugin: ' . $plugin );
 		}
+	}
+
+	/**
+	 * Install a WordPress.org plugin when its main file is not present.
+	 *
+	 * The admin provisioning path cannot rely on WP-CLI or an uploaded zip, so
+	 * use WordPress's native Plugin API and upgrader. The caller still performs
+	 * activation separately, keeping installation and network activation
+	 * idempotent and making failures visible in the provisioning log.
+	 *
+	 * @param string $slug        WordPress.org plugin slug.
+	 * @param string $plugin_file Plugin file relative to WP_PLUGIN_DIR.
+	 * @return void
+	 */
+	protected function install_plugin_from_wordpress_org( $slug, $plugin_file ) {
+		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin_file ) ) {
+			return;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+		$api = plugins_api(
+			'plugin_information',
+			array(
+				'slug'   => $slug,
+				'fields' => array(
+					'sections' => false,
+				),
+			)
+		);
+		if ( is_wp_error( $api ) ) {
+			$this->fail( 'Could not retrieve ' . $slug . ' from WordPress.org: ' . $api->get_error_message() );
+		}
+		if ( empty( $api->download_link ) ) {
+			$this->fail( 'WordPress.org did not provide a download package for ' . $slug . '.' );
+		}
+
+		$upgrader = new Plugin_Upgrader( new Automatic_Upgrader_Skin() );
+		$result   = $upgrader->install( $api->download_link );
+		if ( is_wp_error( $result ) ) {
+			$this->fail( 'Could not install ' . $slug . ': ' . $result->get_error_message() );
+		}
+		if ( true !== $result || ! file_exists( WP_PLUGIN_DIR . '/' . $plugin_file ) ) {
+			$this->fail( 'Could not install ' . $slug . ' in the WordPress plugins directory.' );
+		}
+
+		wp_clean_plugins_cache( true );
+		$this->log( 'Installed plugin from WordPress.org: ' . $plugin_file );
 	}
 
 	/**

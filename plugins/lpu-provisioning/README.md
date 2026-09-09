@@ -12,16 +12,17 @@ Remplaçant des scripts shell `wp-env` (`.sh`), il exécute la même logique mai
 
 ## Étapes
 
-1. Réseau multisite et sous-sites (`wpmu_create_blog`).
-2. Thème `lepaysanurbain` : activation réseau + activation sur chaque site.
-3. Locale française (`fr_FR`) : téléchargement du paquet + langue de chaque site + langue du profil admin réseau.
-4. Logos de site (`custom_logo` + logo transparent).
-5. Pages d'accueil des fermes.
-6. Navigations d'en-tête + template parts.
-7. Navigations de pied de page + template parts.
-8. Page de test typographique.
-9. Page de test des patterns.
-10. Page d'accueil du réseau (assemblée depuis des patterns).
+1. Installation de Query Monitor depuis WordPress.org + activation réseau des plugins compagnon (`nav-group` et `lpu-split-section`).
+2. Réseau multisite et sous-sites (`wpmu_create_blog`).
+3. Thème `lepaysanurbain` : activation réseau + activation sur chaque site.
+4. Locale française (`fr_FR`) : téléchargement du paquet + langue de chaque site + langue du profil admin réseau.
+5. Logos de site (`custom_logo` + logo transparent).
+6. Pages d'accueil des fermes.
+7. Navigations d'en-tête + template parts.
+8. Navigations de pied de page + template parts.
+9. Page de test typographique.
+10. Page de test des patterns.
+11. Page d'accueil du réseau (assemblée depuis des patterns).
 
 ## Contenu
 
@@ -31,14 +32,7 @@ Les URL codées en dur y sont remplacées par des jetons `{{NETWORK_URL}}`,
 `{{FARM_PARIS_URL}}`, `{{FARM_LYON_URL}}`, `{{FARM_MARSEILLE_URL}}` résolus à
 l'exécution selon le domaine réel du site.
 
-## Usage local (WP-CLI)
-
-```bash
-wp-env run cli wp lpu provision          # application idempotente
-wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assemblée
-```
-
-## Usage pas de SSH/WP-CLI (OVH)
+## Prérequis avant usage
 
 1. Mettre en place le multisite :
    https://developer.wordpress.org/advanced-administration/multisite/create-network/
@@ -50,21 +44,31 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
    - Se déconnecter et se reconnecter. Aller à la page Admin du réseau → Sites.
      Créer chaqe sous-site.
 
-2. Téléverser et activer thème et plugins (sur site du **réseau**) :
+2. Téléverser le thème et plugins (sur site du **réseau**) :
    - Le thème `lepaysanurbain` : **Apparence → Thèmes → Ajouter → Téléverser un
      thème**.
    - Les plugins `lpu-split-section`, `nav-group` et `lpu-provisioning` :
      **Extensions → Ajouter → Téléverser une extension**.
-     Activer sur le réseau `lpu-provisioning`.
-     > Au lancement, le provisioning active d'abord `lpu-split-section` et
-     > `nav-group` sur le réseau , puis vérifie que le thème `lepaysanurbain` est
-     > présent et que ces deux plugins sont bien activés **au niveau du réseau**.
-3. Réglages du réseau → **Provisionnement LPU** → bouton _Provisionner le site_.
-   Le paquet de langue `fr_FR` est téléchargé automatiquement par le bouton ; si
-   l'hébergement bloque ce téléchargement (pas d'accès sortant à wordpress.org) le
-   provisioning s'arrête avec un message d'erreur : installer le paquet
-   manuellement dans **Réglages → Général → Langue du site**, puis relancer le
-   bouton.
+3. Activer sur le réseau `lpu-provisioning`.
+
+## Usage local (WP-CLI)
+
+```bash
+wp-env run cli wp lpu provision          # application idempotente
+wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assemblée
+```
+
+## Usage pas de SSH/WP-CLI (OVH)
+
+Aller sur le site Admin du réseau → Réglages → Provisionnement LPU
+(/wp-admin/network/settings.php?page=lpu-provisioning).
+Appuyer sur le bouton "Provisionner le site".
+
+Vérifier l'installation du plugi nQuery Monitor et de la langue française.
+Si ce n'est pas réalisé (pas d'accès sortant à wordpress.org par exemple),
+installer manuellement.
+Pour le paquet de langue fr installer le paquet manuellement dans
+**Réglages → Général → Langue du site**, puis relancer le bouton de provisioning.
 
 ## Implémentation
 
