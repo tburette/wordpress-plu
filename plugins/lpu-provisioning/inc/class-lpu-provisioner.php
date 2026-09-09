@@ -63,7 +63,7 @@ class Lpu_Provisioner {
 	 */
 	public function steps() {
 		return array(
-			array( 'id' => 'plugins', 'label' => 'Install Query Monitor and activate companion plugins' ),
+			array( 'id' => 'plugins', 'label' => 'Install Query Monitor and activate local plugins' ),
 			array( 'id' => 'network', 'label' => 'Multisite network and sub-sites' ),
 			array( 'id' => 'theme', 'label' => 'Theme enable and activation' ),
 			array( 'id' => 'language', 'label' => 'French locale' ),
@@ -78,16 +78,16 @@ class Lpu_Provisioner {
 	}
 
 	/**
-	 * Step: install Query Monitor and network-activate the companion plugins.
+	 * Step: install Query Monitor and network-activate the local plugins.
 	 *
 	 * Query Monitor is installed from the WordPress.org Plugin API when it is
 	 * not already present, matching the plugin included by wp-env. It is a
-	 * development/debugging tool, not a content dependency. The nav-group and
-	 * lpu-split-section plugins must be active network-wide so their blocks and
-	 * patterns are available on every farm site after provisioning, not just on
-	 * the main site. Installation and activation are idempotent — already
-	 * installed or network-active plugins are left untouched; a missing/disabled
-	 * plugin stops the run clearly.
+	 * development/debugging tool, not a content dependency. The local plugins
+	 * must be active network-wide so their blocks and patterns are available on
+	 * every farm site after provisioning, not just on the main site.
+	 * Installation and activation are idempotent — already installed or
+	 * network-active plugins are left untouched; a missing/disabled plugin stops
+	 * the run clearly.
 	 *
 	 * @return void
 	 */
@@ -99,11 +99,7 @@ class Lpu_Provisioner {
 		$query_monitor = 'query-monitor/query-monitor.php';
 		$this->install_plugin_from_wordpress_org( 'query-monitor', $query_monitor );
 
-		$plugins = array(
-			$query_monitor,
-			'nav-group/nav-group.php',
-			'lpu-split-section/lpu-split-section.php',
-		);
+		$plugins = array_merge( array( $query_monitor ), $this->local_plugins() );
 		foreach ( $plugins as $plugin ) {
 			if ( is_plugin_active_for_network( $plugin ) ) {
 				continue;
@@ -114,6 +110,18 @@ class Lpu_Provisioner {
 			}
 			$this->log( 'Network-activated plugin: ' . $plugin );
 		}
+	}
+
+	/**
+	 * Return the project-local plugins required by the provisioned content.
+	 *
+	 * @return array<int, string>
+	 */
+	protected function local_plugins() {
+		return array(
+			'nav-group/nav-group.php',
+			'lpu-split-section/lpu-split-section.php',
+		);
 	}
 
 	/**

@@ -375,22 +375,21 @@ trait Lpu_Util {
 	}
 
 	/**
-	 * Verify the theme and the two companion plugins required by the content
-	 * are present before provisioning starts.
+	 * Verify the theme and the project-local plugins required by the content are
+	 * present before provisioning starts.
 	 *
-	 * The provisioning content depends on the `lepaysanurbain` theme, the
-	 * `nav-group` block and the `lpu-split-section` patterns. This runs after
-	 * the environment steps (and after `init`), so a missing dependency shows
-	 * up as a clear error here instead of an obscure failure mid-run.
+	 * The provisioning content depends on the `lepaysanurbain` theme and the
+	 * project-local blocks and patterns. This runs after the environment steps
+	 * (and after `init`), so a missing dependency shows up as a clear error here
+	 * instead of an obscure failure mid-run.
 	 *
-	 * The two companion plugins must be *network-active* — this is what makes
-	 * their block and patterns available on every farm site, not just in the
-	 * current request. A plugin active only on the main site would appear to
-	 * work during the run but leave the farm sites without the block/patterns
-	 * they need, so we require `is_plugin_active_for_network()` rather than
-	 * checking the in-request registry (which is unreliable on a first run
-	 * where the plugin is network-activated mid-request, before its code is
-	 * loaded).
+	 * The local plugins must be *network-active* — this is what makes their
+	 * blocks and patterns available on every farm site, not just in the current
+	 * request. A plugin active only on the main site would appear to work during
+	 * the run but leave the farm sites without the blocks/patterns they need, so
+	 * we require `is_plugin_active_for_network()` rather than checking the
+	 * in-request registry (which is unreliable on a first run where a plugin is
+	 * network-activated mid-request, before its code is loaded).
 	 *
 	 * @return void
 	 */
@@ -404,14 +403,10 @@ trait Lpu_Util {
 			$this->fail( 'Required theme missing: ' . self::THEME_SLUG );
 		}
 
-		$nav_plugin = 'nav-group/nav-group.php';
-		if ( ! is_plugin_active_for_network( $nav_plugin ) ) {
-			$this->fail( 'Required plugin nav-group is not network-active: ' . $nav_plugin );
-		}
-
-		$split_plugin = 'lpu-split-section/lpu-split-section.php';
-		if ( ! is_plugin_active_for_network( $split_plugin ) ) {
-			$this->fail( 'Required plugin lpu-split-section is not network-active: ' . $split_plugin );
+		foreach ( $this->local_plugins() as $plugin ) {
+			if ( ! is_plugin_active_for_network( $plugin ) ) {
+				$this->fail( 'Required local plugin is not network-active: ' . $plugin );
+			}
 		}
 
 		$this->log( 'Dependencies OK: theme, plugins' );
@@ -780,7 +775,7 @@ trait Lpu_Util {
 
 		ksort( $patterns, SORT_NATURAL | SORT_FLAG_CASE );
 		if ( ! $patterns ) {
-			$this->fail( 'No patterns provided by the active theme or LPU split-section plugin.' );
+			$this->fail( 'No patterns provided by the active theme or project-local plugins.' );
 		}
 
 		$content = '';

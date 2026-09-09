@@ -12,7 +12,7 @@ Remplaçant des scripts shell `wp-env` (`.sh`), il exécute la même logique mai
 
 ## Étapes
 
-1. Installation de Query Monitor depuis WordPress.org + activation réseau des plugins compagnon (`nav-group` et `lpu-split-section`).
+1. Installation de Query Monitor depuis WordPress.org + activation réseau des plugins locaux.
 2. Réseau multisite et sous-sites (`wpmu_create_blog`).
 3. Thème `lepaysanurbain` : activation réseau + activation sur chaque site.
 4. Locale française (`fr_FR`) : téléchargement du paquet + langue de chaque site + langue du profil admin réseau.
@@ -47,9 +47,9 @@ l'exécution selon le domaine réel du site.
 2. Téléverser le thème et plugins (sur site du **réseau**) :
    - Le thème `lepaysanurbain` : **Apparence → Thèmes → Ajouter → Téléverser un
      thème**.
-   - Les plugins `lpu-split-section`, `nav-group` et `lpu-provisioning` :
+   - Les plugins locaux du projet et le plugin de provisioning :
      **Extensions → Ajouter → Téléverser une extension**.
-3. Activer sur le réseau `lpu-provisioning`.
+3. Activer sur le réseau le plugin de provisioning.
 
 ## Usage local (WP-CLI)
 
@@ -64,7 +64,7 @@ Aller sur le site Admin du réseau → Réglages → Provisionnement LPU
 (/wp-admin/network/settings.php?page=lpu-provisioning).
 Appuyer sur le bouton "Provisionner le site".
 
-Vérifier l'installation du plugi nQuery Monitor et de la langue française.
+Vérifier l'installation de Query Monitor et de la langue française.
 Si ce n'est pas réalisé (pas d'accès sortant à wordpress.org par exemple),
 installer manuellement.
 Pour le paquet de langue fr installer le paquet manuellement dans
