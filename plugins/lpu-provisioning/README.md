@@ -2,7 +2,8 @@
 
 Plugin de provisioning pour Le Paysan Urbain. Il applique la configuration et
 le contenu de développement sur un multisite WordPress (site réseau + sous-sites
-`paris`, `lyon`, `marseille`), idempotent : relançable sans risque.
+`paris`, `lyon`, `marseille`). La plupart des étapes sont idempotentes et
+relançables ; la Home réseau est reconstruite à chaque exécution.
 
 Le plugin centralise la configuration et le contenu de développement, et peut
 être exécuté :
@@ -55,8 +56,7 @@ l'exécution selon le domaine réel du site.
 ## Usage local (WP-CLI)
 
 ```bash
-wp-env run cli wp lpu provision          # application idempotente
-wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assemblée
+wp-env run cli wp lpu provision # applique la configuration et reconstruit la Home réseau
 ```
 
 ## Usage pas de SSH/WP-CLI (OVH)

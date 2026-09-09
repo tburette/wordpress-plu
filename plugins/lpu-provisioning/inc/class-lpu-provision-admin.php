@@ -81,13 +81,12 @@ class Lpu_Provision_Admin {
 			}
 		);
 
-		$force = ! empty( $_POST['force'] );
 		$log   = array( 'time' => current_time( 'mysql' ), 'lines' => array() );
 		$error = '';
 
 		try {
 			$provisioner = new Lpu_Provisioner();
-			$provisioner->provision( $force );
+			$provisioner->provision();
 		} catch ( Throwable $e ) {
 			$error = $e->getMessage();
 		}
@@ -119,7 +118,7 @@ class Lpu_Provision_Admin {
 		?>
 		<div class="wrap">
 			<h1>Provisionnement Le Paysan Urbain</h1>
-			<p>Applique le contenu de développement et la configuration sur ce multisite. La plupart des étapes sont idempotentes et peuvent être relancées sans risque. La page d’accueil réseau est protégée : si elle contient déjà du contenu édité, cochez la case « forcée » pour la reconstruire.</p>
+			<p>Applique le contenu de développement et la configuration sur ce multisite. La plupart des étapes sont idempotentes et peuvent être relancées. La page d’accueil réseau est reconstruite à chaque exécution : son contenu actuel sera remplacé.</p>
 
 			<?php if ( ! empty( $result ) ) : ?>
 				<h2>Dernière exécution (<?php echo esc_html( $result['time'] ); ?>)</h2>
@@ -143,12 +142,6 @@ class Lpu_Provision_Admin {
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<?php wp_nonce_field( self::NONCE ); ?>
 				<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>" />
-				<p>
-					<label>
-						<input type="checkbox" name="force" value="1" />
-						Remplacer une page d’accueil déjà assemblée (équivaut à <code>--force</code>)
-					</label>
-				</p>
 				<?php submit_button( 'Provisionner le site', 'primary', 'submit' ); ?>
 			</form>
 		</div>

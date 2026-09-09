@@ -4,8 +4,9 @@
  *
  * One implementation of the Le Paysan Urbain provisioning, runnable both from
  * WP-CLI (`wp lpu provision`) and from a network-admin page (for the shared
- * OVH hosting that has no SSH or WP-CLI). Every method is idempotent:
- * find-or-create, never silently overwrite editorial content.
+ * OVH hosting that has no SSH or WP-CLI). Most methods are idempotent:
+ * find-or-create. The network Home is regenerated on every run, so its
+ * current content is intentionally replaced.
  *
  * This class only declares the provisioning *steps*. The plumbing they rely on
  * (reading content files, switching blog context, importing media, assembling
@@ -33,12 +34,9 @@ class Lpu_Provisioner {
 	/**
 	 * Run every provisioning step in dependency order.
 	 *
-	 * @param bool $force Allow replacing an already assembled network Home.
 	 * @return void
 	 */
-	public function provision( $force = false ) {
-		$this->force = (bool) $force;
-
+	public function provision() {
 		$this->log( '==> Provisioning Le Paysan Urbain' );
 		$this->register_theme_patterns();
 		$this->provision_plugins();
@@ -509,7 +507,7 @@ class Lpu_Provisioner {
 
 	/**
 	 * Step: assemble the network Home page from the ordered patterns and the
-	 * French copy, then save it. Fails unless the page is safe to overwrite.
+	 * French copy, then save it after validating the target page.
 	 *
 	 * @return void
 	 */

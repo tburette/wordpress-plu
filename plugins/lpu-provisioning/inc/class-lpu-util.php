@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LPU Provisioning — internal machinery.
  *
@@ -11,7 +12,7 @@
  * @package Lpu_Provisioning
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
@@ -24,7 +25,8 @@ class Lpu_Provision_Error extends Exception {}
 /**
  * Shared machinery for the provisioning steps.
  */
-trait Lpu_Util {
+trait Lpu_Util
+{
 
 	/**
 	 * Slug of the theme this provisioning targets.
@@ -38,7 +40,7 @@ trait Lpu_Util {
 	 *
 	 * @var array<int, string>
 	 */
-	const FARM_ROLES = array( 'paris', 'lyon', 'marseille' );
+	const FARM_ROLES = array('paris', 'lyon', 'marseille');
 
 	/**
 	 * Log lines accumulated for the HTTP (wp-admin) display.
@@ -55,13 +57,6 @@ trait Lpu_Util {
 	protected $blogs = array();
 
 	/**
-	 * Whether to replace an already assembled network Home.
-	 *
-	 * @var bool
-	 */
-	protected $force = false;
-
-	/**
 	 * Absolute path to the plugin content directory.
 	 *
 	 * @var string
@@ -71,8 +66,9 @@ trait Lpu_Util {
 	/**
 	 * Constructor.
 	 */
-	public function __construct() {
-		$this->content_dir = plugin_dir_path( __DIR__ ) . 'content';
+	public function __construct()
+	{
+		$this->content_dir = plugin_dir_path(__DIR__) . 'content';
 	}
 
 	/**
@@ -81,7 +77,8 @@ trait Lpu_Util {
 	 * @param string $message Message.
 	 * @return void
 	 */
-	public static function record_log( $message ) {
+	public static function record_log($message)
+	{
 		self::$log[] = $message;
 	}
 
@@ -90,7 +87,8 @@ trait Lpu_Util {
 	 *
 	 * @return array<int, string>
 	 */
-	public static function get_log() {
+	public static function get_log()
+	{
 		return self::$log;
 	}
 
@@ -100,11 +98,12 @@ trait Lpu_Util {
 	 * @param string $message Message.
 	 * @return void
 	 */
-	protected function log( $message ) {
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::log( $message );
+	protected function log($message)
+	{
+		if (defined('WP_CLI') && WP_CLI) {
+			WP_CLI::log($message);
 		}
-		self::record_log( $message );
+		self::record_log($message);
 	}
 
 	/**
@@ -114,11 +113,12 @@ trait Lpu_Util {
 	 * @return void
 	 * @throws Lpu_Provision_Error In the HTTP path.
 	 */
-	protected function fail( $message ) {
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::error( $message );
+	protected function fail($message)
+	{
+		if (defined('WP_CLI') && WP_CLI) {
+			WP_CLI::error($message);
 		}
-		throw new Lpu_Provision_Error( $message );
+		throw new Lpu_Provision_Error($message);
 	}
 
 	/**
@@ -129,8 +129,9 @@ trait Lpu_Util {
 	 * @param callable $callback Callable.
 	 * @return mixed Callable result.
 	 */
-	protected function with_blog( $blog_id, $callback ) {
-		switch_to_blog( $blog_id );
+	protected function with_blog($blog_id, $callback)
+	{
+		switch_to_blog($blog_id);
 		try {
 			return $callback();
 		} finally {
@@ -144,12 +145,13 @@ trait Lpu_Util {
 	 * @param string $rel Path relative to the content directory.
 	 * @return string
 	 */
-	protected function read_content( $rel ) {
+	protected function read_content($rel)
+	{
 		$path = $this->content_dir . '/' . $rel;
-		if ( ! file_exists( $path ) ) {
-			$this->fail( 'Missing content file: ' . $path );
+		if (! file_exists($path)) {
+			$this->fail('Missing content file: ' . $path);
 		}
-		return trim( (string) file_get_contents( $path ) );
+		return trim((string) file_get_contents($path));
 	}
 
 	/**
@@ -159,16 +161,17 @@ trait Lpu_Util {
 	 * @param string $rel Path relative to the content directory.
 	 * @return array<int, array<int, string>>
 	 */
-	protected function read_tsv( $rel ) {
-		$text  = $this->read_content( $rel );
+	protected function read_tsv($rel)
+	{
+		$text  = $this->read_content($rel);
 		$rows  = array();
-		$lines = preg_split( '/\r?\n/', $text );
-		foreach ( (array) $lines as $line ) {
-			$line = trim( $line );
-			if ( '' === $line || '#' === $line[0] ) {
+		$lines = preg_split('/\r?\n/', $text);
+		foreach ((array) $lines as $line) {
+			$line = trim($line);
+			if ('' === $line || '#' === $line[0]) {
 				continue;
 			}
-			$rows[] = explode( '|', $line );
+			$rows[] = explode('|', $line);
 		}
 		return $rows;
 	}
@@ -186,23 +189,24 @@ trait Lpu_Util {
 	 * @param callable $callback  fn( $row, $role, $blog_id ) — runs on the site.
 	 * @return void
 	 */
-	protected function each_site_row( $rel, $min_cols, $err_label, $callback ) {
-		$rows = $this->read_tsv( $rel );
+	protected function each_site_row($rel, $min_cols, $err_label, $callback)
+	{
+		$rows = $this->read_tsv($rel);
 		$this->ensure_blogs();
 
-		foreach ( $rows as $row ) {
-			if ( count( $row ) < $min_cols ) {
-				$this->fail( 'Invalid ' . $err_label . ' data row: expected ' . $min_cols . ' columns.' );
+		foreach ($rows as $row) {
+			if (count($row) < $min_cols) {
+				$this->fail('Invalid ' . $err_label . ' data row: expected ' . $min_cols . ' columns.');
 			}
 			$role = $row[0];
-			if ( ! isset( $this->blogs[ $role ] ) ) {
+			if (! isset($this->blogs[$role])) {
 				continue;
 			}
-			$blog_id = $this->blogs[ $role ];
+			$blog_id = $this->blogs[$role];
 			$this->with_blog(
 				$blog_id,
-				function () use ( $row, $role, $blog_id, $callback ) {
-					$callback( $row, $role, $blog_id );
+				function () use ($row, $role, $blog_id, $callback) {
+					$callback($row, $role, $blog_id);
 				}
 			);
 		}
@@ -213,14 +217,15 @@ trait Lpu_Util {
 	 *
 	 * @return array<string, int>
 	 */
-	protected function ensure_blogs() {
-		if ( ! is_multisite() || ! is_subdomain_install() ) {
-			$this->fail( 'WordPress is not configured as a subdomain multisite.' );
+	protected function ensure_blogs()
+	{
+		if (! is_multisite() || ! is_subdomain_install()) {
+			$this->fail('WordPress is not configured as a subdomain multisite.');
 		}
 
 		$network = get_network();
-		if ( ! $network ) {
-			$this->fail( 'Could not load the multisite network.' );
+		if (! $network) {
+			$this->fail('Could not load the multisite network.');
 		}
 		$network_domain = $network->domain;
 		$network_path   = (string) $network->path;
@@ -228,63 +233,63 @@ trait Lpu_Util {
 		$main_site_id   = (int) get_main_site_id();
 
 		$this->blogs = array();
-		foreach ( get_sites( array( 'number' => 500, 'network_id' => $network_id ) ) as $site ) {
+		foreach (get_sites(array('number' => 500, 'network_id' => $network_id)) as $site) {
 			$blog_id = (int) $site->blog_id;
-			if ( $blog_id === $main_site_id ) {
+			if ($blog_id === $main_site_id) {
 				$this->blogs['network'] = $blog_id;
 				continue;
 			}
-			$host = strtolower( (string) wp_parse_url( get_home_url( $blog_id ), PHP_URL_HOST ) );
-			$slug = isset( explode( '.', $host )[0] ) ? explode( '.', $host )[0] : '';
-			if ( in_array( $slug, self::FARM_ROLES, true ) ) {
-				$this->blogs[ $slug ] = $blog_id;
+			$host = strtolower((string) wp_parse_url(get_home_url($blog_id), PHP_URL_HOST));
+			$slug = isset(explode('.', $host)[0]) ? explode('.', $host)[0] : '';
+			if (in_array($slug, self::FARM_ROLES, true)) {
+				$this->blogs[$slug] = $blog_id;
 			}
 		}
 
 		$created_any = false;
 		$owner_id = $this->default_owner_id();
 
-		foreach ( self::FARM_ROLES as $slug ) {
-			if ( isset( $this->blogs[ $slug ] ) ) {
+		foreach (self::FARM_ROLES as $slug) {
+			if (isset($this->blogs[$slug])) {
 				continue;
 			}
-			$this->log( 'Creating sub-site: ' . $slug );
+			$this->log('Creating sub-site: ' . $slug);
 			$blog_id = wpmu_create_blog(
 				$slug . '.' . $network_domain,
 				$network_path,
-				'Le Paysan Urbain ' . ucfirst( $slug ),
+				'Le Paysan Urbain ' . ucfirst($slug),
 				$owner_id,
 				// wpmu_create_blog() defaults a new site to public => 0, but
 				// the sites are public
-				array( 'public' => 1 ),
+				array('public' => 1),
 				$network_id
 			);
-			if ( is_wp_error( $blog_id ) ) {
-				$this->fail( 'Could not create sub-site ' . $slug . ': ' . $blog_id->get_error_message() );
+			if (is_wp_error($blog_id)) {
+				$this->fail('Could not create sub-site ' . $slug . ': ' . $blog_id->get_error_message());
 			}
-			clean_blog_cache( (int) $blog_id );
-			$this->blogs[ $slug ] = (int) $blog_id;
+			clean_blog_cache((int) $blog_id);
+			$this->blogs[$slug] = (int) $blog_id;
 			$created_any          = true;
 		}
 
 		// wp-env installs the network before applying SUBDOMAIN_INSTALL. Keep
 		// the network metadata aligned with the subdomain choice.
-		update_site_option( 'subdomain_install', 1 );
+		update_site_option('subdomain_install', 1);
 
 		// Name the network site (a fresh install defaults to "WordPress").
 		$this->with_blog(
 			$main_site_id,
 			function () {
-				if ( 'Le Paysan Urbain' !== (string) get_option( 'blogname' ) ) {
-					update_option( 'blogname', 'Le Paysan Urbain' );
+				if ('Le Paysan Urbain' !== (string) get_option('blogname')) {
+					update_option('blogname', 'Le Paysan Urbain');
 				}
 			}
 		);
 
-		if ( $created_any ) {
-			$this->log( 'Created one or multiple missing sub-site.' );
+		if ($created_any) {
+			$this->log('Created one or multiple missing sub-site.');
 		}
-		$this->log( 'Network sites: ' . implode( ', ', array_keys( $this->blogs ) ) );
+		$this->log('Network sites: ' . implode(', ', array_keys($this->blogs)));
 		return $this->blogs;
 	}
 
@@ -295,19 +300,20 @@ trait Lpu_Util {
 	 *
 	 * @return array<string, string>
 	 */
-	protected function resolve_urls() {
+	protected function resolve_urls()
+	{
 		$blogs = $this->ensure_blogs();
 		$map   = array();
 
-		foreach ( array( 'network', 'paris', 'lyon', 'marseille' ) as $role ) {
-			if ( ! isset( $blogs[ $role ] ) ) {
+		foreach (array('network', 'paris', 'lyon', 'marseille') as $role) {
+			if (! isset($blogs[$role])) {
 				continue;
 			}
-			$url = get_home_url( $blogs[ $role ] );
-			if ( 'network' === $role ) {
-				$map['{{NETWORK_URL}}'] = trailingslashit( $url );
+			$url = get_home_url($blogs[$role]);
+			if ('network' === $role) {
+				$map['{{NETWORK_URL}}'] = trailingslashit($url);
 			} else {
-				$map[ '{{FARM_' . strtoupper( $role ) . '_URL}}' ] = trailingslashit( $url );
+				$map['{{FARM_' . strtoupper($role) . '_URL}}'] = trailingslashit($url);
 			}
 		}
 
@@ -320,9 +326,10 @@ trait Lpu_Util {
 	 * @param string $content Content.
 	 * @return string
 	 */
-	protected function apply_urls( $content ) {
+	protected function apply_urls($content)
+	{
 		$map = $this->resolve_urls();
-		return str_replace( array_keys( $map ), array_values( $map ), $content );
+		return str_replace(array_keys($map), array_values($map), $content);
 	}
 
 	/**
@@ -333,7 +340,8 @@ trait Lpu_Util {
 	 * @param string $name      Post slug (post_name).
 	 * @return int 0 when none.
 	 */
-	protected function find_post_by_name( $post_type, $name ) {
+	protected function find_post_by_name($post_type, $name)
+	{
 		$posts = get_posts(
 			array(
 				'post_type'      => $post_type,
@@ -356,16 +364,17 @@ trait Lpu_Util {
 	 * @param string $name      Clean post slug.
 	 * @return int Post ID, 0 when none.
 	 */
-	protected function find_post_by_name_or_trashed( $post_type, $name ) {
-		$by_name = $this->find_post_by_name( $post_type, $name );
-		if ( $by_name ) {
+	protected function find_post_by_name_or_trashed($post_type, $name)
+	{
+		$by_name = $this->find_post_by_name($post_type, $name);
+		if ($by_name) {
 			return $by_name;
 		}
 
 		$posts = get_posts(
 			array(
 				'post_type'      => $post_type,
-				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'post_status'    => array('publish', 'draft', 'pending', 'private', 'future', 'trash'),
 				'name'           => $name . '__trashed',
 				'posts_per_page' => 1,
 				'fields'         => 'ids',
@@ -393,23 +402,24 @@ trait Lpu_Util {
 	 *
 	 * @return void
 	 */
-	protected function check_dependencies() {
-		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+	protected function check_dependencies()
+	{
+		if (! function_exists('is_plugin_active_for_network')) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$theme = wp_get_theme( self::THEME_SLUG );
-		if ( ! $theme->exists() ) {
-			$this->fail( 'Required theme missing: ' . self::THEME_SLUG );
+		$theme = wp_get_theme(self::THEME_SLUG);
+		if (! $theme->exists()) {
+			$this->fail('Required theme missing: ' . self::THEME_SLUG);
 		}
 
-		foreach ( $this->local_plugins() as $plugin ) {
-			if ( ! is_plugin_active_for_network( $plugin ) ) {
-				$this->fail( 'Required local plugin is not network-active: ' . $plugin );
+		foreach ($this->local_plugins() as $plugin) {
+			if (! is_plugin_active_for_network($plugin)) {
+				$this->fail('Required local plugin is not network-active: ' . $plugin);
 			}
 		}
 
-		$this->log( 'Dependencies OK: theme, plugins' );
+		$this->log('Dependencies OK: theme, plugins');
 	}
 
 	/**
@@ -417,13 +427,14 @@ trait Lpu_Util {
 	 *
 	 * @return WP_User|null
 	 */
-	protected function first_super_admin_user() {
-		if ( ! function_exists( 'get_super_admins' ) ) {
+	protected function first_super_admin_user()
+	{
+		if (! function_exists('get_super_admins')) {
 			return null;
 		}
-		foreach ( get_super_admins() as $login ) {
-			$user = get_user_by( 'login', $login );
-			if ( $user ) {
+		foreach (get_super_admins() as $login) {
+			$user = get_user_by('login', $login);
+			if ($user) {
 				return $user;
 			}
 		}
@@ -440,13 +451,14 @@ trait Lpu_Util {
 	 *
 	 * @return int User ID.
 	 */
-	protected function default_owner_id() {
+	protected function default_owner_id()
+	{
 		$super_admin = $this->first_super_admin_user();
-		if ( $super_admin ) {
+		if ($super_admin) {
 			return (int) $super_admin->ID;
 		}
 		$current = wp_get_current_user();
-		if ( $current instanceof WP_User && $current->ID ) {
+		if ($current instanceof WP_User && $current->ID) {
 			return (int) $current->ID;
 		}
 		return 1;
@@ -470,14 +482,15 @@ trait Lpu_Util {
 	 * @return bool True when the pack is available (installed or already
 	 *              present), false when it could not be installed.
 	 */
-	protected function install_language_pack( $locale = 'fr_FR' ) {
-		if ( ! function_exists( 'wp_download_language_pack' ) ) {
+	protected function install_language_pack($locale = 'fr_FR')
+	{
+		if (! function_exists('wp_download_language_pack')) {
 			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 		}
 
-		$installed = wp_download_language_pack( $locale );
-		if ( $locale === $installed ) {
-			$this->log( 'language pack ' . $locale . ' installed (or already present)' );
+		$installed = wp_download_language_pack($locale);
+		if ($locale === $installed) {
+			$this->log('language pack ' . $locale . ' installed (or already present)');
 			return true;
 		}
 
@@ -495,27 +508,28 @@ trait Lpu_Util {
 	 *
 	 * @return void
 	 */
-	protected function register_theme_patterns() {
-		$theme = wp_get_theme( self::THEME_SLUG );
-		if ( ! $theme->exists() ) {
-			$this->fail( 'Theme not found: ' . self::THEME_SLUG );
+	protected function register_theme_patterns()
+	{
+		$theme = wp_get_theme(self::THEME_SLUG);
+		if (! $theme->exists()) {
+			$this->fail('Theme not found: ' . self::THEME_SLUG);
 		}
 		$registry    = WP_Block_Patterns_Registry::get_instance();
-		$dirpath     = trailingslashit( $theme->get_stylesheet_directory() ) . 'patterns/';
-		$text_domain = $theme->get( 'TextDomain' );
+		$dirpath     = trailingslashit($theme->get_stylesheet_directory()) . 'patterns/';
+		$text_domain = $theme->get('TextDomain');
 
-		foreach ( $theme->get_block_patterns() as $file => $pattern ) {
-			if ( $registry->is_registered( $pattern['slug'] ) ) {
+		foreach ($theme->get_block_patterns() as $file => $pattern) {
+			if ($registry->is_registered($pattern['slug'])) {
 				continue;
 			}
 			$pattern['filePath'] = $dirpath . $file;
 			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText,WordPress.WP.I18n.NonSingularStringLiteralDomain,WordPress.WP.I18n.LowLevelTranslationFunction
-			$pattern['title'] = translate_with_gettext_context( $pattern['title'], 'Pattern title', $text_domain );
-			if ( ! empty( $pattern['description'] ) ) {
+			$pattern['title'] = translate_with_gettext_context($pattern['title'], 'Pattern title', $text_domain);
+			if (! empty($pattern['description'])) {
 				// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText,WordPress.WP.I18n.NonSingularStringLiteralDomain,WordPress.WP.I18n.LowLevelTranslationFunction
-				$pattern['description'] = translate_with_gettext_context( $pattern['description'], 'Pattern description', $text_domain );
+				$pattern['description'] = translate_with_gettext_context($pattern['description'], 'Pattern description', $text_domain);
 			}
-			register_block_pattern( $pattern['slug'], $pattern );
+			register_block_pattern($pattern['slug'], $pattern);
 		}
 	}
 
@@ -527,12 +541,13 @@ trait Lpu_Util {
 	 * @param string $title     Attachment title.
 	 * @return int
 	 */
-	protected function import_attachment( $file_path, $title ) {
-		if ( ! file_exists( $file_path ) ) {
-			$this->fail( 'Missing asset: ' . $file_path );
+	protected function import_attachment($file_path, $title)
+	{
+		if (! file_exists($file_path)) {
+			$this->fail('Missing asset: ' . $file_path);
 		}
 
-		$filename = basename( $file_path );
+		$filename = basename($file_path);
 
 		// Reuse an existing attachment for the same filename.
 		$existing = get_posts(
@@ -549,37 +564,37 @@ trait Lpu_Util {
 				'fields'         => 'ids',
 			)
 		);
-		if ( $existing ) {
+		if ($existing) {
 			return (int) $existing[0];
 		}
 
 		// SVG is not in core's allowed mime list; the theme normally allows it
 		// via an upload_mimes filter, but its functions.php is not loaded in
 		// this single request. Allow SVG ourselves so wp_upload_bits passes.
-		$ext        = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
-		$mime_filter = function ( $mimes ) {
+		$ext        = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+		$mime_filter = function ($mimes) {
 			$mimes['svg'] = 'image/svg+xml';
 			return $mimes;
 		};
-		add_filter( 'upload_mimes', $mime_filter );
+		add_filter('upload_mimes', $mime_filter);
 
-		$uploaded = wp_upload_bits( $filename, null, (string) file_get_contents( $file_path ) );
+		$uploaded = wp_upload_bits($filename, null, (string) file_get_contents($file_path));
 
-		remove_filter( 'upload_mimes', $mime_filter );
+		remove_filter('upload_mimes', $mime_filter);
 
-		if ( ! empty( $uploaded['error'] ) ) {
-			$this->fail( 'Could not write ' . $filename . ': ' . $uploaded['error'] );
+		if (! empty($uploaded['error'])) {
+			$this->fail('Could not write ' . $filename . ': ' . $uploaded['error']);
 		}
 
-		if ( 'svg' === $ext ) {
+		if ('svg' === $ext) {
 			$filetype = array(
 				'ext'  => 'svg',
 				'type' => 'image/svg+xml',
 			);
 		} else {
-			$filetype = wp_check_filetype_and_ext( $uploaded['file'], $filename );
-			if ( empty( $filetype['type'] ) ) {
-				$this->fail( 'Unsupported upload type for ' . $filename );
+			$filetype = wp_check_filetype_and_ext($uploaded['file'], $filename);
+			if (empty($filetype['type'])) {
+				$this->fail('Unsupported upload type for ' . $filename);
 			}
 		}
 
@@ -594,12 +609,12 @@ trait Lpu_Util {
 			0,
 			true
 		);
-		if ( is_wp_error( $attach_id ) ) {
-			$this->fail( 'Could not attach ' . $filename . ': ' . $attach_id->get_error_message() );
+		if (is_wp_error($attach_id)) {
+			$this->fail('Could not attach ' . $filename . ': ' . $attach_id->get_error_message());
 		}
 
-		$metadata = wp_generate_attachment_metadata( $attach_id, $uploaded['file'] );
-		wp_update_attachment_metadata( $attach_id, $metadata );
+		$metadata = wp_generate_attachment_metadata($attach_id, $uploaded['file']);
+		wp_update_attachment_metadata($attach_id, $metadata);
 
 		return (int) $attach_id;
 	}
@@ -612,13 +627,14 @@ trait Lpu_Util {
 	 * @param string $area    Template part area ('' for a navigation).
 	 * @return void
 	 */
-	protected function tag_template_element( $post_id, $area ) {
-		wp_set_post_terms( $post_id, self::THEME_SLUG, 'wp_theme', false );
-		if ( '' !== $area ) {
-			wp_set_post_terms( $post_id, $area, 'wp_template_part_area', false );
+	protected function tag_template_element($post_id, $area)
+	{
+		wp_set_post_terms($post_id, self::THEME_SLUG, 'wp_theme', false);
+		if ('' !== $area) {
+			wp_set_post_terms($post_id, $area, 'wp_template_part_area', false);
 		}
-		update_post_meta( $post_id, 'origin', 'theme' );
-		clean_post_cache( $post_id );
+		update_post_meta($post_id, 'origin', 'theme');
+		clean_post_cache($post_id);
 	}
 
 	/**
@@ -634,10 +650,11 @@ trait Lpu_Util {
 	 * @param bool   $update_existing Whether to refresh an existing post.
 	 * @return int Navigation post ID.
 	 */
-	protected function create_or_update_navigation( $title, $navigation_name, $content, $update_existing = true ) {
-		$nav_id = $this->find_post_by_name( 'wp_navigation', $navigation_name );
-		if ( $nav_id ) {
-			if ( $update_existing ) {
+	protected function create_or_update_navigation($title, $navigation_name, $content, $update_existing = true)
+	{
+		$nav_id = $this->find_post_by_name('wp_navigation', $navigation_name);
+		if ($nav_id) {
+			if ($update_existing) {
 				wp_update_post(
 					array(
 						'ID'           => $nav_id,
@@ -645,7 +662,7 @@ trait Lpu_Util {
 						'post_content' => $content,
 					)
 				);
-				$this->log( 'Updated navigation ' . $navigation_name . ' (' . $nav_id . ')' );
+				$this->log('Updated navigation ' . $navigation_name . ' (' . $nav_id . ')');
 			}
 		} else {
 			$nav_id = wp_insert_post(
@@ -658,12 +675,12 @@ trait Lpu_Util {
 				),
 				true
 			);
-			if ( is_wp_error( $nav_id ) ) {
-				$this->fail( $nav_id->get_error_message() );
+			if (is_wp_error($nav_id)) {
+				$this->fail($nav_id->get_error_message());
 			}
-			$this->log( 'Created navigation ' . $navigation_name . ' (' . $nav_id . ')' );
+			$this->log('Created navigation ' . $navigation_name . ' (' . $nav_id . ')');
 		}
-		$this->tag_template_element( (int) $nav_id, '' );
+		$this->tag_template_element((int) $nav_id, '');
 		return (int) $nav_id;
 	}
 
@@ -677,11 +694,12 @@ trait Lpu_Util {
 	 * @param string $template_file Full path to the theme template part file.
 	 * @return int Template part post ID.
 	 */
-	protected function create_or_update_template_part( $part_name, $part_title, $navigation_id, $template_file ) {
-		if ( ! file_exists( $template_file ) ) {
-			$this->fail( 'Missing theme template part file: ' . $template_file );
+	protected function create_or_update_template_part($part_name, $part_title, $navigation_id, $template_file)
+	{
+		if (! file_exists($template_file)) {
+			$this->fail('Missing theme template part file: ' . $template_file);
 		}
-		$template_content = (string) file_get_contents( $template_file );
+		$template_content = (string) file_get_contents($template_file);
 		$template_content = preg_replace(
 			'/(<!-- wp:navigation \{)/',
 			'$1"ref":' . (int) $navigation_id . ',',
@@ -689,15 +707,15 @@ trait Lpu_Util {
 			1
 		);
 
-		$part_id = $this->find_post_by_name( 'wp_template_part', $part_name );
-		if ( $part_id ) {
+		$part_id = $this->find_post_by_name('wp_template_part', $part_name);
+		if ($part_id) {
 			wp_update_post(
 				array(
 					'ID'           => $part_id,
 					'post_content' => $template_content,
 				)
 			);
-			$this->log( 'Updated template part ' . $part_name . ' (' . $part_id . ')' );
+			$this->log('Updated template part ' . $part_name . ' (' . $part_id . ')');
 		} else {
 			$part_id = wp_insert_post(
 				array(
@@ -709,14 +727,14 @@ trait Lpu_Util {
 				),
 				true
 			);
-			if ( is_wp_error( $part_id ) ) {
-				$this->fail( $part_id->get_error_message() );
+			if (is_wp_error($part_id)) {
+				$this->fail($part_id->get_error_message());
 			}
-			$this->log( 'Created template part ' . $part_name . ' (' . $part_id . ')' );
+			$this->log('Created template part ' . $part_name . ' (' . $part_id . ')');
 		}
 
-		$area = ( 'header' === $part_name ) ? 'header' : 'footer';
-		$this->tag_template_element( (int) $part_id, $area );
+		$area = ('header' === $part_name) ? 'header' : 'footer';
+		$this->tag_template_element((int) $part_id, $area);
 
 		return (int) $part_id;
 	}
@@ -727,9 +745,10 @@ trait Lpu_Util {
 	 * @param array<string, string> $fields Post fields (must include post_name).
 	 * @return int
 	 */
-	protected function upsert_page( $fields ) {
-		$page_id = $this->find_post_by_name( 'page', $fields['post_name'] );
-		if ( $page_id ) {
+	protected function upsert_page($fields)
+	{
+		$page_id = $this->find_post_by_name('page', $fields['post_name']);
+		if ($page_id) {
 			// Like the original scripts, an existing page is left untouched.
 			return (int) $page_id;
 		}
@@ -744,9 +763,9 @@ trait Lpu_Util {
 			),
 			$fields
 		);
-		$page_id = wp_insert_post( $fields, true );
-		if ( is_wp_error( $page_id ) ) {
-			$this->fail( $page_id->get_error_message() );
+		$page_id = wp_insert_post($fields, true);
+		if (is_wp_error($page_id)) {
+			$this->fail($page_id->get_error_message());
 		}
 		return (int) $page_id;
 	}
@@ -756,31 +775,32 @@ trait Lpu_Util {
 	 *
 	 * @return string
 	 */
-	protected function assemble_patterns_page() {
+	protected function assemble_patterns_page()
+	{
 		$split_section_namespace = 'lpu-split-section/';
-		$theme_namespace         = trailingslashit( get_stylesheet() );
+		$theme_namespace         = trailingslashit(get_stylesheet());
 		$patterns                = array();
 
-		foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern ) {
-			if ( ! isset( $pattern['name'], $pattern['content'] ) ) {
+		foreach (WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern) {
+			if (! isset($pattern['name'], $pattern['content'])) {
 				continue;
 			}
-			$source  = isset( $pattern['source'] ) ? (string) $pattern['source'] : '';
-			$is_theme = 'theme' === $source || 0 === strpos( (string) $pattern['name'], $theme_namespace );
-			$is_split = 0 === strpos( (string) $pattern['name'], $split_section_namespace );
-			if ( $is_theme || $is_split ) {
-				$patterns[ $pattern['name'] ] = $pattern;
+			$source  = isset($pattern['source']) ? (string) $pattern['source'] : '';
+			$is_theme = 'theme' === $source || 0 === strpos((string) $pattern['name'], $theme_namespace);
+			$is_split = 0 === strpos((string) $pattern['name'], $split_section_namespace);
+			if ($is_theme || $is_split) {
+				$patterns[$pattern['name']] = $pattern;
 			}
 		}
 
-		ksort( $patterns, SORT_NATURAL | SORT_FLAG_CASE );
-		if ( ! $patterns ) {
-			$this->fail( 'No patterns provided by the active theme or project-local plugins.' );
+		ksort($patterns, SORT_NATURAL | SORT_FLAG_CASE);
+		if (! $patterns) {
+			$this->fail('No patterns provided by the active theme or project-local plugins.');
 		}
 
 		$content = '';
-		foreach ( $patterns as $pattern ) {
-			$content .= $this->pattern_with_metadata( $pattern['content'], $pattern ) . "\n";
+		foreach ($patterns as $pattern) {
+			$content .= $this->pattern_with_metadata($pattern['content'], $pattern) . "\n";
 		}
 		return $content;
 	}
@@ -793,19 +813,20 @@ trait Lpu_Util {
 	 * @param array  $pattern Pattern definition.
 	 * @return string
 	 */
-	protected function pattern_with_metadata( $content, $pattern ) {
-		$blocks = parse_blocks( $content );
-		if ( ! isset( $blocks[0]['blockName'] ) || '' === $blocks[0]['blockName'] ) {
-			$this->fail( 'Pattern content does not start with a block: ' . ( $pattern['name'] ?? 'unknown' ) );
+	protected function pattern_with_metadata($content, $pattern)
+	{
+		$blocks = parse_blocks($content);
+		if (! isset($blocks[0]['blockName']) || '' === $blocks[0]['blockName']) {
+			$this->fail('Pattern content does not start with a block: ' . ($pattern['name'] ?? 'unknown'));
 		}
 
 		$blocks[0]['attrs']['metadata'] = array(
-			'categories'  => array_values( $pattern['categories'] ?? array() ),
+			'categories'  => array_values($pattern['categories'] ?? array()),
 			'patternName' => $pattern['name'],
 			'name'        => $pattern['title'],
 		);
 
-		return serialize_blocks( $blocks );
+		return serialize_blocks($blocks);
 	}
 
 	/**
@@ -813,21 +834,22 @@ trait Lpu_Util {
 	 *
 	 * @return array<int, string>
 	 */
-	protected function read_pattern_order() {
-		$order         = $this->read_content( 'home-network/home-sections-names.txt' );
+	protected function read_pattern_order()
+	{
+		$order         = $this->read_content('home-network/home-sections-names.txt');
 		$pattern_order = array();
-		foreach ( preg_split( '/\r?\n/', $order ) as $line ) {
-			$line = trim( $line );
-			if ( '' === $line || '#' === $line[0] ) {
+		foreach (preg_split('/\r?\n/', $order) as $line) {
+			$line = trim($line);
+			if ('' === $line || '#' === $line[0]) {
 				continue;
 			}
-			if ( false !== strpos( $line, "'" ) ) {
-				$this->fail( 'Pattern name contains an unsupported quote: ' . $line );
+			if (false !== strpos($line, "'")) {
+				$this->fail('Pattern name contains an unsupported quote: ' . $line);
 			}
 			$pattern_order[] = $line;
 		}
-		if ( ! $pattern_order ) {
-			$this->fail( 'No patterns declared in home-sections-names.txt.' );
+		if (! $pattern_order) {
+			$this->fail('No patterns declared in home-sections-names.txt.');
 		}
 		return $pattern_order;
 	}
@@ -838,46 +860,47 @@ trait Lpu_Util {
 	 *
 	 * @return array<string, string>
 	 */
-	protected function farm_site_urls() {
+	protected function farm_site_urls()
+	{
 		$farm_labels = array(
 			'paris'     => 'Paris',
 			'lyon'      => 'Lyon',
 			'marseille' => 'Marseille',
 		);
 		$farm_urls   = array();
-		foreach ( get_sites( array( 'number' => 100, 'network_id' => get_current_network_id() ) ) as $site ) {
-			$site_home  = trailingslashit( get_home_url( (int) $site->blog_id ) );
-			$host       = strtolower( (string) wp_parse_url( $site_home, PHP_URL_HOST ) );
-			$host_parts = explode( '.', $host );
+		foreach (get_sites(array('number' => 100, 'network_id' => get_current_network_id())) as $site) {
+			$site_home  = trailingslashit(get_home_url((int) $site->blog_id));
+			$host       = strtolower((string) wp_parse_url($site_home, PHP_URL_HOST));
+			$host_parts = explode('.', $host);
 			$site_key   = $host_parts[0] ?? '';
-			if ( isset( $farm_labels[ $site_key ] ) ) {
-				$farm_urls[ $farm_labels[ $site_key ] ] = $site_home;
+			if (isset($farm_labels[$site_key])) {
+				$farm_urls[$farm_labels[$site_key]] = $site_home;
 			}
 		}
-		foreach ( $farm_labels as $label ) {
-			if ( ! isset( $farm_urls[ $label ] ) ) {
-				$this->fail( 'Could not resolve the multisite URL for farm: ' . $label );
+		foreach ($farm_labels as $label) {
+			if (! isset($farm_urls[$label])) {
+				$this->fail('Could not resolve the multisite URL for farm: ' . $label);
 			}
 		}
 		return $farm_urls;
 	}
 
 	/**
-	 * Find the network Home page, verify it is safe to write, and return its ID.
+	 * Find and validate the network Home page, then return its ID.
 	 *
 	 * Fails unless the page exists, has the expected title, is the current
-	 * static front page, and (without --force) still holds only the technical
-	 * placeholder — so real editorial content is never overwritten by accident.
+	 * static front page, so the provisioning writes to the intended page.
 	 *
 	 * @param string $page_title Expected page title.
 	 * @param string $page_slug  Expected page slug.
 	 * @return int
 	 */
-	protected function find_validated_home_page( $page_title, $page_slug ) {
+	protected function find_validated_home_page($page_title, $page_slug)
+	{
 		$pages = get_posts(
 			array(
 				'post_type'      => 'page',
-				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'post_status'    => array('publish', 'draft', 'pending', 'private', 'future', 'trash'),
 				'name'           => $page_slug,
 				'posts_per_page' => 2,
 				'orderby'        => 'ID',
@@ -885,31 +908,23 @@ trait Lpu_Util {
 				'fields'         => 'ids',
 			)
 		);
-		if ( count( $pages ) > 1 ) {
-			$this->fail( 'More than one page uses the Home slug: ' . $page_slug );
+		if (count($pages) > 1) {
+			$this->fail('More than one page uses the Home slug: ' . $page_slug);
 		}
-		if ( ! $pages ) {
-			$this->fail( 'The technical front page does not exist (' . $page_slug . '). Run front pages first.' );
+		if (! $pages) {
+			$this->fail('The technical front page does not exist (' . $page_slug . '). Run front pages first.');
 		}
 
 		$page_id = (int) $pages[0];
-		$page    = get_post( $page_id );
-		if ( 'trash' === $page->post_status && ! wp_untrash_post( $page_id ) ) {
-			$this->fail( 'Could not restore the network Home page: ' . $page_id );
+		$page    = get_post($page_id);
+		if ('trash' === $page->post_status && ! wp_untrash_post($page_id)) {
+			$this->fail('Could not restore the network Home page: ' . $page_id);
 		}
-		if ( (string) $page->post_title !== $page_title ) {
-			$this->fail( 'The page title is not the expected Home title: ' . $page->post_title );
+		if ((string) $page->post_title !== $page_title) {
+			$this->fail('The page title is not the expected Home title: ' . $page->post_title);
 		}
-		if ( 'page' !== get_option( 'show_on_front' ) || (int) get_option( 'page_on_front' ) !== $page_id ) {
-			$this->fail( 'The expected Home page is not the current page_on_front. Run front pages first.' );
-		}
-
-		$technical_placeholder = '<!--
-  This page intentionally starts without visible content.
-  Home sections will be assembled in Gutenberg from the theme patterns.
--->';
-		if ( ! $this->force && trim( (string) $page->post_content ) !== trim( $technical_placeholder ) ) {
-			$this->fail( 'The Home already contains editorial content. Re-run with --force only when replacement is intentional.' );
+		if ('page' !== get_option('show_on_front') || (int) get_option('page_on_front') !== $page_id) {
+			$this->fail('The expected Home page is not the current page_on_front. Run front pages first.');
 		}
 
 		return $page_id;
@@ -923,11 +938,12 @@ trait Lpu_Util {
 	 * @param array<string, string> $farm_urls     Paris/Lyon/Marseille home URLs.
 	 * @return string
 	 */
-	protected function assemble_home_content( $pattern_order, $farm_urls ) {
+	protected function assemble_home_content($pattern_order, $farm_urls)
+	{
 		$patterns_by_name = array();
-		foreach ( WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern ) {
-			if ( isset( $pattern['name'], $pattern['content'] ) ) {
-				$patterns_by_name[ $pattern['name'] ] = $pattern;
+		foreach (WP_Block_Patterns_Registry::get_instance()->get_all_registered() as $pattern) {
+			if (isset($pattern['name'], $pattern['content'])) {
+				$patterns_by_name[$pattern['name']] = $pattern;
 			}
 		}
 
@@ -939,61 +955,61 @@ trait Lpu_Util {
 
 		$page_content      = '';
 		$cards_occurrences = 0;
-		foreach ( $pattern_order as $pattern_name ) {
-			if ( ! isset( $patterns_by_name[ $pattern_name ] ) ) {
-				$this->fail( 'Active theme pattern is missing: ' . $pattern_name );
+		foreach ($pattern_order as $pattern_name) {
+			if (! isset($patterns_by_name[$pattern_name])) {
+				$this->fail('Active theme pattern is missing: ' . $pattern_name);
 			}
-			$pattern = $patterns_by_name[ $pattern_name ];
+			$pattern = $patterns_by_name[$pattern_name];
 			$section = $pattern['content'];
 
-			if ( 'lepaysanurbain/hero' === $pattern_name ) {
-				$section = $this->home_text( $section, 'Titre principal de la page', 'Cultiver le vivant en ville.', 'Home hero title' );
-				$section = $this->home_text( $section, 'Présentez ici le sujet principal de la page en quelques mots.', 'Présentez ici la promesse de cette page et le rôle du Paysan Urbain dans la ville.', 'Home hero text' );
+			if ('lepaysanurbain/hero' === $pattern_name) {
+				$section = $this->home_text($section, 'Titre principal de la page', 'Cultiver le vivant en ville.', 'Home hero title');
+				$section = $this->home_text($section, 'Présentez ici le sujet principal de la page en quelques mots.', 'Présentez ici la promesse de cette page et le rôle du Paysan Urbain dans la ville.', 'Home hero text');
 			}
 
-			if ( 'lpu-split-section/split-content-image' === $pattern_name ) {
-				$section = $this->home_text( $section, 'Sur-titre', 'Une histoire à raconter', 'Home split content eyebrow' );
-				$section = $this->home_text( $section, 'Un titre qui tient dans sa moitié', 'Présentez votre action sur deux lignes', 'Home split content title' );
-				$section = $this->home_text( $section, 'Ajoutez ici le texte, les informations et les appels à l’action propres à cette zone.', 'Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.', 'Home split content text' );
+			if ('lpu-split-section/split-content-image' === $pattern_name) {
+				$section = $this->home_text($section, 'Sur-titre', 'Une histoire à raconter', 'Home split content eyebrow');
+				$section = $this->home_text($section, 'Un titre qui tient dans sa moitié', 'Présentez votre action sur deux lignes', 'Home split content title');
+				$section = $this->home_text($section, 'Ajoutez ici le texte, les informations et les appels à l’action propres à cette zone.', 'Ajoutez ici quelques lignes pour expliquer le projet, son utilité et la manière dont le visiteur peut y prendre part.', 'Home split content text');
 			}
 
-			if ( 'lepaysanurbain/network-farm-selector' === $pattern_name ) {
+			if ('lepaysanurbain/network-farm-selector' === $pattern_name) {
 				$farm_placeholders = array(
 					'Paris'     => 'Ferme 1',
 					'Lyon'      => 'Ferme 2',
 					'Marseille' => 'Ferme 3',
 				);
-				foreach ( $farm_labels as $label ) {
-					$needle      = '<a>' . $farm_placeholders[ $label ] . '</a>';
-					$replacement = '<a href="' . esc_url( $farm_urls[ $label ] ) . '">' . $label . '</a>';
-					$section     = str_replace( $needle, $replacement, $section, $link_count );
-					if ( 1 !== $link_count ) {
-						$this->fail( 'Expected one unconfigured farm link for ' . $label );
+				foreach ($farm_labels as $label) {
+					$needle      = '<a>' . $farm_placeholders[$label] . '</a>';
+					$replacement = '<a href="' . esc_url($farm_urls[$label]) . '">' . $label . '</a>';
+					$section     = str_replace($needle, $replacement, $section, $link_count);
+					if (1 !== $link_count) {
+						$this->fail('Expected one unconfigured farm link for ' . $label);
 					}
 				}
 			}
 
-			if ( 'lepaysanurbain/cards' === $pattern_name ) {
+			if ('lepaysanurbain/cards' === $pattern_name) {
 				$cards_occurrences++;
-				$section = $this->home_text( $section, 'Titre de la grille', 1 === $cards_occurrences ? 'Des façons d’agir' : 'Le réseau en action', 'Home cards title ' . $cards_occurrences );
+				$section = $this->home_text($section, 'Titre de la grille', 1 === $cards_occurrences ? 'Des façons d’agir' : 'Le réseau en action', 'Home cards title ' . $cards_occurrences);
 
 				$card_titles = 1 === $cards_occurrences
-					? array( 'Particuliers', 'Professionnels', 'Partenaires et institutions' )
-					: array( 'Activités et événements', 'Production locale', 'Projets et insertion' );
-				$generic_card_titles = array( 'Titre de carte 1', 'Titre de carte 2', 'Titre de carte 3' );
-				foreach ( $generic_card_titles as $index => $generic_title ) {
-					$section = $this->home_text( $section, $generic_title, $card_titles[ $index ], 'Home card title ' . ( $index + 1 ) );
+					? array('Particuliers', 'Professionnels', 'Partenaires et institutions')
+					: array('Activités et événements', 'Production locale', 'Projets et insertion');
+				$generic_card_titles = array('Titre de carte 1', 'Titre de carte 2', 'Titre de carte 3');
+				foreach ($generic_card_titles as $index => $generic_title) {
+					$section = $this->home_text($section, $generic_title, $card_titles[$index], 'Home card title ' . ($index + 1));
 				}
 
-				if ( 2 === $cards_occurrences ) {
+				if (2 === $cards_occurrences) {
 					$section = str_replace(
 						'"backgroundColor":"ecru","className":"lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau"',
 						'"backgroundColor":"vert-grise","className":"lpu-band lpu-card-grid lpu-card-grid--titles-only"',
 						$section,
 						$outer_attribute_count
 					);
-					if ( 1 !== $outer_attribute_count ) {
-						$this->fail( 'Expected the second cards pattern wrapper attributes.' );
+					if (1 !== $outer_attribute_count) {
+						$this->fail('Expected the second cards pattern wrapper attributes.');
 					}
 					$section = str_replace(
 						'lpu-card-grid lpu-motif lpu-motif-1-bandeau has-ecru-background-color has-background',
@@ -1001,56 +1017,56 @@ trait Lpu_Util {
 						$section,
 						$outer_class_count
 					);
-					if ( 1 !== $outer_class_count ) {
-						$this->fail( 'Expected the second cards pattern wrapper classes.' );
+					if (1 !== $outer_class_count) {
+						$this->fail('Expected the second cards pattern wrapper classes.');
 					}
-					$section = preg_replace( '/\s*<!-- wp:paragraph\b.*?<!-- \/wp:paragraph -->/s', '', $section, -1, $paragraph_count );
-					if ( null === $section || 3 !== $paragraph_count ) {
-						$this->fail( 'Expected three optional card descriptions in the second cards pattern.' );
+					$section = preg_replace('/\s*<!-- wp:paragraph\b.*?<!-- \/wp:paragraph -->/s', '', $section, -1, $paragraph_count);
+					if (null === $section || 3 !== $paragraph_count) {
+						$this->fail('Expected three optional card descriptions in the second cards pattern.');
 					}
-					$section = preg_replace( '/\s*<!-- wp:buttons\b.*?<!-- \/wp:buttons -->/s', '', $section, -1, $button_count );
-					if ( null === $section || 3 !== $button_count ) {
-						$this->fail( 'Expected three optional card buttons in the second cards pattern.' );
+					$section = preg_replace('/\s*<!-- wp:buttons\b.*?<!-- \/wp:buttons -->/s', '', $section, -1, $button_count);
+					if (null === $section || 3 !== $button_count) {
+						$this->fail('Expected three optional card buttons in the second cards pattern.');
 					}
 				} else {
-					$section = str_replace( '>En savoir plus<', '>Découvrir<', $section, $button_label_count );
-					if ( 3 !== $button_label_count ) {
-						$this->fail( 'Expected three generic card button labels in the first cards pattern.' );
+					$section = str_replace('>En savoir plus<', '>Découvrir<', $section, $button_label_count);
+					if (3 !== $button_label_count) {
+						$this->fail('Expected three generic card button labels in the first cards pattern.');
 					}
 					$card_descriptions = array(
 						'Décrivez brièvement le contenu de cette carte et son intérêt pour vos visiteurs.' => 'Visiter, participer, découvrir.',
 						'Ajoutez une information courte sur cette proposition.' => 'Commander des produits locaux.',
 						'Présentez un troisième contenu ou une action à découvrir.' => 'Soutenir, collaborer, développer des projets.',
 					);
-					foreach ( $card_descriptions as $generic_text => $home_text ) {
-						$section = $this->home_text( $section, $generic_text, $home_text, 'Home card description' );
+					foreach ($card_descriptions as $generic_text => $home_text) {
+						$section = $this->home_text($section, $generic_text, $home_text, 'Home card description');
 					}
 				}
 			}
 
-			if ( 'lepaysanurbain/columns' === $pattern_name ) {
-				$section = $this->home_text( $section, 'Titre commun', 'Un message commun à faire vivre', 'Home columns title' );
-				$section = $this->home_text( $section, 'Premier message à présenter dans cette colonne.', 'Présentez ici un premier message court, une information ou une valeur importante du projet.', 'Home columns text 1' );
-				$section = $this->home_text( $section, 'Deuxième message à présenter dans cette colonne.', 'Utilisez cette colonne pour compléter le propos avec un deuxième message lisible et autonome.', 'Home columns text 2' );
-				$section = $this->home_text( $section, 'Troisième message à présenter dans cette colonne.', 'Ajoutez un dernier repère, un chiffre ou un lien vers une information complémentaire.', 'Home columns text 3' );
+			if ('lepaysanurbain/columns' === $pattern_name) {
+				$section = $this->home_text($section, 'Titre commun', 'Un message commun à faire vivre', 'Home columns title');
+				$section = $this->home_text($section, 'Premier message à présenter dans cette colonne.', 'Présentez ici un premier message court, une information ou une valeur importante du projet.', 'Home columns text 1');
+				$section = $this->home_text($section, 'Deuxième message à présenter dans cette colonne.', 'Utilisez cette colonne pour compléter le propos avec un deuxième message lisible et autonome.', 'Home columns text 2');
+				$section = $this->home_text($section, 'Troisième message à présenter dans cette colonne.', 'Ajoutez un dernier repère, un chiffre ou un lien vers une information complémentaire.', 'Home columns text 3');
 			}
 
-			if ( 'lpu-split-section/split-motif-image' === $pattern_name ) {
-				$section = $this->home_text( $section, 'Sur-titre', 'Une ferme, des savoir-faire', 'Home motif eyebrow' );
-				$section = $this->home_text( $section, 'Titre de la mise en avant', 'Cultiver et transmettre au quotidien', 'Home motif title' );
-				$section = $this->home_text( $section, 'Présentez ici le contenu de cette mise en avant.', 'Décrivez ici l’action mise en avant, les personnes concernées et la manière dont cette initiative fait grandir le vivant en ville.', 'Home motif text' );
+			if ('lpu-split-section/split-motif-image' === $pattern_name) {
+				$section = $this->home_text($section, 'Sur-titre', 'Une ferme, des savoir-faire', 'Home motif eyebrow');
+				$section = $this->home_text($section, 'Titre de la mise en avant', 'Cultiver et transmettre au quotidien', 'Home motif title');
+				$section = $this->home_text($section, 'Présentez ici le contenu de cette mise en avant.', 'Décrivez ici l’action mise en avant, les personnes concernées et la manière dont cette initiative fait grandir le vivant en ville.', 'Home motif text');
 			}
 
-			if ( 'lepaysanurbain/graphic-band' === $pattern_name ) {
-				$section = $this->home_text( $section, 'Titre de l’appel à l’action', 'Prêt à cultiver le vivant avec nous&nbsp;?', 'Home graphic title' );
-				$section = $this->home_text( $section, 'Ajoutez ici une phrase courte pour guider vos visiteurs.', 'Rassemblez ici les dernières informations utiles et invitez vos visiteurs à passer à l’action.', 'Home graphic text' );
+			if ('lepaysanurbain/graphic-band' === $pattern_name) {
+				$section = $this->home_text($section, 'Titre de l’appel à l’action', 'Prêt à cultiver le vivant avec nous&nbsp;?', 'Home graphic title');
+				$section = $this->home_text($section, 'Ajoutez ici une phrase courte pour guider vos visiteurs.', 'Rassemblez ici les dernières informations utiles et invitez vos visiteurs à passer à l’action.', 'Home graphic text');
 			}
 
-			$page_content .= $this->pattern_with_metadata( $section, $pattern ) . "\n";
+			$page_content .= $this->pattern_with_metadata($section, $pattern) . "\n";
 		}
 
-		if ( 2 !== $cards_occurrences ) {
-			$this->fail( 'The Home order must contain exactly two cards patterns.' );
+		if (2 !== $cards_occurrences) {
+			$this->fail('The Home order must contain exactly two cards patterns.');
 		}
 
 		return $page_content;
@@ -1066,11 +1082,12 @@ trait Lpu_Util {
 	 * @param string $label   Slot label used in the assertion error.
 	 * @return string
 	 */
-	protected function home_text( $content, $from, $to, $label ) {
+	protected function home_text($content, $from, $to, $label)
+	{
 		$count  = 0;
-		$result = str_replace( '>' . $from . '<', '>' . $to . '<', $content, $count );
-		if ( 1 !== $count ) {
-			$this->fail( 'Expected one Home content slot for ' . $label . ', found ' . $count );
+		$result = str_replace('>' . $from . '<', '>' . $to . '<', $content, $count);
+		if (1 !== $count) {
+			$this->fail('Expected one Home content slot for ' . $label . ', found ' . $count);
 		}
 		return $result;
 	}

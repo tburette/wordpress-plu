@@ -73,11 +73,11 @@ The provisioning plugin:
 4. installs and network-activates Query Monitor when it is absent, then
    activates the local plugins;
 5. provisions logos, pages, navigations, template parts, test pages, and the
-   network Home from `plugins/lpu-provisioning/content/`; and
-6. protects an already editorialized network Home unless `--force` is used.
+   network Home from `plugins/lpu-provisioning/content/`, replacing its
+   current content on each run.
 
-Provisioning is safe to run repeatedly. The verification command can be run
-independently:
+Provisioning can be run repeatedly; the network Home is reconstructed from the
+source content each time. The verification command can be run independently:
 
 ```sh
 npm run verify-multisite
@@ -210,10 +210,7 @@ and developer fixtures. Its source data lives beside the plugin in
 
 ```sh
 npm run provision
-npm run wp -- lpu provision --force
 ```
-
-The `--force` option intentionally replaces an already assembled network Home.
 
 ## VS Code
 
