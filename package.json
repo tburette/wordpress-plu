@@ -9,7 +9,7 @@
     "logs": "wp-env logs",
     "patch-xdebug": "bash scripts/update-xdebug-path-mapping.sh",
     "reset": "bash scripts/reset-wp-env.sh",
-    "cleanup": "bash scripts/cleanup-wp-env.sh",
+    "cleanup": "wp-env cleanup",
     "wp": "wp-env run cli wp",
     "check-local-hosts": "bash scripts/check-local-hosts.sh",
     "provision": "wp-env run cli wp lpu provision",
