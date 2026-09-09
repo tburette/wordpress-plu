@@ -6,6 +6,12 @@
  * + /home/tburette/Downloads/theme.css header documentation.md 
  */
 /*
+ * This is the annotated companion to assets/css/theme.css. The runtime
+ * stylesheet is kept deliberately compact; this copy explains the same
+ * declarations and their relationships to the tracked theme and plugin
+ * sources. It is documentation, not a second stylesheet to enqueue.
+ */
+/*
  * Recommended order:
  * 1. Read the shared .lpu-band frame and the small shared primitives
  *    (eyebrow, media placeholder, motifs) — the vocabulary the content
@@ -32,12 +38,13 @@
  */
 
 /*
- * Scope of this stylesheet: functions.php:20-33 (lpu_enqueue_theme_styles)
- * registers it on the enqueue_block_assets hook, so it reaches the public
- * site AND the block-editor content canvas (the iframe), but NOT the editor
- * chrome (toolbar, sidebar, browser UI). This is why some rules apply to
- * `.wp-site-blocks` — a class that only exists on the rendered frontend — to
- * keep editor-only content from inheriting frontend-only treatments.
+ * Scope of the runtime stylesheet mirrored here: functions.php:20-33
+ * (lpu_enqueue_theme_styles) registers assets/css/theme.css on the
+ * enqueue_block_assets hook, so the runtime rules reach the public site and
+ * the block-editor content canvas, but not the editor chrome (toolbar,
+ * sidebar, browser UI). This annotated file is not enqueued itself. Selectors
+ * such as `.wp-site-blocks` keep presentation-only rules out of the editor
+ * canvas.
  */
 
 /*****************************************************************************/
@@ -46,16 +53,21 @@
 
 /*
  * Source relationship: .lpu-band is assigned to the root Group/Cover block
- * of every reusable section: patterns/hero.php:11, cards.php:11,
+ * of each reusable theme section: patterns/hero.php:11, cards.php:11,
  * network-farm-selector.php:11, columns.php:11, and graphic-band.php:11.
  * The spacing tokens come from theme.json:62-104.
  * What it controls: Shared full-width section frame and direct-child width.
  * Main source: patterns/hero.php:11, cards.php:11, columns.php:11,
  * network-farm-selector.php:11, and graphic-band.php:11.
  *
+ * The five theme patterns named above are the tracked sources for this shared
+ * frame. Split-section plugin patterns use separate lpu-split-v2 frame
+ * classes and are not covered by these .lpu-band selectors.
+ *
  * Page instances:
  * - Accueil.html:1-341 uses lpu-band on the hero, cards, farm selector,
- *   columns, split-section content, and graphic band.
+ *   columns, and graphic band; its split-section content uses lpu-split-v2
+ *   classes instead.
  * - Sections du design de Fanny.html:1-357 contains the corresponding pattern
  *   examples and plugin split sections.
  */
@@ -75,14 +87,13 @@
   box-sizing: border-box;
 }
 
-/* The page templates set blockGap to zero on wp:post-content (see
- * templates/front-page.html:4) so consecutive top-level sections touch
- * instead of inserting the default block gap. Each section then owns its own
- * spacing inline in its Group block. The direct children of a .lpu-band are
- * forced to full width because a section's contents (columns, heading,
- * buttons) must span the whole band's content box and stay independently
- * editable; width 100% prevents any child from choosing a narrower basis
- * that would leave unwanted side gutters inside the section. */
+/* The front-page, page, and single templates set blockGap to zero on
+ * wp:post-content (see templates/front-page.html:4) so consecutive top-level
+ * sections touch instead of inserting the default block gap. Each section
+ * then owns its spacing inline in its Group block. These are the direct child
+ * block types used by the theme's sections. Width 100% prevents a band-level
+ * child from shrinking and leaving unwanted side gutters; the child
+ * combinator deliberately leaves nested blocks alone. */
 
 .lpu-band > .wp-block-columns,
 .lpu-band > .wp-block-heading,
@@ -98,9 +109,11 @@
 
 /*
  * Source relationship: this is an opt-in class for a paragraph or text block
- * in page content. It is not emitted by a template or pattern automatically.
+ * in page content. The bundled split-section patterns assign it to their
+ * eyebrow paragraphs, and editors can add it to other text blocks.
  * What it controls: Small uppercase introductory labels above section content.
  * Main source: page content and split-section pattern markup.
+ * Tracked pattern sources: plugins/lpu-split-section/patterns/*.php.
  *
  * Page instances:
  * - Accueil.html:33-34 and 298-299 are eyebrow paragraphs inside split-section
@@ -110,7 +123,7 @@
  *   split-section examples.
  */
 /* Design shorthand: an overline ("sur-titre" in the mockups). It reserves
- * --spacing--sm below itself so the following heading never collides, and the
+ * --spacing--sm below itself so the following block never collides, and the
  * uppercase + wide letter-spacing echo Fanny's label treatment. It is an
  * opt-in class because nothing else in a section needs these exact values. */
 .lpu-eyebrow {
@@ -127,10 +140,13 @@
 
 /*
  * Source relationship: patterns/cards.php:21-22, 49-50, and 77-78 assign
- * this class to a Core Image block rendered as <figure><img></figure>.
- * The same class can be used for an empty figure with a figcaption.
+ * this class to Core Image blocks rendered as <figure><img></figure>.
+ * The split-section plugin's image patterns also use it. An empty figure with
+ * a figcaption is a supported fallback shape, not the only current usage.
  * What it controls: Stable image boxes, fallback captions, and image cropping.
  * Main source: patterns/cards.php:21-22, 49-50, and 77-78.
+ * Additional tracked sources: the image patterns in
+ * plugins/lpu-split-section/patterns/.
  *
  * Page instances:
  * - Accueil.html:57-58, 74-75, 102-103, 130-131, 206-207, 222-223, 238-239,
@@ -139,9 +155,10 @@
  *   use it in the card and split-section examples.
  */
 
-/* A media box with a fixed 4:3 box guaranteed even before an image is chosen:
- * the placeholder keeps cards in a uniform layout and the grey-green fill
- * (vert-grise) gives a steady editorial background instead of an empty hole.
+/* A media box with a preferred 4:3 shape and a 16rem minimum height even
+ * before an image is chosen. The minimum is a floor, so a narrow box can be
+ * taller than an exact 4:3 ratio. The grey-green fill (vert-grise) gives a
+ * steady editorial background instead of an empty hole.
  * flex centering is how the fallback caption is centered when no image exists. */
 .lpu-media-placeholder {
   position: relative;
@@ -168,8 +185,8 @@
   text-transform: uppercase;
 }
 
-/* A real image fills the whole box and is cropped (cover) instead of being
- * squeezed, so any editorial photo keeps all four visible edges of the card. */
+/* A real image fills the whole box without distortion and is cropped as
+ * needed (`cover`); the box, not every source-image edge, stays visible. */
 .lpu-media-placeholder img {
   position: absolute;
   inset: 0;
@@ -198,6 +215,9 @@
  * Typical markup:
  * <div class="lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau">
  *
+ * The theme's card pattern is one example; split-section patterns use their
+ * own lpu-split-* frame classes when they need a different motif treatment.
+ *
  * Page instances:
  * - Accueil.html:64-65 uses lpu-motif-1-bandeau on its card section (the
  *   Home page no longer carries a second motif instance).
@@ -216,8 +236,9 @@
 /* Each motif is a fixed SVG asset in two crops: -bandeau (rectangular band)
  * and -carre (square). The variant is chosen by the pattern that uses it;
  * there is deliberately no editorial <img> for these, so an editor cannot
- * accidentally delete or resize the decorative layer. The two opening lines
- * above guarantee every crop is centered and stretched to fill its band. */
+ * accidentally delete or resize the decorative layer. The two declarations
+ * above center each asset and size it with `cover`; that preserves its aspect
+ * ratio and may crop it to fill the band. */
 .lpu-motif-1-bandeau {
   background-image: url("../images/motif-1-bandeau.svg");
 }
@@ -325,13 +346,14 @@
 /*
  * Source relationship: functions.php:156-164 adds body.lpu-header-transparent
  * when the lpu_header_transparent page meta (registered at functions.php:
- * 114-131) is enabled. The hero itself comes from patterns/hero.php:11, so
- * this header overlays the page's first visual.
+ * 114-131) is enabled. functions.php:98-109 limits that check to singular
+ * pages. The hero pattern is one possible first section; the header can
+ * overlay any page section.
  * What it controls: Transparent overlay positioning, admin-bar offset, and active-state colors.
  * Main source: functions.php:114-131 and 156-164 and patterns/hero.php:11.
  */
 
-/* Keep the transparent Home header out of normal flow in both menu states. */
+/* Keep the transparent-page header out of normal flow in both menu states. */
 body.lpu-header-transparent .lpu-header {
   position: absolute;
   top: 0;
@@ -340,10 +362,10 @@ body.lpu-header-transparent .lpu-header {
   background: transparent;
 }
 
-/* The page opts into the transparent header, so the header must float above
- * the hero instead of pushing it down: absolute positioning takes the header
- * out of the document flow and lets the hero start at the very top of the
- * viewport with only the logo/hamburger legible on top. */
+/* The page opts into the transparent header, so it can overlay the first
+ * section (normally a hero) instead of pushing that section down. Absolute
+ * positioning takes the header out of the document flow; the foreground
+ * variable below keeps its controls legible on top of the section. */
 
 /* Absolute positioning removes the transparent header from the normal
  * document flow, so account for WordPress's fixed admin bar when an editor
@@ -361,7 +383,7 @@ body.admin-bar.lpu-header-transparent .lpu-header {
 }
 
 /* The transparent header is removed from normal flow, so the block-theme
- * site-stack gap must not leave an écru strip before the hero. */
+ * site-stack gap must not leave an écru strip before the first section. */
 body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
   margin-block-start: 0;
 }
@@ -369,8 +391,8 @@ body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
 /* The block theme puts a block-gap between all top-level elements of
  * .wp-site-blocks (header, main, footer). When the header is transparent it
  * no longer occupies space, so that gap would show as an écru empty strip
- * between the top of the viewport and the hero — this rule kills the gap
- * ahead of main, exactly where a full-width hero reaches the viewport edge
+ * between the top of the viewport and the first section — this rule kills the
+ * gap ahead of main, exactly where a full-width opening section reaches the viewport edge
  * (the gap before the footer is handled in the main/footer transition
  * section below). */
 
@@ -393,7 +415,7 @@ body.lpu-header-transparent
   background: var(--wp--preset--color--ecru);
 }
 
-/* Over a hero the navigation must remain legible, so its default foreground
+/* Over the first section the navigation must remain legible, so its default
  * (text, icons, logo) is écru. Whenever the visitor actually interacts with
  * the menu — submenu hovered, a submenu or overlay open — legibility demands
  * the solid header back: the :has() checks for those states and flips both
@@ -417,10 +439,10 @@ body.lpu-header-transparent
  * Main source: parts/header.html:3-5 and inc/site-logos.php:100-152.
  */
 
-/* Core injects its own inline colors on navigation elements; the universal
- * !important is the only reliable way for the theme's foreground variable to
- * win. Every element should read the header's state through the single
- * --lpu-header-foreground knob above. */
+/* Core and block-generated navigation styles can set competing colors on
+ * navigation elements. The shared !important rule deliberately makes these
+ * links, submenu icons, and the open button read the current state through
+ * one --lpu-header-foreground variable. */
 .lpu-header .wp-block-navigation-item__content,
 .lpu-header .wp-block-navigation__submenu-icon,
 .lpu-header .wp-block-navigation__responsive-container-open {
@@ -433,8 +455,9 @@ body.lpu-header-transparent
   outline-color: var(--lpu-header-foreground);
 }
 
-/* The focus outline must also follow the current foreground so the visible
- * focus ring stays legible in both the opaque and the transparent states. */
+/* This shared focus declaration supplies the current foreground as a base
+ * outline color; the component-specific focus rule in the interaction section
+ * below later defines the final 2px outline for these controls. */
 body.lpu-header-transparent .lpu-header .wp-block-site-logo img.custom-logo {
   display: none;
 }
@@ -504,9 +527,9 @@ body.lpu-header-transparent
   max-width: min(190px, calc(100vw - 2rem));
 }
 
-/* The logo box is 190px wide (the width set on the Site Logo block), but on
- * tiny screens it must never be wider than the viewport minus the header
- * padding, or the hamburger would be pushed off screen. */
+/* The logo box is 190px wide (the width declared by the Site Logo block in
+ * parts/header.html); on tiny screens the additional 2rem viewport guard
+ * keeps it from pushing the hamburger off screen. */
 
 .lpu-header .wp-block-site-logo img {
   display: block;
@@ -515,7 +538,7 @@ body.lpu-header-transparent
   height: auto;
 }
 
-/* The header link stacks the opaque logo (custom_logo) and the transparent
+/* The header link stacks the normal `.custom-logo` image and the transparent
  * variant in the same grid cell; the visibility rules below pick which one
  * shows for the current header state. */
 .lpu-header .wp-block-site-logo > a {
@@ -527,10 +550,10 @@ body.lpu-header-transparent
   grid-area: 1 / 1;
 }
 
-/* Both logo images would normally stack vertically (inline elements, one
- * line below the other). Rendering the link as a one-cell grid and putting
- * every image on the same grid area superimposes them exactly; only the
- * display: none/block state rules decide which is on top. */
+/* Without the grid, the two block-level images would occupy separate rows.
+ * Rendering the link as a one-cell grid and putting every image on the same
+ * grid area superimposes them exactly; only the display: none/block state
+ * rules decide which is visible. */
 
 /* Specificity note: this must outrank the shared img display rule above. */
 .lpu-header .wp-block-site-logo img.lpu-logo-transparent {
@@ -550,7 +573,8 @@ body.lpu-header-transparent
 
 /* The navigation lane is capped at 60rem and centered: the logo and the two
  * nav-group rails stay within that content measure instead of spanning the
- * whole viewport. min-width: 0 lets flex children of the lane shrink. */
+ * whole viewport. min-width: 0 lets the navigation block itself shrink when
+ * its parent layout gives it less room. */
 
 .lpu-header .wp-block-navigation__responsive-container,
 .lpu-header .wp-block-navigation__responsive-close,
@@ -625,7 +649,8 @@ body.lpu-header-transparent
 }
 
 /* A deliberate, visible keyboard focus ring (offset so it does not touch the
- * padded text) — the site's accessible fallback for the hover underline. */
+ * padded text). It is an independent keyboard indicator, not a replacement
+ * for the pointer-only hover underline below. */
 
 .lpu-header .wp-block-navigation-item__content:hover {
   text-decoration: underline;
@@ -637,9 +662,10 @@ body.lpu-header-transparent
   color: var(--wp--preset--color--vert-fonce);
 }
 
-/* The small submenu chevron is always vert-fonce: unlike the links it never
- * needs to follow the transparent flip because it sits inside the header
- * content lane where the contrast is fixed. */
+/* This is the base chevron color, but the shared selector near the top of the
+ * section wins with !important. The icon therefore follows
+ * --lpu-header-foreground and becomes écru on a transparent header until the
+ * menu enters its solid active state. */
 
 .lpu-header .wp-block-navigation__responsive-container.is-menu-open {
   box-sizing: border-box;
@@ -693,8 +719,9 @@ body.lpu-header-transparent
   list-style: none;
 }
 
-/* Resets Core's list defaults — the group list is an implementation detail
- * of the rail, not a real <ul> the visitor navigates. */
+/* Resets Core's list defaults — the group list is a wrapper <ul> emitted by
+ * the nav-group renderer. It remains semantic list markup, while its child
+ * navigation items provide the actual links visitors navigate. */
 
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
@@ -806,7 +833,7 @@ body.lpu-header-transparent
   z-index: 1;
 }
 
-/* The dropdown core would produce becomes a wide panel: top: 100% parks it
+/* The dropdown Core would produce becomes a wide panel: top: 100% parks it
  * exactly under the header, inset-inline: 0 stretches it edge to edge, and
  * the nested submenu <li> items are turned into a wrapping flex of column
  * cards (flex-wrap) instead of a vertical stack — this is Fanny's multi-
@@ -821,9 +848,9 @@ body.lpu-header-transparent
   min-width: 12rem;
 }
 
-/* Each submenu entry behaves like a fixed-width column card inside the panel,
- * keeping the multi-column grid stable even when some columns have more
- * entries than others. */
+/* Each submenu entry has a 12rem minimum and can grow or shrink as a flex
+ * item inside the panel, keeping the multi-column grid usable when the panel
+ * width or the number of columns changes. */
 
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
@@ -837,8 +864,9 @@ body.lpu-header-transparent
   text-transform: none;
 }
 
-/* Inside the panel the entries switch from the uppercase Ruden header links
- * to regular DM Sans body text — they are destinations, not menu labels. */
+/* Inside the panel the category links switch from uppercase Ruden header
+ * styling to regular DM Sans text; their child links provide the individual
+ * destinations below them. */
 
 .lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open) {
   padding-inline: 0;
@@ -861,8 +889,8 @@ body.lpu-header-transparent
  */
 
 /* Compact presentation, selected by navigation.js when one nav-group no
- * longer fits in its track. The grid keeps the logo in the middle; the two
- * groups are dropped. Core still owns the open overlay; these rules only
+ * longer fits in its track. The closed container becomes a centered flex row;
+ * the two groups are dropped. Core still owns the open overlay; these rules only
  * choose the closed presentation, mirroring Core's own responsive (<600px)
  * presentation so the switch between the two is seamless. */
 .lpu-header .lpu-header__navigation.lpu-navigation--compact {
@@ -886,11 +914,11 @@ body.lpu-header-transparent
   transform: translateY(-50%);
 }
 
-/* The compact state is the transitional width range (roughly 601-1000px)
- * where the rails still exist structurally but no longer fit side by side
- * with the logo. The hamburger is positioned absolutely at the left edge,
- * vertically centered, and the logo keeps the center track — the switch in
- * and out of Core's phone mode stays visually seamless. */
+/* The compact state starts whenever navigation.js measures a rail as wider
+ * than its available track; it is not tied to a fixed upper breakpoint. The
+ * rails still exist structurally but no longer fit beside the logo. The
+ * hamburger is positioned absolutely at the left edge, vertically centered,
+ * while the logo stays centered. */
 
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
@@ -973,8 +1001,8 @@ body.lpu-header-transparent
  * with the open button (hamburger) at the rail's start and the two nav rails
  * dropped. It is exactly the closed look the JavaScript compact class
  * produces at larger widths, but declared statically here so that below
- * 600px navigation.js does not even need to run — Core only owns the open
- * overlay. */
+ * 600px navigation.js is not required to create this closed presentation —
+ * Core still owns the open overlay. */
 
 /*****************************************************************************/
 /* HEADER RESPONSIVE (900px)                                                 */
@@ -986,8 +1014,9 @@ body.lpu-header-transparent
  * Main source: this file's max-width:900px query and parts/header.html:1-2.
  */
 
-/* Below 900px the header slimmed down: a smaller padding and a capped logo
- * height keep the three-region lane from getting in the way on tablets. */
+/* Below 900px the header uses smaller padding and caps the logo height. The
+ * navigation's grid/compact decision is still handled by the rules above and
+ * by navigation.js; this query only reduces the header's vertical footprint. */
 
 @media (max-width: 900px) {
   .lpu-header {
@@ -1033,10 +1062,12 @@ body.lpu-header-transparent
  * physics that cannot be expressed as block padding stays here:
  * - flex + align-items: flex-end pins the content block to the bottom so the
  *   title sits above the lower edge no matter how tall the image is;
- * - min-height clamp guarantees the hero still occupies a meaningful screen
- *   height even when the background is a light, low-contrast SVG.
- * background-size/position make the cover image fill the pane and keep its
- * center visible at all viewport widths. */
+ * - min-height clamp guarantees a meaningful vertical footprint at different
+ *   viewport heights;
+ * - background-size/position describe the cover's CSS background surface.
+ * The actual image emitted by Core is the `.wp-block-cover__image-background`
+ * layer; its `data-object-fit="cover"` marker records the intended mode,
+ * while Core's `object-fit: cover` CSS performs the crop. */
 
 .lpu-hero .wp-block-cover__inner-container {
   box-sizing: border-box;
@@ -1067,8 +1098,9 @@ body.lpu-header-transparent
   margin-block: 0;
 }
 
-/* The CTA sits at the very bottom of the content block; the margin is the
- * breathing room between the paragraph and the button. */
+/* The CTA is the last block in the content group; this margin provides
+ * breathing room between the paragraph and the button. The parent cover's
+ * bottom alignment places the whole content group near the lower edge. */
 .lpu-hero__actions {
   margin-block-start: var(--wp--preset--spacing--lg);
 }
@@ -1144,8 +1176,8 @@ body.lpu-header-transparent
   width: 100%;
 }
 
-/* The 4:3 placeholder must always fill the column width, no aspect-ratio
- * surprises. */
+/* The placeholder fills the card column's available inline size while its
+ * shared aspect-ratio/min-height rules define the media box's shape. */
 
 .lpu-card__body {
   display: flex;
@@ -1173,8 +1205,9 @@ body.lpu-header-transparent
   line-height: 1.35;
 }
 
-/* Titles and paragraphs are small uppercase labels / short reads by design;
- * margins are zeroed because vertical rhythm is produced by the flex gap. */
+/* Titles are compact uppercase labels and paragraphs are short reads by
+ * design; margins are zeroed because vertical rhythm is produced by the flex
+ * gap. */
 
 .lpu-card__body .wp-block-buttons {
   margin-block-start: auto;
@@ -1227,7 +1260,7 @@ body.lpu-header-transparent
 }
 
 /* Each item is position:relative so the separator pseudo-element can be
- * absolutely placed at its own left edge (below). */
+ * absolutely placed at the boundary on its left edge (below). */
 
 .lpu-farm-selector__item + .lpu-farm-selector__item::before {
   position: absolute;
@@ -1242,8 +1275,8 @@ body.lpu-header-transparent
 
 /* The ✳ glyph is Fanny's ornamental separator between the farm links. It is
  * a pure CSS pseudo-element precisely so the content stays clean: no
- * separator block to manage, and it is symmetric to the visual centered on
- * the gap between two adjacent columns. */
+ * separator block to manage, and it is centered on the boundary between two
+ * adjacent columns. */
 
 .lpu-farm-selector__item .wp-block-heading {
   margin: 0;
@@ -1252,8 +1285,8 @@ body.lpu-header-transparent
   text-transform: uppercase;
 }
 
-/* The farm names are the big festoon of the section, sized fluidly so three
- * names fit comfortably on a desktop 1200px wide band. */
+/* The farm names are the section's large focal text, with a fluid size capped
+ * at 3.5rem so the labels remain usable across the wide layout. */
 
 .lpu-farm-selector__item a {
   color: inherit;
@@ -1262,17 +1295,17 @@ body.lpu-header-transparent
   text-underline-offset: 0.15em;
 }
 
-/* The link inherits the heading's huge color (rather than the default link
- * blue/purple) and shows a deliberately solid 2px underline with a slight
- * offset — the underline is the affordance, the size does the work. */
+/* The link inherits the surrounding section color rather than the browser's
+ * default link color and shows a solid 2px underline with a slight offset. */
 
 .lpu-farm-selector__item a:hover,
 .lpu-farm-selector__item a:focus-visible {
   text-decoration-thickness: 3px;
 }
 
-/* A thicker underline on hover/focus is the only state change Fanny wants; a
- * color change would fight the large inherited color. */
+/* Hover and keyboard focus communicate the state through underline thickness;
+ * no color override is needed because the link already inherits the section
+ * color. */
 
 /*****************************************************************************/
 /* TEXT COLUMNS BAND                                                         */
@@ -1307,9 +1340,9 @@ body.lpu-header-transparent
   text-wrap: balance;
 }
 
-/* The shared title is constrained and centered, with a generous gap below —
- * this is the largest empty stretch of the band and it is deliberate
- * (it separates the title from the columns of messages). */
+/* The shared title is constrained and centered, with a 6.5rem desktop gap
+ * below it (xl + lg). That explicit space separates the title from the
+ * columns of messages. */
 .lpu-columns-text__columns {
   align-items: flex-start;
   gap: var(--wp--preset--spacing--xl);
@@ -1332,7 +1365,8 @@ body.lpu-header-transparent
 }
 
 /* Each "message" is a short centered paragraph on its own column, capped at
- * ~18rem so it does not turn the whole dark band into a wall of text. */
+ * ~18rem on larger screens so it does not turn the whole dark band into a
+ * wall of text; the mobile override relaxes that cap to 30rem. */
 
 /*****************************************************************************/
 /* GRAPHIC CALL-TO-ACTION BAND                                               */
@@ -1355,11 +1389,11 @@ body.lpu-header-transparent
   text-align: center;
 }
 
-/* The final band of a page is the loudest section: jaune background against
+/* The pattern is designed as a closing band: jaune background against
  * vert-fonce text. Its padding is inline on the pattern Group block; the CSS
- * only supplies the color/centering brushstrokes that block markup cannot
- * (text-align is inherited by every child so nothing needs a per-block
- * center class). */
+ * only supplies the color/centering that block markup does not need to repeat
+ * (text-align is inherited by the children, while the Buttons block centers
+ * itself explicitly below). */
 .lpu-graphic-band > .wp-block-heading {
   max-width: 36rem;
   margin-block: 0 var(--wp--preset--spacing--md);
@@ -1382,8 +1416,10 @@ body.lpu-header-transparent
   margin-block-start: var(--wp--preset--spacing--lg);
 }
 
-/* Core's button container is a flex row; justify-content: center keeps the
- * button optically centered below the centered heading/paragraph. */
+/* Core's button container is a flex row and the pattern already requests
+ * justifyContent: center in its block markup. This declaration reinforces
+ * that alignment and keeps the band centered if the class is reused without
+ * the pattern's layout attribute. */
 
 /*****************************************************************************/
 /* SECTION RESPONSIVE (781px)                                                */
@@ -1432,8 +1468,8 @@ body.lpu-header-transparent
 
 /* The 781px breakpoint matches Core's own column-stacking rule, so every
  * section that relies on Core columns is re-tuned once they stack:
- * - the hero is given a fixed minimum height (the vw-based clamp would put
- *   it below the fold on narrow viewports) and its heading widens slightly;
+ * - the hero is pinned to its 34rem minimum-height floor and its heading
+ *   widens slightly;
  * - the farm selector's ✳ separators move from the vertical gutter to above
  *   the items (top: 0, centered) because once the farms stack there is no
  *   side gutter left;
@@ -1457,10 +1493,9 @@ main.wp-block-group {
   min-height: 30vh;
 }
 
-/* Even a nearly-empty page keeps the footer from jumping up to the middle of
- * the viewport: a minimum main height reserves a comfortable reading seat,
- * and the footer then always sits in a consistent place while a slightly
- * longer page simply grows main. */
+/* Even a nearly-empty page keeps the footer from following immediately after
+ * a tiny main: the minimum reserves 30vh of main-content height. A longer
+ * page simply grows main; this is a minimum, not a sticky-footer guarantee. */
 
 /* The footer follows the last editorial section directly. WordPress adds its
  * normal site-stack gap to every sibling; that creates an unintended écru
@@ -1483,8 +1518,9 @@ main.wp-block-group {
  * Main source: parts/footer.html and Core footer Navigation markup.
  */
 
-/* Shared footer frame. The footer Navigation receives site-local content at
- * render time, while this layout and its visual treatment remain shared. */
+/* Shared footer frame. The provisioning plugin supplies each site with its
+ * own footer wp_navigation entity; this layout and visual treatment remain
+ * shared by the theme. */
 .lpu-footer {
   position: relative;
   overflow: hidden;
@@ -1512,9 +1548,9 @@ main.wp-block-group {
   pointer-events: none;
 }
 
-/* Fanny's single écru star sits at the bottom-right corner of every footer.
- * It is a pure decoration: pointer-events: none keeps it from ever
- * intercepting a click on the social icons it overlaps. */
+/* Fanny's single écru star sits at the bottom-right corner of the footer. It
+ * is pure decoration; pointer-events: none keeps it from intercepting clicks
+ * if its painted area overlaps another footer control. */
 
 .lpu-footer__main {
   align-items: flex-start;
@@ -1522,8 +1558,8 @@ main.wp-block-group {
   margin-block: 0;
 }
 
-/* The identity column, intro column and links column side by side, aligned
- * to their first line (a footer reads best from the top). */
+/* The three main columns—identity, intro, and links—sit side by side and
+ * align to their first line (a footer reads best from the top). */
 
 .lpu-footer__identity .wp-block-image {
   width: 160px;
@@ -1599,8 +1635,9 @@ main.wp-block-group {
   text-transform: uppercase;
 }
 
-/* The column headings are set in uppercase Ruden — they read as labels, not
- * hot links, which is why their color is also forced écru. */
+/* The parent navigation items are still links in Core's markup, but this
+ * treatment makes them read visually as uppercase Ruden column labels and
+ * keeps them écru on the dark footer. */
 
 .lpu-footer .wp-block-navigation__submenu-icon {
   display: none;
@@ -1643,11 +1680,11 @@ main.wp-block-group {
   border: 0 !important;
 }
 
-/* Core hides submenu containers (visibility/opacity, max-height) until their
- * parent is hovered. In the footer every submenu is always visible — this is
- * a "no JavaScript menu" by design. The barrage of !important is required
- * because Core's own dropdown rules carry more specificity than the
- * surrounding footer rules and would otherwise keep the lists collapsible. */
+/* Core hides submenu containers through visibility, dimensions, overflow, and
+ * opacity until their parent is active. In the footer every submenu is always
+ * visible, so these overrides make the site map static rather than dependent
+ * on submenu toggling. The !important declarations are needed where Core's
+ * dropdown selectors are more specific than the surrounding footer rules. */
 
 .lpu-footer
   .wp-block-navigation__submenu-container
@@ -1703,9 +1740,11 @@ main.wp-block-group {
   border-top: 1px solid rgba(248, 248, 240, 0.35);
 }
 
-/* The last submenu is the special bottom strip: it jumps out of the 3-col
- * grid (grid-column: 1 / -1) to become a horizontal legal/utility row
- * (privacy, terms, mentions…) separated by the subtle écru hairline. */
+/* The provisioned footer navigations put "Informations légales" last. This
+ * selector treats the last submenu as a special bottom strip: it jumps out
+ * of the 3-column grid (grid-column: 1 / -1) to become a horizontal
+ * legal/utility row separated by the subtle écru hairline. Custom footer
+ * navigation content should preserve that last-item convention. */
 
 .lpu-footer
   .wp-block-navigation__container
@@ -1759,8 +1798,9 @@ main.wp-block-group {
   color: var(--wp--preset--color--ecru);
 }
 
-/* The social icons and the copyright line share the bottom band, centered
- * against each other, with a gap above separating them from the columns. */
+/* The social icons and copyright share the bottom band, align vertically, and
+ * are distributed with space-between by the Group block's layout attributes;
+ * the gap above separates them from the columns. */
 
 .lpu-footer__social,
 .lpu-footer__copyright {
@@ -1807,8 +1847,8 @@ main.wp-block-group {
   }
 }
 
-/* Below 900px the four columns no longer fit side by side: the footer stacks
- * its columns vertically, the intro gets a wider measure, and the site-map
+/* Below 900px the three main columns no longer fit side by side: the footer
+ * stacks them vertically, the intro gets a wider measure, and the site map
  * shrinks to two columns. */
 
 @media (max-width: 600px) {
@@ -1843,8 +1883,9 @@ main.wp-block-group {
  * Source relationship: Core Button blocks in patterns/hero.php:26-33 (the
  * arrow button at hero.php:28-29) and patterns/graphic-band.php:21-27 produce
  * .wp-block-button__link. The lpu-button-on-color and lpu-button-arrow
- * modifiers are explicitly assigned by the hero pattern; the generic rules
- * affect all Core buttons.
+ * modifiers are both assigned by the hero pattern; lpu-button-on-color is also
+ * used by the provisioning test page. The generic rules affect all Core
+ * buttons.
  * What it controls: Button transitions, hover/focus states, colored buttons, and arrow buttons.
  * Main source: patterns/hero.php:28-29 and graphic-band.php:23-24.
  *
@@ -1862,9 +1903,8 @@ main.wp-block-group {
     color 100ms ease;
 }
 
-/* Buttons change background/text color on hover; the 100ms transition keeps
- * this from snapping — long enough to feel reactive, short enough to not
- * feel sluggish. */
+/* Buttons change background/text color on hover and focus; the 100ms
+ * transition prevents those two properties from changing instantaneously. */
 
 .wp-block-button__link:hover,
 .wp-block-button__link:focus-visible {
@@ -1899,10 +1939,11 @@ main.wp-block-group {
   outline-color: var(--wp--preset--color--ecru);
 }
 
-/* On a colored band (hero photo, jaune/brand-color background) the inverted
- * hover state above would produce an invisible dark-on-dark button; the
- * on-color modifier instead outlines and writes in écru and inverts to
- * écru-fill + vert-fonce text on hover, with the focus ring following. */
+/* When markup opts into the modifier on a colored band (the hero and the
+ * provisioning test page are current examples), the normal dark-on-light
+ * treatment would have poor contrast. The modifier instead starts with écru
+ * border/text and inverts to écru fill + vert-fonce text on hover, with the
+ * focus ring following. A yellow band does not opt in automatically. */
 
 /* The Hero uses the regular core Button so its editable text remains the
  * accessible link name. On the public site, its dedicated modifier presents
@@ -1996,7 +2037,9 @@ main.wp-block-group {
 }
 
 /* Accessibility: when the OS reports a reduced-motion preference, smooth
- * scrolling and every transition/animation are collapsed to ~0 ms (the
- * 0.01ms floor matters because 0 disables some engines entirely). The "*"
- * selector guarantees no future animation in this stylesheet or Core's can
- * accidentally re-enable motion behind this media query's back. */
+ * scrolling is disabled and transition/animation durations are reduced to
+ * ~0 ms (the 0.01ms floor matters because 0 disables some engines entirely).
+ * The universal selector also covers pseudo-elements and loaded block styles,
+ * but delays, animation names, and keyframes are not changed here; this
+ * minimizes motion rather than guaranteeing that every possible effect is
+ * absent. */
