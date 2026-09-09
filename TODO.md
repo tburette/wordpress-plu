@@ -9,9 +9,7 @@
 - [ ] Use https://fullsiteediting.com/lessons/global-style-variations/ to set custom header/menu logo?
 - [ ] `plugins/lpu-split-section/lpu-split-section.php` (pattern registration, `NETWORK_LOGO`): the "Côte à côte — logo et titre-texte" pattern hard-codes the network écru logo asset URL (`assets/images/logos/network-horizontal-ecru-baseline.svg`). It is a content placeholder, not part of the header-logo mechanism, but it should become configurable/per-site (e.g. selected from the media library at insertion time).
 - [ ] `themes/lepaysanurbain/theme.json` : evalute if settings > color > custom should be true
-- [ ] provisioning is slow. I think it might be because every command goes through "wp-env run cli wp". Which incures a cost. Maybe we could put the script (and associated content) in the "cli" environment and run the provisioning scripts there directly, thus skipping the wp-env run cost.
-- [ ] Make content provisioning URL-agnostic and runnable on the target PHP-only OVH Perso hosting installation instead of depending on environment-specific URLs and WP-CLI shell scripts.
-- [x] remove duplication : "${script_dir}/setup-split-plugin.sh" and "${script_dir}/setup-nav-group-plugin.sh"
+- [x] Provisioning runs through the LPU plugin instead of a collection of shell commands, so it can also run on the target PHP-only OVH Perso hosting installation. It is also much faster.
 - [ ] Ajouter les pastilles. Doit pouvoir configurer leur apparence (couleur, contenu,..). Doit pouvoir ajouter "librement". (attention mobile)
 - [ ] in the templates, do we need the wp:group wrapping the wp:post-content? Might be standard (because there is a <main> there) or might be superfluous
 - [ ] lpu/split-section and lpu/split-zone are missing many options in gutenberg that are available in native blocks such as wp:group. If I understand correctly to add them you have to add elements to 'supports' when calling register_block_type (PHP) and registerBlockType (js).
@@ -84,8 +82,8 @@
 - [ ] Manually validate the minimal `assets/js/navigation.js` collision observer with the network and farm menus: resize through the transition, confirm the inline menu never overlaps the centred logo, and confirm Core still owns the overlay, submenu controls, focus and Escape.
 - [ ] Recheck the `:has()` transparent-header state selectors after the adaptive layout observer is validated, especially the logo swap while the overlay or a mega-menu is open.
 - [ ] Simplify the transparent-logo implementation in `inc/site-logos.php`; revisit the current rendered-markup injection and determine whether the two logo variants can be represented with simpler native block/template markup. Recheck responsive/raster-logo `srcset` behavior when such assets are introduced.
-- [ ] @is the <!-- wp:site-logo ... /--> needed in `themes/lepaysanurbain/parts/header.html` ? It is not in the database version of the template part, not in the rendered html and the wp_navigation menu-principal is what contains the logo anyway (cf `scripts/content/navigation-menus`).
-- [ ] `scripts/content/navigation-menus/setup.sh` should always recreate the menu, even if it already exists, instead of re-using the existing one if it is there.
+- [ ] @is the <!-- wp:site-logo ... /--> needed in `themes/lepaysanurbain/parts/header.html` ? It is not in the database version of the template part, not in the rendered html and the wp_navigation menu-principal is what contains the logo anyway (cf `plugins/lpu-provisioning/content/navigations`).
+- [x] The provisioning plugin refreshes the header navigation when it already exists, instead of re-using stale content.
 - [ ] Nice to have: add a warning somewhere in WP admin when the navigation used by the `header` template part does not contain exactly one `lpu-header__logo` / site-logo item. Ideally show it while editing the navigation menu, but identifying which navigation is used by the `header` template part may be difficult. The requirement is already documented in `documentation utilisateur et technique.md`.
 - [ ] There has got to be a way to merge our compact (see css+navigation.js) with the native mobile layout.
       questions :

@@ -4,7 +4,8 @@ Plugin de provisioning pour Le Paysan Urbain. Il applique la configuration et
 le contenu de développement sur un multisite WordPress (site réseau + sous-sites
 `paris`, `lyon`, `marseille`), idempotent : relançable sans risque.
 
-Remplaçant des scripts shell `wp-env` (`.sh`), il exécute la même logique mais :
+Le plugin centralise la configuration et le contenu de développement, et peut
+être exécuté :
 
 - en local → via WP-CLI en un seul aller-retour (`wp lpu provision`),
 - sur l'hébergement OVH Perso (sans SSH, sans WP-CLI) → via un bouton dans

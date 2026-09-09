@@ -12,10 +12,7 @@
     "cleanup": "bash scripts/cleanup-wp-env.sh",
     "wp": "wp-env run cli wp",
     "check-local-hosts": "bash scripts/check-local-hosts.sh",
-    "setup-language": "bash scripts/setup-language.sh",
-    "provision": "bash scripts/provision-environment.sh",
-    "setup-theme": "bash scripts/setup-theme.sh",
-    "content": "bash scripts/content/setup.sh",
+    "provision": "wp-env run cli wp lpu provision",
     "verify-multisite": "bash scripts/verify-multisite-network.sh"
   }
 }

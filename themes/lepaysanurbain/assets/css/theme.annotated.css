@@ -408,10 +408,10 @@ body.lpu-header-transparent
  * Source relationship: the navigation and Site Logo are the Core blocks
  * inside parts/header.html:3-5, or inside the referenced wp_navigation entity
  * (the header template part is provisioned with a ref to each site's main
- * navigation by scripts/content/navigation-menus/setup.sh). Because the
- * navigation entity — not the template part — holds the site-logo between the
- * two nav-groups, the logo rendered on the page comes from that entity's
- * content. inc/site-logos.php:100-152 appends the optional
+ * navigation by the LPU provisioning plugin from its navigation content).
+ * Because the navigation entity — not the template part — holds the site-logo
+ * between the two nav-groups, the logo rendered on the page comes from that
+ * entity's content. inc/site-logos.php:100-152 appends the optional
  * .lpu-logo-transparent image to the header Site Logo.
  * What it controls: Navigation colors, focus outlines, and normal/transparent logos.
  * Main source: parts/header.html:3-5 and inc/site-logos.php:100-152.

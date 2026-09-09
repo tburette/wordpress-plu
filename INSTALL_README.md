@@ -55,29 +55,26 @@ npm run start
 npm run status
 ```
 
-Starting the environment only starts the local WordPress containers. Run the
-provisioning explicitly when the environment is new or after its local
-database has been reset:
+Starting the environment only starts the local WordPress containers. Activate
+the provisioning plugin once, then run its provisioning command when the
+environment is new or after its local database has been reset:
 
 ```sh
+npm run wp -- plugin activate lpu-provisioning --network
 npm run provision
 npm run verify-multisite
 ```
 
-Provisioning:
+The provisioning plugin:
 
-1. checks the local hostnames;
-2. confirms that WordPress is a network;
-3. aligns the network `subdomain_install` metadata with the
-   `SUBDOMAIN_INSTALL` constant;
-4. creates the Paris, Lyon, and Marseille sites when they are missing; and
-5. installs and activates the French (`fr_FR`) core language pack for all four
-   sites and sets the default `admin` user's locale to French;
-6. provisions all required and developer content from the co-located files in
-   `scripts/content/`, including the static `Accueil` pages, logos, site-local
-   header/footer Navigations, test pages, the all-patterns review page, and the
-   network Home fixture; then
-7. verifies the network and site domain/path records.
+1. aligns the multisite network metadata and creates missing farm sites;
+2. activates the theme on the network sites;
+3. installs and activates the French (`fr_FR`) core language pack;
+4. installs and network-activates Query Monitor when it is absent, then
+   activates the local plugins;
+5. provisions logos, pages, navigations, template parts, test pages, and the
+   network Home from `plugins/lpu-provisioning/content/`; and
+6. protects an already editorialized network Home unless `--force` is used.
 
 Provisioning is safe to run repeatedly. The verification command can be run
 independently:
@@ -92,20 +89,18 @@ npm run verify-multisite
 
 The default credentials are `admin` / `password`.
 
-Provisioning keeps the local WordPress administration in French. To apply the
-language setup independently to an existing environment, run:
-
-```sh
-npm run setup-language
-```
+Provisioning keeps the local WordPress administration in French. There are no
+separate shell provisioning commands; rerun the plugin command when applying
+the configuration again.
 
 ## Reset the local database
 
-To test provisioning scripts from a clean WordPress database without
+To test the provisioning plugin from a clean WordPress database without
 recreating the Docker environment, use:
 
 ```sh
 npm run reset
+npm run wp -- plugin activate lpu-provisioning --network
 npm run provision
 npm run status
 ```
@@ -140,8 +135,8 @@ The active configuration is `.wp-env.json`. Important settings include:
 
 `wp-env` generates the multisite constants such as `MULTISITE`,
 `DOMAIN_CURRENT_SITE`, and `PATH_CURRENT_SITE` during the fresh installation.
-`scripts/setup-multisite-network.sh` also updates the network metadata used
-for the subdomain choice before it creates child sites.
+The provisioning plugin updates the network metadata used for the subdomain
+choice before it creates child sites.
 
 `WP_ALLOW_MULTISITE` is not required for this automated setup. It only enables
 the manual Network Setup screen in the WordPress administration interface.
@@ -198,10 +193,8 @@ wordpress-lpu/
     └── example-plugin/
 ```
 
-`wp-env` mounts themes but does not activate them automatically. Activate the
-theme on the required network sites with WP-CLI after it has been mounted.
-Provisioning does this through `scripts/setup-theme.sh`; run it
-manually with `npm run setup-theme` when needed.
+`wp-env` mounts themes but does not activate them automatically. The
+provisioning plugin activates the mounted theme on the required network sites.
 
 Plugins can be mounted and activated when listed in `.wp-env.json`:
 
@@ -211,21 +204,16 @@ Plugins can be mounted and activated when listed in `.wp-env.json`:
 
 ### Content provisioning
 
-Scripts that create WordPress content live in `scripts/content/`. Each script
-keeps its Gutenberg markup and other data in the same directory, while
-`scripts/content/setup.sh` provides the single dispatcher for the whole set:
+The provisioning plugin is the single entry point for the site configuration
+and developer fixtures. Its source data lives beside the plugin in
+`plugins/lpu-provisioning/content/` and is applied in dependency order:
 
 ```sh
-# Provision everything, in dependency order.
-npm run content
-
-# Provision one or more selected operations.
-npm run content -- patterns-test-page
-npm run content -- home-network navigation-menus
-
-# Intentionally replace an already assembled network Home.
-npm run content -- home-network --force
+npm run provision
+npm run wp -- lpu provision --force
 ```
+
+The `--force` option intentionally replaces an already assembled network Home.
 
 ## VS Code
 
