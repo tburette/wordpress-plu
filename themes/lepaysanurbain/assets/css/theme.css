@@ -3,10 +3,6 @@
  * does not apply to the editor (Gutenbeg) UI in general
  */
 
-/*****************************************************************************/
-/* SHARED EDITORIAL SECTION FRAME: .lpu-band                                 */
-/*****************************************************************************/
-
 /* Note on handling the (absence) of gaps between lpu sections ('bands'). 
  * By default in wp, there is a gap (margin), between top level elements of a
  * page. This comes from a setting on the container : blockGap.
@@ -28,36 +24,6 @@
  * frontend. Instead we store the padding/margin data inside the blocks/sections
  * directly.
  */
-
-/* 
- * .lpu-band marks sections of content of lepaysanurbain theme.
- * A selector like '.lpu-band xxx' means targeting xxx inside 'our' content.
- * Allows targeting only content sections specific to our theme and avoids 
- * accidentally targeting other (wordpress core) content .
- * 
- * It is used in patterns, template-parts,..
- * Eg.: hero, farm selector, cards, columns, split section, graphic band,..
- * 
- * Should be only applied at the top level.
- * 
- * Could have called it ".lpu-section" but it could be 
- * confused with the core Section block or a custom block. ".lpu-band" is not
- * a custom wordpress block, it's just a class
- *
- * Might have been better not to have a generic name but only use specific
- * classes for specific content (eg. .lpu-hero, .lpu-farm-selector, ...)
- */
-.lpu-band {
-  box-sizing: border-box;
-}
-
-.lpu-band > .wp-block-columns,
-.lpu-band > .wp-block-heading,
-.lpu-band > .wp-block-group,
-.lpu-band > .wp-block-buttons {
-  box-sizing: border-box;
-  width: 100%;
-}
 
 /*****************************************************************************/
 /* SMALL EDITORIAL LABEL: .lpu-eyebrow                                       */

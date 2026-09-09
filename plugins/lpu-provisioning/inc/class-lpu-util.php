@@ -1003,8 +1003,8 @@ trait Lpu_Util
 
 				if (2 === $cards_occurrences) {
 					$section = str_replace(
-						'"backgroundColor":"ecru","className":"lpu-band lpu-card-grid lpu-motif lpu-motif-1-bandeau"',
-						'"backgroundColor":"vert-grise","className":"lpu-band lpu-card-grid lpu-card-grid--titles-only"',
+						'"backgroundColor":"ecru","className":"lpu-card-grid lpu-motif lpu-motif-1-bandeau"',
+						'"backgroundColor":"vert-grise","className":"lpu-card-grid lpu-card-grid--titles-only"',
 						$section,
 						$outer_attribute_count
 					);

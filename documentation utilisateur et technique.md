@@ -67,15 +67,15 @@ plus complexe au niveau du code.
 
 ### Espacement entre les sections
 
-Le design du site demane qu'il n'y ai pas de vide avec la couleur de fond par défaut
-(écru) entre les sections créés pour le site (lpu-band) telles que : cards,
+Le design du site demande qu'il n'y ai pas de vide avec la couleur de fond par défaut
+(écru) entre les sections créés pour le site telles que : cards,
 network-farm-selector, split-section,...
 
 Solution NON retenues :
 
 - hardcoder un block-margin de 0 pour nos éléments du theme et des plugins lpu
   => l'utilisateur pourrait vouloir un espacement entre blocs dans certains cas.
-- mettre block-margin de 0 sur les éléments/lpu-band avec CSS (avec spécificité
+- mettre block-margin de 0 sur les éléments/sections avec CSS (avec spécificité
   faible). Si l'utilisateur défini une valeur de block-margin elle prendrait le
   dessus. Bonne idée mais
   => ce qui est affiché sur le site ne correspondrait pas toujours aux valeurs
