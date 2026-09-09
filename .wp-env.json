@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/wp-env.json",
-  "core": "WordPress/WordPress#7.1",
+  "core": "https://wordpress.org/wordpress-7.1.zip",
   "plugins": ["./plugins/lpu-split-section", "./plugins/nav-group", "./plugins/lpu-provisioning"],
   "themes": ["./themes/lepaysanurbain"],
   "config": {
