@@ -270,6 +270,10 @@
 				default: '',
 			},
 		},
+		supports: {
+			html: false,
+			className: false,
+		},
 		edit: ZoneEdit,
 		save: ZoneSave,
 	} );
