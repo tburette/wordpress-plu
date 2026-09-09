@@ -40,19 +40,25 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 
 ## Usage pas de SSH/WP-CLI (OVH)
 
-1. Téléverser et activer thème et plugins (sur site du **réseau**) :
+1. Mettre en place le multisite :
+   https://developer.wordpress.org/advanced-administration/multisite/create-network/
+   - configurer le DNS
+   - Activer le multisite. Dans wp-config.php :
+     `define( 'WP_ALLOW_MULTISITE', true );`
+   - Aller à la page `/wp-admin/network.php` et activer le multisite.
+     Suivre les étapes (configurer wp-config.php et .htaccess).
+   - Se déconnecter et se reconnecter. Aller à la page Admin du réseau → Sites.
+     Créer chaqe sous-site.
+
+2. Téléverser et activer thème et plugins (sur site du **réseau**) :
    - Le thème `lepaysanurbain` : **Apparence → Thèmes → Ajouter → Téléverser un
      thème**.
    - Les plugins `lpu-split-section`, `nav-group` et `lpu-provisioning` :
-     **Extensions → Ajouter → Téléverser une extension**, puis activer sur le réseau.
+     **Extensions → Ajouter → Téléverser une extension**.
+     Activer sur le réseau `lpu-provisioning`.
      > Au lancement, le provisioning active d'abord `lpu-split-section` et
      > `nav-group` sur le réseau , puis vérifie que le thème `lepaysanurbain` est
      > présent et que ces deux plugins sont bien activés **au niveau du réseau**.
-     > C'est ce qui rend le bloc `lpu/nav-group` et les patterns
-     > `lpu-split-section/*` disponibles sur les sites fermes.
-2. Vérifications manuelles (une seule fois) :
-   - le réseau multisite doit déjà être activé (OVH gère ça),
-   - activer le thème `lepaysanurbain` sur le site principal avant de lancer.
 3. Réglages du réseau → **Provisionnement LPU** → bouton _Provisionner le site_.
    Le paquet de langue `fr_FR` est téléchargé automatiquement par le bouton ; si
    l'hébergement bloque ce téléchargement (pas d'accès sortant à wordpress.org) le
@@ -75,10 +81,3 @@ wp-env run cli wp lpu provision --force # remplace une Home réseau déjà assem
 - `inc/class-lpu-provision-cli.php` : mince enveloppe `wp lpu provision`.
 - `inc/class-lpu-provision-admin.php` : écran réseau + handler `admin-post`.
 - `content/` : TSV et fragments HTML.
-
-### Maintenabilité
-
-La logique vit dans le trait `Lpu_Util` ; les étapes (`provision_*`) restent
-courtes et lisibles. WP-CLI n'est utilisé que pour un affichage live ; tous les
-retours de lignes sont collectés via `record_log()`/`get_log()`, ce qui permet
-le déclenchement HTTP sans interface supplémentaire.
