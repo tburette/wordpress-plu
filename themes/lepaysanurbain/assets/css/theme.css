@@ -3,27 +3,29 @@
  * does not apply to the editor (Gutenbeg) UI in general
  */
 
-/* Note on handling the (absence) of gaps between lpu sections ('bands'). 
- * By default in wp, there is a gap (margin), between top level elements of a
- * page. This comes from a setting on the container : blockGap.
+/* Note on handling the absence of gaps between LPU sections ("bands").
+ * By default, WordPress adds a gap between top-level page blocks through the
+ * parent container's blockGap setting.
  *
  * In this theme, the page templates set blockGap to zero on wp:post-content so
  * that the consecutive top-level editorial sections (the ones directly inside
- * of the 'root' container) touch. 
- * This is because in the design the various lpu section (called band) touch.
- * An issue is that if multiple lpu sections are inside another container such
- * as a wp:group then the gap will be there. The fix is to set blockGap to zero
- * on that container.
+ * the root container) touch, as required by the design. When several sections
+ * are nested in another container, set blockGap to zero on that container too.
  *
- * The previous way to avoid gap between bands was to hardcode margin-block to 0
- * in the CSS (and some) padding values too). The problem was that it silently
- * overrode the block spacing displayed in Gutenberg editor : users would see a
- * value for block gap/margin/padding (or blockGap on container) but another
- * value was actually used (the 0 set in CSS). Confusing for user : some
- * settings in Gutenberg did not work or did not match what happened in the
- * frontend. Instead we store the padding/margin data inside the blocks/sections
- * directly.
  */
+
+/*****************************************************************************/
+/* SHARED EDITORIAL SECTION SPACING                                          */
+/*****************************************************************************/
+.lpu-hero,
+.lpu-card-grid,
+.lpu-farm-selector,
+.lpu-columns-text,
+.lpu-graphic-band {
+  box-sizing: border-box;
+  padding-block: var(--wp--preset--spacing--section);
+  padding-inline: var(--wp--preset--spacing--lg);
+}
 
 /*****************************************************************************/
 /* MEDIA PLACEHOLDER                                                         */
@@ -612,6 +614,7 @@ body.lpu-header-transparent
   align-items: flex-end;
   box-sizing: border-box;
   min-height: clamp(34rem, 75vh, 48rem);
+  padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
   background-position: center;
   background-size: cover;
 }
@@ -646,6 +649,10 @@ body.lpu-header-transparent
 /*****************************************************************************/
 /* CARD GRID                                                                 */
 /*****************************************************************************/
+.lpu-card-grid {
+  padding-block: var(--wp--preset--spacing--xl);
+}
+
 .lpu-card-grid__title {
   max-width: 30rem;
   margin-block: 0 var(--wp--preset--spacing--lg);
@@ -687,6 +694,7 @@ body.lpu-header-transparent
   flex-direction: column;
   align-items: flex-start;
   gap: var(--wp--preset--spacing--xs);
+  padding-block: var(--wp--preset--spacing--sm) 0;
 }
 
 .lpu-card__body > .wp-block-heading {
@@ -704,15 +712,21 @@ body.lpu-header-transparent
 
 .lpu-card__body .wp-block-buttons {
   margin-block-start: auto;
+  padding-block-start: var(--wp--preset--spacing--sm);
 }
 
 .lpu-card__body .wp-block-button__link {
+  padding: 0.4rem 0.85rem;
   font-size: 0.85rem;
 }
 
 /*****************************************************************************/
 /* FARM SELECTOR                                                             */
 /*****************************************************************************/
+.lpu-farm-selector {
+  padding-block: var(--wp--preset--spacing--section);
+}
+
 .lpu-farm-selector > .wp-block-heading {
   margin-block: 0 var(--wp--preset--spacing--section);
 }
@@ -761,6 +775,13 @@ body.lpu-header-transparent
 /* TEXT COLUMNS BAND                                                         */
 /*****************************************************************************/
 .lpu-columns-text {
+  /* This composition intentionally leaves more room below the messages, as
+   * in the "titre-colonnes" reference. Keep the values tied to the shared
+   * spacing scale rather than introducing one-off pixel measurements. */
+  padding-block-start: calc(var(--wp--preset--spacing--section) * 2);
+  padding-block-end: calc(
+    var(--wp--preset--spacing--section) * 3 + var(--wp--preset--spacing--lg)
+  );
   background-color: var(--wp--preset--color--vert-fonce);
   color: var(--wp--preset--color--ecru);
 }
@@ -795,6 +816,7 @@ body.lpu-header-transparent
 /* GRAPHIC CALL-TO-ACTION BAND                                               */
 /*****************************************************************************/
 .lpu-graphic-band {
+  padding-block: var(--wp--preset--spacing--section);
   background-color: var(--wp--preset--color--jaune);
   color: var(--wp--preset--color--vert-fonce);
   text-align: center;
@@ -822,8 +844,17 @@ body.lpu-header-transparent
 /* SECTION RESPONSIVE (781px)                                                */
 /*****************************************************************************/
 @media (max-width: 781px) {
+  .lpu-hero,
+  .lpu-card-grid,
+  .lpu-farm-selector,
+  .lpu-columns-text,
+  .lpu-graphic-band {
+    padding-inline: var(--wp--preset--spacing--md);
+  }
+
   .lpu-hero {
     min-height: 34rem;
+    padding-block: 5rem var(--wp--preset--spacing--xl);
   }
 
   .lpu-hero__content .wp-block-heading {
@@ -842,6 +873,10 @@ body.lpu-header-transparent
 
   .lpu-columns-text__columns {
     gap: var(--wp--preset--spacing--lg);
+  }
+
+  .lpu-columns-text {
+    padding-block: var(--wp--preset--spacing--section);
   }
 
   .lpu-columns-text > .lpu-columns-text__title {

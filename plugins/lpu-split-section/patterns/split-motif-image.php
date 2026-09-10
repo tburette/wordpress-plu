@@ -1,7 +1,7 @@
 <!-- wp:lpu/split-section {"align":"full"} -->
 <div class="wp-block-lpu-split-section alignfull lpu-split-v2"><!-- wp:lpu/split-zone {"frame":"motif-7","className":"wp-block-lpu-split-zone","layout":{"type":"constrained"}} -->
-<div class="lpu-split-v2__zone lpu-split-v2__zone--left lpu-split-v2__zone--frame-motif-7 wp-block-lpu-split-zone"><!-- wp:group {"className":"lpu-split-v2__inset","style":{"spacing":{"padding":{"top":"var:preset|spacing|xl","right":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|xl"}},"@tablet":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}},"@mobile":{"spacing":{"padding":{"top":"var:preset|spacing|lg","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|lg","left":"var:preset|spacing|lg"}}}},"backgroundColor":"ecru"} -->
-<div class="wp-block-group lpu-split-v2__inset has-ecru-background-color has-background" style="padding-top:var(--wp--preset--spacing--xl);padding-right:var(--wp--preset--spacing--xl);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--xl)"><!-- wp:paragraph {"fontSize":"title","fontFamily":"ruden"} -->
+<div class="lpu-split-v2__zone lpu-split-v2__zone--left lpu-split-v2__zone--frame-motif-7 wp-block-lpu-split-zone"><!-- wp:group {"className":"lpu-split-v2__inset","backgroundColor":"ecru"} -->
+<div class="wp-block-group lpu-split-v2__inset has-ecru-background-color has-background"><!-- wp:paragraph {"fontSize":"title","fontFamily":"ruden"} -->
 <p class="has-ruden-font-family has-title-font-size">Sur-titre</p>
 <!-- /wp:paragraph -->
 

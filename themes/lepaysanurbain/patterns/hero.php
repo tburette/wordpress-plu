@@ -8,8 +8,8 @@
  * Post Types: page
  */
 ?>
-<!-- wp:cover {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","dimRatio":30,"isDark":true,"align":"full","backgroundColor":"vert-fonce","className":"lpu-hero","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"clamp(5rem, 12vw, 9rem)","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|xl","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"top":"5rem","right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"top":"5rem","right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}}}} -->
-<div class="wp-block-cover alignfull lpu-hero has-vert-fonce-background-color has-background" style="padding-top:clamp(5rem, 12vw, 9rem);padding-right:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--xl);padding-left:var(--wp--preset--spacing--lg)">
+<!-- wp:cover {"url":"/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg","dimRatio":30,"isDark":true,"align":"full","backgroundColor":"vert-fonce","className":"lpu-hero","layout":{"type":"constrained"}} -->
+<div class="wp-block-cover alignfull lpu-hero has-vert-fonce-background-color has-background">
 	<img class="wp-block-cover__image-background" alt="" src="/wp-content/themes/lepaysanurbain/assets/images/pattern-placeholder.svg" data-object-fit="cover" />
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim-30 has-background-dim"></span>
 	<div class="wp-block-cover__inner-container">

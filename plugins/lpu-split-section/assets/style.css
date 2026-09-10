@@ -74,6 +74,7 @@
 .lpu-split-v2__inset {
 	box-sizing: border-box;
 	width: 100%;
+	padding: var( --wp--preset--spacing--xl );
 }
 
 .lpu-split-v2__logo {
@@ -102,6 +103,10 @@
 	.lpu-split-v2__zone--media-fill {
 		min-height: min( 100vw, 30rem );
 		padding: 0;
+	}
+
+	.lpu-split-v2__inset {
+		padding: var( --wp--preset--spacing--lg );
 	}
 
 	.lpu-split-v2__logo {

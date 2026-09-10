@@ -8,8 +8,8 @@
  * Post Types: page
  */
 ?>
-<!-- wp:group {"align":"full","backgroundColor":"vert-fonce","textColor":"ecru","className":"lpu-columns-text","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"12rem","right":"var:preset|spacing|lg","bottom":"20.5rem","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"top":"var:preset|spacing|section","right":"var:preset|spacing|md","bottom":"var:preset|spacing|section","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"top":"var:preset|spacing|section","right":"var:preset|spacing|md","bottom":"var:preset|spacing|section","left":"var:preset|spacing|md"}}}}} -->
-<div class="wp-block-group alignfull lpu-columns-text has-ecru-color has-vert-fonce-background-color has-text-color has-background" style="padding-top:12rem;padding-right:var(--wp--preset--spacing--lg);padding-bottom:20.5rem;padding-left:var(--wp--preset--spacing--lg)">
+<!-- wp:group {"align":"full","backgroundColor":"vert-fonce","textColor":"ecru","className":"lpu-columns-text","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull lpu-columns-text has-ecru-color has-vert-fonce-background-color has-text-color has-background">
 	<!-- wp:heading {"align":"wide","textAlign":"center","textColor":"ecru","level":2,"fontSize":"subtitle","className":"lpu-columns-text__title"} -->
 	<h2 class="wp-block-heading alignwide has-text-align-center lpu-columns-text__title has-ecru-color has-text-color has-subtitle-font-size">Titre commun</h2>
 	<!-- /wp:heading -->

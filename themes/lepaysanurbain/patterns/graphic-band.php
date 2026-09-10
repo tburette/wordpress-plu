@@ -8,8 +8,8 @@
  * Post Types: page
  */
 ?>
-<!-- wp:group {"align":"full","backgroundColor":"jaune","className":"lpu-graphic-band","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|section","right":"var:preset|spacing|lg","bottom":"var:preset|spacing|section","left":"var:preset|spacing|lg"}},"@tablet":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}},"@mobile":{"spacing":{"padding":{"right":"var:preset|spacing|md","left":"var:preset|spacing|md"}}}}} -->
-<div class="wp-block-group alignfull lpu-graphic-band has-jaune-background-color has-background" style="padding-top:var(--wp--preset--spacing--section);padding-right:var(--wp--preset--spacing--lg);padding-bottom:var(--wp--preset--spacing--section);padding-left:var(--wp--preset--spacing--lg)">
+<!-- wp:group {"align":"full","backgroundColor":"jaune","className":"lpu-graphic-band","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull lpu-graphic-band has-jaune-background-color has-background">
 	<!-- wp:heading {"textAlign":"center","level":2,"fontSize":"subtitle"} -->
 	<h2 class="wp-block-heading has-text-align-center has-subtitle-font-size">Titre de l’appel à l’action</h2>
 	<!-- /wp:heading -->

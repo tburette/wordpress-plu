@@ -13,9 +13,9 @@
  */
 /*
  * Recommended order:
- * 1. Read the shared .lpu-band frame and the small shared primitives
- *    (eyebrow, media placeholder, motifs) — the vocabulary the content
- *    sections reuse.
+ * 1. Read the shared editorial section spacing and the small shared
+ *    primitives (eyebrow, media placeholder, motifs) — the vocabulary the
+ *    content sections reuse.
  * 2. Read the header and navigation sections as one group.
  * 3. Read the content sections in page order: hero, cards, farm selector,
  *    text columns, and graphic band.
@@ -48,59 +48,35 @@
  */
 
 /*****************************************************************************/
-/* SHARED EDITORIAL SECTION FRAME: .lpu-band                                */
+/* SHARED EDITORIAL SECTION SPACING                                         */
 /*****************************************************************************/
 
 /*
- * Source relationship: .lpu-band is assigned to the root Group/Cover block
- * of each reusable theme section: patterns/hero.php:11, cards.php:11,
- * network-farm-selector.php:11, columns.php:11, and graphic-band.php:11.
- * The spacing tokens come from theme.json:62-104.
- * What it controls: Shared full-width section frame and direct-child width.
+ * Source relationship: each reusable theme pattern assigns its own component
+ * class to its root Group or Cover block. The spacing tokens come from
+ * theme.json:62-104.
+ * What it controls: Shared desktop padding defaults for the five full-width
+ * editorial sections.
  * Main source: patterns/hero.php:11, cards.php:11, columns.php:11,
  * network-farm-selector.php:11, and graphic-band.php:11.
  *
- * The five theme patterns named above are the tracked sources for this shared
- * frame. Split-section plugin patterns use separate lpu-split-v2 frame
- * classes and are not covered by these .lpu-band selectors.
- *
- * Page instances:
- * - Accueil.html:1-341 uses lpu-band on the hero, cards, farm selector,
- *   columns, and graphic band; its split-section content uses lpu-split-v2
- *   classes instead.
- * - Sections du design de Fanny.html:1-357 contains the corresponding pattern
- *   examples and plugin split sections.
+ * Split-section plugin patterns use separate lpu-split-v2 classes and are not
+ * covered by these selectors.
  */
 
-/* .lpu-band is the class that marks "our" sections (theme content) as
- * opposed to arbitrary WordPress core content — every "lpu-band xxx" selector
- * below is a deliberate way of targeting only the theme's own sections.
- *
- * A rule as bare as `.lpu-band { box-sizing: border-box; }` exists because
- * the older version of this stylesheet also owned the sections' padding
- * here. That silently overrode the "Block spacing" values shown in
- * Gutenberg: an editor would see one spacing in the UI while the CSS applied
- * another. The theme.css comment documents how the padding now lives inside
- * the pattern Group blocks themselves, so what the editor shows is exactly
- * what is rendered. */
-.lpu-band {
+/* Pattern markup contains structural classes and content, while this shared
+ * rule owns the default section frame. If an editor deliberately sets spacing
+ * on one block, Gutenberg serializes that value on the block and it overrides
+ * these class-based defaults. The page templates independently set blockGap
+ * to zero on wp:post-content so consecutive top-level sections touch. */
+.lpu-hero,
+.lpu-card-grid,
+.lpu-farm-selector,
+.lpu-columns-text,
+.lpu-graphic-band {
   box-sizing: border-box;
-}
-
-/* The front-page, page, and single templates set blockGap to zero on
- * wp:post-content (see templates/front-page.html:4) so consecutive top-level
- * sections touch instead of inserting the default block gap. Each section
- * then owns its spacing inline in its Group block. These are the direct child
- * block types used by the theme's sections. Width 100% prevents a band-level
- * child from shrinking and leaving unwanted side gutters; the child
- * combinator deliberately leaves nested blocks alone. */
-
-.lpu-band > .wp-block-columns,
-.lpu-band > .wp-block-heading,
-.lpu-band > .wp-block-group,
-.lpu-band > .wp-block-buttons {
-  box-sizing: border-box;
-  width: 100%;
+  padding-block: var(--wp--preset--spacing--section);
+  padding-inline: var(--wp--preset--spacing--lg);
 }
 
 /*****************************************************************************/
@@ -1052,14 +1028,14 @@ body.lpu-header-transparent
   align-items: flex-end;
   box-sizing: border-box;
   min-height: clamp(34rem, 75vh, 48rem);
+  padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
   background-position: center;
   background-size: cover;
 }
 
-/* The vertical rhythm of the hero (top padding clamp, bottom padding) lives
- * inline in the Cover block markup of patterns/hero.php:11-12 so the values
- * an editor sees are the values applied (see the .lpu-band commentary). Only
- * physics that cannot be expressed as block padding stays here:
+/* The hero replaces the shared vertical section padding with the proportions
+ * from the approved composition. Its horizontal padding still comes from the
+ * shared section rule above. Other layout physics also stay here:
  * - flex + align-items: flex-end pins the content block to the bottom so the
  *   title sits above the lower edge no matter how tall the image is;
  * - min-height clamp guarantees a meaningful vertical footprint at different
@@ -1114,8 +1090,8 @@ body.lpu-header-transparent
  * .lpu-card-grid > .lpu-card-grid__title + .lpu-card-grid__columns
  * > .lpu-card > .lpu-media-placeholder + .lpu-card__body.
  * Core supplies the Columns and Column classes; this file controls their
- * editorial proportions. The .lpu-card-grid padding was moved into the Group
- * block inline style (cards.php:11-12), so no CSS rule exists for it anymore.
+ * editorial proportions. The outer padding is a reusable component default
+ * here rather than repeated in every inserted Group block.
  * What it controls: Repeated cards, equal-height bodies, and mobile stacking.
  * Main source: patterns/cards.php:11-105.
  *
@@ -1125,10 +1101,12 @@ body.lpu-header-transparent
  * - Sections du design de Fanny.html:1-96 is the card-grid pattern example.
  */
 
-/* As with every section, the grid's outer padding is set inline on the Group
- * block (sm → xl tokens). The remaining rules only tune what block markup
- * cannot: the title block's width and its spacing below, and the columns
- * behaviour. */
+/* Card grids use xl above and below rather than the shared section token. */
+.lpu-card-grid {
+  padding-block: var(--wp--preset--spacing--xl);
+}
+
+/* The title rule tunes its width and spacing below. */
 .lpu-card-grid__title {
   max-width: 30rem;
   margin-block: 0 var(--wp--preset--spacing--lg);
@@ -1185,12 +1163,12 @@ body.lpu-header-transparent
   flex-direction: column;
   align-items: flex-start;
   gap: var(--wp--preset--spacing--xs);
+  padding-block: var(--wp--preset--spacing--sm) 0;
 }
 
 /* flex: 1 lets the body absorb the leftover height below the image so the
  * final button always lands at the bottom of the card, whatever the title or
- * description length. Its own top padding was moved into the Group block
- * markup (cards.php:25-26). */
+ * description length. The top padding separates the text from the image. */
 
 .lpu-card__body > .wp-block-heading {
   margin: 0;
@@ -1211,18 +1189,18 @@ body.lpu-header-transparent
 
 .lpu-card__body .wp-block-buttons {
   margin-block-start: auto;
+  padding-block-start: var(--wp--preset--spacing--sm);
 }
 
 /* margin-block-start: auto is the classic "push the CTA to the bottom of the
  * flexible body" trick: it consumes any leftover space above the buttons. */
 
 .lpu-card__body .wp-block-button__link {
+  padding: 0.4rem 0.85rem;
   font-size: 0.85rem;
 }
 
-/* Cards use a slightly smaller button than the site default (the button
- * paddings are inline in the pattern because they are per-button editor
- * values). */
+/* Cards use a slightly smaller button than the site default. */
 
 /*****************************************************************************/
 /* FARM SELECTOR                                                             */
@@ -1232,8 +1210,7 @@ body.lpu-header-transparent
  * Source relationship: patterns/network-farm-selector.php:11-45. Each
  * .lpu-farm-selector__item is a Core Column. The adjacent-item selector below
  * creates separators between farms without adding separator blocks in the
- * Gutenberg content. The section's vertical padding is inline in the Group
- * block (network-farm-selector.php:11-12).
+ * Gutenberg content.
  * What it controls: Farm columns, large farm links, and inter-item separators.
  * Main source: patterns/network-farm-selector.php:11-45.
  *
@@ -1242,6 +1219,10 @@ body.lpu-header-transparent
  *   farm items.
  * - Sections du design de Fanny.html:181-215 is the pattern example.
  */
+.lpu-farm-selector {
+  padding-block: var(--wp--preset--spacing--section);
+}
+
 .lpu-farm-selector > .wp-block-heading {
   margin-block: 0 var(--wp--preset--spacing--section);
 }
@@ -1323,15 +1304,20 @@ body.lpu-header-transparent
  * - Sections du design de Fanny.html:97-132 is the pattern example.
  */
 .lpu-columns-text {
+  /* This composition intentionally leaves more room below the messages, as
+   * in the "titre-colonnes" reference. Keep the values tied to the shared
+   * spacing scale rather than introducing one-off pixel measurements. */
+  padding-block-start: calc(var(--wp--preset--spacing--section) * 2);
+  padding-block-end: calc(
+    var(--wp--preset--spacing--section) * 3 + var(--wp--preset--spacing--lg)
+  );
   background-color: var(--wp--preset--color--vert-fonce);
   color: var(--wp--preset--color--ecru);
 }
 
 /* All exposed content of this band sits on vert-fonce and speaks in écru;
  * the inversion is the section's identity on the page. The generous
- * top/bottom padding ("titre-colonnes" reference composition) moved into the
- * Group block inline style (columns.php:11-12, tablet/mobile variants too)
- * so the editor shows the real values. */
+ * top/bottom padding follows the "titre-colonnes" reference composition. */
 .lpu-columns-text > .lpu-columns-text__title {
   max-width: 36rem;
   margin-block: 0
@@ -1384,16 +1370,16 @@ body.lpu-header-transparent
  * - Sections du design de Fanny.html:133-152 is the pattern example.
  */
 .lpu-graphic-band {
+  padding-block: var(--wp--preset--spacing--section);
   background-color: var(--wp--preset--color--jaune);
   color: var(--wp--preset--color--vert-fonce);
   text-align: center;
 }
 
 /* The pattern is designed as a closing band: jaune background against
- * vert-fonce text. Its padding is inline on the pattern Group block; the CSS
- * only supplies the color/centering that block markup does not need to repeat
- * (text-align is inherited by the children, while the Buttons block centers
- * itself explicitly below). */
+ * vert-fonce text. The CSS supplies its reusable spacing, color, and centering
+ * defaults (text-align is inherited by the children, while the Buttons block
+ * centers itself explicitly below). */
 .lpu-graphic-band > .wp-block-heading {
   max-width: 36rem;
   margin-block: 0 var(--wp--preset--spacing--md);
@@ -1435,8 +1421,17 @@ body.lpu-header-transparent
  */
 
 @media (max-width: 781px) {
+  .lpu-hero,
+  .lpu-card-grid,
+  .lpu-farm-selector,
+  .lpu-columns-text,
+  .lpu-graphic-band {
+    padding-inline: var(--wp--preset--spacing--md);
+  }
+
   .lpu-hero {
     min-height: 34rem;
+    padding-block: 5rem var(--wp--preset--spacing--xl);
   }
 
   .lpu-hero__content .wp-block-heading {
@@ -1457,6 +1452,10 @@ body.lpu-header-transparent
     gap: var(--wp--preset--spacing--lg);
   }
 
+  .lpu-columns-text {
+    padding-block: var(--wp--preset--spacing--section);
+  }
+
   .lpu-columns-text > .lpu-columns-text__title {
     margin-block-end: var(--wp--preset--spacing--xl);
   }
@@ -1468,13 +1467,14 @@ body.lpu-header-transparent
 
 /* The 781px breakpoint matches Core's own column-stacking rule, so every
  * section that relies on Core columns is re-tuned once they stack:
- * - the hero is pinned to its 34rem minimum-height floor and its heading
- *   widens slightly;
+ * - all sections use md horizontal padding;
+ * - the hero is pinned to its 34rem minimum-height floor, uses its compact
+ *   vertical padding, and its heading widens slightly;
  * - the farm selector's ✳ separators move from the vertical gutter to above
  *   the items (top: 0, centered) because once the farms stack there is no
  *   side gutter left;
- * - the text columns relax their luxury gap and let messages span a longer
- *   measure now that they are single-column. */
+ * - the text columns return to section padding, relax their luxury gap, and
+ *   let messages span a longer measure now that they are single-column. */
 
 /*****************************************************************************/
 /* GENERIC MAIN AND FOOTER TRANSITION                                       */
