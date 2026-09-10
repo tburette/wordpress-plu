@@ -1,0 +1,19 @@
+default_permissions = "lpu-local"
+
+[features]
+network_proxy = true
+
+[permissions.lpu-local]
+description = "Le Paysan Urbain local WordPress testing"
+extends = ":workspace"
+
+[permissions.lpu-local.filesystem]
+"~/Downloads" = "write"
+
+[permissions.lpu-local.network]
+enabled = true
+allow_local_binding = true
+
+[permissions.lpu-local.network.domains]
+"lepaysanurbain.test" = "allow"
+"*.lepaysanurbain.test" = "allow"
