@@ -13,14 +13,17 @@
  */
 /*
  * Recommended order:
- * 1. Read the shared editorial section spacing and the small shared
- *    primitives (eyebrow, media placeholder, motifs) — the vocabulary the
- *    content sections reuse.
- * 2. Read the header and navigation sections as one group.
- * 3. Read the content sections in page order: hero, cards, farm selector,
- *    text columns, and graphic band.
- * 4. Read the main/footer transition, then the footer section.
- * 5. Finish with buttons, responsive overrides, and reduced motion.
+ * This is mostly a top-to-bottom reading order, with responsive rules split
+ * between the header and content sections:
+ * 1. Shared section spacing, media placeholder, and motifs — lines 54, 86,
+ *    and 153.
+ * 2. Header shell and navigation — lines 247-890; header responsive rules
+ *    begin at line 956.
+ * 3. Content sections in page order: hero (981), cards (1057), farm selector
+ *    (1178), text columns (1264), and graphic band (1330).
+ * 4. Content responsive rules (1383), main/footer transition (1452), and
+ *    footer (1480).
+ * 5. Buttons (1851) and reduced-motion rules (1986).
  *
  * The usual dependency direction is:
  *
