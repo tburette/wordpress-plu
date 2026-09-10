@@ -6,7 +6,6 @@
 - [ ] lpu_split_section_theme_asset_uri : `plugins/lpu-split-section/lpu-split-section.php:29 (lpu_split_section_theme_asset_uri)`.
       Is it me or that code is ugly. I mean, forcing using another theme like that from a plugin??
       Isn't there a way to run the code after the theme has changed?
-- [ ] Use https://fullsiteediting.com/lessons/global-style-variations/ to set custom header/menu logo?
 - [ ] `plugins/lpu-split-section/lpu-split-section.php` (pattern registration, `NETWORK_LOGO`): the "Côte à côte — logo et titre-texte" pattern hard-codes the network écru logo asset URL (`assets/images/logos/network-horizontal-ecru-baseline.svg`). It is a content placeholder, not part of the header-logo mechanism, but it should become configurable/per-site (e.g. selected from the media library at insertion time).
 - [ ] `themes/lepaysanurbain/theme.json` : evalute if settings > color > custom should be true
 - [x] Provisioning runs through the LPU plugin instead of a collection of shell commands, so it can also run on the target PHP-only OVH Perso hosting installation. It is also much faster.
