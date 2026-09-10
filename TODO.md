@@ -74,6 +74,24 @@
       used even for the italic font. It gives a result different from using
       the real italic font file. The advantage however is that it saves space.
 
+- [ ] There are too many entries in "dimensions" fields
+From Gutenberg :
+Default
+None
+Très petite
+Petite
+Moyenne
+Grande
+Très grande
+Section
+2X-Small
+X-Small
+Small
+Medium
+Large
+X-Large
+2X-Large
+
 ## Styling CSS
 
 - [x] remove all traces of themes/lepaysanurbain/assets/css/theme.css:31 (.lpu-eyebrow). fix the text appearance in plugins/lpu-split-section/patterns/
