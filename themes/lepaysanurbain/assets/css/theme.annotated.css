@@ -80,37 +80,6 @@
 }
 
 /*****************************************************************************/
-/* SMALL EDITORIAL LABEL: .lpu-eyebrow                                      */
-/*****************************************************************************/
-
-/*
- * Source relationship: this is an opt-in class for a paragraph or text block
- * in page content. The bundled split-section patterns assign it to their
- * eyebrow paragraphs, and editors can add it to other text blocks.
- * What it controls: Small uppercase introductory labels above section content.
- * Main source: page content and split-section pattern markup.
- * Tracked pattern sources: plugins/lpu-split-section/patterns/*.php.
- *
- * Page instances:
- * - Accueil.html:33-34 and 298-299 are eyebrow paragraphs inside split-section
- *   plugin blocks.
- * - Sections du design de Fanny.html:221-222, 258-259, 278-279, 303-304, and
- *   332-333 show the class in the patterns test page, including plugin
- *   split-section examples.
- */
-/* Design shorthand: an overline ("sur-titre" in the mockups). It reserves
- * --spacing--sm below itself so the following block never collides, and the
- * uppercase + wide letter-spacing echo Fanny's label treatment. It is an
- * opt-in class because nothing else in a section needs these exact values. */
-.lpu-eyebrow {
-  margin-block: 0 var(--wp--preset--spacing--sm);
-  font-size: 1rem;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-/*****************************************************************************/
 /* MEDIA PLACEHOLDER                                                         */
 /*****************************************************************************/
 
