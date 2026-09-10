@@ -273,6 +273,15 @@
 		supports: {
 			html: false,
 			className: false,
+			layout : {
+				allowEditing: true,
+				// allowInheriting: true,
+		  		// allowSwitching: false,
+  				default: {
+  					type: 'constrained',
+  				},
+
+			}
 		},
 		edit: ZoneEdit,
 		save: ZoneSave,

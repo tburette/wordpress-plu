@@ -385,6 +385,15 @@ function lpu_split_section_register_blocks()
 			'supports'      => array(
 				'html'      => false,
 				'className' => false,
+				'layout'    => array(
+					'allowEditing'    => true,
+					// 'allowInheriting' => true,
+					// 'allowSwitching'  => false,
+					'default'         => array(
+						'type' => 'constrained',
+					),
+				),
+
 			),
 		)
 	);

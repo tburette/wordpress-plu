@@ -69,6 +69,11 @@
 <!-- /wp:group -->
 ```
 
+## Styling CSS
+
+- [x] remove all traces of themes/lepaysanurbain/assets/css/theme.css:31 (.lpu-eyebrow). fix the text appearance in plugins/lpu-split-section/patterns/
+      plugins/lpu-split-section/lpu-split-section.php:405 (lpu_split_section_register_patterns)
+
 ## A tester
 
 - Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`. (en profiter pour documenter, voir `documentation utilisateur et technique.md`).
