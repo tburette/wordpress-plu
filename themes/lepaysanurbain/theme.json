@@ -124,6 +124,26 @@
         },
         {
           "fontFamily": "DM Sans, Arial, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "DM Sans",
+              "fontDisplay": "swap",
+              "fontStyle": "normal",
+              "fontWeight": "100 1000",
+              "src": [
+                "file:./assets/fonts/DMSans-VariableFont_opsz-wght.ttf"
+              ]
+            },
+            {
+              "fontFamily": "DM Sans",
+              "fontDisplay": "swap",
+              "fontStyle": "italic",
+              "fontWeight": "100 1000",
+              "src": [
+                "file:./assets/fonts/DMSans-Italic-VariableFont_opsz-wght.ttf"
+              ]
+            }
+          ],
           "name": "DM Sans",
           "slug": "dm-sans"
         },
