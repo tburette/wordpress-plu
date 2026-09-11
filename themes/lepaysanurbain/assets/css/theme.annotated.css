@@ -108,6 +108,10 @@
  * taller than an exact 4:3 ratio. The grey-green fill (vert-grise) gives a
  * steady editorial background instead of an empty hole.
  * flex centering is how the fallback caption is centered when no image exists. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-1.oFprcI-mtwsj8uk-a6b433/index.html
+ */
 .lpu-media-placeholder {
   position: relative;
   display: flex;
@@ -124,6 +128,10 @@
 
 /* The fallback caption ("notre image arrive bientôt…") uses Oswald uppercase
  * so it reads as a label, not body copy. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-2.trbZlK-mtwsk8ls-ed2dbc/index.html
+ */
 .lpu-media-placeholder figcaption {
   margin: 0;
   font-family: var(--wp--preset--font-family--oswald);
@@ -135,6 +143,10 @@
 
 /* A real image fills the whole box without distortion and is cropped as
  * needed (`cover`); the box, not every source-image edge, stays visible. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-3.AwDtB8-mtwsl0vr-0841cc/index.html
+ */
 .lpu-media-placeholder img {
   position: absolute;
   inset: 0;
@@ -145,6 +157,10 @@
 
 /* As soon as a real image is present the fallback caption must disappear;
  * :has() lets that be driven purely by the DOM instead of by a second class. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-4.yesMTd-mtwslvdd-c68118/index.html
+ */
 .lpu-media-placeholder:has(img) figcaption {
   display: none;
 }
@@ -175,6 +191,10 @@
  */
 
 /* Decorative motifs are applied as backgrounds, not editorial images. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-decorative-motifs.ed86nb-mtwspr96-c6fefd/index.html
+ */
 .lpu-motif {
   background-position: center;
   background-repeat: no-repeat;
@@ -255,6 +275,10 @@
  * What it controls: Header height, padding, background, stacking, and foreground variable.
  * Main source: parts/header.html:1-2.
  */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-header-shell.6rwjDY-mtwsqjtx-65691b/index.html
+ */
 .lpu-header {
   position: relative;
   z-index: 20;
@@ -302,6 +326,10 @@
  */
 
 /* Keep the transparent-page header out of normal flow in both menu states. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-1.o30nbt-mtwsreu0-9a9646/index.html
+ */
 body.lpu-header-transparent .lpu-header {
   position: absolute;
   top: 0;
@@ -320,10 +348,18 @@ body.lpu-header-transparent .lpu-header {
  * is previewing the page while logged in. Without this offset the admin bar
  * covers the top of the header and makes its contents appear shorter than
  * the opaque state. WordPress uses a taller admin bar on narrow screens. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-2.8D3ndk-mtwss7p8-05cdd8/index.html
+ */
 body.admin-bar.lpu-header-transparent .lpu-header {
   top: 32px;
 }
 
+/* Visual diff result: no difference when this @media block is disabled (0
+ * changed pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-media.Qy6Nj9-mtwst25m-b6c5c4/index.html
+ */
 @media screen and (max-width: 782px) {
   body.admin-bar.lpu-header-transparent .lpu-header {
     top: 46px;
@@ -332,6 +368,10 @@ body.admin-bar.lpu-header-transparent .lpu-header {
 
 /* The transparent header is removed from normal flow, so the block-theme
  * site-stack gap must not leave an écru strip before the first section. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-3.q4eFxM-mtwstv5s-9acb7c/index.html
+ */
 body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
   margin-block-start: 0;
 }
@@ -347,10 +387,18 @@ body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
 /* Transparent pages start with the light foreground. Core already exposes
  * every interactive menu state in the DOM, so one positive :has() selector
  * is enough to switch the whole header back to its opaque treatment. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-4.fayQZF-mtwsutwz-36bfd8/index.html
+ */
 body.lpu-header-transparent .lpu-header {
   --lpu-header-foreground: var(--wp--preset--color--ecru);
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-6.vh1XXv-mtwswl4x-7c2171/index.html
+ */
 body.lpu-header-transparent
   .lpu-header:has(
     .wp-block-navigation__responsive-container.is-menu-open,
