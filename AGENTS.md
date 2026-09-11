@@ -147,3 +147,9 @@ local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
   an accepted choice). Do not try to "fix" that duplication.
 - Make sure to be in the `wordpress-plu` directory (`pwd`) when running git
   commands.
+
+## $website-visual-diff skill
+
+if the website-visual-diff is requested when in this project but no
+URL has been provided, use the URL
+http://lepaysanurbain.test:8888/lpu-sections-patterns-test/ by default.
