@@ -100,7 +100,7 @@ X-Large
 ## A tester
 
 - Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`. (en profiter pour documenter, voir `documentation utilisateur et technique.md`).
-- Vérifier la configurabilité du plugin `lpu-split-section`. Les couleurs et les motifs (cadres) ne doivent pas être figés dans le code du plugin ni par une liste numérique de motifs (`array( 1, 2, 3, 4, 5, 7, 8 )`).
+- Vérifier la configurabilité du plugin `lpu-split-section`. Les couleurs et les motifs (cadres) ne doivent pas être figés dans le code du plugin ni par une liste numérique de motifs (`array( 1, 2, 3, 4, 5, 7, 8 )`). Idem pour les autres usages des motifs tel que `themes/lepaysanurbain/patterns/cards.php`. (voir utilisation de class css .lpu-motif-x-bandeau .lpu-motif-x-carre)
 
 ## Header/menu
 
