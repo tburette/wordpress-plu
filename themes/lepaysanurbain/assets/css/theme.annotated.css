@@ -72,7 +72,7 @@
  * on one block, Gutenberg serializes that value on the block and it overrides
  * these class-based defaults. The page templates independently set blockGap
  * to zero on wp:post-content so consecutive top-level sections touch. */
-.lpu-hero,
+/* .lpu-hero,
 .lpu-card-grid,
 .lpu-farm-selector,
 .lpu-columns-text,
@@ -80,7 +80,7 @@
   box-sizing: border-box;
   padding-block: var(--wp--preset--spacing--section);
   padding-inline: var(--wp--preset--spacing--lg);
-}
+} */
 
 /*****************************************************************************/
 /* MEDIA PLACEHOLDER                                                         */
@@ -108,9 +108,10 @@
  * taller than an exact 4:3 ratio. The grey-green fill (vert-grise) gives a
  * steady editorial background instead of an empty hole.
  * flex centering is how the fallback caption is centered when no image exists. */
-/* Visual diff result: no difference when this rule is disabled (0 changed
- * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-1.oFprcI-mtwsj8uk-a6b433/index.html
+/* Visual diff result: difference when this rule is disabled (5,982,550 changed
+ * pixels at 1440×1100 and 2,282,480 at 390×844; both captures also changed
+ * page height).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-media-placeholder-1.qlLqkl-mtwutkev-aa57fa/index.html
  */
 .lpu-media-placeholder {
   position: relative;
@@ -130,7 +131,7 @@
  * so it reads as a label, not body copy. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-2.trbZlK-mtwsk8ls-ed2dbc/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-media-placeholder-2.o8qsfs-mtwuu0e8-81a13c/index.html
  */
 .lpu-media-placeholder figcaption {
   margin: 0;
@@ -145,7 +146,7 @@
  * needed (`cover`); the box, not every source-image edge, stays visible. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-3.AwDtB8-mtwsl0vr-0841cc/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-media-placeholder-3.sfYyz7-mtwuuxk0-4da37e/index.html
  */
 .lpu-media-placeholder img {
   position: absolute;
@@ -159,7 +160,7 @@
  * :has() lets that be driven purely by the DOM instead of by a second class. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-media-placeholder-4.yesMTd-mtwslvdd-c68118/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-media-placeholder-4.YrWIVO-mtwuvatb-edb997/index.html
  */
 .lpu-media-placeholder:has(img) figcaption {
   display: none;
@@ -191,9 +192,9 @@
  */
 
 /* Decorative motifs are applied as backgrounds, not editorial images. */
-/* Visual diff result: no difference when this rule is disabled (0 changed
- * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-decorative-motifs.ed86nb-mtwspr96-c6fefd/index.html
+/* Visual diff result: difference when this rule is disabled (145,809 changed
+ * pixels at 1440×1100 and 193,121 at 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-decorative-motifs.nyhSkl-mtwuw0kr-e24d7c/index.html
  */
 .lpu-motif {
   background-position: center;
@@ -207,58 +208,113 @@
  * accidentally delete or resize the decorative layer. The two declarations
  * above center each asset and size it with `cover`; that preserves its aspect
  * ratio and may crop it to fill the band. */
+/* Visual diff result: difference when this rule is disabled (636,047 changed pixels at 1440x1100 and 355,168 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-5-65.JETZyy-mtwxzqwc-1d332d/index.html
+ */
 .lpu-motif-1-bandeau {
   background-image: url("../images/motif-1-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-6-69.9Y1kek-mtwy04q0-828eb1/index.html
+ */
 .lpu-motif-1-carre {
   background-image: url("../images/motif-1-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-7-73.XII7ur-mtwy0j41-f49285/index.html
+ */
 .lpu-motif-2-bandeau {
   background-image: url("../images/motif-2-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-8-77.DQLDg3-mtwy3mtt-650ced/index.html
+ */
 .lpu-motif-2-carre {
   background-image: url("../images/motif-2-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-9-81.6hvCRW-mtwy3zo1-88976d/index.html
+ */
 .lpu-motif-3-bandeau {
   background-image: url("../images/motif-3-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-10-85.s5AVXf-mtwy4cgb-697fcc/index.html
+ */
 .lpu-motif-3-carre {
   background-image: url("../images/motif-3-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-11-89.mvSjKQ-mtwy68r6-2344a1/index.html
+ */
 .lpu-motif-4-bandeau {
   background-image: url("../images/motif-4-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-12-93.Lxi6XZ-mtwy6m49-86275c/index.html
+ */
 .lpu-motif-4-carre {
   background-image: url("../images/motif-4-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-13-97.CGXoU1-mtwy702p-69e73f/index.html
+ */
 .lpu-motif-5-bandeau {
   background-image: url("../images/motif-5-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-14-101.d7kwhC-mtwy87vh-fa6ec7/index.html
+ */
 .lpu-motif-5-carre {
   background-image: url("../images/motif-5-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-15-105.4cXBAP-mtwy8nwh-adb0c8/index.html
+ */
 .lpu-motif-7-bandeau {
   background-image: url("../images/motif-7-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-16-109.srrjFF-mtwy94fh-f74504/index.html
+ */
 .lpu-motif-7-carre {
   background-image: url("../images/motif-7-carre.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-17-113.YPaQBD-mtwyadrs-ecf5e1/index.html
+ */
 .lpu-motif-8-bandeau {
   background-image: url("../images/motif-8-bandeau.svg");
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-18-117.xmrQ1o-mtwyas70-236a47/index.html
+ */
 .lpu-motif-8-carre {
   background-image: url("../images/motif-8-carre.svg");
 }
@@ -275,9 +331,10 @@
  * What it controls: Header height, padding, background, stacking, and foreground variable.
  * Main source: parts/header.html:1-2.
  */
-/* Visual diff result: no difference when this rule is disabled (0 changed
- * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-header-shell.6rwjDY-mtwsqjtx-65691b/index.html
+/* Visual diff result: difference when this rule is disabled (1,454,930
+ * changed pixels at 1440×1100 and 227,160 at 390×844; both captures also
+ * changed page height).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-header-shell.DbQaFH-mtwuwe96-4e8a37/index.html
  */
 .lpu-header {
   position: relative;
@@ -328,7 +385,7 @@
 /* Keep the transparent-page header out of normal flow in both menu states. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-1.o30nbt-mtwsreu0-9a9646/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-1.HOsr1z-mtwux5g3-599dda/index.html
  */
 body.lpu-header-transparent .lpu-header {
   position: absolute;
@@ -350,7 +407,7 @@ body.lpu-header-transparent .lpu-header {
  * the opaque state. WordPress uses a taller admin bar on narrow screens. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-2.8D3ndk-mtwss7p8-05cdd8/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-2.mPAfbc-mtwuxl8l-eb0346/index.html
  */
 body.admin-bar.lpu-header-transparent .lpu-header {
   top: 32px;
@@ -358,10 +415,14 @@ body.admin-bar.lpu-header-transparent .lpu-header {
 
 /* Visual diff result: no difference when this @media block is disabled (0
  * changed pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-media.Qy6Nj9-mtwst25m-b6c5c4/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-media.6qKeVU-mtwuy8lb-f8f502/index.html
  */
 @media screen and (max-width: 782px) {
-  body.admin-bar.lpu-header-transparent .lpu-header {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-23-162.yYl6vp-mtwyb6g4-61c7d2/index.html
+ */
+body.admin-bar.lpu-header-transparent .lpu-header {
     top: 46px;
   }
 }
@@ -370,7 +431,7 @@ body.admin-bar.lpu-header-transparent .lpu-header {
  * site-stack gap must not leave an écru strip before the first section. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-3.q4eFxM-mtwstv5s-9acb7c/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-3.XkenG6-mtwuyyu7-c5afb0/index.html
  */
 body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
   margin-block-start: 0;
@@ -389,7 +450,7 @@ body.lpu-header-transparent .wp-site-blocks > main.wp-block-group {
  * is enough to switch the whole header back to its opaque treatment. */
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-4.fayQZF-mtwsutwz-36bfd8/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-4.oNLEpo-mtwuzdfd-cf7830/index.html
  */
 body.lpu-header-transparent .lpu-header {
   --lpu-header-foreground: var(--wp--preset--color--ecru);
@@ -397,7 +458,7 @@ body.lpu-header-transparent .lpu-header {
 
 /* Visual diff result: no difference when this rule is disabled (0 changed
  * pixels at 1440×1100 and 390×844).
- * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff-transparent-header-6.vh1XXv-mtwswl4x-7c2171/index.html
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-redo-transparent-header-6.QjI4dI-mtwv01aj-70a0a6/index.html
  */
 body.lpu-header-transparent
   .lpu-header:has(
@@ -439,12 +500,20 @@ body.lpu-header-transparent
  * navigation elements. The shared !important rule deliberately makes these
  * links, submenu icons, and the open button read the current state through
  * one --lpu-header-foreground variable. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-27-195.t9SVy9-mtwye4q0-d70d52/index.html
+ */
 .lpu-header .wp-block-navigation-item__content,
 .lpu-header .wp-block-navigation__submenu-icon,
 .lpu-header .wp-block-navigation__responsive-container-open {
   color: var(--lpu-header-foreground) !important;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-28-201.F4PAHh-mtwyeizz-fd63ef/index.html
+ */
 .lpu-header .wp-block-navigation-item__content:focus-visible,
 .lpu-header .wp-block-navigation__submenu-icon:focus-visible,
 .lpu-header .wp-block-navigation__responsive-container-open:focus-visible {
@@ -454,10 +523,18 @@ body.lpu-header-transparent
 /* This shared focus declaration supplies the current foreground as a base
  * outline color; the component-specific focus rule in the interaction section
  * below later defines the final 2px outline for these controls. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-29-207.wGuPAO-mtwyex4w-6a6902/index.html
+ */
 body.lpu-header-transparent .lpu-header .wp-block-site-logo img.custom-logo {
   display: none;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-30-211.3Kiepc-mtwyg3ia-b214e9/index.html
+ */
 body.lpu-header-transparent
   .lpu-header
   .wp-block-site-logo
@@ -465,6 +542,10 @@ body.lpu-header-transparent
   display: block;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-31-218.VIAt4V-mtwyghbk-5c8bf6/index.html
+ */
 body.lpu-header-transparent
   .lpu-header:has(
     .wp-block-navigation__responsive-container.is-menu-open,
@@ -478,6 +559,10 @@ body.lpu-header-transparent
   display: block;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-32-231.MrEeaY-mtwyguqp-2f6e56/index.html
+ */
 body.lpu-header-transparent
   .lpu-header:has(
     .wp-block-navigation__responsive-container.is-menu-open,
@@ -513,12 +598,19 @@ body.lpu-header-transparent
 /* The site logo sits inside the navigation, in the center grid track. Core
  * wraps it in a nav item li; only its own track is sized (auto), so the logo
  * never overlaps the two flanking nav-groups. */
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 1,072 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-33-250.pU6je6-mtwyi117-f86b72/index.html
+ */
 .lpu-header .wp-block-site-logo {
   margin: 0;
   width: 190px;
   max-width: 100%;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-34-256.KfwIVU-mtwyidou-9ede9b/index.html
+ */
 .lpu-header .lpu-header__logo {
   max-width: min(190px, calc(100vw - 2rem));
 }
@@ -527,6 +619,9 @@ body.lpu-header-transparent
  * parts/header.html); on tiny screens the additional 2rem viewport guard
  * keeps it from pushing the hamburger off screen. */
 
+/* Visual diff result: difference when this rule is disabled (152 changed pixels at 1440x1100 and 2,259 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-35-260.FaMjWz-mtwyiqmp-3d2675/index.html
+ */
 .lpu-header .wp-block-site-logo img {
   display: block;
   width: 100%;
@@ -537,11 +632,18 @@ body.lpu-header-transparent
 /* The header link stacks the normal `.custom-logo` image and the transparent
  * variant in the same grid cell; the visibility rules below pick which one
  * shows for the current header state. */
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 2,255 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-36-270.UTJfan-mtwyjwla-a4d948/index.html
+ */
 .lpu-header .wp-block-site-logo > a {
   display: grid;
   width: 100%;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-37-275.FqoDDj-mtwyk9ad-cc9c3e/index.html
+ */
 .lpu-header .wp-block-site-logo > a > img {
   grid-area: 1 / 1;
 }
@@ -552,6 +654,10 @@ body.lpu-header-transparent
  * rules decide which is visible. */
 
 /* Specificity note: this must outrank the shared img display rule above. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-38-280.HiK5zP-mtwyknm6-263680/index.html
+ */
 .lpu-header .wp-block-site-logo img.lpu-logo-transparent {
   display: none;
 }
@@ -560,6 +666,9 @@ body.lpu-header-transparent
  * shown; the transparent variant must be hidden by default and this rule
  * cannot be weakened or the two images would overlap in the grid cell. */
 
+/* Visual diff result: difference when this rule is disabled (960 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-39-284.avRI4K-mtwylt1m-02061a/index.html
+ */
 .lpu-header .wp-block-navigation {
   width: min(100%, 60rem);
   margin-inline: auto;
@@ -572,6 +681,9 @@ body.lpu-header-transparent
  * whole viewport. min-width: 0 lets the navigation block itself shrink when
  * its parent layout gives it less room. */
 
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 2,571 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-40-291.37PVmz-mtwym5rk-7a80b6/index.html
+ */
 .lpu-header .wp-block-navigation__responsive-container,
 .lpu-header .wp-block-navigation__responsive-close,
 .lpu-header .wp-block-navigation__responsive-dialog,
@@ -579,6 +691,10 @@ body.lpu-header-transparent
   width: 100%;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-41-298.yD9qvS-mtwymiir-ea257c/index.html
+ */
 .lpu-header .wp-block-navigation__container {
   width: 100%;
   max-width: none;
@@ -594,6 +710,9 @@ body.lpu-header-transparent
  * the site logo keeps the center track, so the logo is centered by the grid
  * itself instead of by absolute positioning. Scoped to the closed container
  * so the mobile overlay keeps Core's single-column list. */
+/* Visual diff result: difference when this rule is disabled (7,993 changed pixels at 1440x1100 and 227,160 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-42-308.igjC7K-mtwynp2g-209230/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__container {
@@ -624,6 +743,9 @@ body.lpu-header-transparent
  * navigation-submenu blocks).
  */
 
+/* Visual diff result: difference when this rule is disabled (2,146 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-43-321.Gph5xd-mtwyo1xg-bac622/index.html
+ */
 .lpu-header .wp-block-navigation-item__content {
   padding: 0.5rem 0.75rem;
   font-family: var(--wp--preset--font-family--ruden);
@@ -636,6 +758,10 @@ body.lpu-header-transparent
  * clickable area is larger than the bare text (comfortable for both mouse
  * and touch). */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-44-329.9VorQh-mtwyof1p-4f7ad2/index.html
+ */
 .lpu-header .wp-block-navigation-item__content:focus-visible,
 .lpu-header .wp-block-navigation__submenu-icon:focus-visible,
 .lpu-header .wp-block-navigation__responsive-container-open:focus-visible,
@@ -648,12 +774,20 @@ body.lpu-header-transparent
  * padded text). It is an independent keyboard indicator, not a replacement
  * for the pointer-only hover underline below. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-45-337.0jSHkQ-mtwyplfr-6c35ca/index.html
+ */
 .lpu-header .wp-block-navigation-item__content:hover {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-46-343.FYfwiW-mtwypy0f-14ff1c/index.html
+ */
 .lpu-header .wp-block-navigation__submenu-icon {
   color: var(--wp--preset--color--vert-fonce);
 }
@@ -663,6 +797,10 @@ body.lpu-header-transparent
  * --lpu-header-foreground and becomes écru on a transparent header until the
  * menu enters its solid active state. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-47-347.V6JQxK-mtwyqauv-7a53cf/index.html
+ */
 .lpu-header .wp-block-navigation__responsive-container.is-menu-open {
   box-sizing: border-box;
   padding: 1.5rem;
@@ -674,6 +812,10 @@ body.lpu-header-transparent
  * padding — Core's default overlay would otherwise inherit the transparent
  * header treatment. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-48-354.j9Oija-mtwytbfd-0c508e/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container.is-menu-open
   .wp-block-navigation-item__content {
@@ -682,6 +824,10 @@ body.lpu-header-transparent
 
 /* The site logo is a nav item on desktop; in Core's open overlay it would
  * become an entry of the vertical list, so it is hidden there. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-49-362.ZDRrt5-mtwytobx-6fba6b/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container.is-menu-open
   li:has(.lpu-header__logo) {
@@ -709,6 +855,10 @@ body.lpu-header-transparent
  * still-too-wide group while navigation.js decides whether to switch to
  * compact. Scoped to the closed container so the mobile overlay keeps Core's
  * stacked list. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-50-376.uIQ2VU-mtwyu0vk-7cadd6/index.html
+ */
 .lpu-header .lpu-nav-group__list {
   margin: 0;
   padding: 0;
@@ -719,6 +869,10 @@ body.lpu-header-transparent
  * the nav-group renderer. It remains semantic list markup, while its child
  * navigation items provide the actual links visitors navigate. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-51-382.wZS446-mtwyv5xm-ed1676/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .lpu-nav-group {
@@ -727,6 +881,9 @@ body.lpu-header-transparent
   overflow: hidden;
 }
 
+/* Visual diff result: difference when this rule is disabled (2,238 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-52-390.7qDVeR-mtwyvibn-26f94c/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .lpu-nav-group__list {
@@ -748,6 +905,10 @@ body.lpu-header-transparent
 
 /* The closing group sits in the last (1fr) track; pack its items toward the
  * rail's outer edge so the three regions mirror each other. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-53-403.HNXwkk-mtwyvut8-443d00/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .lpu-nav-group:last-child
@@ -757,6 +918,10 @@ body.lpu-header-transparent
 
 /* Keep every top-level label on one line; without nowrap the text wraps
  * inside a shrinking group and the overflow check never triggers. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-54-412.gxqk7F-mtwywzwt-dfe9d6/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .lpu-nav-group
@@ -783,6 +948,9 @@ body.lpu-header-transparent
 
 /* Desktop: keep the whole nav stack static so the full-width submenu panel
  * anchors to .lpu-header (position: relative) rather than to the nav rail. */
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 331,039 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-55-426.H0PMJe-mtwyxc12-b56acd/index.html
+ */
 .lpu-header .wp-block-navigation,
 .lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open),
 .lpu-header
@@ -804,10 +972,18 @@ body.lpu-header-transparent
 
 /* Mega-menu: where the submenu lives inside a nav-group list, it still opens
  * as a full-width panel under the header bar. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-56-442.SryTi7-mtwyxosb-340fa2/index.html
+ */
 .lpu-header .wp-block-navigation-submenu {
   position: static;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-57-446.TtFr9a-mtwyyvxp-45300a/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__submenu-container {
@@ -836,6 +1012,10 @@ body.lpu-header-transparent
  * column mega-menu. The background is forced écru because Core's own rule is
  * more specific and would win otherwise. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-58-467.8ho98T-mtwyz821-cdee9a/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__submenu-container
@@ -848,6 +1028,10 @@ body.lpu-header-transparent
  * item inside the panel, keeping the multi-column grid usable when the panel
  * width or the number of columns changes. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-59-475.ikyqBZ-mtwyzkjt-e75d20/index.html
+ */
 .lpu-header
   .wp-block-navigation__responsive-container:not(.is-menu-open)
   .wp-block-navigation__submenu-container
@@ -864,6 +1048,10 @@ body.lpu-header-transparent
  * styling to regular DM Sans text; their child links provide the individual
  * destinations below them. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-60-487.OPIP37-mtwz0ptb-c54f4b/index.html
+ */
 .lpu-header .wp-block-navigation__responsive-container:not(.is-menu-open) {
   padding-inline: 0;
 }
@@ -889,10 +1077,18 @@ body.lpu-header-transparent
  * the two groups are dropped. Core still owns the open overlay; these rules only
  * choose the closed presentation, mirroring Core's own responsive (<600px)
  * presentation so the switch between the two is seamless. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-61-499.GYIVxG-mtwz121l-a26ce7/index.html
+ */
 .lpu-header .lpu-header__navigation.lpu-navigation--compact {
   display: block;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-62-503.0KNeph-mtwz1ej5-78595c/index.html
+ */
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
   .wp-block-navigation__responsive-container-open {
@@ -916,6 +1112,10 @@ body.lpu-header-transparent
  * hamburger is positioned absolutely at the left edge, vertically centered,
  * while the logo stays centered. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-63-520.hdA23a-mtwz2jg5-3a1007/index.html
+ */
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
   .wp-block-navigation__responsive-container:not(.is-menu-open)
@@ -924,6 +1124,10 @@ body.lpu-header-transparent
   justify-content: center;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-64-528.kkQLu8-mtwz2vtf-dc4082/index.html
+ */
 .lpu-header
   .lpu-header__navigation.lpu-navigation--compact
   .wp-block-navigation__responsive-container:not(.is-menu-open)
@@ -951,14 +1155,23 @@ body.lpu-header-transparent
  * hamburger survives. Keep the compact closed presentation on phones too:
  * centered logo with the open button at the rail's start, the same closed
  * look the JavaScript class produces at larger widths. */
+/* Visual diff result: difference when this @media block is disabled (0 changed pixels at 1440x1100 and 329,970 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-65-542.1o2Ve1-mtwz38bi-68ce11/index.html
+ */
 @media screen and (max-width: 600px) {
-  .lpu-header
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 329,970 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-66-543.ZUaDhj-mtwz4ev4-581681/index.html
+ */
+.lpu-header
     nav.lpu-header__navigation
     .wp-block-navigation__responsive-container:not(.is-menu-open) {
     display: block;
   }
 
-  .lpu-header
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 2,571 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-67-549.adNc9X-mtwz4rti-4c5717/index.html
+ */
+.lpu-header
     nav.lpu-header__navigation
     .wp-block-navigation__responsive-container:not(.is-menu-open)
     .wp-block-navigation__container {
@@ -966,14 +1179,20 @@ body.lpu-header-transparent
     justify-content: center;
   }
 
-  .lpu-header
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 1,015,270 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-68-557.6xuACG-mtwz550c-80636c/index.html
+ */
+.lpu-header
     nav.lpu-header__navigation
     .wp-block-navigation__responsive-container:not(.is-menu-open)
     .lpu-nav-group {
     display: none;
   }
 
-  .lpu-header
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 954,368 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-69-564.mptn8O-mtwz6bja-f7955d/index.html
+ */
+.lpu-header
     nav.lpu-header__navigation
     .wp-block-navigation__responsive-container-open {
     box-sizing: border-box;
@@ -1014,13 +1233,22 @@ body.lpu-header-transparent
  * navigation's grid/compact decision is still handled by the rules above and
  * by navigation.js; this query only reduces the header's vertical footprint. */
 
+/* Visual diff result: difference when this @media block is disabled (0 changed pixels at 1440x1100 and 765,325 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-70-585.SthgTj-mtwz6o65-dc6f84/index.html
+ */
 @media (max-width: 900px) {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 330,564 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-71-586.10zWQY-mtwz7195-a65266/index.html
+ */
   .lpu-header {
     min-height: 4.5rem;
     padding: 0.75rem 1rem;
   }
 
-  .lpu-header .wp-block-site-logo img {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 641,951 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-72-591.6jJAXt-mtwzajem-ef6168/index.html
+ */
+.lpu-header .wp-block-site-logo img {
     max-height: 3.25rem;
   }
 }
@@ -1042,6 +1270,9 @@ body.lpu-header-transparent
  * - Accueil.html:1-27 is the assembled Home hero.
  * - Sections du design de Fanny.html:153-179 is the standalone hero pattern
  *   example.
+ */
+/* Visual diff result: difference when this rule is disabled (4,262,750 changed pixels at 1440x1100 and 19,688 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-73-599.g23OuT-mtwzavk3-7dfebd/index.html
  */
 .lpu-hero {
   display: flex;
@@ -1065,12 +1296,20 @@ body.lpu-header-transparent
  * layer; its `data-object-fit="cover"` marker records the intended mode,
  * while Core's `object-fit: cover` CSS performs the crop. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-74-609.lETYX0-mtwzb85n-c2b745/index.html
+ */
 .lpu-hero .wp-block-cover__inner-container {
   box-sizing: border-box;
   width: 100%;
   margin-inline: auto;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-75-615.4OTVqz-mtwzfv8j-fad180/index.html
+ */
 .lpu-hero__content {
   width: 100%;
   max-width: 36rem;
@@ -1144,12 +1383,20 @@ body.lpu-header-transparent
 /* Core stacks ordinary Columns at 782px; keep the card items explicitly
  * full-width so the reusable pattern does not inherit a narrow flex basis. */
 @media (max-width: 781px) {
-  .lpu-card-grid__columns {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-83-656.mVrXOS-mtwzlajd-d13f6a/index.html
+ */
+.lpu-card-grid__columns {
     flex-direction: column;
     gap: var(--wp--preset--spacing--lg);
   }
 
-  .lpu-card-grid__columns > .wp-block-column {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-84-661.qStFbN-mtwzlmim-283ece/index.html
+ */
+.lpu-card-grid__columns > .wp-block-column {
     flex-basis: 100% !important;
     width: 100%;
     margin-block-start: 0;
@@ -1197,6 +1444,9 @@ body.lpu-header-transparent
   text-transform: uppercase;
 }
 
+/* Visual diff result: difference when this rule is disabled (400,073 changed pixels at 1440x1100 and 451,928 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-89-694.FnXDBG-mtwzn1v2-d73138/index.html
+ */
 .lpu-card__body > .wp-block-paragraph {
   margin: 0;
   font-size: 0.9rem;
@@ -1243,6 +1493,9 @@ body.lpu-header-transparent
   padding-block: var(--wp--preset--spacing--section);
 }
 
+/* Visual diff result: difference when this rule is disabled (1,265,240 changed pixels at 1440x1100 and 592,647 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-93-717.bZzquI-mtwznfoe-055667/index.html
+ */
 .lpu-farm-selector > .wp-block-heading {
   margin-block: 0 var(--wp--preset--spacing--section);
 }
@@ -1255,6 +1508,9 @@ body.lpu-header-transparent
   gap: var(--wp--preset--spacing--md);
 }
 
+/* Visual diff result: difference when this rule is disabled (813 changed pixels at 1440x1100 and 411 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-95-726.BUWHgz-mtwznt8f-56c97e/index.html
+ */
 .lpu-farm-selector__item {
   position: relative;
   min-width: 0;
@@ -1354,6 +1610,10 @@ body.lpu-header-transparent
   gap: var(--wp--preset--spacing--xl);
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-103-789.cRBsLA-mtwzp3ul-831aa1/index.html
+ */
 .lpu-columns-text__columns > .wp-block-column {
   min-width: 0;
 }
@@ -1407,6 +1667,10 @@ body.lpu-header-transparent
   text-wrap: balance;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-107-819.A3EYk9-mtwzpgf3-bdec44/index.html
+ */
 .lpu-graphic-band > .wp-block-paragraph {
   max-width: 42rem;
   margin-block: 0;
@@ -1441,7 +1705,10 @@ body.lpu-header-transparent
  */
 
 @media (max-width: 781px) {
-  .lpu-hero,
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 1,070,920 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-110-834.sZ6sxx-mtwzptb6-7ea22a/index.html
+ */
+.lpu-hero,
   .lpu-card-grid,
   .lpu-farm-selector,
   .lpu-columns-text,
@@ -1449,38 +1716,64 @@ body.lpu-header-transparent
     padding-inline: var(--wp--preset--spacing--md);
   }
 
-  .lpu-hero {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 760,830 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-111-842.AflG2u-mtwzrxuo-8c597b/index.html
+ */
+.lpu-hero {
     min-height: 34rem;
     padding-block: 5rem var(--wp--preset--spacing--xl);
   }
 
-  .lpu-hero__content .wp-block-heading {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 10,687 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-112-847.S8WtuZ-mtwzsb9m-46ab31/index.html
+ */
+.lpu-hero__content .wp-block-heading {
     max-width: 11ch;
   }
 
-  .lpu-farm-selector__columns {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-113-851.qvRd2z-mtwzso2g-a68930/index.html
+ */
+.lpu-farm-selector__columns {
     gap: var(--wp--preset--spacing--lg);
   }
 
-  .lpu-farm-selector__item + .lpu-farm-selector__item::before {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 548 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-114-855.I7mSnH-mtwztlgi-a48436/index.html
+ */
+.lpu-farm-selector__item + .lpu-farm-selector__item::before {
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
   }
 
-  .lpu-columns-text__columns {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-115-861.fYbrum-mtwztya9-8a73c6/index.html
+ */
+.lpu-columns-text__columns {
     gap: var(--wp--preset--spacing--lg);
   }
 
-  .lpu-columns-text {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 1,584,940 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-116-865.iGDLwB-mtwzubb4-a5eb86/index.html
+ */
+.lpu-columns-text {
     padding-block: var(--wp--preset--spacing--section);
   }
 
-  .lpu-columns-text > .lpu-columns-text__title {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 562,517 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-117-869.bOgP2v-mtwzv9zt-f0516f/index.html
+ */
+.lpu-columns-text > .lpu-columns-text__title {
     margin-block-end: var(--wp--preset--spacing--xl);
   }
 
-  .lpu-columns-text__columns .wp-block-paragraph {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 576,825 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-118-873.1WiSjC-mtwzvn8f-2d5266/index.html
+ */
+.lpu-columns-text__columns .wp-block-paragraph {
     max-width: 30rem;
   }
 }
@@ -1587,11 +1880,17 @@ main.wp-block-group {
   margin: 0;
 }
 
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 31,782 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-125-930.311I69-mtwzw0et-4bcc8a/index.html
+ */
 .lpu-footer__identity .wp-block-image > a {
   display: block;
   width: 100%;
 }
 
+/* Visual diff result: difference when this rule is disabled (998 changed pixels at 1440x1100 and 589 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-126-935.18nvtF-mtwzwyg1-a918a4/index.html
+ */
 .lpu-footer__identity .wp-block-image img {
   display: block;
   width: 100%;
@@ -1620,6 +1919,9 @@ main.wp-block-group {
   margin: 0;
 }
 
+/* Visual diff result: difference when this rule is disabled (40,709 changed pixels at 1440x1100 and 87,376 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-129-956.Phq8Qc-mtwzxb4j-8e94a3/index.html
+ */
 .lpu-footer .wp-block-navigation__container {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1713,6 +2015,9 @@ main.wp-block-group {
   min-width: 0;
 }
 
+/* Visual diff result: difference when this rule is disabled (222,560 changed pixels at 1440x1100 and 82,366 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-136-1029.9tvwHH-mtwzxovk-937b6e/index.html
+ */
 .lpu-footer
   .wp-block-navigation__submenu-container
   .wp-block-navigation-item__content {
@@ -1788,6 +2093,10 @@ main.wp-block-group {
   gap: 0.25rem 1rem;
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-142-1086.SpuKxH-mtwzyx2n-5139fa/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu:last-child
@@ -1798,6 +2107,9 @@ main.wp-block-group {
   color: rgba(248, 248, 240, 0.8) !important;
 }
 
+/* Visual diff result: difference when this rule is disabled (4,575 changed pixels at 1440x1100 and 4,575 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-143-1096.5sDOWw-mtwzz9pb-ebdc8a/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu:last-child
@@ -1827,6 +2139,9 @@ main.wp-block-group {
   margin-block: 0;
 }
 
+/* Visual diff result: difference when this rule is disabled (1,450 changed pixels at 1440x1100 and 1,450 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-146-1117.PB0VsN-mtwzzmsd-3f3154/index.html
+ */
 .lpu-footer__social .wp-social-link {
   background: transparent !important;
   color: var(--wp--preset--color--ecru) !important;
@@ -1844,25 +2159,43 @@ main.wp-block-group {
 /* Copyright is intentionally the quietest text on the page. */
 
 @media (max-width: 900px) {
-  .lpu-footer {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 46,292 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-149-1128.ALajJr-mtx00kp4-65f698/index.html
+ */
+.lpu-footer {
     padding-inline: 1rem !important;
   }
 
-  .lpu-footer__main {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-150-1132.XQnzgg-mtx00xm1-f8b5f6/index.html
+ */
+.lpu-footer__main {
     flex-direction: column;
     gap: var(--wp--preset--spacing--lg);
   }
 
-  .lpu-footer__main > .wp-block-column {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-151-1137.ibzIaW-mtx01aaw-fc50f9/index.html
+ */
+.lpu-footer__main > .wp-block-column {
     flex-basis: 100% !important;
     width: 100%;
   }
 
-  .lpu-footer__intro {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 56,474 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-152-1142.zXkNRX-mtx02825-7f141d/index.html
+ */
+.lpu-footer__intro {
     max-width: 24rem;
   }
 
-  .lpu-footer .wp-block-navigation__container {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-153-1146.vmvGvJ-mtx02kzy-2d3dc8/index.html
+ */
+.lpu-footer .wp-block-navigation__container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1872,20 +2205,32 @@ main.wp-block-group {
  * shrinks to two columns. */
 
 @media (max-width: 600px) {
-  .lpu-footer {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 42,911 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-155-1152.NAevBP-mtx02y18-88001d/index.html
+ */
+.lpu-footer {
     padding-top: 3rem !important;
     padding-bottom: 4rem !important;
   }
 
-  .lpu-footer__identity .wp-block-image {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 48,529 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-156-1157.RX9GOQ-mtx03wf9-37bfec/index.html
+ */
+.lpu-footer__identity .wp-block-image {
     width: 140px;
   }
 
-  .lpu-footer .wp-block-navigation__container {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 68,262 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-157-1161.9gERf6-mtx04att-894611/index.html
+ */
+.lpu-footer .wp-block-navigation__container {
     grid-template-columns: 1fr;
   }
 
-  .lpu-footer__bottom {
+/* Visual diff result: difference when this rule is disabled (0 changed pixels at 1440x1100 and 21,316 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-158-1165.szQ94W-mtx04o44-2a2f86/index.html
+ */
+.lpu-footer__bottom {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -1949,12 +2294,20 @@ main.wp-block-group {
   color: var(--wp--preset--color--ecru);
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-163-1196.PU3ByY-mtx05mzk-7bca0d/index.html
+ */
 .lpu-button-on-color .wp-block-button__link:hover,
 .lpu-button-on-color .wp-block-button__link:focus-visible {
   background: var(--wp--preset--color--ecru);
   color: var(--wp--preset--color--vert-fonce);
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-164-1202.pLs2ZT-mtx05zrd-ec9ddc/index.html
+ */
 .lpu-button-on-color .wp-block-button__link:focus-visible {
   outline-color: var(--wp--preset--color--ecru);
 }
@@ -2011,12 +2364,19 @@ main.wp-block-group {
   background-color: var(--wp--preset--color--ecru);
 }
 
+/* Visual diff result: difference when this rule is disabled (126 changed pixels at 1440x1100 and 126 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-168-1242.Zx8dm5-mtx06cse-e50b4e/index.html
+ */
 .wp-site-blocks
   .lpu-button-on-color.lpu-button-arrow
   .wp-block-button__link::after {
   background-color: var(--wp--preset--color--ecru);
 }
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-169-1248.112IBa-mtx07b8p-7bfe6e/index.html
+ */
 .wp-site-blocks
   .lpu-button-on-color.lpu-button-arrow
   .wp-block-button__link:hover::after,
@@ -2043,11 +2403,19 @@ main.wp-block-group {
  */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-171-1261.rtOI64-mtx07ny7-02a78f/index.html
+ */
+html {
     scroll-behavior: auto;
   }
 
-  *,
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/lpu-website-visual-diff-all-172-1265.CkfSMU-mtx080yv-5ba46c/index.html
+ */
+*,
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
