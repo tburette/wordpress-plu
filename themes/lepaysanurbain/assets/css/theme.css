@@ -15,19 +15,6 @@
  */
 
 /*****************************************************************************/
-/* SHARED EDITORIAL SECTION SPACING                                          */
-/*****************************************************************************/
-.lpu-hero,
-.lpu-card-grid,
-.lpu-farm-selector,
-.lpu-columns-text,
-.lpu-graphic-band {
-  box-sizing: border-box;
-  padding-block: var(--wp--preset--spacing--section);
-  padding-inline: var(--wp--preset--spacing--lg);
-}
-
-/*****************************************************************************/
 /* MEDIA PLACEHOLDER                                                         */
 /*****************************************************************************/
 .lpu-media-placeholder {
