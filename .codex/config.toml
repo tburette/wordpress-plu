@@ -8,7 +8,7 @@ description = "Le Paysan Urbain local WordPress testing"
 extends = ":workspace"
 
 [permissions.lpu-local.filesystem]
-"~/Downloads" = "write"
+"~/Downloads/website-visual-diff" = "write"
 
 [permissions.lpu-local.network]
 enabled = true
