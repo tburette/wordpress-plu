@@ -16,3 +16,7 @@ coverage/
 # Operating-system files
 .DS_Store
 Thumbs.db
+
+# duplicate files that help doing searches, add personal notes,..
+/Accueil.html
+/Sections du design de Fanny.html
