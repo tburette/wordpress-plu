@@ -1534,6 +1534,9 @@ body.lpu-header-transparent
  *   farm items.
  * - Sections du design de Fanny.html:181-215 is the pattern example.
  */
+/* Visual diff result: difference when this rule is disabled (2,613,880 changed pixels at 1440x1100 and 927,239 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.hu7h7u-mty6chu4-c7b97d/index.html
+ */
 .lpu-farm-selector {
   padding-block: var(--wp--preset--spacing--section);
 }
@@ -1548,6 +1551,10 @@ body.lpu-header-transparent
 /* The selector title keeps a full section's worth of space below it, giving
  * the farm names the prominence Fanny's mockup reserves for them. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.r3Ij7E-mty6d1hj-eb22fd/index.html
+ */
 .lpu-farm-selector__columns {
   align-items: center;
   gap: var(--wp--preset--spacing--md);
@@ -1564,6 +1571,9 @@ body.lpu-header-transparent
 /* Each item is position:relative so the separator pseudo-element can be
  * absolutely placed at the boundary on its left edge (below). */
 
+/* Visual diff result: difference when this rule is disabled (660 changed pixels at 1440x1100 and 274 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.9iD8tN-mty6df1w-9879eb/index.html
+ */
 .lpu-farm-selector__item + .lpu-farm-selector__item::before {
   position: absolute;
   top: 50%;
@@ -1580,6 +1590,9 @@ body.lpu-header-transparent
  * separator block to manage, and it is centered on the boundary between two
  * adjacent columns. */
 
+/* Visual diff result: difference when this rule is disabled (129,212 changed pixels at 1440x1100 and 137,891 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.Sxlh0V-mty6dtig-3e0e5b/index.html
+ */
 .lpu-farm-selector__item .wp-block-heading {
   margin: 0;
   font-size: clamp(2rem, 5vw, 3.5rem);
@@ -1590,6 +1603,9 @@ body.lpu-header-transparent
 /* The farm names are the section's large focal text, with a fluid size capped
  * at 3.5rem so the labels remain usable across the wide layout. */
 
+/* Visual diff result: difference when this rule is disabled (588 changed pixels at 1440x1100 and 472 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.uNEpXV-mty6fbiw-19c37e/index.html
+ */
 .lpu-farm-selector__item a {
   color: inherit;
   text-decoration-line: underline;
@@ -1600,6 +1616,10 @@ body.lpu-header-transparent
 /* The link inherits the surrounding section color rather than the browser's
  * default link color and shows a solid 2px underline with a slight offset. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.yP0BM4-mty6foav-5ebbfe/index.html
+ */
 .lpu-farm-selector__item a:hover,
 .lpu-farm-selector__item a:focus-visible {
   text-decoration-thickness: 3px;
@@ -1624,6 +1644,9 @@ body.lpu-header-transparent
  * - Accueil.html:256-290 is the Home columns band.
  * - Sections du design de Fanny.html:97-132 is the pattern example.
  */
+/* Visual diff result: difference when this rule is disabled (5,100,250 changed pixels at 1440x1100 and 0 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.RfN8R2-mty6g2x1-a6551c/index.html
+ */
 .lpu-columns-text {
   /* This composition intentionally leaves more room below the messages, as
    * in the "titre-colonnes" reference. Keep the values tied to the shared
@@ -1639,6 +1662,9 @@ body.lpu-header-transparent
 /* All exposed content of this band sits on vert-fonce and speaks in écru;
  * the inversion is the section's identity on the page. The generous
  * top/bottom padding follows the "titre-colonnes" reference composition. */
+/* Visual diff result: difference when this rule is disabled (1,631,120 changed pixels at 1440x1100 and 0 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.1qad5A-mty6ghzy-40af11/index.html
+ */
 .lpu-columns-text > .lpu-columns-text__title {
   max-width: 36rem;
   margin-block: 0
@@ -1650,6 +1676,10 @@ body.lpu-header-transparent
 /* The shared title is constrained and centered, with a 6.5rem desktop gap
  * below it (xl + lg). That explicit space separates the title from the
  * columns of messages. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.cAfFzf-mty6gwcf-acbab2/index.html
+ */
 .lpu-columns-text__columns {
   align-items: flex-start;
   gap: var(--wp--preset--spacing--xl);
@@ -1666,6 +1696,9 @@ body.lpu-header-transparent
 /* min-width: 0 again: a long message would otherwise stretch its flex column
  * and force neighbors to shrink or wrap awkwardly. */
 
+/* Visual diff result: difference when this rule is disabled (521,674 changed pixels at 1440x1100 and 645,397 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.rdGPvw-mty6ha1b-d79c03/index.html
+ */
 .lpu-columns-text__columns .wp-block-paragraph {
   max-width: 18rem;
   margin-block: 0;
@@ -1694,6 +1727,9 @@ body.lpu-header-transparent
  * - Accueil.html:323-341 is the closing Home call-to-action band.
  * - Sections du design de Fanny.html:133-152 is the pattern example.
  */
+/* Visual diff result: difference when this rule is disabled (2,904,170 changed pixels at 1440x1100 and 1,013,140 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.fCe5tP-mty6ho1v-60f4d8/index.html
+ */
 .lpu-graphic-band {
   padding-block: var(--wp--preset--spacing--section);
   background-color: var(--wp--preset--color--jaune);
@@ -1705,6 +1741,9 @@ body.lpu-header-transparent
  * vert-fonce text. The CSS supplies its reusable spacing, color, and centering
  * defaults (text-align is inherited by the children, while the Buttons block
  * centers itself explicitly below). */
+/* Visual diff result: difference when this rule is disabled (624,394 changed pixels at 1440x1100 and 336,878 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.qEijaO-mty6i4dl-29a78f/index.html
+ */
 .lpu-graphic-band > .wp-block-heading {
   max-width: 36rem;
   margin-block: 0 var(--wp--preset--spacing--md);
@@ -1726,6 +1765,9 @@ body.lpu-header-transparent
  * readable as a compact centered block instead of spanning the full yellow
  * band. */
 
+/* Visual diff result: difference when this rule is disabled (469,171 changed pixels at 1440x1100 and 272,181 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.uZBmCS-mty6iixm-b6a171/index.html
+ */
 .lpu-graphic-band > .wp-block-buttons {
   justify-content: center;
   margin-block-start: var(--wp--preset--spacing--lg);
@@ -1847,6 +1889,10 @@ body.lpu-header-transparent
  * What it controls: Minimum main-content height and the final footer transition.
  * Main source: templates/front-page.html:2-6 and the other page templates.
  */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.ejZSI3-mty6m5be-ae1909/index.html
+ */
 main.wp-block-group {
   min-height: 30vh;
 }
@@ -1858,6 +1904,9 @@ main.wp-block-group {
 /* The footer follows the last editorial section directly. WordPress adds its
  * normal site-stack gap to every sibling; that creates an unintended écru
  * strip after a full-width closing band. */
+/* Visual diff result: difference when this rule is disabled (110,595 changed pixels at 1440x1100 and 57,089 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.Ft0mOf-mty6mj1d-4cbd16/index.html
+ */
 .wp-site-blocks > main + footer.wp-block-template-part {
   margin-block-start: 0;
 }
@@ -1879,6 +1928,10 @@ main.wp-block-group {
 /* Shared footer frame. The provisioning plugin supplies each site with its
  * own footer wp_navigation entity; this layout and visual treatment remain
  * shared by the theme. */
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.Bolqtk-mty6myj7-542bd1/index.html
+ */
 .lpu-footer {
   position: relative;
   overflow: hidden;
@@ -1894,6 +1947,9 @@ main.wp-block-group {
  * correction as for the header, so the footer always touches the last
  * editorial section. */
 
+/* Visual diff result: difference when this rule is disabled (693 changed pixels at 1440x1100 and 321 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.VH6ib9-mty6nd6o-42c3e0/index.html
+ */
 .lpu-footer::after {
   position: absolute;
   right: clamp(1.25rem, 4vw, 3.5rem);
@@ -1910,6 +1966,10 @@ main.wp-block-group {
  * is pure decoration; pointer-events: none keeps it from intercepting clicks
  * if its painted area overlaps another footer control. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.KhNTFJ-mty6nrln-bf8831/index.html
+ */
 .lpu-footer__main {
   align-items: flex-start;
   gap: clamp(2rem, 4vw, 4.5rem);
@@ -1919,6 +1979,9 @@ main.wp-block-group {
 /* The three main columns—identity, intro, and links—sit side by side and
  * align to their first line (a footer reads best from the top). */
 
+/* Visual diff result: difference when this rule is disabled (24,071 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.Qgbk4m-mty6o70k-039208/index.html
+ */
 .lpu-footer__identity .wp-block-image {
   width: 160px;
   max-width: 100%;
@@ -1946,6 +2009,9 @@ main.wp-block-group {
  * whole image-link becomes the clickable home link; block-level display keeps
  * the inline <img> from adding its own line-bottom gap. */
 
+/* Visual diff result: difference when this rule is disabled (7,717 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.yUknPf-mty6oozv-903c24/index.html
+ */
 .lpu-footer__intro {
   max-width: 13rem;
   margin: 0;
@@ -1958,6 +2024,10 @@ main.wp-block-group {
 /* The short intro sentence is capped narrow so it stays a tidy two-to-three
  * line block instead of a wide paragraph. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.Md40J5-mty6p7pd-43a209/index.html
+ */
 .lpu-footer__links .wp-block-navigation {
   width: 100%;
   max-width: none;
@@ -1980,6 +2050,9 @@ main.wp-block-group {
  * than a menu: Core's default horizontal flex is overridden because the
  * footer's top-level submenus become column headings. */
 
+/* Visual diff result: difference when this rule is disabled (31,402 changed pixels at 1440x1100 and 48,831 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.23vhV9-mty6qrur-d5929d/index.html
+ */
 .lpu-footer .wp-block-navigation__container > .wp-block-navigation-submenu {
   display: block;
   min-width: 0;
@@ -1988,6 +2061,9 @@ main.wp-block-group {
 /* Each top-level submenu is one of the three columns (a block-level list item
  * that owns its column width). */
 
+/* Visual diff result: difference when this rule is disabled (12,139 changed pixels at 1440x1100 and 15,340 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.bnrbAE-mty6r8qe-76e552/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu
@@ -2006,6 +2082,10 @@ main.wp-block-group {
  * treatment makes them read visually as uppercase Ruden column labels and
  * keeps them écru on the dark footer. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.tSagDu-mty6rou5-47dc90/index.html
+ */
 .lpu-footer .wp-block-navigation__submenu-icon {
   display: none;
 }
@@ -2013,6 +2093,10 @@ main.wp-block-group {
 /* Footer submenus are permanently expanded (see below), so the arrow that
  * Core renders for collapsible submenus must never appear. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.hEL4JS-mty6s5hn-28c989/index.html
+ */
 .lpu-footer .wp-block-navigation__submenu-container {
   position: static;
   display: block;
@@ -2029,6 +2113,9 @@ main.wp-block-group {
 /* Core's submenu rule is more specific than the generic footer rule above.
  * Repeat the direct-child relationship and force the footer columns open;
  * unlike the header, these submenus are always expanded. */
+/* Visual diff result: difference when this rule is disabled (226,919 changed pixels at 1440x1100 and 168,480 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.ckKZO7-mty6skjm-c7daaf/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu
@@ -2053,6 +2140,10 @@ main.wp-block-group {
  * on submenu toggling. The !important declarations are needed where Core's
  * dropdown selectors are more specific than the surrounding footer rules. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.6eXnA4-mty6szwf-07105b/index.html
+ */
 .lpu-footer
   .wp-block-navigation__submenu-container
   > .wp-block-navigation-item {
@@ -2077,6 +2168,9 @@ main.wp-block-group {
 /* The leaf entries are small DM Sans links, stacked as list rows; inline-
  * block lets the ::before arrow be part of the same "line" as the text. */
 
+/* Visual diff result: difference when this rule is disabled (4,621 changed pixels at 1440x1100 and 4,621 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.DX5rl4-mty6te68-1885bb/index.html
+ */
 .lpu-footer
   .wp-block-navigation__submenu-container
   > .wp-block-navigation-item
@@ -2087,6 +2181,10 @@ main.wp-block-group {
 /* Fanny's site map uses a small ">" before each leaf link as a graphic
  * bullet — again a pseudo-element so no content has to carry the character. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.ldnlJr-mty6trrn-841c1f/index.html
+ */
 .lpu-footer .wp-block-navigation-item__content:hover,
 .lpu-footer .wp-block-navigation-item__content:focus-visible {
   text-decoration: underline;
@@ -2097,6 +2195,9 @@ main.wp-block-group {
 /* Subtle underline on hover/focus — footers should not shout, and the footer
  * is already on high-contrast dark green so color alone would be weak. */
 
+/* Visual diff result: difference when this rule is disabled (20,056 changed pixels at 1440x1100 and 12,408 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.o8T0uj-mty6u6m3-3c53b7/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu:last-child {
@@ -2116,6 +2217,9 @@ main.wp-block-group {
  * legal/utility row separated by the subtle écru hairline. Custom footer
  * navigation content should preserve that last-item convention. */
 
+/* Visual diff result: no difference when this rule is disabled (4,719 changed pixels at 1440x1100 and 4,719 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.87PwNX-mty6uksx-a6be85/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu:last-child
@@ -2129,6 +2233,9 @@ main.wp-block-group {
 /* The strip's own parent label (the submenu title) is a tiny dimmed Ruden
  * item; the translucency keeps it clearly below the main columns. */
 
+/* Visual diff result: difference when this rule is disabled (30,124 changed pixels at 1440x1100 and 12,801 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.HCh3JT-mty6uyd9-8967fc/index.html
+ */
 .lpu-footer
   .wp-block-navigation__container
   > .wp-block-navigation-submenu:last-child
@@ -2168,6 +2275,10 @@ main.wp-block-group {
  * same small dimmed type; the generic "> " bullet is cancelled here because
  * a horizontal utility row does not need per-item arrows. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.iw0vu1-mty6xpzj-821c36/index.html
+ */
 .lpu-footer__bottom {
   align-items: center;
   gap: var(--wp--preset--spacing--md);
@@ -2179,6 +2290,10 @@ main.wp-block-group {
  * are distributed with space-between by the Group block's layout attributes;
  * the gap above separates them from the columns. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.ReTxEy-mty6y1zg-78ff11/index.html
+ */
 .lpu-footer__social,
 .lpu-footer__copyright {
   margin-block: 0;
@@ -2196,6 +2311,9 @@ main.wp-block-group {
  * green calls for a flat transparent treatment where only the écru glyph
  * shows. */
 
+/* Visual diff result: difference when this rule is disabled (776 changed pixels at 1440x1100 and 776 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.P8J5IX-mty6yejg-d2af77/index.html
+ */
 .lpu-footer__copyright {
   font-size: 0.75rem;
   color: rgba(248, 248, 240, 0.8);
@@ -2307,6 +2425,10 @@ main.wp-block-group {
  *   split-section examples (234-236, 316-318) contain ordinary button links.
  */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.OLtiB8-mty6zgkc-af4825/index.html
+ */
 .wp-block-button__link {
   transition:
     background-color 100ms ease,
@@ -2316,6 +2438,10 @@ main.wp-block-group {
 /* Buttons change background/text color on hover and focus; the 100ms
  * transition prevents those two properties from changing instantaneously. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.URHgLT-mty6zuxh-c615f2/index.html
+ */
 .wp-block-button__link:hover,
 .wp-block-button__link:focus-visible {
   background: var(--wp--preset--color--vert-fonce);
@@ -2326,6 +2452,10 @@ main.wp-block-group {
  * vert-fonce and flips its text to écru — the classic outlined → filled
  * inversion on hover. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.aRNdfU-mty707xg-56a67f/index.html
+ */
 .wp-block-button__link:focus-visible {
   outline: 2px solid var(--wp--preset--color--vert-fonce);
   outline-offset: 2px;
@@ -2334,6 +2464,9 @@ main.wp-block-group {
 /* A separate keyboard-focus ring (offset so the filled hover state does not
  * swallow it) keeping the outline visible against a filled button. */
 
+/* Visual diff result: difference when this rule is disabled (452 changed pixels at 1440x1100 and 452 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.wg1eAN-mty70mmz-b54b1a/index.html
+ */
 .lpu-button-on-color .wp-block-button__link {
   border-color: var(--wp--preset--color--ecru);
   color: var(--wp--preset--color--ecru);
@@ -2368,6 +2501,9 @@ main.wp-block-group {
  * Fanny's organic right-facing arrow asset inside the circled action. The
  * editor is intentionally not targeted, so the label stays easy to edit
  * there. */
+/* Visual diff result: difference when this rule is disabled (14,634 changed pixels at 1440x1100 and 10,738 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.oxBPsz-mty7108v-56ddae/index.html
+ */
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:focus-visible {
@@ -2388,6 +2524,9 @@ main.wp-block-group {
  * (which never receives this .wp-site-blocks-scoped rule) the text stays
  * visible for easy editing. */
 
+/* Visual diff result: difference when this rule is disabled (125 changed pixels at 1440x1100 and 125 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.HuwqvB-mty71due-6de3e3/index.html
+ */
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link::after {
   position: absolute;
   inset: 0;
@@ -2404,6 +2543,10 @@ main.wp-block-group {
  * arrow inherit the button color states (it is tinted background-color, not a
  * fixed-color PNG). */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.gTyC1X-mty71rb8-f94d64/index.html
+ */
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:hover::after,
 .wp-site-blocks .lpu-button-arrow .wp-block-button__link:focus-visible::after {
   background-color: var(--wp--preset--color--ecru);
