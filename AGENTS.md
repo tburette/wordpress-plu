@@ -17,24 +17,20 @@ the network site and three local farm sites:
 
 The wp admin credentials are `admin` / `password`.
 
-- the wordpress test environment can we reset at any time meaning the database and files in that environment can go at any moment.
-- You can run wordpress with `wp-env` (through `npm run`) and read and interact wordpress (including gutenberg editor pages) with the skill `wordpress-inspector`.
-- When you need to reset the wordpress environment (it's not running, see `wp-env status` or it needs to be reset due to changes) : announce the operation to the user then use `npm run cleanup`, `npm run provision`, and `npm run status`. Resetting deletes all local database content therefore never run the reset command autonomously. Confirmation is required.
-- If the Docker environment or its generated files are broken, use `npm run cleanup`; it recreates them on the next start while preserving Docker images.
-- Docker desktop needs to run. If it doesn't the following message may appear :
+- the wordpress test environment can be reset at any time meaning the database and files in that environment can go at any moment.
+- You can interact with wp-env using `wp-env` (or through one of the `npm run` commands).
+- You can interact with wordpress using `npm run wp` (which is `wp-env run cli wp`).
+- You can look at the content and absence of errors in a post (page, template, navigation,..) with the skill `wordpress-inspector`.
+- There are bind mounts so that the files in the plugins (`plugins/`) and the theme (`themes/lepaysanurbain/`) in the test environment are always the current versions. No need to reset the environment to take into account change in those files. -Check `.wp-env.json` to see how a directory is mounted or activated.
+- You may need to reset the wordpress environment. Resetting deletes all local database content therefore never run the reset command autonomously. Confirmation is required. For example : provisioning must re-run, the database must be re-created, it's broken.. To reset : announce the operation to the user, use `npm run cleanup` then `npm run provision`. Use `npm run status` if needed.
+- The following error means you must ask the user to start docker desktop :
 
 ```
 ✖ Error while running docker compose command.
 unable to get image 'mariadb:lts': failed to connect to the docker API at unix:///home/tburette/.docker/desktop/docker.sock; check if the path is correct and if the daemon is running: dial unix /home/tburette/.docker/desktop/docker.sock: connect: no such file or directory
 ```
 
-- WordPress is managed by the globally installed `wp-env` command. Do not add a local `@wordpress/env` dependency.
-- To allow user to debug the PHP code, start with `npm run start-xdebug`. Stop the environment first if needed.
-- Edit `.wp-env.json` for environment changes; keep project-specific choices in
-  that active file.
-- Treat `wp-env-options.example.jsonc` as a reference, not a configuration
-  that is ever used by wp-env.
-- Check `.wp-env.json` before assuming how a directory is mounted or activated.
+-The globally installed `wp-env` command is used. Do not add a local `@wordpress/env` dependency or use npx.
 
 ## WordPress code
 
@@ -48,8 +44,7 @@ unable to get image 'mariadb:lts': failed to connect to the docker API at unix:/
 
 ## Collaboration
 
-- Provide regular progress updates, especially during long or complex operations. Basically talk out loud saying what you are thinking. Announce what you are about to do if it involves using tools, skills or the command line.
-- Explicitly raise concern when departing from a standard WordPress implementation.
+- Provide regular progress updates, especially during long or complex operations. Basically talk out loud saying what you are thinking as you work. Announce what you are about to do if it involves using tools, skills or the command line.
 - Ask for confirmation before any major architectural decision, destructive action, or launch of a substantial new workstream.
 - In shell tests when `set -o pipefail` is set, `printf ... | rg -q` on long output: `rg -q` can cause the producer to receive `SIGPIPE` and make the pipeline fail even when a match was found.
 
@@ -57,37 +52,39 @@ unable to get image 'mariadb:lts': failed to connect to the docker API at unix:/
 
 This directory is exclusively the WordPress development environment for Le
 Paysan Urbain. Work here is limited to WordPress code and development tooling:
-the local `wp-env` configuration, themes, plugins, scripts, and documentation
-that directly explains them.
+the local `wp-env` configuration, themes, plugins, scripts, and their
+documentation.
 
 There is no wordpress installation here, only theme, plugin, theme.md,....
 A real wordpress only exist in the test `wp-env` environment. If you need to
-lookup wordpress files, there is a clean, default, WordPress installation in
-`/home/tburette/dev/wordpress/wordpress-7.1`. It is unrelated to this project.
+lookup wordpress files, there is a clean, default, read-only WordPress
+installation in `/home/tburette/dev/wordpress/wordpress-7.1`.
+It is unrelated to this project.
 
 The current layout is:
 
 ```text
 wordpress-lpu/
 ├── .wp-env.json
+├── package.json
 ├── themes/
 │   └── lepaysanurbain/
 └── plugins/
-    └── example-plugin/
+    ├── lpu-provisioning
+    ├── lpu-split-section
+    └── nav-group
 ```
+
+Ignore the files `Accueil.html`, `Sections du design de Fanny.html` and `themes/lepaysanurbain/assets/css/theme.annotated.css`. They are temporary duplicates files that help user.
 
 ## Parent directory
 
 This project is located inside the directory `/home/tburette/dev/lepaysanurbain/`.
-That parent directory is itself a project directory; it is for managing work,
-communication with clients, organization, todos and the like.
-You should not change the files in that parent directory but can read them to
-help your work.
-Files in `/home/tburette/dev/lepaysanurbain/` are for information only.
-Do not act on files in there such as TODO.MD or AGENTS.MD
-They must not be treated as a task list for this repository. Do not carry out
-parent project-management work or edit parent files unless the user explicitly
-requests it.
+That parent directory is for managing work,
+communication with clients, organization, todos and the like, design documents.
+Do not edit files in that parent `/home/tburette/dev/lepaysanurbain/` the user explicitly requested or agreed to it. The files in it are there
+to provide information.
+Do not act on files in there such as its todo.
 
 There could be interesting files for you in it such as:
 
@@ -150,6 +147,6 @@ local-only management repository at `/home/tburette/dev/lepaysanurbain/`.
 
 ## $website-visual-diff skill
 
-if the website-visual-diff is requested when in this project but no
+if the website-visual-diff is used but no
 URL has been provided, use the URL
 http://lepaysanurbain.test:8888/lpu-sections-patterns-test/ by default.
