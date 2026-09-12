@@ -566,41 +566,12 @@ body.lpu-header-transparent
 /*****************************************************************************/
 /* HERO SECTION                                                              */
 /*****************************************************************************/
+/* block style variation instead of pattern? */
 .lpu-hero {
-  display: flex;
-  align-items: flex-end;
-  box-sizing: border-box;
+  align-items: flex-end; /*per design, keep */
+  /* default is  min-height: 430px; this is more, keep*/
   min-height: clamp(34rem, 75vh, 48rem);
   padding-block: clamp(5rem, 12vw, 9rem) var(--wp--preset--spacing--xl);
-  background-position: center;
-  background-size: cover;
-}
-
-.lpu-hero .wp-block-cover__inner-container {
-  box-sizing: border-box;
-  width: 100%;
-  margin-inline: auto;
-}
-
-.lpu-hero__content {
-  width: 100%;
-  max-width: 36rem;
-  margin-inline: 0;
-}
-
-.lpu-hero__content .wp-block-heading {
-  max-width: 10ch;
-  margin-block: 0 var(--wp--preset--spacing--md);
-  text-wrap: balance;
-}
-
-.lpu-hero__content > .wp-block-paragraph {
-  max-width: 31rem;
-  margin-block: 0;
-}
-
-.lpu-hero__actions {
-  margin-block-start: var(--wp--preset--spacing--lg);
 }
 
 /*****************************************************************************/
