@@ -1376,11 +1376,20 @@ body.lpu-header-transparent
  */
 
 /* Card grids use xl above and below rather than the shared section token. */
+
+/* Visual diff result: difference when this rule is disabled (2,851,450 changed pixels at 1440x1100 and 1,299,690 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.qoMuFt-mty1s8w8-93ba57/index.html
+ */
 .lpu-card-grid {
   padding-block: var(--wp--preset--spacing--xl);
 }
 
 /* The title rule tunes its width and spacing below. */
+
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.qrlYu4-mty1szdx-e2f8d7/index.html
+ */
 .lpu-card-grid__title {
   max-width: 30rem;
   margin-block: 0 var(--wp--preset--spacing--lg);
@@ -1390,6 +1399,11 @@ body.lpu-header-transparent
  * of the tallest sibling, which the flexible card body below then benefits
  * from when it pushes a CTA to its own bottom edge. The gap sets the
  * breathing room between cards within the grid. */
+
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.96jO7C-mty1tmas-34eb58/index.html
+ */
 .lpu-card-grid__columns {
   align-items: stretch;
   gap: var(--wp--preset--spacing--md);
@@ -1423,6 +1437,10 @@ body.lpu-header-transparent
  * fight Core's column flex-basis which would otherwise keep cards as tiny
  * two-col fragments. */
 
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.PJfltT-mty1ua74-65dee0/index.html
+ */
 .lpu-card {
   display: flex;
   flex-direction: column;
@@ -1439,6 +1457,9 @@ body.lpu-header-transparent
 /* The placeholder fills the card column's available inline size while its
  * shared aspect-ratio/min-height rules define the media box's shape. */
 
+/* Visual diff result: difference when this rule is disabled (569,595 changed pixels at 1440x1100 and 695,204 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.fMcZ7j-mty1v45s-53a0a7/index.html
+ */
 .lpu-card__body {
   display: flex;
   flex: 1;
@@ -1452,6 +1473,9 @@ body.lpu-header-transparent
  * final button always lands at the bottom of the card, whatever the title or
  * description length. The top padding separates the text from the image. */
 
+/* Visual diff result: difference when this rule is disabled (152,545 changed pixels at 1440x1100 and 200,068 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.UzZh3a-mty1vuho-983fd2/index.html
+ */
 .lpu-card__body > .wp-block-heading {
   margin: 0;
   font-size: 1rem;
@@ -1472,6 +1496,9 @@ body.lpu-header-transparent
  * design; margins are zeroed because vertical rhythm is produced by the flex
  * gap. */
 
+/* Visual diff result: difference when this rule is disabled (549,224 changed pixels at 1440x1100 and 687,953 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.oIUIFk-mty1wj75-8a71ff/index.html
+ */
 .lpu-card__body .wp-block-buttons {
   margin-block-start: auto;
   padding-block-start: var(--wp--preset--spacing--sm);
@@ -1480,6 +1507,9 @@ body.lpu-header-transparent
 /* margin-block-start: auto is the classic "push the CTA to the bottom of the
  * flexible body" trick: it consumes any leftover space above the buttons. */
 
+/* Visual diff result: difference when this rule is disabled (499,473 changed pixels at 1440x1100 and 618,829 changed pixels at 390x844; page height changed).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.einXLA-mty1x7qc-5dc3cb/index.html
+ */
 .lpu-card__body .wp-block-button__link {
   padding: 0.4rem 0.85rem;
   font-size: 0.85rem;
