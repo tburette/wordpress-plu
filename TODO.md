@@ -75,22 +75,22 @@
       the real italic font file. The advantage however is that it saves space.
 
 - [ ] There are too many entries in "dimensions" fields
-From Gutenberg :
-Default
-None
-Très petite
-Petite
-Moyenne
-Grande
-Très grande
-Section
-2X-Small
-X-Small
-Small
-Medium
-Large
-X-Large
-2X-Large
+      From Gutenberg :
+      Default
+      None
+      Très petite
+      Petite
+      Moyenne
+      Grande
+      Très grande
+      Section
+      2X-Small
+      X-Small
+      Small
+      Medium
+      Large
+      X-Large
+      2X-Large
 
 ## Styling CSS
 
@@ -101,9 +101,22 @@ X-Large
       Could try to fix by creating repeatable version of the patterns (ask AI?), see comment in themes/lepaysanurbain/assets/css/theme.css above .lpu-motif rule.
       Otherwise document in the user documentation (! careful of content ok now but could grow)
       See design/mes designs/motifs-repeatable/
-      easy ways to tranform the svgs: 
+      easy ways to tranform the svgs:
+
       - modify svg : <g transform="translate(0, 1440) rotate(-90)">...</g> after <defs>
       - css : transform: rotate(90deg);
+
+- [ ] arrow button pill shaped (like hero of design)
+- [ ] add line (can add anywhere)
+      v1 single one
+      v2 multiple sizes?
+
+## Hero Section
+
+- [ ] redo it following the design.
+- [ ] Use a block style variation instead of a pattern?
+- [ ] make sure themes/lepaysanurbain/assets/css/theme.css HERO SECTION section up to date
+
 ## A tester
 
 - Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`. (en profiter pour documenter, voir `documentation utilisateur et technique.md`).
