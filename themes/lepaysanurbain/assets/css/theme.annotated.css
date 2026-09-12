@@ -1320,6 +1320,11 @@ body.lpu-header-transparent
  * capping the width to ~10ch makes it wrap into a narrow balanced column,
  * which reads far more typographically than a full-width band; text-wrap:
  * balance avoids one orphan word dangling on the last line. */
+
+/* Visual diff result: difference when this rule is disabled
+ * (54,093 changed pixels at 1440x1100 and 14,009 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.18RKaw-mty19bf8-10bc87/index.html
+ */
 .lpu-hero__content .wp-block-heading {
   max-width: 10ch;
   margin-block: 0 var(--wp--preset--spacing--md);
@@ -1328,6 +1333,11 @@ body.lpu-header-transparent
 
 /* A slightly wider measure for the supporting paragraph than for the title;
  * longer than ~31rem lines become hard to follow over a busy photo. */
+
+/* Visual diff result: difference when this rule is disabled
+ * (3,953 changed pixels at 1440x1100 and 0 changed pixels at 390x844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.9uc3DT-mty1a66p-f8e106/index.html
+ */
 .lpu-hero__content > .wp-block-paragraph {
   max-width: 31rem;
   margin-block: 0;
@@ -1336,6 +1346,11 @@ body.lpu-header-transparent
 /* The CTA is the last block in the content group; this margin provides
  * breathing room between the paragraph and the button. The parent cover's
  * bottom alignment places the whole content group near the lower edge. */
+
+/* Visual diff result: no difference when this rule is disabled (0 changed
+ * pixels at 1440×1100 and 390×844).
+ * Report: file:///home/tburette/Downloads/website-visual-diff/website-visual-diff.arB8AU-mty1atdu-3fac51/index.html
+ */
 .lpu-hero__actions {
   margin-block-start: var(--wp--preset--spacing--lg);
 }
