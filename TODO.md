@@ -96,7 +96,14 @@ X-Large
 
 - [x] remove all traces of themes/lepaysanurbain/assets/css/theme.css:31 (.lpu-eyebrow). fix the text appearance in plugins/lpu-split-section/patterns/
       plugins/lpu-split-section/lpu-split-section.php:405 (lpu_split_section_register_patterns)
-
+- [ ] if the content using .lpu-motif is tall, the motif will only be at the top and then nothing.
+      kinda ugly.
+      Could try to fix by creating repeatable version of the patterns (ask AI?), see comment in themes/lepaysanurbain/assets/css/theme.css above .lpu-motif rule.
+      Otherwise document in the user documentation (! careful of content ok now but could grow)
+      See design/mes designs/motifs-repeatable/
+      easy ways to tranform the svgs: 
+      - modify svg : <g transform="translate(0, 1440) rotate(-90)">...</g> after <defs>
+      - css : transform: rotate(90deg);
 ## A tester
 
 - Tester explicitement l’ajout et la suppression d’un site de ferme, puis vérifier que le thème et les autres sites continuent à fonctionner sans nouvelle branche de code liée à un nom comme `paris`, `lyon` ou `marseille`. (en profiter pour documenter, voir `documentation utilisateur et technique.md`).
